@@ -32,3 +32,16 @@ patients_clean <- mutate(patients_clean, Smokes = as.logical(str_replace_all(Smo
 ## YOUR CODE HERE
 ```
 
+## Exercise: workflow-exercise.Rmd
+
+******
+
+Modify the workflow to select the candidates (overweight smokers)
+Write the result to a file
+
+******
+
+```{r}
+##YOUR CODE HERE
+```
+

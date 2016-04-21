@@ -68,6 +68,13 @@ img {
 </div>
 
 
+<hr />
+<p>Take the steps used to clean the patients dataset and calculate BMI (see template for the code)</p>
+<ul>
+<li>Re-write in the piping framework</li>
+<li>Add a step to print just the ID, Name, Date of Birth, Smokes and Overweight columns</li>
+</ul>
+<hr />
 <pre class="r"><code>library(dplyr)</code></pre>
 <pre><code>## 
 ## Attaching package: 'dplyr'
@@ -105,6 +112,13 @@ patients_clean</code></pre>
 ## 9      9   Shirley 1972-10-10 26.85241  FALSE       TRUE  TRUE
 ## 10    10     Merle 1972-02-28 27.14491  FALSE       TRUE  TRUE
 ## ..   ...       ...        ...      ...    ...        ...   ...</code></pre>
+<hr />
+<p>Modify the workflow</p>
+<ul>
+<li>to select the candidates (overweight smokers)</li>
+<li>write the result to a file</li>
+</ul>
+<hr />
 <pre class="r"><code>  candidates &lt;- filter(patients_clean, Smokes &amp; Overweight &amp; !Died) %&gt;% 
   write.table(&quot;candidates.txt&quot;)</code></pre>
 <pre class="r"><code>read.delim(&quot;patient-data.txt&quot;) %&gt;% 
