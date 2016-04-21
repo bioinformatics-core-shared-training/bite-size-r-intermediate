@@ -161,7 +161,7 @@ filter(patients, Sex == "Female" | Grade_Level > 1)
 
 Modify the workflow to 
 
-- select the candidates (overweight smokers)
+- select the candidates (overweight smokers that are still alive)
 - write the result to a file
 
 ******
@@ -201,6 +201,50 @@ top_n(patients_clean,10,Height)
 top_n(patients_clean,10,Weight)
 ```
 
+```{r}
+ read.delim("patient-data.txt") %>% 
+  tbl_df %>% 
+  mutate(Sex = factor(str_trim(Sex))) %>% 
+  mutate(Weight = as.numeric(str_replace_all(patients_clean$Weight,"kg",""))) %>% 
+  mutate(Height= as.numeric(str_replace_all(patients_clean$Height,pattern = "cm",""))) %>% 
+  mutate(BMI = (Weight/(Height/100)^2), Overweight = BMI > 25) %>% 
+  mutate(Smokes = as.logical(str_replace_all(Smokes, "Yes", TRUE))) %>% 
+  mutate(Smokes = as.logical(str_replace_all(Smokes, "No", FALSE))) %>%
+  filter(Smokes & Overweight) %>% 
+  select(ID, Name, Birth, Smokes,Overweight,Age) %>% 
+  top_n(10, Age)
+```
+
+
+## Exercise: workflow-exercise.Rmd
+
+******
+
+Modify the workflow to 
+
+- Add the Age variable to the final table
+    + do you notice anything unusual about the values for `Age`?
+- Arrange by age
+- Select the top 5 oldest patients
+
+******
+
+```{r echo=FALSE}
+read.delim("patient-data.txt") %>% 
+  tbl_df %>% 
+  mutate(Sex = factor(str_trim(Sex))) %>% 
+  mutate(Height= as.numeric(str_replace_all(Height,pattern = "cm",""))) %>% 
+  mutate(Weight = as.numeric(str_replace_all(Weight,"kg",""))) %>% 
+  mutate(BMI = (Weight/(Height/100)^2), Overweight = BMI > 25) %>% 
+  mutate(Smokes = str_replace_all(Smokes, "Yes", TRUE)) %>% 
+  mutate(Smokes = as.logical(str_replace_all(Smokes, "No", FALSE))) %>% 
+  select(ID, Name, Birth,BMI,Smokes,Overweight,Died,Age) %>% 
+  filter(Smokes & Overweight & !Died) %>% 
+  filter(Age > 0) %>% 
+  top_n(5,Age) %>% 
+  arrange(desc(Age))
+
+```
 
 ## Re-usable pipelines
 

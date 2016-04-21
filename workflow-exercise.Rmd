@@ -36,12 +36,30 @@ patients_clean <- mutate(patients_clean, Smokes = as.logical(str_replace_all(Smo
 
 ******
 
-Modify the workflow to select the candidates (overweight smokers)
-Write the result to a file
+Modify the workflow 
+
+- to select the candidates (overweight smokers that are still alive)
+- write the result to a file
 
 ******
 
 ```{r}
 ##YOUR CODE HERE
+```
+
+******
+
+Modify the workflow to 
+
+- Add the Age variable to the final table
+- Arrange by age
+    + do you notice anything unusual about the values for `Age`?
+- Select the top 5 oldest patients
+
+******
+
+
+```{r}
+
 ```
 

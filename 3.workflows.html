@@ -231,7 +231,7 @@ patients_clean &lt;- mutate(patients_clean, Height= str_replace_all(patients_cle
 <hr />
 <p>Modify the workflow to</p>
 <ul>
-<li>select the candidates (overweight smokers)</li>
+<li>select the candidates (overweight smokers that are still alive)</li>
 <li>write the result to a file</li>
 </ul>
 <hr />
@@ -333,6 +333,54 @@ patients_clean &lt;- mutate(patients_clean, Height= str_replace_all(patients_cle
 ## 10    98    Alva    White    33   Male  FALSE 178.4494   91.77367816887kg
 ## Variables not shown: Birth (fctr), State (fctr), Pet (fctr), Grade_Level
 ##   (int), Died (lgl), Count (dbl), Date (fctr)</code></pre>
+<pre class="r"><code> read.delim(&quot;patient-data.txt&quot;) %&gt;% 
+  tbl_df %&gt;% 
+  mutate(Sex = factor(str_trim(Sex))) %&gt;% 
+  mutate(Weight = as.numeric(str_replace_all(patients_clean$Weight,&quot;kg&quot;,&quot;&quot;))) %&gt;% 
+  mutate(Height= as.numeric(str_replace_all(patients_clean$Height,pattern = &quot;cm&quot;,&quot;&quot;))) %&gt;% 
+  mutate(BMI = (Weight/(Height/100)^2), Overweight = BMI &gt; 25) %&gt;% 
+  mutate(Smokes = as.logical(str_replace_all(Smokes, &quot;Yes&quot;, TRUE))) %&gt;% 
+  mutate(Smokes = as.logical(str_replace_all(Smokes, &quot;No&quot;, FALSE))) %&gt;%
+  filter(Smokes &amp; Overweight) %&gt;% 
+  select(ID, Name, Birth, Smokes,Overweight,Age) %&gt;% 
+  top_n(10, Age)</code></pre>
+<pre><code>## Source: local data frame [10 x 6]
+## 
+##       ID     Name      Birth Smokes Overweight   Age
+##    (int)   (fctr)     (fctr)  (lgl)      (lgl) (int)
+## 1      2  Rosario 1972-07-22   TRUE       TRUE    25
+## 2      7   Samuel 1971-11-13   TRUE       TRUE    32
+## 3      8    Clair 1972-03-14   TRUE       TRUE    29
+## 4     15   Vernon 1971-11-05   TRUE       TRUE    32
+## 5     34     Rory 1971-09-12   TRUE       TRUE    34
+## 6     44 Lawrence 1972-10-13   TRUE       TRUE    31
+## 7     49  Richard 1971-09-11   TRUE       TRUE    26
+## 8     50   Carlos 1972-01-23   TRUE       TRUE    30
+## 9     53  Lindsay 1971-10-09   TRUE       TRUE    29
+## 10    99     Dean 1971-12-22   TRUE       TRUE    28</code></pre>
+</div>
+<div id="exercise-workflow-exercise.rmd-2" class="section level2">
+<h2>Exercise: workflow-exercise.Rmd</h2>
+<hr />
+<p>Modify the workflow to</p>
+<ul>
+<li>Add the Age variable to the final table
+<ul>
+<li>do you notice anything unusual about the values for <code>Age</code>?</li>
+</ul></li>
+<li>Arrange by age</li>
+<li>Select the top 5 oldest patients</li>
+</ul>
+<hr />
+<pre><code>## Source: local data frame [5 x 8]
+## 
+##      ID     Name      Birth      BMI Smokes Overweight  Died   Age
+##   (int)   (fctr)     (fctr)    (dbl)  (lgl)      (lgl) (lgl) (int)
+## 1     7   Samuel 1971-11-13 32.73286   TRUE       TRUE FALSE    32
+## 2    15   Vernon 1971-11-05 25.83838   TRUE       TRUE FALSE    32
+## 3    44 Lawrence 1972-10-13 27.06717   TRUE       TRUE FALSE    31
+## 4    50   Carlos 1972-01-23 26.00887   TRUE       TRUE FALSE    30
+## 5     8    Clair 1972-03-14 25.21343   TRUE       TRUE FALSE    29</code></pre>
 </div>
 <div id="re-usable-pipelines" class="section level2">
 <h2>Re-usable pipelines</h2>
