@@ -141,11 +141,13 @@ Again, to non R-users, this is less intuitive. However, the result is the same.
 head(patients[patients$Sex == "Male",])
 ```
 
-Combining conditions in `filter` can be achieved using `&` (and) `|` (or)
+Combining conditions in `filter` can be achieved adding `,` or using the Boolean operators `\`, `&`
 
 ```{r}
-filter(patients, Sex == "Male" & Died)
+filter(patients, Sex == "Male", Died)
 ```
+
+The code in base R is a lot more verbose
 
 ```{r eval=FALSE}
 patients[patients$Sex == "Male" & patients$Died,]

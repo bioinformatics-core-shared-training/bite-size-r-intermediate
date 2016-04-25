@@ -187,8 +187,8 @@ patients_clean &lt;- mutate(patients_clean, Height= str_replace_all(patients_cle
 ## 6     9   Shirley  White    22   Male  FALSE  169.66230745064cm
 ## Variables not shown: Weight (fctr), Birth (fctr), State (fctr), Pet
 ##   (fctr), Grade_Level (int), Died (lgl), Count (dbl), Date (fctr)</code></pre>
-<p>Combining conditions in <code>filter</code> can be achieved using <code>&amp;</code> (and) <code>|</code> (or)</p>
-<pre class="r"><code>filter(patients, Sex == &quot;Male&quot; &amp; Died)</code></pre>
+<p>Combining conditions in <code>filter</code> can be achieved adding <code>,</code> or using the Boolean operators <code>\</code>, <code>&amp;</code></p>
+<pre class="r"><code>filter(patients, Sex == &quot;Male&quot;, Died)</code></pre>
 <pre><code>## Source: local data frame [29 x 15]
 ## 
 ##       ID      Name     Race   Age    Sex Smokes             Height
@@ -206,6 +206,7 @@ patients_clean &lt;- mutate(patients_clean, Height= str_replace_all(patients_cle
 ## ..   ...       ...      ...   ...    ...    ...                ...
 ## Variables not shown: Weight (fctr), Birth (fctr), State (fctr), Pet
 ##   (fctr), Grade_Level (int), Died (lgl), Count (dbl), Date (fctr)</code></pre>
+<p>The code in base R is a lot more verbose</p>
 <pre class="r"><code>patients[patients$Sex == &quot;Male&quot; &amp; patients$Died,]</code></pre>
 <pre class="r"><code>filter(patients, Sex == &quot;Female&quot; | Grade_Level &gt; 1)</code></pre>
 <pre><code>## Source: local data frame [83 x 15]
