@@ -19,10 +19,11 @@ http://vimeo.com/33727555
 
 http://vita.had.co.nz/papers/tidy-data.pdf
 
+## Topics
 
 - tidy data
     + what it means
-    + how to create it
+    + how to create it with `tidyr`
 - **`select`** and **`mutate`** verbs in dplyr
 - advice for cleaning strings and dates
 
@@ -80,8 +81,9 @@ gather(untidy, Treatment, Result, treatmenta:treatmentb) %>% mutate(Treatment = 
 - similar to `stack` in base R
 - or `melt` in the `reshape` / `reshape2` pacakges
 
+These data are found in the file [tidyr-example.txt](tidyr-example.txt) and can be imported using `read.delim`
+
 ```{r}
-library(tidyr)
 untidy <- read.delim("tidyr-example.txt")
 untidy
 ```
@@ -94,10 +96,11 @@ The arguments are;
 - the name of the *key* column you want to create
 - the name of the *value* column you want to create
 - the *names* of the columns in the data frame that are to be collapsed
-    + note you don't need "" to define the column names
+    + note you don't need quote marks (`""`) to define the column names
         
 
 ```{r warning=FALSE}
+library(tidyr)
 gather(untidy, Treatment, Result, c(treatmenta,treatmentb))
 ```
 
@@ -114,8 +117,9 @@ gather(untidy, Treatment, Result, 2:3)
 ```
 
 Note that after all these operations, the original data frame (`untidy`) is unaltered
+
   - we need to create a new variable to save the result
-  - you should never work directly on the raw data
+  - **you should never work directly on the raw data**
 
 ```{r}
 untidy
@@ -147,7 +151,7 @@ kable(head(messyData))
 
 ******
 
-## Tidy form
+## Other useful functions in `tidyr`
 
 ```{r echo=FALSE, results='asis',message=FALSE}
 library(tidyr)

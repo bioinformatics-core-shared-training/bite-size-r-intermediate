@@ -37,7 +37,9 @@ patients_clean <- mutate(mutate(patients, Sex = factor(str_trim(Sex))),
                          ID = str_pad(ID,pad="0",width=3))
 ```
 
-We always have to work out what the first statement was and work forwards from that.
+We always have to work out what the first statement was, and work forwards from that.
+
+- the arguments to a function are far-away from the function call
 
 Alternatively, we could write each command as a separate line
 

@@ -63,7 +63,7 @@ img {
 <div id="header">
 <h1 class="title">Introduction to dplyr</h1>
 <h4 class="author"><em>Mark Dunning</em></h4>
-<h4 class="date"><em>Last modified: 20 Apr 2016</em></h4>
+<h4 class="date"><em>Last modified: 26 Apr 2016</em></h4>
 </div>
 
 
@@ -76,11 +76,13 @@ img {
 </blockquote>
 <p><a href="http://vimeo.com/33727555" class="uri">http://vimeo.com/33727555</a></p>
 <p><a href="http://vita.had.co.nz/papers/tidy-data.pdf" class="uri">http://vita.had.co.nz/papers/tidy-data.pdf</a></p>
+<div id="topics" class="section level2">
+<h2>Topics</h2>
 <ul>
 <li>tidy data
 <ul>
 <li>what it means</li>
-<li>how to create it</li>
+<li>how to create it with <code>tidyr</code></li>
 </ul></li>
 <li><strong><code>select</code></strong> and <strong><code>mutate</code></strong> verbs in dplyr</li>
 <li>advice for cleaning strings and dates</li>
@@ -100,6 +102,7 @@ img {
 ## 4          4.6         3.1          1.5         0.2  setosa
 ## 5          5.0         3.6          1.4         0.2  setosa
 ## 6          5.4         3.9          1.7         0.4  setosa</code></pre>
+</div>
 <div id="example-from-tidyr-paper" class="section level2">
 <h2>Example (from tidyr paper)</h2>
 <p>Consider the following….</p>
@@ -154,8 +157,8 @@ img {
 <li>similar to <code>stack</code> in base R</li>
 <li>or <code>melt</code> in the <code>reshape</code> / <code>reshape2</code> pacakges</li>
 </ul>
-<pre class="r"><code>library(tidyr)
-untidy &lt;- read.delim(&quot;tidyr-example.txt&quot;)
+<p>These data are found in the file <a href="tidyr-example.txt" class="uri">tidyr-example.txt</a> and can be imported using <code>read.delim</code></p>
+<pre class="r"><code>untidy &lt;- read.delim(&quot;tidyr-example.txt&quot;)
 untidy</code></pre>
 <pre><code>##           Name treatmenta treatmentb
 ## 1   John Smith          -          2
@@ -168,10 +171,11 @@ untidy</code></pre>
 <li>the name of the <em>value</em> column you want to create</li>
 <li>the <em>names</em> of the columns in the data frame that are to be collapsed
 <ul>
-<li>note you don’t need “” to define the column names</li>
+<li>note you don’t need quote marks (<code>&quot;&quot;</code>) to define the column names</li>
 </ul></li>
 </ul>
-<pre class="r"><code>gather(untidy, Treatment, Result, c(treatmenta,treatmentb))</code></pre>
+<pre class="r"><code>library(tidyr)
+gather(untidy, Treatment, Result, c(treatmenta,treatmentb))</code></pre>
 <pre><code>##           Name  Treatment Result
 ## 1   John Smith treatmenta      -
 ## 2     Jane Doe treatmenta     16
@@ -197,7 +201,11 @@ untidy</code></pre>
 ## 4   John Smith treatmentb      2
 ## 5     Jane Doe treatmentb     11
 ## 6 Mary Johnson treatmentb      1</code></pre>
-<p>Note that after all these operations, the original data frame (<code>untidy</code>) is unaltered - we need to create a new variable to save the result - you should never work directly on the raw data</p>
+<p>Note that after all these operations, the original data frame (<code>untidy</code>) is unaltered</p>
+<ul>
+<li>we need to create a new variable to save the result</li>
+<li><strong>you should never work directly on the raw data</strong></li>
+</ul>
 <pre class="r"><code>untidy</code></pre>
 <pre><code>##           Name treatmenta treatmentb
 ## 1   John Smith          -          2
@@ -289,8 +297,8 @@ data(&quot;messyData&quot;)</code></pre>
 </ul>
 <hr />
 </div>
-<div id="tidy-form" class="section level2">
-<h2>Tidy form</h2>
+<div id="other-useful-functions-in-tidyr" class="section level2">
+<h2>Other useful functions in <code>tidyr</code></h2>
 <p><code>separate</code> from the same package will also sort out the treatment names.</p>
 <pre class="r"><code>separate(tidy,Treatment,into=c(&quot;Treatment&quot;,&quot;Rep&quot;))</code></pre>
 <pre><code>##   Subject Treatment Rep Count
@@ -413,7 +421,8 @@ patients</code></pre>
 ## 9    Shirley    White
 ## 10     Merle Hispanic
 ## ..       ...      ...</code></pre>
-<p>However, <code>select</code> is a lot more intuitive</p>
+<p>Non R users probably find these commands a bit obtuse + why the <code>[ ]</code>? + what is <code>c</code>? + need to remember the row and column index + <code>[,...]</code> means display all rows</p>
+<p>However, <code>select</code> is a lot more intuitive; easier to convert to the sentance “Select the Name column from patients”</p>
 <ul>
 <li>Notice the lack of <code>&quot;&quot;</code></li>
 </ul>
@@ -433,6 +442,7 @@ patients</code></pre>
 ## 9    Shirley
 ## 10     Merle
 ## ..       ...</code></pre>
+<p><em>“Select the Name and Race columns”</em></p>
 <pre class="r"><code>select(patients, Name, Race)</code></pre>
 <pre><code>## Source: local data frame [100 x 2]
 ## 
@@ -454,7 +464,7 @@ patients</code></pre>
 patients[,setdiff(colnames(patients), &quot;Name&quot;)]</code></pre>
 <pre class="r"><code>head(patients[,-2])
 head(patients[,setdiff(colnames(patients), &quot;Name&quot;)])</code></pre>
-<p>Compare to dplyr version….</p>
+<p>Compare to dplyr version….<em>“Select all columns apart from Name”</em></p>
 <pre class="r"><code>select(patients, -Name)</code></pre>
 <pre><code>## Source: local data frame [100 x 14]
 ## 
@@ -473,7 +483,7 @@ head(patients[,setdiff(colnames(patients), &quot;Name&quot;)])</code></pre>
 ## ..   ...      ...   ...     ...    ...                ...
 ## Variables not shown: Weight (fctr), Birth (fctr), State (fctr), Pet
 ##   (fctr), Grade_Level (int), Died (lgl), Count (dbl), Date (fctr)</code></pre>
-<p>Similarly easier to get columns within a particular range</p>
+<p>Similarly easier to get columns within a particular range. <em>“Select all columns between Name and Sex”</em></p>
 <pre class="r"><code>select(patients, Name:Sex)</code></pre>
 <pre><code>## Source: local data frame [100 x 4]
 ## 

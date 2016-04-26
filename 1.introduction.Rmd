@@ -51,7 +51,9 @@ The main advantages are;
 
 Two Biostatiscians (later termed '*Forensic Bioinformaticians*') from M.D. Anderson used R extensively during their re-analysis and investigation of a Clinical Prognostication paper from Duke. The subsequent [scandal](https://www.youtube.com/watch?v=W5sZTNPMQRM) put Reproducible Research at the forefront of everyone's mind.
 
-Keith Baggerly's [talk](https://www.youtube.com/watch?v=7gYIs7uYbMo) is highy-recommended.
+Keith Baggerly's talk on the subject is highy-recommended.
+
+<iframe width="420" height="315" src="https://www.youtube.com/embed/7gYIs7uYbMo" frameborder="0" allowfullscreen></iframe>
 
 ## Support for R
 
@@ -174,7 +176,7 @@ rnorm(n=10)
 
 ```
 
-The normal distribution is defined by a mean and standard deviation. However, we didn't tell R what mean and standard deviation we wanted. So how does R know what to do? All arguments to a function and their default values are listed in the help page
+The normal distribution is defined by a mean and standard deviation. However, in the above example we didn't tell R what mean and standard deviation we wanted. So how does R know what to do? All arguments to a function and their default values are listed in the help page
 
 (*N.B sometimes help pages can describe more than one function*)
 
@@ -182,7 +184,7 @@ The normal distribution is defined by a mean and standard deviation. However, we
 ?rnorm
 ```
 
-In this case, we see that the defaults for mean and standard deviation are 0 and 1.
+In this case, we see that the defaults for mean and standard deviation are 0 and 1. We can change the function to generate values from a distribution with a different mean and standard deviation using the `mean` and `sd` *arguments*. It is important that we get the spelling of these arguments exactly right, otherwise R will an error message, or (worse?) do something unexpected.
 
 ```{r}
 rnorm(n=10, mean=2,sd=3)
@@ -307,8 +309,15 @@ summary(iris)
 We will explore plotting in much more detail later on the course. R provides a wide-variety of [plotting options](http://www.statmethods.net/graphs/index.html) as part of the *base* distribution. Without going into too much detail, the following will create a boxplot of the values in `Sepal.Length` column categorised into the different values of `Species`.
 
 ```{r}
-boxplot(Sepal.Length~Species,iris)
+boxplot(iris$Sepal.Length~iris$Species)
 ```
+
+Sometimes you may see this written as:
+
+```{r}
+boxplot(Sepal.Length~Species,data=iris)
+```
+
 
 
 ## How can R enable Reproducible Research?
@@ -333,7 +342,9 @@ Markdown can also generate presentations and courses. Indeed, all the [materials
 
 
 
-Each line of R code can be executed in the R console by placing the cursor on the line and pressing `CTRL + ENTER`. You can also highlight multiple lines of code. NB. You do not need to highlight to the backtick (`\``) symbols. Hitting the knit button (*) will run all R code in order and (providing there are no errors!) you will get a PDF or HTML document. The resultant document will contain all the plain text you wrote, the R code, and any outputs (including graphs, tables etc) that R produced. You can then distribute this document to have a reproducible account of your analysis.
+Each line of R code can be executed in the R console by placing the cursor on the line and pressing `CTRL + ENTER`. You can also highlight multiple lines of code. NB. You do not need to highlight to the backtick (`\``) symbols. 
+
+Hitting the ***Knit*** button (*) will run all R code in order and (providing there are no errors!) you will get a PDF or HTML document. The resultant document will contain all the plain text you wrote, the R code, and any outputs (including graphs, tables etc) that R produced. You can then distribute this document to have a reproducible account of your analysis.
 
 ## How to use the template
 
