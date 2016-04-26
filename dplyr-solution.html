@@ -80,6 +80,7 @@ img {
 ## 
 ##     intersect, setdiff, setequal, union</code></pre>
 <pre class="r"><code>library(stringr)
+
 patients &lt;- read.delim(&quot;patient-data.txt&quot;)
 patients &lt;- tbl_df(patients)
 patients_clean &lt;- mutate(patients, Sex = factor(str_trim(Sex)))
@@ -96,28 +97,13 @@ patients_clean &lt;- mutate(patients_clean, Height= as.numeric(str_replace_all(p
 <ul>
 <li>clean the <code>Smokes</code> column to contain just <code>TRUE</code> or <code>FALSE</code> values</li>
 </ul></li>
+<li>How many candidates (Overweight and Smoker) do you have?</li>
 <li>(EXTRA) What other problems can you find in the data?</li>
 </ul>
 <pre class="r"><code>patients_clean &lt;- mutate(patients_clean, Weight = as.numeric(str_replace_all(patients_clean$Weight,&quot;kg&quot;,&quot;&quot;)))
 patients_clean &lt;- mutate(patients_clean, BMI = (Weight/(Height/100)^2), Overweight = BMI &gt; 25)
 patients_clean &lt;- mutate(patients_clean, Smokes = str_replace_all(Smokes, &quot;Yes&quot;, TRUE))
-patients_clean &lt;- mutate(patients_clean, Smokes = as.logical(str_replace_all(Smokes, &quot;No&quot;, FALSE)))
-select(patients_clean, ID,Smokes, Overweight)</code></pre>
-<pre><code>## Source: local data frame [100 x 3]
-## 
-##       ID Smokes Overweight
-##    (int)  (lgl)      (lgl)
-## 1      1   TRUE      FALSE
-## 2      2   TRUE       TRUE
-## 3      3  FALSE       TRUE
-## 4      4  FALSE       TRUE
-## 5      5  FALSE       TRUE
-## 6      6  FALSE       TRUE
-## 7      7   TRUE       TRUE
-## 8      8   TRUE       TRUE
-## 9      9  FALSE       TRUE
-## 10    10  FALSE       TRUE
-## ..   ...    ...        ...</code></pre>
+patients_clean &lt;- mutate(patients_clean, Smokes = as.logical(str_replace_all(Smokes, &quot;No&quot;, FALSE)))</code></pre>
 
 
 </div>
