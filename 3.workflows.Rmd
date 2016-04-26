@@ -176,10 +176,12 @@ filter(patients_clean, Sex == "Female" | Grade_Level > 1)
 ******
 
   - Select the Dog owners
-  - Select the Smokers with Grade more than 1
+  - Select the Smokers with Grade more than 2 or 3
   - Select the patients that are still alive
   - Select the patients from New York or New Jersey
-  
+
+Feel free to experiment with different ways to do these
+
 ******
 
 
