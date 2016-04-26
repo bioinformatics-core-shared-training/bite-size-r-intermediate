@@ -29,8 +29,9 @@ we read as
 
 > apply the `tbl_df` to the result of reading the file `patient-data.txt`
 
-Could also do the same for our `mutate` statements, although this would quickly become tricky...
+Could also do the same for our `mutate` statements, although this would quickly become convoluted..
 
+> pad to three digits the ID variable of the data frame created by trimming white space from the sex variable from the patients data frame
 
 ```{r}
 patients_clean <- mutate(mutate(patients, Sex = factor(str_trim(Sex))),
@@ -59,6 +60,7 @@ patients_clean <- mutate(patients_clean, Height= str_replace_all(patients_clean$
 The output of one operations gets used as the input of the next
 
 In computing, this is referring to as *piping* 
+
 - unix commands use the `|` symbol
 
 ## magrittr
@@ -67,35 +69,46 @@ In computing, this is referring to as *piping*
 
 ![also-not-a-pipe](https://upload.wikimedia.org/wikipedia/en/b/b9/MagrittePipe.jpg)
 
-- the magrittr library implements this in R
+- the `magrittr` library implements this in R
 
 ## Simple example
 
-Read the file `patient-data` and pass the result to the `head` function.
+> read the file `patient-data.txt` ***and then*** use the `tbl_df` function
+
   - Use the special function ` %>% ` at the end of the line
   - Shortcut in RStudio: CTRL + SHIFT + M 
   
 ```{r eval=FALSE}
+read.delim("patient-data.txt") %>% 
+  tbl_df
+```
+
+The `read.delim` function produces a *data frame* as an output, and the `tbl_df` function only has one argument (a data frame). All the `dplyr` verbs that we will discuss today can be pipelined with ` %>% ` as they take a data frame as input, and produce a data frame as output.
+
+Note that we need an assignment if we want to save the result
+
+```{r}
 patients <- read.delim("patient-data.txt") %>% 
   tbl_df
 ```
 
-> read the file `patient-data.txt` ***and then*** use the `tbl_df` function
 
-We can re-write our steps from above;
+We can re-write our data cleaning steps from the previous section with;
 
 ```{r}
 patients_clean <- read.delim("patient-data.txt") %>% 
   tbl_df %>% 
   mutate(Sex = factor(str_trim(Sex))) %>% 
   mutate(Height= as.numeric(str_replace_all(patients_clean$Height,pattern = "cm","")))
+patients_clean
 ```
 
 > read the file `patient-data.txt` ***and then*** use the `tbl_df` function ***and then*** trim the whitespace from the Sex variable ***and then*** replace cm with blank characters in the Height variable
 
 Note that we didn't need to specify `patients_clean` as an argument to the `mutate` function
-    - it as assumed that the output of one line acts as the first argument to the next line
-    - we don't need to create temporary variables
+
+- it as assumed that the output of one line acts as the first argument to the next line
+- we don't need to create temporary variables
 
 ## Exercise: workflow-exercise.Rmd
 
@@ -128,36 +141,47 @@ The **`filter`** verb is used to select rows from the data frame. The criteria w
 e.g. select all the males
 
 ```{r}
-filter(patients, Sex == "Male") 
+filter(patients_clean, Sex == "Male") 
 ```
 
 In base R, we would do
 
 ```{r eval=FALSE}
-patients[patients$Sex == "Male",]
+patients_clean[patients_clean$Sex == "Male",]
 ```
 
 Again, to non R-users, this is less intuitive. However, the result is the same.
 
 ```{r echo=FALSE}
-head(patients[patients$Sex == "Male",])
+head(patients_clean[patients_clean$Sex == "Male",])
 ```
 
 Combining conditions in `filter` can be achieved adding `,` or using the Boolean operators `\`, `&`
 
 ```{r}
-filter(patients, Sex == "Male", Died)
+filter(patients_clean, Sex == "Male", Died)
 ```
 
 The code in base R is a lot more verbose
 
 ```{r eval=FALSE}
-patients[patients$Sex == "Male" & patients$Died,]
+patients[patients_clean$Sex == "Male" & patients_clean$Died,]
 ```
 
 ```{r}
-filter(patients, Sex == "Female" | Grade_Level > 1)
+filter(patients_clean, Sex == "Female" | Grade_Level > 1)
 ```
+
+## Exercise
+******
+
+  - Select the Dog owners
+  - Select the Smokers with Grade more than 1
+  - Select the patients that are still alive
+  - Select the patients from New York or New Jersey
+  
+******
+
 
 ## Exercise: workflow-exercise.Rmd
 
@@ -165,7 +189,8 @@ filter(patients, Sex == "Female" | Grade_Level > 1)
 
 Modify the workflow to 
 
-- select the candidates (overweight smokers that are still alive)
+- select the candidates (overweight smokers)
+- make sure the candidates are still alive
 - write the result to a file
 
 ******
@@ -218,6 +243,8 @@ top_n(patients_clean,10,Weight)
   select(ID, Name, Birth, Smokes,Overweight,Age) %>% 
   top_n(10, Age)
 ```
+
+
 
 
 ## Exercise: workflow-exercise.Rmd

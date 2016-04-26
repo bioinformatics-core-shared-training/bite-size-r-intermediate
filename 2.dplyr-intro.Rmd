@@ -128,7 +128,7 @@ tidy <- gather(untidy, Treatment, Result, c(treatmenta,treatmentb))
 
 ******
 
-## Example: Simulated clinical data
+## Exercise: Simulated clinical data
 
 Using data from the Mango Solutions training dataset
 
@@ -205,7 +205,6 @@ Using `dplyr`, `patients` can be converted to a special kind of data frame; the 
 ```{r}
 library(dplyr)
 patients <- tbl_df(patients)
-patients
 ```
 
 
@@ -242,11 +241,13 @@ The `$` operator works fine for single columns, but for multiple columns it quic
 patients[,c("Name","Race")]
 ```
 
-Non R users probably find these commands a bit obtuse
-    + why the `[ ]`?
-    + what is `c`?
-    + need to remember the row and column index
-    + `[,...]` means display all rows
+Non R-users probably find these commands a bit obtuse, and there are many points that can trip-up beginner users
+
+- why the `[ ]`?
+- what is `c(..)`?
+- `Name` and `Race` need to be in quote marks
+- need to remember the row and column index
+- `[,...]` means display all rows
 
 However, `select` is a lot more intuitive; easier to convert to the sentance "Select the Name column from patients"
 
@@ -289,12 +290,21 @@ select(patients, Name:Sex)
 Say we cannot remember the name of the column
 
 ```{r}
-select(patients, starts_with("Grade"))
+select(patients, contains("Grade"))
 ```
 
 see also
 
-- contains, matches, ends_with
+- starts_with, matches, ends_with
+
+******
+## Exercise
+
+- Print all columns between `Height` and `Grade_Level`
+- Print all columns that contain "eight"
+- Print all columns between `Height` and `Grade_Level`, but NOT `Pet`
+
+******
 
 ## Transforming / cleaning the data
 
@@ -323,7 +333,7 @@ as.character(patients$Sex)
 
 The base distribution of R has many functions for dealing with strings. However, the `stringr` package (again from Hadley Wickham) aims to provide a clean modern interface to many common string operations.
 
-Of particular interest here is the `str_trim` (`?str_trim`) function that will trim whitespace from a vector of strings. Arguments can be used to specify whether to remove whitespace from either side of the string, or just the left or right. 
+Of particular interest here is the `str_trim` (`?str_trim`) function that will trim whitespace from a *vector* of strings. Arguments can be used to specify whether to remove whitespace from either side of the string, or just the left or right. 
 
 ```{r}
 library(stringr)
@@ -334,12 +344,18 @@ Once we have worked-out how to created a cleaned version of the variable, we nee
 
 ## Creating new variables: The `mutate` verb
 
-`mutate` allows us to compute and append one or more new columns to a data frame. We can create new, cleaned, data frame and overwrite the Sex column
+`mutate` allows us to compute and append one or more new columns to a data frame. We do not need to use the `$` operator to extract variables, we can refer to them by name.
 
 ```{r}
 mutate(patients, Sex = str_trim(Sex))
+```
+
+We can create a new, cleaned, data frame and overwrite the Sex column
+
+```{r}
 patients_clean <- mutate(patients, Sex = factor(str_trim(Sex)))
 ```
+
 
 Rather than removing whitespace, sometimes we might want to adjust a set of strings so that they have a fixed width. We can do this be adding a *padding* character to each string if necessary. This operations is often done with a set of identifiers.
 
@@ -381,11 +397,15 @@ The problem is that R thinks that values are not numbers. Why might that be?
 select(patients,Height)
 ```
 
-To convert the values back to numbers we first need to remove the `"cm"` at the end of each value. We can do this with a *string replacement* operation. In this case, the particular string we want to put in the place of `"cm"` is the *empty string* `""`. The replacement can be done using the `str_replace_all` function.
+To convert the values back to numbers we first need to remove the `"cm"` at the end of each value. We can do this with a *string replacement* operation. In this case, the particular string we want to put in the place of `"cm"` is the *empty string* `""`. The replacement can be done using the `str_replace_all` function. The arguments are; the vector to operator on, the pattern that you want to replace, and the replacement string
+
+```{r}
+str_replace_all(patients$Height,pattern = "cm","")
+```
 
 
 ```{r}
-mutate(patients_clean, Height= str_replace_all(patients_clean$Height,pattern = "cm",""))
+mutate(patients_clean, Height= str_replace_all(Height,pattern = "cm",""))
 ```
 
 Note that the input to this function is the `patients_clean` object that we created previously. 
@@ -429,7 +449,7 @@ library(lubridate)
 year(patients$Birth)
 ```
 
-It also supporting some clever manipulation, such as being able to subtract and add times.
+It also supports some more sophisticated manipulations, such as being able to subtract and add times.
 
 ```{r}
 

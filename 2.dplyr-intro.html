@@ -216,8 +216,8 @@ gather(untidy, Treatment, Result, c(treatmenta,treatmentb))</code></pre>
 ## be dropped</code></pre>
 <hr />
 </div>
-<div id="example-simulated-clinical-data" class="section level2">
-<h2>Example: Simulated clinical data</h2>
+<div id="exercise-simulated-clinical-data" class="section level2">
+<h2>Exercise: Simulated clinical data</h2>
 <p>Using data from the Mango Solutions training dataset</p>
 <pre class="r"><code>library(mangoTraining)
 data(&quot;messyData&quot;)</code></pre>
@@ -327,25 +327,7 @@ data(&quot;messyData&quot;)</code></pre>
 <pre class="r"><code>View(patients)</code></pre>
 <p>Using <code>dplyr</code>, <code>patients</code> can be converted to a special kind of data frame; the <code>tbl_df</code>. The main difference is that the whole data frame does not get printed to screen. All operations that we could do on a data frame can be applied to a <code>tbl_df</code>.</p>
 <pre class="r"><code>library(dplyr)
-patients &lt;- tbl_df(patients)
-patients</code></pre>
-<pre><code>## Source: local data frame [100 x 15]
-## 
-##       ID      Name     Race   Age     Sex Smokes             Height
-##    (int)    (fctr)   (fctr) (int)  (fctr) (fctr)             (fctr)
-## 1      1 Demetrius    White    22    Male   TRUE 176.479144276913cm
-## 2      2   Rosario    White    25    Male   TRUE 174.748482460591cm
-## 3      3     Julio    Black    20    Male     No 173.944873836774cm
-## 4      4      Lupe    White    26    Male  FALSE 180.028888936188cm
-## 5      5    Lavern      Cat    35    Male     No 178.636539798649cm
-## 6      6    Bernie   Native    30  Female  FALSE 159.777836229305cm
-## 7      7    Samuel    White    32    Male   TRUE 170.949966267411cm
-## 8      8     Clair    White    29  Female   TRUE 161.826590769764cm
-## 9      9   Shirley    White    22    Male  FALSE  169.66230745064cm
-## 10    10     Merle Hispanic    26  Female  FALSE 160.121017002151cm
-## ..   ...       ...      ...   ...     ...    ...                ...
-## Variables not shown: Weight (fctr), Birth (fctr), State (fctr), Pet
-##   (fctr), Grade_Level (int), Died (lgl), Count (dbl), Date (fctr)</code></pre>
+patients &lt;- tbl_df(patients)</code></pre>
 <p>The <code>tbl_df</code> function in dplyr creates a new object with more-convenient default display</p>
 <ul>
 <li>The object behaves in exactly the same way as a data frame</li>
@@ -421,7 +403,14 @@ patients</code></pre>
 ## 9    Shirley    White
 ## 10     Merle Hispanic
 ## ..       ...      ...</code></pre>
-<p>Non R users probably find these commands a bit obtuse + why the <code>[ ]</code>? + what is <code>c</code>? + need to remember the row and column index + <code>[,...]</code> means display all rows</p>
+<p>Non R-users probably find these commands a bit obtuse, and there are many points that can trip-up beginner users</p>
+<ul>
+<li>why the <code>[ ]</code>?</li>
+<li>what is <code>c(..)</code>?</li>
+<li><code>Name</code> and <code>Race</code> need to be in quote marks</li>
+<li>need to remember the row and column index</li>
+<li><code>[,...]</code> means display all rows</li>
+</ul>
 <p>However, <code>select</code> is a lot more intuitive; easier to convert to the sentance “Select the Name column from patients”</p>
 <ul>
 <li>Notice the lack of <code>&quot;&quot;</code></li>
@@ -501,7 +490,7 @@ head(patients[,setdiff(colnames(patients), &quot;Name&quot;)])</code></pre>
 ## 10     Merle Hispanic    26  Female
 ## ..       ...      ...   ...     ...</code></pre>
 <p>Say we cannot remember the name of the column</p>
-<pre class="r"><code>select(patients, starts_with(&quot;Grade&quot;))</code></pre>
+<pre class="r"><code>select(patients, contains(&quot;Grade&quot;))</code></pre>
 <pre><code>## Source: local data frame [100 x 1]
 ## 
 ##    Grade_Level
@@ -519,8 +508,18 @@ head(patients[,setdiff(colnames(patients), &quot;Name&quot;)])</code></pre>
 ## ..         ...</code></pre>
 <p>see also</p>
 <ul>
-<li>contains, matches, ends_with</li>
+<li>starts_with, matches, ends_with</li>
 </ul>
+<hr />
+</div>
+<div id="exercise" class="section level2">
+<h2>Exercise</h2>
+<ul>
+<li>Print all columns between <code>Height</code> and <code>Grade_Level</code></li>
+<li>Print all columns that contain “eight”</li>
+<li>Print all columns between <code>Height</code> and <code>Grade_Level</code>, but NOT <code>Pet</code></li>
+</ul>
+<hr />
 </div>
 <div id="transforming-cleaning-the-data" class="section level2">
 <h2>Transforming / cleaning the data</h2>
@@ -819,7 +818,7 @@ patients_clean</code></pre>
 ##   (fctr), Grade_Level (int), Died (lgl), Count (dbl), Date (fctr), Grade
 ##   (int)</code></pre>
 </div>
-<div id="exercise" class="section level2">
+<div id="exercise-1" class="section level2">
 <h2>Exercise</h2>
 <ul>
 <li>We want to calculate the Body Mass Index (BMI) for each of our patients</li>
