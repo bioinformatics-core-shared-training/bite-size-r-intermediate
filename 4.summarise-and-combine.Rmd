@@ -1,6 +1,6 @@
 ---
 title: "Grouping, Summarising and Joining"
-author: "Matthew Eldridge"
+author: "Matt Eldridge"
 date: '`r format(Sys.time(), "Last modified: %d %b %Y")`'
 output: html_document
 ---
@@ -215,6 +215,18 @@ groups(iris_ungrouped)
 
 `ungroup` can be quite helpful in more complicated chains of `dplyr` operations where the grouping is only required for some of the steps and would have unintended consequences for subsequent operations within the chain.
 
+## Exercise
+
+Read a cleaned version of the patients dataset (patient-data-cleaned.txt) into RStudio and use `summarise`, `summarise_each`, `mutate_each` and `group_by` to answer the following questions:
+
+* What is the mean age, height and weight of patients in the patients dataset?
+    * Modify the output by rounding these computed means to 2 decimal places
+* See what happens if you try to compute the mean of a logical (boolean) variable
+    * What proportion of our patient cohort has died?
+* Compare the average height of males and females in this patient cohort.
+* Are smokers heavier or lighter on average than non-smokers in this dataset?
+
+
 # Joining
 
 In many real life situations, data are spread across multiple tables or spreadsheets. Usually this occurs because different types of information about a subject, e.g. a patient, are collected from different sources. It may be desirable for some analyses to combine data from two or more tables into a single data frame based on a common column, for example, an attribute that uniquely identifies the subject.
@@ -341,7 +353,6 @@ diabetes
 * Find the date of the last visit made by each patient.
 
 * Using the ID column to connect information about patients, add these values as additional columns to the patients table.
-
     * Can you do this as a single sequence of dplyr commands using the `%>%` symbol?
 
 ```{r include=FALSE}

@@ -36,6 +36,18 @@ See what happens if you try to compute the mean of a logical (boolean) variable
 
 ******
 
+Compare the average height of males and females in this patient cohort.
+
+Are smokers heavier or lighter on average than non-smokers in this dataset?
+
+******
+
+```{r}
+## YOUR CODE HERE
+```
+
+******
+
 ```{r}
 diabetes <- read.delim("diabetes.txt", stringsAsFactors = FALSE) %>% tbl_df
 diabetes %>% head(5)

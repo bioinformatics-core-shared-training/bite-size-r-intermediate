@@ -8,7 +8,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 
-<meta name="author" content="Matthew Eldridge" />
+<meta name="author" content="Matt Eldridge" />
 
 
 <title>Grouping, Summarising and Joining</title>
@@ -62,7 +62,7 @@ img {
 
 <div id="header">
 <h1 class="title">Grouping, Summarising and Joining</h1>
-<h4 class="author"><em>Matthew Eldridge</em></h4>
+<h4 class="author"><em>Matt Eldridge</em></h4>
 <h4 class="date"><em>Last modified: 03 May 2016</em></h4>
 </div>
 
@@ -329,6 +329,22 @@ class(iris_ungrouped)</code></pre>
 <pre><code>NULL</code></pre>
 <p><code>ungroup</code> can be quite helpful in more complicated chains of <code>dplyr</code> operations where the grouping is only required for some of the steps and would have unintended consequences for subsequent operations within the chain.</p>
 </div>
+<div id="exercise" class="section level2">
+<h2>Exercise</h2>
+<p>Read a cleaned version of the patients dataset (patient-data-cleaned.txt) into RStudio and use <code>summarise</code>, <code>summarise_each</code>, <code>mutate_each</code> and <code>group_by</code> to answer the following questions:</p>
+<ul>
+<li>What is the mean age, height and weight of patients in the patients dataset?
+<ul>
+<li>Modify the output by rounding these computed means to 2 decimal places</li>
+</ul></li>
+<li>See what happens if you try to compute the mean of a logical (boolean) variable
+<ul>
+<li>What proportion of our patient cohort has died?</li>
+</ul></li>
+<li>Compare the average height of males and females in this patient cohort.</li>
+<li>Are smokers heavier or lighter on average than non-smokers in this dataset?</li>
+</ul>
+</div>
 </div>
 <div id="joining" class="section level1">
 <h1>Joining</h1>
@@ -477,7 +493,7 @@ anti_join(df1, df2, by = &quot;name&quot;)</code></pre>
   (chr)  (chr)     (chr)
 1   Tom London   MRC-CSC</code></pre>
 </div>
-<div id="exercise" class="section level2">
+<div id="exercise-1" class="section level2">
 <h2>Exercise</h2>
 <p>The exercise uses a more realistic dataset, building on the patients table we’ve already been working with.</p>
 <p>The patients are all part of a diabetes study and have had their blood glucose concentration and diastolic blood pressure measured over several dates.</p>
@@ -501,7 +517,7 @@ diabetes</code></pre>
 <ul>
 <li><p>Find the number of visits made by each patient to the hospital to have blood glucose and pressure measurements taken.</p></li>
 <li><p>Find the date of the last visit made by each patient.</p></li>
-<li><p>Using the ID column to connect information about patients, add these values as additional columns to the patients table.</p>
+<li>Using the ID column to connect information about patients, add these values as additional columns to the patients table.
 <ul>
 <li>Can you do this as a single sequence of dplyr commands using the <code>%&gt;%</code> symbol?</li>
 </ul></li>
