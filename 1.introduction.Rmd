@@ -7,19 +7,19 @@ output: html_document
 
 ## Motivation
 
-Spreadsheets are a common entry-point for many types of analyses. Whilst they are great for exploring, visualising data in an interactive and intuitive manner they are not ideal for many production-level analyses.
+Spreadsheets are a common entry-point for many types of analyses. Whilst they are great for exploring / visualising data in an interactive and intuitive manner, they are not ideal for many production-level analyses.
 
 - Tedious and time-consuming to repeatedly process multiple files
 - Error-prone
 - Unwieldy and difficult to deal with large amounts of data
-- How can you (or someone else?) repeat what you did?
+- How can you (or someone else?) repeat what you did several months, or years down the line?
 
 ![spreadsheet](images/spreadsheet-full.png)
 
 This course aims to translate how we think of data in spreadsheets to a series of operations that can be performed and chained together in R.
 
 
-A data analysis can be broken-down into several stages. There is, however, no such thing as a typical analysis. Most datasets we will encounter will have their own issues and problems that need fixing. We will also need to spend a lot of time visualising our data in different ways in order to gain insights. For every figure or table presented in a paper, there may be tens of hundreds of exploratory analyses that were generated along the way. We will show how such exploratory analysis can be performed in R.
+A data analysis can be broken-down into several stages. There is, however, no such thing as a typical analysis. Most datasets we will encounter will have their own issues and problems that need fixing. We will also need to spend a lot of time visualising our data in different ways in order to gain insights. For every figure or table presented in a paper, there may be tens or hundreds of exploratory analyses that were generated along the way. We will show how such exploratory analysis can be performed in R.
 
 ![data-cycle](images/data-cycle.png)
 
@@ -36,7 +36,7 @@ Hadley also has these words of advice that we should bear in mind as we proceed 
 
 ![NYT](images/NYTimes_R_Article.png)
 
-The R programming language is now recognised beyond the academic community as an effect solution for data analysis and visualisation. [Notable users of R](http://www.revolutionanalytics.com/companies-using-r) include [Facebook](http://blog.revolutionanalytics.com/2010/12/analysis-of-facebook-status-updates.html), [google](http://blog.revolutionanalytics.com/2009/05/google-using-r-to-analyze-effectiveness-of-tv-ads.html),[buzzfeed](http://blog.revolutionanalytics.com/2015/12/buzzfeed-uses-r-for-data-journalism.html), [Microsoft](http://blog.revolutionanalytics.com/2014/05/microsoft-uses-r-for-xbox-matchmaking.html) (who recently [invested](http://blogs.microsoft.com/blog/2015/01/23/microsoft-acquire-revolution-analytics-help-customers-find-big-data-value-advanced-statistical-analysis/) in a commerical provider of R), and the [New York Times](http://blog.revolutionanalytics.com/2011/03/how-the-new-york-times-uses-r-for-data-visualization.html).
+The R programming language is now recognised beyond the academic community as an effective solution for data analysis and visualisation. [Notable users of R](http://www.revolutionanalytics.com/companies-using-r) include [Facebook](http://blog.revolutionanalytics.com/2010/12/analysis-of-facebook-status-updates.html), [google](http://blog.revolutionanalytics.com/2009/05/google-using-r-to-analyze-effectiveness-of-tv-ads.html), [buzzfeed](http://blog.revolutionanalytics.com/2015/12/buzzfeed-uses-r-for-data-journalism.html), [Microsoft](http://blog.revolutionanalytics.com/2014/05/microsoft-uses-r-for-xbox-matchmaking.html) (who recently [invested](http://blogs.microsoft.com/blog/2015/01/23/microsoft-acquire-revolution-analytics-help-customers-find-big-data-value-advanced-statistical-analysis/) in a commerical provider of R), and the [New York Times](http://blog.revolutionanalytics.com/2011/03/how-the-new-york-times-uses-r-for-data-visualization.html).
 
 The main advantages are;
 
@@ -64,7 +64,7 @@ Keith Baggerly's talk on the subject is highy-recommended.
 
 ##Various platforms supported
 
-- Release 3.2.2 (August 2015)
+- Release 3.3.0 (May 2016)
     + Base package and Contributed packages (general purpose extras)
     + `r length(XML:::readHTMLTable("http://cran.r-project.org/web/packages/available_packages_by_date.html")[[1]][[2]])` available packages as of `r date()`
 - Download from http://mirrors.ebi.ac.uk/CRAN/
@@ -306,7 +306,7 @@ The `summary` function is a versatile function to summarise an object. For this 
 summary(iris)
 ```
 
-We will explore plotting in much more detail later on the course. R provides a wide-variety of [plotting options](http://www.statmethods.net/graphs/index.html) as part of the *base* distribution. Without going into too much detail, the following will create a boxplot of the values in `Sepal.Length` column categorised into the different values of `Species`.
+We will explore plotting in much more detail later on the course. R provides a wide-variety of [plotting options](http://www.statmethods.net/graphs/index.html) as part of the *base* distribution. Without going into too much detail, the following will create a boxplot of the values in `Sepal.Length` column categorised into the different values of `Species`. Such a plot allows us to look for differences in mean between different groups, and also assess the variability of the data.
 
 ```{r}
 boxplot(iris$Sepal.Length~iris$Species)
