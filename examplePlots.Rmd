@@ -1,0 +1,327 @@
+---
+title: "Introduction to ggplot2"
+author: "Tommy"
+date: "3 May 2016"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## An introduction to ggplot2
+
+What and who ggplot2
+What is "Grammar of Graphics"" blurb
+
+## Why use ggplot2
+
+ggplot2 vs base
+ggplot2 pros
+
+## ggplot2 is just "plot lego"
+
+Building blocks of a ggplot2 graph
+
+-data
+
+-mapping/aes
+
+-geoms
+
+-scales
+-theme
+-stat
+
+## Overview of a ggplot2 command
+
+```{r cars}
+
+```
+
+## Getting started with ggplot2
+
+Earlier we have been working with the patient's dataset to create a "clean and tidy" dataset.
+
+Now we will use this dataset to demonstrate some of the plotting capabilities of ggplot2.
+
+First lets load the data and perform the clean and tidy.
+
+```{r load_data, echo=FALSE}
+library(tidyr)
+library(ggplot2)
+library(dplyr)
+library(stringr)
+library(lubridate)
+patients <- read.delim("patient-data.txt")
+patients_clean <- mutate(patients, Sex = factor(str_trim(Sex)))
+patients_clean <- mutate(patients_clean, ID=str_pad(patients_clean$ID,pad = "0",width=3))
+patients_clean <- mutate(patients_clean, Height= as.numeric(str_replace_all(patients_clean$Height,pattern = "cm","")))
+
+grds <- patients$Grade_Level
+patients_clean <- mutate(patients_clean, Grade = ifelse(grds == 99, NA,grds))
+
+dob <- ymd(patients$Birth)
+today <- ymd("20160509")
+age <- interval(dob, today) 
+patients_clean <- mutate(patients_clean, Age = year(as.period(age)))
+
+patients_clean <- mutate(patients_clean, Weight = as.numeric(str_replace_all(patients_clean$Weight,"kg","")))
+patients_clean <- mutate(patients_clean, BMI = (Weight/(Height/100)^2), Overweight = BMI > 25)
+patients_clean <- mutate(patients_clean, Smokes = str_replace_all(Smokes, "Yes", TRUE))
+patients_clean <- mutate(patients_clean, Smokes = as.logical(str_replace_all(Smokes, "No", FALSE)))
+
+```
+
+Now our data is clean and tidy.
+
+```{r present_clean}
+knitr:::kable(head(patients_clean))
+```
+
+### Our first ggplot2 graph
+
+We have discussed that to produce a ggplot2 graph we need a minimum of:-
+
+- Data to be used in graph
+- Mappings of data to the graph
+- What type of graph we want to use.
+
+Here we define the data as our cleaned patients data frame.
+
+```{r ggplot_only}
+pcPlot <- ggplot(data=patients_clean)
+class(pcPlot)
+pcPlot$data[1:4,]
+```
+
+Now we can see that we have gg/ggplot object (pcPlot)  and in this the data has been defined.
+
+Important information on how to map the data to aesthetics (visual properties) of the plot as well as what type of plot to use. 
+
+```{r missing_rest}
+pcPlot$mapping
+pcPlot$theme
+pcPlot$layers
+```
+
+
+The information to map the data to the plot can be added now using the aes() function.
+```{r ggplot_aes}
+pcPlot <- ggplot(data=patients_clean)
+
+pcPlot <- pcPlot+aes(x=Height,Weight)
+
+pcPlot$mapping
+pcPlot$theme
+pcPlot$layers
+```
+
+But we are still missing the final components of our plot, the type of plot to use.
+
+Here we specify a point plot, a scatter plot of x values versus y values.
+
+```{r ggplot_aes_geom}
+pcPlot <- ggplot(data=patients_clean)
+
+pcPlot <- pcPlot+aes(x=Height,Weight)
+pcPlot <- pcPlot+geom_point()
+
+pcPlot$mapping
+pcPlot$theme
+pcPlot$layers
+
+```
+
+Now we have all the building blocks for our plot we can display the results.
+
+```{r ggplot_aes_geom_display}
+pcPlot
+
+```
+
+
+In practice, the data and aesthetics are typically defined within ggplot function and geoms applied afterwards.
+
+For the scatter plot we used the geom - geom_point()
+
+```{r ggplot_simple_geom_point}
+pcPlot <- ggplot(data=patients_clean,
+                 mapping=aes(x=Height,Weight))
+pcPlot+geom_point()
+```
+
+
+## Geoms - Plot types
+
+As we have seen, an important element of a ggplot is the geom used. Following the specification of data, the geom describes the type of plot used.
+
+Several geoms are available in ggplot2:-
+
+
+Types of plots used in ggplot2 include-- 
+
+* geom_point() - Scatter plots
+* geom_line() - Line plots
+* geom_smooth() - Fitted line plots
+* geom_bar() - Bar plots
+* geom_boxplot() - Boxplots
+* geom_jitter() - Jitter to plots
+* geom_hist() - Histogram plots
+* geom_density() - Density plots
+* geom_text() - Text to plots
+* geom_errorbar() - Errorbars to plots
+* geom_violin() - Violin plots
+
+### Geoms - Line plots
+
+
+
+```{r, line_simple}
+pcPlot <- ggplot(data=patients_clean,
+        mapping=aes(x=Height,Weight))
+
+pcPlot_line <- pcPlot+geom_line() 
+
+pcPlot_line
+
+```
+
+```{r, smooth_simple}
+pcPlot <- ggplot(data=patients_clean,
+        mapping=aes(x=Height,Weight))
+
+pcPlot_smooth <- pcPlot+geom_smooth() 
+
+pcPlot_smooth
+
+```
+
+
+### Geoms - Bar and frequency plots
+
+```{r, bar_simple}
+pcPlot <- ggplot(data=patients_clean,
+        mapping=aes(x=Height))
+
+pcPlot_bar <- pcPlot+geom_bar() 
+
+pcPlot_bar
+
+# pcPlot <- ggplot(data=patients_clean,
+#         mapping=aes(x=Height,))
+# 
+# pcPlot_bar <- pcPlot+geom_bar() 
+# 
+# pcPlot_bar
+
+```
+
+
+```{r, histogram_simple}
+pcPlot <- ggplot(data=patients_clean,
+        mapping=aes(x=Height))
+
+pcPlot_hist <- pcPlot+geom_histogram() 
+
+pcPlot_hist
+
+```
+
+
+```{r, density_simple}
+pcPlot <- ggplot(data=patients_clean,
+        mapping=aes(x=Height))
+
+pcPlot_density <- pcPlot+geom_density() 
+
+pcPlot_density
+
+```
+
+
+### Geoms - Box and violin plots
+
+```{r, boxplot_simple}
+
+pcPlot <- ggplot(data=patients_clean,
+        mapping=aes(x=Smokes,y=Height,colour=Sex))
+
+pcPlot_boxplot <- pcPlot+geom_boxplot() 
+
+pcPlot_boxplot
+```
+
+```{r, violin_simple}
+
+pcPlot <- ggplot(data=patients_clean,
+        mapping=aes(x=Smokes,y=Height,colour=Sex))
+
+pcPlot_violin <- pcPlot+geom_violin() 
+
+pcPlot_violin
+```
+
+
+### Aesthetics
+
+If we wanted to change a feature of the plot into a constant value (e.g. set colour of points to red), the we can supply the colour argument to the geom_point() function.
+
+```{r, scatter_coloured}
+pcPlot <- ggplot(data=patients_clean,
+                 mapping=aes(x=Height,Weight))
+pcPlot+geom_point(colour="red")
+```
+
+
+As we discussed earlier however, ggplot2 makes use of aesthetic mappings to assign variables in the data to properties of the plot. This allows the properties of the plot to reflect variables in the data dynamically.
+
+In these examples we supply additional information to the aes() function to define what information to display and how it is represented in the plot.
+
+
+First we can recreate the plot we saw earlier.
+
+```{r, scatter_simple}
+pcPlot <- ggplot(data=patients_clean,
+                 mapping=aes(x=Height,Weight))
+pcPlot+geom_point()
+```
+
+Now we can adjust the aes mapping by supplying an argument to the colour parameter in the aes function. (Note that ggplot2 accepts "color" or "colour" as parameter name)
+
+
+This simple adjustment allows us to identify the separation of male and female measurements. 
+
+```{r, scatter_aes_sexColour}
+pcPlot <- ggplot(data=patients_clean,
+                 mapping=aes(x=Height,y=Weight,colour=Sex))
+pcPlot+geom_point()
+```
+
+Similarly we can adjust the shape of points
+
+```{r, scatter_aes_sexShape}
+pcPlot <- ggplot(data=patients_clean,
+                 mapping=aes(x=Height,y=Weight,shape=Sex))
+pcPlot+geom_point()
+```
+
+
+## Scales
+
+Discrete
+Continuous
+Manual
+
+## Stats
+
+stat_smooth
+stat_summary
+
+## Themes
+
+Blank_theme
+Themes to adjust labels.
+Creating your own theme
+XKCD theme
+
