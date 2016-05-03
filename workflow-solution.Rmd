@@ -1,0 +1,89 @@
+---
+title: "Patient Data Exploration"
+author: "Mark Dunning"
+date: "21 April 2016"
+output: html_document
+---
+
+******
+
+Take the steps used to clean the patients dataset and calculate BMI (see template for the code)
+
+- Re-write in the piping framework
+- Add a step to print just the ID, Name, Date of Birth, Smokes and Overweight columns
+
+******
+
+```{r}
+library(dplyr)
+library(stringr)
+patients_clean <- read.delim("patient-data.txt") %>% 
+  tbl_df %>% 
+  mutate(Sex = factor(str_trim(Sex))) %>% 
+  mutate(Height= as.numeric(str_replace_all(Height,pattern = "cm",""))) %>% 
+  mutate(Weight = as.numeric(str_replace_all(Weight,"kg",""))) %>% 
+  mutate(BMI = (Weight/(Height/100)^2), Overweight = BMI > 25) %>% 
+  mutate(Smokes = str_replace_all(Smokes, "Yes", TRUE)) %>% 
+  mutate(Smokes = as.logical(str_replace_all(Smokes, "No", FALSE))) %>% 
+  select(ID, Name, Birth,BMI,Smokes,Overweight,Died)
+patients_clean
+```
+
+******
+
+Modify the workflow 
+
+- to select the candidates (overweight smokers that are still alive)
+- write the result to a file
+
+******
+
+```{r}
+
+  candidates <- filter(patients_clean, Smokes & Overweight & !Died) %>% 
+  write.table("candidates.txt")
+```
+
+
+```{r}
+read.delim("patient-data.txt") %>% 
+  tbl_df %>% 
+  mutate(Sex = factor(str_trim(Sex))) %>% 
+  mutate(Height= as.numeric(str_replace_all(Height,pattern = "cm",""))) %>% 
+  mutate(Weight = as.numeric(str_replace_all(Weight,"kg",""))) %>% 
+  mutate(BMI = (Weight/(Height/100)^2), Overweight = BMI > 25) %>% 
+  mutate(Smokes = str_replace_all(Smokes, "Yes", TRUE)) %>% 
+  mutate(Smokes = as.logical(str_replace_all(Smokes, "No", FALSE))) %>% 
+  select(ID, Name, Birth,BMI,Smokes,Overweight,Died) %>% 
+  filter(Smokes & Overweight & !Died) %>% 
+  write.table("candidates.txt")
+```
+
+
+******
+
+Modify the workflow to 
+
+- Add the Age variable to the final table
+    + do you notice anything unusual about the values for `Age`?
+- Arrange by age
+- Select the top 5 oldest patients
+
+******
+
+```{r}
+read.delim("patient-data.txt") %>% 
+  tbl_df %>% 
+  mutate(Sex = factor(str_trim(Sex))) %>% 
+  mutate(Height= as.numeric(str_replace_all(Height,pattern = "cm",""))) %>% 
+  mutate(Weight = as.numeric(str_replace_all(Weight,"kg",""))) %>% 
+  mutate(BMI = (Weight/(Height/100)^2), Overweight = BMI > 25) %>% 
+  mutate(Smokes = str_replace_all(Smokes, "Yes", TRUE)) %>% 
+  mutate(Smokes = as.logical(str_replace_all(Smokes, "No", FALSE))) %>% 
+  select(ID, Name, Birth,BMI,Smokes,Overweight,Died,Age) %>% 
+  filter(Smokes & Overweight & !Died) %>% 
+  filter(Age > 0) %>% 
+  top_n(5,Age) %>% 
+  arrange(desc(Age))
+```
+

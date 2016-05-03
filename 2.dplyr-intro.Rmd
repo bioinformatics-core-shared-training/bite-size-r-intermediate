@@ -426,6 +426,9 @@ Another potential issue in the data is the way in which the *grade* (i.e. tumour
 patients$Grade_Level
 ```
 
+
+Explanation of `ifelse`.....
+
 ```{r}
 grds <- patients$Grade_Level
 ifelse(grds == 99, NA,grds)
