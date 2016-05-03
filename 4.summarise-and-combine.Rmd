@@ -5,14 +5,350 @@ date: '`r format(Sys.time(), "Last modified: %d %b %Y")`'
 output: html_document
 ---
 
+```{r echo=FALSE, message=FALSE}
+knitr::opts_chunk$set(comment = NA)
+library(dplyr)
+```
+
+# Overview of this section
+
+We will now turn out attention to some of the more advanced operations you can perform on
+data frames using `dplyr`.
+
+- **summarise** operation
+    - Summarising data by applying a function to specified column(s)
+- **group_by** operation
+    - Grouping rows with shared or common values prior to summarising for each group
+- **join** operations
+    - Joining matching rows from two data frames based on matching values for specified columns
+
+### Resources
+
+There is a very useful cheat sheet on dplyr from the creators of RStudio.
+
+https://www.rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf
+
+# Summarising data
+
+We can compute summary statistics for selected columns in our dataset using the `summarise` verb. For example, we could use `summarise` to calculate the average length of petals in the `iris` dataset.
+
+```{r}
+# let's first remind ourselves what the iris dataset looks like
+tbl_df(iris)
+# now let's compute the mean petal length
+summarise(iris, mean(Petal.Length))
+```
+
+If you prefer Oxford spelling, in which _-ize_ is preferred to _-ise_, you're in luck as `dplyr` accommodates the alternative spelling.
+
+Note that the result is a data frame consisting in this case of a single row and a single column, unlike the more usual way of calculating the mean value for a vector or column, which results in a single numeric value (actually in R this is numeric vector of length 1).
+
+```{r}
+mean(iris$Petal.Length)
+```
+
+Returning a data frame might be quite useful, particularly if we're summarising multiple columns or using more than one function, for example computing the average and standard deviation.
+
+```{r}
+summarise(iris, average = mean(Petal.Length), standard_deviation = sd(Petal.Length))
+```
+
+`summarise` collapses data into a single row of values. Notice how we also named the output columns in this last example.
+
+### Summary functions
+
+`summarise` can take any R function that takes a vector of values and returns a single value. Some of the more useful functions include:
+
+* `min` minimum value
+* `max` maximum value
+* `sum` sum of values
+* `mean` mean value
+* `sd` standard deviation
+* `median` median value
+* `IQR` the interquartile range
+* `n` the number of values
+* `n_distinct` the number of distinct values
+
+It is also possible to summarise using a function that takes more than one value, i.e. from multiple columns. For example, we could compute the correlation between petal width and length:
+
+```{r}
+summarise(iris, correlation = cor(Petal.Width, Petal.Length))
+```
+
+### Summarizing multiple columns
+
+We can apply the same function to each column using `summarise_each`.
+
+```{r}
+summarise_each(iris, funs(mean))
+```
+
+We got a warning from the `mean` function complaining about being given values that are not numerical. Can you spot what caused this?
+
+A look at the documentation for the `summarise_each` function (type '?summarise_each' at the command prompt) shows that it can take additional arguments to specify each of the columns of interest.
+
+```{r}
+summarise_each(iris, funs(mean), Petal.Length, Petal.Width)
+```
+
+Just like with the `select` operation, we can instead specify those columns to exclude.
+
+```{r}
+summarise_each(iris, funs(mean), -Species)
+```
+
+Or we can use one of the helper functions to choose which columns to operate on.
+
+```{r eval=FALSE}
+summarise_each(iris, funs(mean), starts_with("Petal"))
+summarise_each(iris, funs(mean), ends_with("Length"))
+
+summarise_each(iris, funs(mean), contains("."))
+
+# use regular expression to select columns on which to operate
+summarise_each(iris, funs(mean), matches("^S.*th$"))
+
+# use one_of if you have a vector of column names
+columns <- c("Petal.Length", "Sepal.Width")
+summarise_each(iris, funs(mean), one_of(columns))
+```
+
+### Mutating multiple columns
+
+When looking at the help documentation for `summarise_each` you may have noticed a related function, `mutate_each`. This is a very useful function for applying the same operation to several columns within a table. For example, in the `iris` dataset the measurements are in centimetres but we can convert these to millimetres quite easily.
+
+```{r}
+mutate_each(iris, funs(. * 10), -Species) %>% tbl_df
+```
+
+Here, we've had to specify the '.' character to represent the columns that we're multiplying by 10.
+
+### Rounding
+
+`mutate_each` is particularly useful for rounding values to a specified number of decimal places or significant figures.
+
+```{r}
+# to show rounding in action let's read in a cleaned version of the patient dataset
+patients <- read.delim("patient-data-cleaned.txt", stringsAsFactors = FALSE) %>% tbl_df
+patients
+# now let's round the patient's weight and height to 1 decimal place
+patients %>% mutate_each(funs(round(., digits = 1)), Height, Weight)
+```
+
+# Grouping
+
+While the `summarise` function is useful on its own, it becomes really powerful when applied to groups of observations within a dataset. For example, suppose we want to compute the mean petal length for each of the species in the `iris` dataset. We could take each species in turn and `filter` the data frame to only contain rows for a given species, then apply `summarise`, but that would be somewhat cumbersome. In `dplyr`, the `group_by` function allows this to be done in one simple step.
+
+```{r}
+iris %>% group_by(Species) %>% summarise(Average.Petal.Length = mean(Petal.Length))
+```
+
+As before, we can summarise multiple observations.
+
+```{r}
+iris %>% group_by(Species) %>% summarise(n(), mean(Petal.Length), sd(Petal.Length))
+```
+
+We can make the output more presentable by renaming the columns and using the `round` function to round to a specified number of significant figures. Note the use of backticks ( ` ) for specifying column names that contain spaces.
+
+```{r}
+iris %>%
+  group_by(Species) %>%
+  summarise(
+    N = n(),
+    `Average petal length` = mean(Petal.Length),
+    `Standard deviation petal length` = sd(Petal.Length)
+  ) %>%
+  mutate_each(funs(signif(., digits = 2)), `Average petal length`, `Standard deviation petal length`)
+```
+
+A shorthand for `summarise(n())` for counting the number of observations of each group is available in the form of the `count` function.
+
+```{r eval=FALSE}
+# these both give the same output
+iris %>% group_by(Species) %>% summarise(n = n())
+count(iris, Species)
+```
+
 ```{r echo=FALSE}
-suppressPackageStartupMessages(library(dplyr))
-library(stringr)
-library(tidyr)
-patients <- tbl_df(read.delim("patient-data.txt"))
-patients_clean<- mutate(patients, Sex = factor(str_trim(Sex)))
-patients_clean <- mutate(patients_clean, ID=str_pad(patients_clean$ID,pad = "0",width=3))
-patients_clean <- mutate(patients_clean, Height= str_replace_all(patients_clean$Height,pattern = "cm",""))
+count(iris, Species)
+```
+
+`group_by` can also be used in conjunction with other `dplyr` verbs.
+
+```{r}
+iris %>% group_by(Species) %>% summarise_each(funs(mean))
+```
+
+Returning to one of the earlier examples, we can also compute the correlation between petal width and length on a per-group basis.
+
+```{r}
+iris %>% group_by(Species) %>% summarise(correlation = cor(Petal.Width, Petal.Length))
+```
+
+Hold on a minute, wasn't the correlation coefficient for the overall dataset quite a lot higher? (yes, it was `r summarise(iris, correlation = cor(Petal.Width, Petal.Length)) %>% round(digits = 2)`). What's going on here? A plot might help to understand why. 
+
+```{r}
+library(ggplot2)
+qplot(Petal.Width, Petal.Length, data = iris, colour = Species)
+```
+
+But we're getting ahead of ourselves! Plotting with `ggplot2` is for the next part of the course.
+
+### `group_by` - the technical details
+
+Some of you might be wondering what's going on _under the hood_ with this `group_by` function. The help page for `group_by` is a little on the technical side but essentially tells us that the data frame we pass it gets converted into a `grouped_df` data frame object. `dplyr` functions that operate on a `grouped_df` object know to treat this in a special way, operating on each group separately. The following sequence or R commands might help to make this a bit clearer.
+
+```{r}
+# first let's take a look at the class of the iris data frame
+class(iris)
+# now we'll create a grouped version with group_by and look at its class
+iris_grouped <- group_by(iris, Species)
+class(iris_grouped)
+# the groups function lets us see the groups
+groups(iris_grouped)
+# the ungroup function removes the grouping
+iris_ungrouped <- ungroup(iris_grouped)
+class(iris_ungrouped)
+groups(iris_ungrouped)
+```
+
+`ungroup` can be quite helpful in more complicated chains of `dplyr` operations where the grouping is only required for some of the steps and would have unintended consequences for subsequent operations within the chain.
+
+# Joining
+
+In many real life situations, data are spread across multiple tables or spreadsheets. Usually this occurs because different types of information about a subject, e.g. a patient, are collected from different sources. It may be desirable for some analyses to combine data from two or more tables into a single data frame based on a common column, for example, an attribute that uniquely identifies the subject.
+
+`dplyr` provides a set of join functions for combining two data frames based on matches within specified columns. These operations are very similar to carrying out join operations between tables in a relational database using SQL.
+
+### `left_join`
+
+To illustrate join operations we'll first consider the most common type, a "left join". In the schematic below the two data frames share a common column, V1. We can combine the two data frames into a single data frame by matching rows in the first data frame with those in the second data frame that share the same value of V1.
+
+![dplyr_join](images/dplyr_left_join.png)
+
+`left_join` returns all rows from the first data frame regardless of whether there is a match in the second data frame. Rows with no match are included in the resulting data frame but have `NA` values in the additional columns coming from the second data frame. Here's an example in which data about some interesting people are contained in two tables. The name column identifies each of the people concerned and is used for matching rows from the two tables.
+
+```{r}
+# let's create some data frames that we can join
+df1 <- data_frame(
+  name = c("Matt", "Mark", "Tom"),
+  home = c("Harston", "Histon", "London"),
+  institute = c("CRUK-CI", "CRUK-CI", "MRC-CSC")
+)
+df2 <- data_frame(
+  name = c("Matt", "Mark", "Jane"),
+  colour = c("blue", "green", "cerise")
+)
+```
+
+```{r}
+df1
+df2
+left_join(df1, df2, by = "name")
+```
+
+`right_join` is similar but returns all rows from the second data frame that have a match with rows in the first data frame based on the specified column.
+
+```{r}
+right_join(df1, df2, by = "name")
+```
+
+### `inner_join`
+
+It is also possible to return only those rows where matches could be made. The `inner_join` function accomplishes this.
+
+![dplyr_join](images/dplyr_inner_join.png)
+
+```{r}
+inner_join(df1, df2, by = "name")
+```
+
+### `full_join`
+
+We've seen how missing rows from one table can be retained in the joined data frame using `left_join` or `right_join` but sometimes data for a given subject may be missing from either of the tables and we still want that subject to appear in the combined table. A `full_join` will return all rows and all columns from the two tables and where there are no matching values, `NA` values are used to fill in the missing values.
+
+![dplyr_join](images/dplyr_full_join.png)
+
+```{r}
+full_join(df1, df2, by = "name")
+```
+
+### Multiple matches in join operations
+
+Where there are multiple rows in one or both of the two tables, these will be represented in the combined table. All combinations of the matching rows will be included.
+
+```{r}
+df1 <- data_frame(
+  name = c("Matt", "Mark", "Mark", "Tom"),
+  home = c("Harston", "Histon", "Hardwick", "London"),
+  institute = c("CRUK-CI", "CRUK-CI", "IPH", "MRC-CSC")
+)
+df2 <- data_frame(
+  name = c("Matt", "Mark", "Mark", "Jane"),
+  colour = c("blue", "yellow", "green", "cerise")
+)
+left_join(df1, df2, by = "name")
+```
+
+### Joining by matching on multiple columns
+
+We can specify multiple columns to use for matching rows. This is useful where the uniquely-identifying information for a subject is containing in more than one column. The following extends our simple example to use both name and home for matching rows.
+
+```{r}
+# let's create some data frames that we can join
+df1 <- data_frame(
+  name = c("Matt", "Mark", "Mark", "Tom"),
+  home = c("Harston", "Hardwick", "Histon", "London"),
+  institute = c("CRUK-CI", "IPH", "CRUK-CI", "MRC-CSC")
+)
+df2 <- data_frame(
+  name = c("Matt", "Mark", "Mark", "Jane"),
+  institute = c("CRUK-CI", "IPH", "CRUK-CI", "MRC-CSC"),
+  colour = c("blue", "yellow", "green", "cerise")
+)
+left_join(df1, df2, by = c("name", "institute"))
+```
+
+
+### Filtering joins
+
+A variation on the join operations we've considered are `semi_join` and `anti_join` that filter the rows in one table based on matches or lack of matches to rows in another table.
+
+```{r}
+# semi_join returns all rows from the first table where there are matches in the other table
+semi_join(df1, df2, by = "name")
+```
+
+```{r}
+# anti_join returns all rows where there is no match in the other table
+anti_join(df1, df2, by = "name")
+```
+
+## Exercise
+
+The exercise uses a more realistic dataset, building on the patients table we've already been working with.
+
+The patients are all part of a diabetes study and have had their blood glucose concentration and diastolic blood pressure measured over several dates.
+
+```{r}
+diabetes <- read.delim("diabetes.txt", stringsAsFactors = FALSE) %>% tbl_df
+diabetes
+```
+
+* Find the number of visits made by each patient to the hospital to have blood glucose and pressure measurements taken.
+
+* Find the date of the last visit made by each patient.
+
+* Using the ID column to connect information about patients, add these values as additional columns to the patients table.
+
+    * Can you do this as a single sequence of dplyr commands using the `%>%` symbol?
+
+```{r include=FALSE}
+diabetes %>%
+  group_by(ID) %>%
+  summarise(Measurements = n(), LastMeasurement = last(Date)) %>%
+  right_join(patients, by = "ID")
 ```
 
 
