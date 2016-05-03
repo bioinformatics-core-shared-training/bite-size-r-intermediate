@@ -63,7 +63,7 @@ img {
 <div id="header">
 <h1 class="title">Introduction to dplyr</h1>
 <h4 class="author"><em>Mark Dunning</em></h4>
-<h4 class="date"><em>Last modified: 26 Apr 2016</em></h4>
+<h4 class="date"><em>Last modified: 03 May 2016</em></h4>
 </div>
 
 
@@ -554,7 +554,7 @@ head(patients[,setdiff(colnames(patients), &quot;Name&quot;)])</code></pre>
 ##  [92] &quot;Female&quot;  &quot;Male&quot;    &quot;Female&quot;  &quot;Male&quot;    &quot;Male&quot;    &quot;Male&quot;    &quot;Male&quot;   
 ##  [99] &quot;Female&quot;  &quot;Male&quot;</code></pre>
 <p>The base distribution of R has many functions for dealing with strings. However, the <code>stringr</code> package (again from Hadley Wickham) aims to provide a clean modern interface to many common string operations.</p>
-<p>Of particular interest here is the <code>str_trim</code> (<code>?str_trim</code>) function that will trim whitespace from a vector of strings. Arguments can be used to specify whether to remove whitespace from either side of the string, or just the left or right.</p>
+<p>Of particular interest here is the <code>str_trim</code> (<code>?str_trim</code>) function that will trim whitespace from a <em>vector</em> of strings. Arguments can be used to specify whether to remove whitespace from either side of the string, or just the left or right.</p>
 <pre class="r"><code>library(stringr)
 str_trim(patients$Sex)</code></pre>
 <pre><code>##   [1] &quot;Male&quot;   &quot;Male&quot;   &quot;Male&quot;   &quot;Male&quot;   &quot;Male&quot;   &quot;Female&quot; &quot;Male&quot;  
@@ -576,7 +576,7 @@ str_trim(patients$Sex)</code></pre>
 </div>
 <div id="creating-new-variables-the-mutate-verb" class="section level2">
 <h2>Creating new variables: The <code>mutate</code> verb</h2>
-<p><code>mutate</code> allows us to compute and append one or more new columns to a data frame. We can create new, cleaned, data frame and overwrite the Sex column</p>
+<p><code>mutate</code> allows us to compute and append one or more new columns to a data frame. We do not need to use the <code>$</code> operator to extract variables, we can refer to them by name.</p>
 <pre class="r"><code>mutate(patients, Sex = str_trim(Sex))</code></pre>
 <pre><code>## Source: local data frame [100 x 15]
 ## 
@@ -595,6 +595,7 @@ str_trim(patients$Sex)</code></pre>
 ## ..   ...       ...      ...   ...    ...    ...                ...
 ## Variables not shown: Weight (fctr), Birth (fctr), State (fctr), Pet
 ##   (fctr), Grade_Level (int), Died (lgl), Count (dbl), Date (fctr)</code></pre>
+<p>We can create a new, cleaned, data frame and overwrite the Sex column</p>
 <pre class="r"><code>patients_clean &lt;- mutate(patients, Sex = factor(str_trim(Sex)))</code></pre>
 <p>Rather than removing whitespace, sometimes we might want to adjust a set of strings so that they have a fixed width. We can do this be adding a <em>padding</em> character to each string if necessary. This operations is often done with a set of identifiers.</p>
 <pre class="r"><code>str_pad(patients$ID,pad = &quot;0&quot;,width=3)</code></pre>
@@ -691,8 +692,43 @@ str_trim(patients$Sex)</code></pre>
 ## 9   169.66230745064cm
 ## 10 160.121017002151cm
 ## ..                ...</code></pre>
-<p>To convert the values back to numbers we first need to remove the <code>&quot;cm&quot;</code> at the end of each value. We can do this with a <em>string replacement</em> operation. In this case, the particular string we want to put in the place of <code>&quot;cm&quot;</code> is the <em>empty string</em> <code>&quot;&quot;</code>. The replacement can be done using the <code>str_replace_all</code> function.</p>
-<pre class="r"><code>mutate(patients_clean, Height= str_replace_all(patients_clean$Height,pattern = &quot;cm&quot;,&quot;&quot;))</code></pre>
+<p>To convert the values back to numbers we first need to remove the <code>&quot;cm&quot;</code> at the end of each value. We can do this with a <em>string replacement</em> operation. In this case, the particular string we want to put in the place of <code>&quot;cm&quot;</code> is the <em>empty string</em> <code>&quot;&quot;</code>. The replacement can be done using the <code>str_replace_all</code> function. The arguments are; the vector to operator on, the pattern that you want to replace, and the replacement string</p>
+<pre class="r"><code>str_replace_all(patients$Height,pattern = &quot;cm&quot;,&quot;&quot;)</code></pre>
+<pre><code>##   [1] &quot;176.479144276913&quot; &quot;174.748482460591&quot; &quot;173.944873836774&quot;
+##   [4] &quot;180.028888936188&quot; &quot;178.636539798649&quot; &quot;159.777836229305&quot;
+##   [7] &quot;170.949966267411&quot; &quot;161.826590769764&quot; &quot;169.66230745064&quot; 
+##  [10] &quot;160.121017002151&quot; &quot;159.317771924405&quot; &quot;170.511182466002&quot;
+##  [13] &quot;161.841114171417&quot; &quot;162.972800928628&quot; &quot;168.492070621664&quot;
+##  [16] &quot;178.79271245124&quot;  &quot;161.526950060893&quot; &quot;157.007940802956&quot;
+##  [19] &quot;167.513882310362&quot; &quot;160.467682023732&quot; &quot;168.155907190232&quot;
+##  [22] &quot;175.66777084267&quot;  &quot;157.037913573008&quot; &quot;158.939583245318&quot;
+##  [25] &quot;172.716839170661&quot; &quot;176.977586728274&quot; &quot;159.789957498506&quot;
+##  [28] &quot;184.336500085597&quot; &quot;184.427325125592&quot; &quot;160.088496345253&quot;
+##  [31] &quot;162.321786051352&quot; &quot;162.585351426249&quot; &quot;171.939544533309&quot;
+##  [34] &quot;158.067100936248&quot; &quot;158.350255621594&quot; &quot;162.177573247088&quot;
+##  [37] &quot;159.377027816947&quot; &quot;171.452845564866&quot; &quot;176.634409501327&quot;
+##  [40] &quot;183.09741318033&quot;  &quot;177.144987851656&quot; &quot;171.079432315637&quot;
+##  [43] &quot;184.987555809117&quot; &quot;156.378164701238&quot; &quot;162.654647127329&quot;
+##  [46] &quot;173.951601670025&quot; &quot;176.464523045101&quot; &quot;180.955013317484&quot;
+##  [49] &quot;173.674631137262&quot; &quot;181.226190966678&quot; &quot;169.237155575223&quot;
+##  [52] &quot;160.113933254055&quot; &quot;177.942314757011&quot; &quot;167.171343536368&quot;
+##  [55] &quot;180.439805768885&quot; &quot;160.013296578283&quot; &quot;164.775913756854&quot;
+##  [58] &quot;183.187817298641&quot; &quot;158.351124111373&quot; &quot;172.009009896093&quot;
+##  [61] &quot;156.451408273755&quot; &quot;163.366208290007&quot; &quot;170.450988103792&quot;
+##  [64] &quot;180.90772042007&quot;  &quot;179.075969322231&quot; &quot;175.183635275558&quot;
+##  [67] &quot;156.548351429587&quot; &quot;168.737134493969&quot; &quot;156.000614479285&quot;
+##  [70] &quot;157.760092888146&quot; &quot;157.672065178831&quot; &quot;157.567687701813&quot;
+##  [73] &quot;184.363512271227&quot; &quot;163.415931442804&quot; &quot;158.459043921563&quot;
+##  [76] &quot;169.134734851319&quot; &quot;161.579229744537&quot; &quot;173.31068258135&quot; 
+##  [79] &quot;175.283898792069&quot; &quot;159.669936297322&quot; &quot;162.328480666927&quot;
+##  [82] &quot;158.257938115058&quot; &quot;173.352345661106&quot; &quot;170.832237023187&quot;
+##  [85] &quot;174.219633648371&quot; &quot;178.190785612887&quot; &quot;161.725794554111&quot;
+##  [88] &quot;161.726775141973&quot; &quot;158.313633215947&quot; &quot;167.398265173526&quot;
+##  [91] &quot;161.697150373473&quot; &quot;160.264712431665&quot; &quot;177.517945573813&quot;
+##  [94] &quot;164.555476119958&quot; &quot;191.557419647206&quot; &quot;165.81661992556&quot; 
+##  [97] &quot;180.656762518383&quot; &quot;178.449365369477&quot; &quot;163.514401731942&quot;
+## [100] &quot;182.172456275796&quot;</code></pre>
+<pre class="r"><code>mutate(patients_clean, Height= str_replace_all(Height,pattern = &quot;cm&quot;,&quot;&quot;))</code></pre>
 <pre><code>## Source: local data frame [100 x 15]
 ## 
 ##       ID      Name     Race   Age    Sex Smokes           Height
@@ -758,7 +794,7 @@ year(patients$Birth)</code></pre>
 ##  [71] 1971 1972 1972 1973 1971 1972 1973 1971 1972 1972 1972 1971 1972 1972
 ##  [85] 1971 1972 1972 1971 1971 1971 1972 1972 1971 1972 1972 1971 1971 1972
 ##  [99] 1971 1971</code></pre>
-<p>It also supporting some clever manipulation, such as being able to subtract and add times.</p>
+<p>It also supports some more sophisticated manipulations, such as being able to subtract and add times.</p>
 <pre class="r"><code>dob &lt;- ymd(patients$Birth)
 today &lt;- ymd(&quot;20160509&quot;)
 age &lt;- interval(dob, today) 
