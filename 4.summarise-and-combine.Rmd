@@ -341,7 +341,7 @@ anti_join(df1, df2, by = "name")
 
 The exercise uses a more realistic dataset, building on the patients table we've already been working with.
 
-The patients are all part of a diabetes study and have had their blood glucose concentration and diastolic blood pressure measured over several dates.
+The patients are all part of a diabetes study and have had their blood glucose concentration and diastolic blood pressure measured on several dates.
 
 ```{r}
 diabetes <- read.delim("diabetes.txt", stringsAsFactors = FALSE) %>% tbl_df
