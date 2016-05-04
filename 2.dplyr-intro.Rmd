@@ -182,7 +182,7 @@ head(spread(tidy, Treatment,Count))
 
 We are going to explore some of the basic features of `dplyr` using some patient data; the kind of data that we might encounter in the wild. However, rather than using real-life data we are going to make some up. There is a package called `wakefield` that is particularly convenient for this task.
 
-Various patient characteristics have been generated and saved in the file [patient-data.txt](patient-data). 
+Various patient characteristics have been generated and saved in the file [patient-data.txt](patient-data.txt). 
 
 ```{r}
 patients <- read.delim("patient-data.txt")
