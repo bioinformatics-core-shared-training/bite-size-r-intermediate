@@ -114,6 +114,7 @@ gather(untidy, Treatment, Result, 2:3)
 ```
 
 Note that after all these operations, the original data frame (`untidy`) is unaltered
+
   - we need to create a new variable to save the result
   - you should never work directly on the raw data
 
@@ -241,6 +242,7 @@ patients[,c("Name","Race")]
 ```
 
 Non R users probably find these commands a bit obtuse
+
     + why the `[ ]`?
     + what is `c`?
     + need to remember the row and column index
@@ -293,6 +295,18 @@ select(patients, starts_with("Grade"))
 see also
 
 - contains, matches, ends_with
+
+******
+## Exercise
+
+- Print all the columns between `Height` and `Grade_Level`
+- Print all the columns between `Height` and `Grade_Level`, but NOT `Pet`
+- Print the columns `Height` and `Weight`
+
+There are several ways to solve these. Feel free to explore
+
+******
+
 
 ## Transforming / cleaning the data
 
@@ -398,7 +412,7 @@ Note that the input to this function is the `patients_clean` object that we crea
 
 However, what do you notice about the class reported for the Height column after this operation. 
 
-    + [compare to the `Count` column, for example]
+- compare to the `Count` column, for example
 
 We need an extra conversion step to make sure these are represented as *numeric* values.
 
