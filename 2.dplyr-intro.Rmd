@@ -29,6 +29,8 @@ http://vita.had.co.nz/papers/tidy-data.pdf
 
 ![data-cycle](images/data-cycle.png)
 
+## Prevention is better than Cure 
+
 As we saw, our data, and especially data we might find out "in the wild", may need "cleaning"" before we can use it. We will discuss how to clean our data for analysis. However, there are steps you can take to make sure your data are tidy and organised before importing into R.
 
 - [Karl Broman's tutorial on Data Organisation](http://kbroman.org/dataorg/)
