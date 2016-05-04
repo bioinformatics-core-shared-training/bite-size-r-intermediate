@@ -11,7 +11,7 @@ output: html_document
 - **filter** verb
 - **arrange** verb
 
-```{r echo=FALSE}
+```{r echo=FALSE,warning=FALSE}
 suppressPackageStartupMessages(library(dplyr))
 library(stringr)
 library(tidyr)
@@ -110,7 +110,7 @@ Note that we didn't need to specify `patients_clean` as an argument to the `muta
 - it as assumed that the output of one line acts as the first argument to the next line
 - we don't need to create temporary variables
 
-## Exercise: workflow-exercise.Rmd
+## Exercise: [Rmarkdown Template](workflow-exercise.Rmd)
 
 ******
 

@@ -47,7 +47,7 @@ head(iris)
 
 Consider the following....
 
-```{r echo=FALSE,results='asis'}
+```{r echo=FALSE,results='asis',warning=FALSE}
 library(knitr)
 untidy <- data.frame(Name = c("John Smith","Jane Doe","Mary Johnson"),treatmenta = c("-",16,3),treatmentb=c(2,11,1))
 kable(untidy)
@@ -80,7 +80,7 @@ gather(untidy, Treatment, Result, treatmenta:treatmentb) %>% mutate(Treatment = 
 - similar to `stack` in base R
 - or `melt` in the `reshape` / `reshape2` pacakges
 
-```{r}
+```{r,warning=FALSE}
 library(tidyr)
 untidy <- read.delim("tidyr-example.txt")
 untidy
@@ -129,7 +129,7 @@ tidy <- gather(untidy, Treatment, Result, c(treatmenta,treatmentb))
 
 Using data from the Mango Solutions training dataset
 
-```{r}
+```{r,warning=FALSE}
 library(mangoTraining)
 data("messyData")
 
@@ -433,9 +433,10 @@ str_sub(patients$Birth,1,4)
 
 The `lubridate` package has lots of useful functions for dealing with dates (also by Hadley Wickham!). For example it allows the year, month and day to be extracted.
 
-```{r}
+```{r warning=FALSE}
 library(lubridate)
 year(patients$Birth)
+month(patients$Birth)
 ```
 
 It also supporting some clever manipulation, such as being able to subtract and add times.
@@ -453,14 +454,13 @@ patients_clean
 
 
 
-## Exercise
-
-- We want to calculate the Body Mass Index (BMI) for each of our patients
+## Exercise - See [Rmarkdown template](dplyr-exercise.Rmd)
+- For a follow-on study, we are interested in overweight smokers
+    + clean the `Smokes` column to contain just `TRUE` or `FALSE` values
+- We need to calculate the Body Mass Index (BMI) for each of our patients
 - $BMI = (Weight) / (Height^2)$ 
     + where Weight is measured in Kilograms, and Height in Metres
 - A BMI of 25 is considered overweight, calculate a new variable to indicate which individuals are overweight
-- For a follow-on study, we are interested in overweight smokers
-    + clean the `Smokes` column to contain just `TRUE` or `FALSE` values
 - (EXTRA) What other problems can you find in the data?
 
 ```{r echo=FALSE}

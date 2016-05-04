@@ -5,7 +5,7 @@ date: '`r format(Sys.time(), "Last modified: %d %b %Y")`'
 output: html_document
 ---
 
-```{r echo=FALSE, message=FALSE}
+```{r echo=FALSE, message=FALSE,warning=FALSE}
 knitr::opts_chunk$set(comment = NA)
 library(dplyr)
 ```
@@ -215,7 +215,7 @@ groups(iris_ungrouped)
 
 `ungroup` can be quite helpful in more complicated chains of `dplyr` operations where the grouping is only required for some of the steps and would have unintended consequences for subsequent operations within the chain.
 
-## Exercise
+## Exercise: [Rmarkdown Template](summarise-and-combine-exercise.Rmd)
 
 Read a cleaned version of the patients dataset (patient-data-cleaned.txt) into RStudio and use `summarise`, `summarise_each`, `mutate_each` and `group_by` to answer the following questions:
 

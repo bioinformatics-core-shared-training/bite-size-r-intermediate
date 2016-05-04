@@ -103,7 +103,6 @@ img {
 <div id="example-from-tidyr-paper" class="section level2">
 <h2>Example (from tidyr paper)</h2>
 <p>Consider the following….</p>
-<pre><code>## Warning: package 'knitr' was built under R version 3.2.3</code></pre>
 <table>
 <thead>
 <tr class="header">
@@ -216,9 +215,8 @@ untidy</code></pre>
 <div id="example-simulated-clinical-data" class="section level2">
 <h2>Example: Simulated clinical data</h2>
 <p>Using data from the Mango Solutions training dataset</p>
-<pre class="r"><code>library(mangoTraining)</code></pre>
-<pre><code>## Warning: package 'mangoTraining' was built under R version 3.2.3</code></pre>
-<pre class="r"><code>data(&quot;messyData&quot;)</code></pre>
+<pre class="r"><code>library(mangoTraining)
+data(&quot;messyData&quot;)</code></pre>
 <table>
 <thead>
 <tr class="header">
@@ -772,9 +770,8 @@ hist(patients_clean$Height)</code></pre>
 ##  [81] &quot;1972&quot; &quot;1971&quot; &quot;1972&quot; &quot;1972&quot; &quot;1971&quot; &quot;1972&quot; &quot;1972&quot; &quot;1971&quot; &quot;1971&quot; &quot;1971&quot;
 ##  [91] &quot;1972&quot; &quot;1972&quot; &quot;1971&quot; &quot;1972&quot; &quot;1972&quot; &quot;1971&quot; &quot;1971&quot; &quot;1972&quot; &quot;1971&quot; &quot;1971&quot;</code></pre>
 <p>The <code>lubridate</code> package has lots of useful functions for dealing with dates (also by Hadley Wickham!). For example it allows the year, month and day to be extracted.</p>
-<pre class="r"><code>library(lubridate)</code></pre>
-<pre><code>## Warning: package 'lubridate' was built under R version 3.2.3</code></pre>
-<pre class="r"><code>year(patients$Birth)</code></pre>
+<pre class="r"><code>library(lubridate)
+year(patients$Birth)</code></pre>
 <pre><code>##   [1] 1972 1972 1971 1971 1972 1972 1971 1972 1972 1972 1971 1972 1972 1972
 ##  [15] 1971 1972 1971 1972 1972 1972 1971 1972 1972 1971 1972 1971 1971 1971
 ##  [29] 1972 1972 1971 1971 1972 1971 1971 1971 1972 1972 1972 1972 1972 1972
@@ -783,6 +780,12 @@ hist(patients_clean$Height)</code></pre>
 ##  [71] 1971 1972 1972 1973 1971 1972 1973 1971 1972 1972 1972 1971 1972 1972
 ##  [85] 1971 1972 1972 1971 1971 1971 1972 1972 1971 1972 1972 1971 1971 1972
 ##  [99] 1971 1971</code></pre>
+<pre class="r"><code>month(patients$Birth)</code></pre>
+<pre><code>##   [1]  2  7 11 10 11  7 11  3 10  2  4  1  6  4 11  8 10 10  5  2  3  2 10
+##  [24]  4  5 11  5  5  5 10  4  3 11  9  9  2  4 10  9  3  1  7 10 10  8  3
+##  [47] 10  3  9  1  1  1 10  8  6  9  6 11  1  2  8  4  6 12 10  6 10  3 11
+##  [70]  7  4  2  4  1 12  1  1  9  1  9  2  6  1 12  3  5  4  9  4 12  6 10
+##  [93]  6 11  8  7  3  9 12 11</code></pre>
 <p>It also supporting some clever manipulation, such as being able to subtract and add times.</p>
 <pre class="r"><code>dob &lt;- ymd(patients$Birth)
 today &lt;- ymd(&quot;20160509&quot;)
@@ -842,19 +845,19 @@ patients_clean</code></pre>
 ## Variables not shown: Weight (fctr), Birth (fctr), State (fctr), Pet
 ##   (fctr), Grade_Level (int), Died (lgl), Count (dbl), Date (fctr)</code></pre>
 </div>
-<div id="exercise-1" class="section level2">
-<h2>Exercise</h2>
+<div id="exercise---see-rmarkdown-template" class="section level2">
+<h2>Exercise - See <a href="dplyr-exercise.Rmd">Rmarkdown template</a></h2>
 <ul>
-<li>We want to calculate the Body Mass Index (BMI) for each of our patients</li>
+<li>For a follow-on study, we are interested in overweight smokers
+<ul>
+<li>clean the <code>Smokes</code> column to contain just <code>TRUE</code> or <code>FALSE</code> values</li>
+</ul></li>
+<li>We need to calculate the Body Mass Index (BMI) for each of our patients</li>
 <li><span class="math">\(BMI = (Weight) / (Height^2)\)</span>
 <ul>
 <li>where Weight is measured in Kilograms, and Height in Metres</li>
 </ul></li>
 <li>A BMI of 25 is considered overweight, calculate a new variable to indicate which individuals are overweight</li>
-<li>For a follow-on study, we are interested in overweight smokers
-<ul>
-<li>clean the <code>Smokes</code> column to contain just <code>TRUE</code> or <code>FALSE</code> values</li>
-</ul></li>
 <li>(EXTRA) What other problems can you find in the data?</li>
 </ul>
 <pre><code>## Source: local data frame [100 x 17]
