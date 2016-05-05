@@ -47,7 +47,7 @@ Now we will use this dataset to demonstrate some of the plotting capabilities of
 
 First lets load the data and perform the clean and tidy.
 
-```{r load_data, echo=FALSE}
+```{r load_data, echo=TRUE, eval=FALSE}
 library(tidyr)
 library(ggplot2)
 library(dplyr)
@@ -67,15 +67,37 @@ age <- interval(dob, today)
 patients_clean <- mutate(patients_clean, Age = year(as.period(age)))
 
 patients_clean <- mutate(patients_clean, Weight = as.numeric(str_replace_all(patients_clean$Weight,"kg","")))
-patients_clean <- mutate(patients_clean, BMI = (Weight/(Height/100)^2), Overweight = BMI > 25)
-patients_clean <- mutate(patients_clean, Smokes = str_replace_all(Smokes, "Yes", TRUE))
-patients_clean <- mutate(patients_clean, Smokes = as.logical(str_replace_all(Smokes, "No", FALSE)))
 
+patients_clean <- mutate(patients_clean, BMI = (Weight/(Height/100)^2), Overweight = BMI > 25)
+
+patients_clean <- mutate(patients_clean, Smokes = str_replace_all(Smokes, "Yes|TRUE", "Smoker"))
+patients_clean <- mutate(patients_clean, Smokes = str_replace_all(Smokes, "No|FALSE", "Non-Smoker"))
+
+patients_clean <- mutate(patients_clean, Pet = str_to_title(Pet))
+patients_clean <- mutate(patients_clean, Pet = str_replace_all(Pet, "Null","NA"))
+patients_clean <- mutate(patients_clean, Pet = str_replace_na(Pet))
+
+patients_clean <- mutate(patients_clean, Race = str_replace_na(Race))
+
+patients_clean <- mutate(patients_clean, ID = str_c("Patient-",ID))
+
+
+summary(patients_clean)
+write.table(patients_clean,"patients_clean_ggplot2.txt",sep="\t",row.names=F,quote=F)
+```
+
+```{r load_packages, echo=FALSE, eval=TRUE,warning=F,message=F}
+suppressPackageStartupMessages(library(tidyr))
+suppressPackageStartupMessages(library(ggplot2))
+suppressPackageStartupMessages(library(dplyr))
+suppressPackageStartupMessages(library(stringr))
+suppressPackageStartupMessages(library(lubridate))
 ```
 
 Now our data is clean and tidy.
 
 ```{r present_clean}
+patients_clean <- read.delim("patients_clean_ggplot2.txt",sep="\t")
 knitr:::kable(head(patients_clean))
 ```
 
@@ -305,6 +327,82 @@ pcPlot <- ggplot(data=patients_clean,
                  mapping=aes(x=Height,y=Weight,shape=Sex))
 pcPlot+geom_point()
 ```
+
+We can also set the aes directly in the geom_points() function as we did when specifying red. This can allow the same ggplot object to be used by different aes specification and varying geoms
+
+```{r, aes_in_geom}
+pcPlot <- ggplot(data=patients_clean)
+pcPlot+geom_point(aes(x=Height,y=Weight,colour=Sex))
+pcPlot+geom_point(aes(x=Height,y=Weight,colour=Smokes))
+pcPlot+geom_point(aes(x=Height,y=Weight,colour=Smokes,shape=Sex))
+pcPlot+geom_violin(aes(x=Sex,y=Height,fill=Smokes))
+```
+
+#### - Redo the plots with parameters listed and some example plots put in.
+#### - Link to main page for parameters
+
+
+## Facets
+
+One very useful feature of ggplot is faceting. 
+This allows you to produce plots subsets by variables in your data.
+
+To facet our data into multiple plots we can use the facet_wrap or facet_grid function specifying the variable we split by.
+
+The facet_grid() is well suited to splitting the data by two factors.
+
+
+Here we can plot the data with the Smokes variable as rows and Sex variable as columns
+
+facet_grid(Rows~Columns)
+
+```{r, facet_grid_SmokesBySex}
+pcPlot <- ggplot(data=patients_clean,aes(x=Height,y=Weight,colour=Sex))+geom_point()
+pcPlot + facet_grid(Smokes~Sex)
+```
+
+To split by one factor we can apply the facet_grid() function ommiting the variable before the "~"" to facet along rows in plot.
+
+```{r, facet_grid_BySex}
+pcPlot <- ggplot(data=patients_clean,aes(x=Height,y=Weight,colour=Sex))+geom_point()
+pcPlot + facet_grid(~Sex)
+```
+
+To split along columns in plot the variable is place before the "~.".
+
+```{r, facet_grid_SexBy}
+pcPlot <- ggplot(data=patients_clean,aes(x=Height,y=Weight,colour=Sex))+geom_point()
+pcPlot + facet_grid(Sex~.)
+```
+
+The geom_wrap offers a less grid based structure but is well suited to faceting data by one variable.
+
+By one variable we follow as similar syntax to facet_grid()
+```{r, facet_Wrap_BySmokes}
+pcPlot <- ggplot(data=patients_clean,aes(x=Height,y=Weight,colour=Sex))+geom_point()
+pcPlot + facet_wrap(~Smokes)
+```
+
+For more complex faceting both facet_grid and facet_wrap can accept combinations of variables.
+
+Using geom_wrap
+```{r, facet_wrap_smokesBySexandPet}
+pcPlot <- ggplot(data=patients_clean,aes(x=Height,y=Weight,colour=Sex))+geom_point()
+pcPlot + facet_wrap(~Pet+Smokes+Sex)
+```
+
+Or in a nice grid format using facet_grid() and the Smokes variable against a combination of Gender and Pet.
+
+```{r, facet_grid_smokesBySexandPet}
+pcPlot + facet_grid(Smokes~Sex+Pet)
+```
+
+
+
+
+
+
+
 
 
 ## Scales
