@@ -37,10 +37,12 @@ As we saw, our data, and especially data we might find out "in the wild", may ne
 
 
 
+We have already seen a ***tidy*** dataset in the form of [Fisher's iris dataset](https://en.wikipedia.org/wiki/Iris_flower_data_set). As saw, it was possible to produce visualisations of the data using the `~` syntax.
 
-We have already seen a ***tidy*** dataset in the form of `iris`. As saw, it was possible to produce visualisations of the data using the `~` syntax.
+![iris](https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Petal-sepal.jpg/226px-Petal-sepal.jpg)
 
 ```{r}
+data(iris)
 head(iris)
 ```
 
