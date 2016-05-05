@@ -4,6 +4,7 @@ author: "Mark Dunning"
 date: '`r format(Sys.time(), "Last modified: %d %b %Y")`'
 output: html_document
 ---
+# [Course Home](http://bioinformatics-core-shared-training.github.io/r-intermediate/)
 
 ## Motivation
 
@@ -264,7 +265,9 @@ x + y
 
 The data frame object in R allows us to work with "tabular" data, like we might be used to dealing with in Excel, where our data can be thought of having rows and columns. The values in each column have to all be of the same type (i.e. all numbers or all text).
 
-The `iris` data frame is a classic dataset that is built into R. To load these data, we use the `data` function with the name `iris` (notice no quotation marks) in brackets. The data frame can then be printed to screen by typing it's name (`iris`).
+![iris](https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Petal-sepal.jpg/226px-Petal-sepal.jpg)
+
+The `iris` data frame is a [classic dataset](https://en.wikipedia.org/wiki/Iris_flower_data_set) that is built into R. To load these data, we use the `data` function with the name `iris` (notice no quotation marks) in brackets. The data frame can then be printed to screen by typing it's name (`iris`).
 
 N.B. As we will see later, we tend to read datasets into R using `read.csv`, `read.delim` or similar functions.
 

@@ -4,6 +4,7 @@ author: "Mark Dunning"
 date: '`r format(Sys.time(), "Last modified: %d %b %Y")`'
 output: html_document
 ---
+# [Course Home](http://bioinformatics-core-shared-training.github.io/r-intermediate/)
 
 # Overview of this section
 
@@ -11,7 +12,7 @@ output: html_document
 - **filter** verb
 - **arrange** verb
 
-```{r echo=FALSE}
+```{r echo=FALSE,warning=FALSE}
 suppressPackageStartupMessages(library(dplyr))
 library(stringr)
 library(tidyr)
@@ -76,7 +77,7 @@ In computing, this is referring to as *piping*
 > read the file `patient-data.txt` ***and then*** use the `tbl_df` function
 
   - Use the special function ` %>% ` at the end of the line
-  - Shortcut in RStudio: CTRL + SHIFT + M 
+  - Shortcut in RStudio: CTRL + SHIFT + M, CMD + SHIFT + M (Mac)
   
 ```{r eval=FALSE}
 read.delim("patient-data.txt") %>% 
@@ -110,7 +111,7 @@ Note that we didn't need to specify `patients_clean` as an argument to the `muta
 - it as assumed that the output of one line acts as the first argument to the next line
 - we don't need to create temporary variables
 
-## Exercise: workflow-exercise.Rmd
+## Exercise: [Rmarkdown Template](workflow-exercise.Rmd)
 
 ******
 
@@ -290,8 +291,8 @@ This time we have a million patients, and shouldn't really be dealing with these
  read.delim("cohort-data.txt") %>% 
   tbl_df %>% 
   mutate(Sex = factor(str_trim(Sex))) %>% 
-  mutate(Weight = as.numeric(str_replace_all(patients_clean$Weight,"kg",""))) %>% 
-  mutate(Height= as.numeric(str_replace_all(patients_clean$Height,pattern = "cm",""))) %>% 
+  mutate(Weight = as.numeric(str_replace_all(Weight,"kg",""))) %>% 
+  mutate(Height= as.numeric(str_replace_all(Height,pattern = "cm",""))) %>% 
   mutate(BMI = (Weight/(Height/100)^2), Overweight = BMI > 25) %>% 
   mutate(Smokes = as.logical(str_replace_all(Smokes, "Yes", TRUE))) %>% 
   mutate(Smokes = as.logical(str_replace_all(Smokes, "No", FALSE))) %>%
@@ -307,8 +308,8 @@ library(readr)
  read_tsv("cohort-data.txt") %>% 
   tbl_df %>% 
   mutate(Sex = factor(str_trim(Sex))) %>% 
-  mutate(Weight = as.numeric(str_replace_all(patients_clean$Weight,"kg",""))) %>% 
-  mutate(Height= as.numeric(str_replace_all(patients_clean$Height,pattern = "cm",""))) %>% 
+  mutate(Weight = as.numeric(str_replace_all(Weight,"kg",""))) %>% 
+  mutate(Height= as.numeric(str_replace_all(Height,pattern = "cm",""))) %>% 
   mutate(BMI = (Weight/(Height/100)^2), Overweight = BMI > 25) %>% 
   mutate(Smokes = str_replace_all(Smokes, "Yes", TRUE)) %>% 
   mutate(Smokes = as.logical(str_replace_all(Smokes, "No", FALSE))) %>%
@@ -329,3 +330,8 @@ In the past two sections we have introduced the concept of pipeline and various 
 We can use these in any order we like to create a workflow. When faced with a dataset, we should asked ourselves what steps we want to perform.
 
 - The piping facility in R should allow us to express the workflow in a way that is intuitive and easy-to-ready
+
+
+## Solution
+
+See [here](workflow-solution.html)
