@@ -84,6 +84,8 @@ gather(untidy, Treatment, Result, treatmenta:treatmentb) %>% mutate(Treatment = 
 - similar to `stack` in base R
 - or `melt` in the `reshape` / `reshape2` pacakges
 
+***You can get these example data [here](tidyr-example.txt)***
+
 ```{r,warning=FALSE}
 library(tidyr)
 untidy <- read.delim("tidyr-example.txt")
