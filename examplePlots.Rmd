@@ -1,6 +1,6 @@
 ---
 title: "Introduction to ggplot2"
-author: "Tommy"
+author: "Thomas Carroll"
 date: "3 May 2016"
 output: html_document
 ---
