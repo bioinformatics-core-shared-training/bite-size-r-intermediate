@@ -63,10 +63,12 @@ img {
 <div id="header">
 <h1 class="title">Data Manipulation and Visualisation in R</h1>
 <h4 class="author"><em>Mark Dunning</em></h4>
-<h4 class="date"><em>Last modified: 03 May 2016</em></h4>
+<h4 class="date"><em>Last modified: 05 May 2016</em></h4>
 </div>
 
 
+<div id="course-home" class="section level1">
+<h1><a href="http://bioinformatics-core-shared-training.github.io/r-intermediate/">Course Home</a></h1>
 <div id="motivation" class="section level2">
 <h2>Motivation</h2>
 <p>Spreadsheets are a common entry-point for many types of analyses. Whilst they are great for exploring / visualising data in an interactive and intuitive manner, they are not ideal for many production-level analyses.</p>
@@ -121,7 +123,7 @@ img {
 <li>Release 3.3.0 (May 2016)
 <ul>
 <li>Base package and Contributed packages (general purpose extras)</li>
-<li>8330 available packages as of Tue May 3 10:08:06 2016</li>
+<li>8341 available packages as of Thu May 5 11:24:24 2016</li>
 </ul></li>
 <li>Download from <a href="http://mirrors.ebi.ac.uk/CRAN/" class="uri">http://mirrors.ebi.ac.uk/CRAN/</a></li>
 <li>Windows, Mac and Linux versions available</li>
@@ -218,15 +220,15 @@ myNumber</code></pre>
 <p>Arguments can have <em>default</em> values, meaning we do not need to specify values for these in order to run the function.</p>
 <p><code>rnorm</code> is a function that will generate a series of values from a <em>normal distribution</em>. In order to use the function, we need to tell R how many values we want</p>
 <pre class="r"><code>rnorm(n=10)</code></pre>
-<pre><code>##  [1]  0.4331058  0.5072645 -0.8677716 -0.5776640 -0.8412005  0.2532745
-##  [7]  0.9106252  1.4048840  1.0373580 -0.7027872</code></pre>
+<pre><code>##  [1]  1.1402325 -0.5574836  0.2007245  0.5370197 -1.3115833 -0.6648196
+##  [7]  0.0458851  0.7533808  0.8327282  1.0645105</code></pre>
 <p>The normal distribution is defined by a mean and standard deviation. However, in the above example we didn’t tell R what mean and standard deviation we wanted. So how does R know what to do? All arguments to a function and their default values are listed in the help page</p>
 <p>(<em>N.B sometimes help pages can describe more than one function</em>)</p>
 <pre class="r"><code>?rnorm</code></pre>
 <p>In this case, we see that the defaults for mean and standard deviation are 0 and 1. We can change the function to generate values from a distribution with a different mean and standard deviation using the <code>mean</code> and <code>sd</code> <em>arguments</em>. It is important that we get the spelling of these arguments exactly right, otherwise R will an error message, or (worse?) do something unexpected.</p>
 <pre class="r"><code>rnorm(n=10, mean=2,sd=3)</code></pre>
-<pre><code>##  [1]  0.6535340  6.6071581  0.1040694  3.1218052  7.8877714 -2.0557687
-##  [7]  2.0585221  5.3704251  4.9717205  3.6388386</code></pre>
+<pre><code>##  [1]  5.865517  1.557906  4.431426  1.540657  1.999195  2.805593 -4.560262
+##  [8]  1.318335 -1.062417  2.448419</code></pre>
 </div>
 <div id="basic-concepts-in-r---vectors" class="section level2">
 <h2>Basic concepts in R - vectors</h2>
@@ -261,7 +263,7 @@ x == &quot;A&quot;</code></pre>
 <pre><code>## [1]  TRUE  TRUE FALSE FALSE FALSE</code></pre>
 <pre class="r"><code>x &lt;- rnorm(10)
 x &gt; 0</code></pre>
-<pre><code>##  [1] FALSE FALSE FALSE  TRUE FALSE FALSE  TRUE  TRUE FALSE  TRUE</code></pre>
+<pre><code>##  [1] FALSE  TRUE  TRUE FALSE FALSE  TRUE FALSE FALSE FALSE  TRUE</code></pre>
 <p>All items in the vector <strong>must</strong> be the same type. If you attempt anything else, R will convert all values to the same type.</p>
 <pre class="r"><code>x &lt;- c(1, 2, &quot;three&quot;)
 x</code></pre>
@@ -368,6 +370,7 @@ iris$Species == &quot;virginica&quot;</code></pre>
 <li>modify the Rmd file so that the boxplot of the <code>Petal.Length</code> variable is produced, rather than <code>Sepal.Length</code></li>
 </ul></li>
 </ul>
+</div>
 </div>
 
 

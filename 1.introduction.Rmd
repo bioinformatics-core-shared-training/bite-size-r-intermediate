@@ -4,6 +4,7 @@ author: "Mark Dunning"
 date: '`r format(Sys.time(), "Last modified: %d %b %Y")`'
 output: html_document
 ---
+# [Course Home](http://bioinformatics-core-shared-training.github.io/r-intermediate/)
 
 ## Motivation
 
