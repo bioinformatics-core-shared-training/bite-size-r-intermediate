@@ -152,7 +152,6 @@ kable(head(messyData))
 
 ******
 
-## Tidy form
 
 ```{r echo=FALSE, results='asis',message=FALSE}
 library(tidyr)
@@ -220,11 +219,15 @@ The `tbl_df` function in dplyr creates a new object with more-convenient default
 glimpse(patients)
 ```
 
+## Aims
+
+***We are planning a study that will involve overweight smokers. So one of our first task is to identify a list of candidates. ***
+
 ## Selecting variables; the `select` verb
 
 As we mentioned, `dplyr` introduces a series of ***verbs*** that can be used to operate on our data. The first we will introduce is *`select`*
 
-N.B. base R did provide a function called `subset` which allowed similar operations.
+N.B. base R does provide a function called `subset` which allowed similar operations.
 
 ![select](images/select.png)
 
@@ -247,10 +250,10 @@ patients[,c("Name","Race")]
 
 Non R users probably find these commands a bit obtuse
 
-    + why the `[ ]`?
-    + what is `c`?
-    + need to remember the row and column index
-    + `[,...]` means display all rows
+- why the `[ ]`?
+- what is `c`?
+- need to remember the row and column index
+- `[,...]` means display all rows
 
 However, `select` is a lot more intuitive; easier to convert to the sentance "Select the Name column from patients"
 
@@ -475,4 +478,6 @@ patients_clean <- mutate(patients_clean, Smokes = as.logical(str_replace_all(Smo
 patients_clean
 ```
 
+## Solution
 
+[See](dplyr-solution.html)
