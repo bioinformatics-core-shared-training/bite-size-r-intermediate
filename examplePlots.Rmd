@@ -400,13 +400,41 @@ pcPlot + facet_grid(Smokes~Sex+Pet)
 
 
 
+## Exercise set 1
 
+[Link_to_Rmarkdown](markdownlink)
 
 
 
 
 ## Scales
 
+Scales and their legends have so far been handled using ggplot2 defaults.
+ggplot2 offers functionality to have finer control over scales and legends using the scale methods.
+
+Scale methods are divided into by functions by combinations of 
+
+* the aesthetics they control
+
+* the type of data mapped to 
+
+  scale_**aesthetic**_**type**
+
+Some common arguments to scale functions include - 
+
+name - The axis or legend title
+limits - Minimum and maximum of the scale
+breaks - Label/tick positions along an axis
+labels - Label names at each break
+
+```{r, facet_grid_smokesBySex_scalex}
+
+pcPlot +
+  geom_point() +
+  facet_grid(Smokes~Sex)+
+  scale_x_continuous(name="height ('cm')",limits = c(100,200),breaks=c(125,150,175),labels=c("small","justright","tall"))
+
+```
 Discrete
 Continuous
 Manual
