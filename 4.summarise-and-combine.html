@@ -63,7 +63,7 @@ img {
 <div id="header">
 <h1 class="title">Grouping, Summarising and Joining</h1>
 <h4 class="author"><em>Matt Eldridge</em></h4>
-<h4 class="date"><em>Last modified: 03 May 2016</em></h4>
+<h4 class="date"><em>Last modified: 05 May 2016</em></h4>
 </div>
 
 
@@ -240,14 +240,14 @@ Variables not shown: Birth (chr), State (chr), Pet (chr), Grade (int),
 <div id="grouping" class="section level1">
 <h1>Grouping</h1>
 <p>While the <code>summarise</code> function is useful on its own, it becomes really powerful when applied to groups of observations within a dataset. For example, suppose we want to compute the mean petal length for each of the species in the <code>iris</code> dataset. We could take each species in turn and <code>filter</code> the data frame to only contain rows for a given species, then apply <code>summarise</code>, but that would be somewhat cumbersome. In <code>dplyr</code>, the <code>group_by</code> function allows this to be done in one simple step.</p>
-<pre class="r"><code>iris %&gt;% group_by(Species) %&gt;% summarise(Average.Petal.Length = mean(Petal.Length))</code></pre>
+<pre class="r"><code>iris %&gt;% group_by(Species) %&gt;% summarise(mean(Petal.Length))</code></pre>
 <pre><code>Source: local data frame [3 x 2]
 
-     Species Average.Petal.Length
-      (fctr)                (dbl)
-1     setosa                1.462
-2 versicolor                4.260
-3  virginica                5.552</code></pre>
+     Species mean(Petal.Length)
+      (fctr)              (dbl)
+1     setosa              1.462
+2 versicolor              4.260
+3  virginica              5.552</code></pre>
 <p>As before, we can summarise multiple observations.</p>
 <pre class="r"><code>iris %&gt;% group_by(Species) %&gt;% summarise(n(), mean(Petal.Length), sd(Petal.Length))</code></pre>
 <pre><code>Source: local data frame [3 x 4]
@@ -309,7 +309,7 @@ qplot(Petal.Width, Petal.Length, data = iris, colour = Species)</code></pre>
 <p>But we’re getting ahead of ourselves! Plotting with <code>ggplot2</code> is for the next part of the course.</p>
 <div id="group_by---the-technical-details" class="section level3">
 <h3><code>group_by</code> - the technical details</h3>
-<p>Some of you might be wondering what’s going on <em>under the hood</em> with this <code>group_by</code> function. The help page for <code>group_by</code> is a little on the technical side but essentially tells us that the data frame we pass it gets converted into a <code>grouped_df</code> data frame object. <code>dplyr</code> functions that operate on a <code>grouped_df</code> object know to treat this in a special way, operating on each group separately. The following sequence or R commands might help to make this a bit clearer.</p>
+<p>Some of you might be wondering what’s going on <em>under the hood</em> with this <code>group_by</code> function. The help page for <code>group_by</code> is a little on the technical side but essentially tells us that the data frame we pass it gets converted into a <code>grouped_df</code> data frame object. <code>dplyr</code> functions that operate on a <code>grouped_df</code> object know to treat this in a special way, operating on each group separately. The following sequence of R commands might help to make this a bit clearer.</p>
 <pre class="r"><code># first let's take a look at the class of the iris data frame
 class(iris)</code></pre>
 <pre><code>[1] &quot;data.frame&quot;</code></pre>
@@ -455,12 +455,12 @@ left_join(df1, df2, by = &quot;name&quot;)</code></pre>
 <pre class="r"><code># let's create some data frames that we can join
 df1 &lt;- data_frame(
   name = c(&quot;Matt&quot;, &quot;Mark&quot;, &quot;Mark&quot;, &quot;Tom&quot;),
-  home = c(&quot;Harston&quot;, &quot;Hardwick&quot;, &quot;Histon&quot;, &quot;London&quot;),
-  institute = c(&quot;CRUK-CI&quot;, &quot;IPH&quot;, &quot;CRUK-CI&quot;, &quot;MRC-CSC&quot;)
+  home = c(&quot;Harston&quot;, &quot;Histon&quot;, &quot;Hardwick&quot;, &quot;London&quot;),
+  institute = c(&quot;CRUK-CI&quot;, &quot;CRUK-CI&quot;, &quot;IPH&quot;, &quot;MRC-CSC&quot;)
 )
 df2 &lt;- data_frame(
   name = c(&quot;Matt&quot;, &quot;Mark&quot;, &quot;Mark&quot;, &quot;Jane&quot;),
-  institute = c(&quot;CRUK-CI&quot;, &quot;IPH&quot;, &quot;CRUK-CI&quot;, &quot;MRC-CSC&quot;),
+  institute = c(&quot;CRUK-CI&quot;, &quot;CRUK-CI&quot;, &quot;IPH&quot;, &quot;MRC-CSC&quot;),
   colour = c(&quot;blue&quot;, &quot;yellow&quot;, &quot;green&quot;, &quot;cerise&quot;)
 )
 left_join(df1, df2, by = c(&quot;name&quot;, &quot;institute&quot;))</code></pre>
@@ -469,8 +469,8 @@ left_join(df1, df2, by = c(&quot;name&quot;, &quot;institute&quot;))</code></pre
    name     home institute colour
   (chr)    (chr)     (chr)  (chr)
 1  Matt  Harston   CRUK-CI   blue
-2  Mark Hardwick       IPH yellow
-3  Mark   Histon   CRUK-CI  green
+2  Mark   Histon   CRUK-CI yellow
+3  Mark Hardwick       IPH  green
 4   Tom   London   MRC-CSC     NA</code></pre>
 </div>
 <div id="filtering-joins" class="section level3">
@@ -483,8 +483,8 @@ semi_join(df1, df2, by = &quot;name&quot;)</code></pre>
    name     home institute
   (chr)    (chr)     (chr)
 1  Matt  Harston   CRUK-CI
-2  Mark Hardwick       IPH
-3  Mark   Histon   CRUK-CI</code></pre>
+2  Mark   Histon   CRUK-CI
+3  Mark Hardwick       IPH</code></pre>
 <pre class="r"><code># anti_join returns all rows where there is no match in the other table
 anti_join(df1, df2, by = &quot;name&quot;)</code></pre>
 <pre><code>Source: local data frame [1 x 3]

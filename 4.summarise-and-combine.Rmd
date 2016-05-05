@@ -140,7 +140,7 @@ patients %>% mutate_each(funs(round(., digits = 1)), Height, Weight)
 While the `summarise` function is useful on its own, it becomes really powerful when applied to groups of observations within a dataset. For example, suppose we want to compute the mean petal length for each of the species in the `iris` dataset. We could take each species in turn and `filter` the data frame to only contain rows for a given species, then apply `summarise`, but that would be somewhat cumbersome. In `dplyr`, the `group_by` function allows this to be done in one simple step.
 
 ```{r}
-iris %>% group_by(Species) %>% summarise(Average.Petal.Length = mean(Petal.Length))
+iris %>% group_by(Species) %>% summarise(mean(Petal.Length))
 ```
 
 As before, we can summarise multiple observations.
@@ -197,7 +197,7 @@ But we're getting ahead of ourselves! Plotting with `ggplot2` is for the next pa
 
 ### `group_by` - the technical details
 
-Some of you might be wondering what's going on _under the hood_ with this `group_by` function. The help page for `group_by` is a little on the technical side but essentially tells us that the data frame we pass it gets converted into a `grouped_df` data frame object. `dplyr` functions that operate on a `grouped_df` object know to treat this in a special way, operating on each group separately. The following sequence or R commands might help to make this a bit clearer.
+Some of you might be wondering what's going on _under the hood_ with this `group_by` function. The help page for `group_by` is a little on the technical side but essentially tells us that the data frame we pass it gets converted into a `grouped_df` data frame object. `dplyr` functions that operate on a `grouped_df` object know to treat this in a special way, operating on each group separately. The following sequence of R commands might help to make this a bit clearer.
 
 ```{r}
 # first let's take a look at the class of the iris data frame
@@ -311,12 +311,12 @@ We can specify multiple columns to use for matching rows. This is useful where t
 # let's create some data frames that we can join
 df1 <- data_frame(
   name = c("Matt", "Mark", "Mark", "Tom"),
-  home = c("Harston", "Hardwick", "Histon", "London"),
-  institute = c("CRUK-CI", "IPH", "CRUK-CI", "MRC-CSC")
+  home = c("Harston", "Histon", "Hardwick", "London"),
+  institute = c("CRUK-CI", "CRUK-CI", "IPH", "MRC-CSC")
 )
 df2 <- data_frame(
   name = c("Matt", "Mark", "Mark", "Jane"),
-  institute = c("CRUK-CI", "IPH", "CRUK-CI", "MRC-CSC"),
+  institute = c("CRUK-CI", "CRUK-CI", "IPH", "MRC-CSC"),
   colour = c("blue", "yellow", "green", "cerise")
 )
 left_join(df1, df2, by = c("name", "institute"))
