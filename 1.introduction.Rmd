@@ -33,6 +33,22 @@ Hadley also has these words of advice that we should bear in mind as we proceed 
 
 > Whenever you’re learning a new tool, for a long time you’re going to suck… But the good news is that is typical, that’s something that happens to everyone, and it’s only temporary.
 
+## How does this differ from "Solving Biological Problems using R?"
+
+- The [introductory course](http://cambiotraining.github.io/r-intro/) is designed to give you a taste of what R can do
+    + we start from the very beginning, assuming you know nothing about programming
+- Hopefully it gives you enough to read some data in, make a few basic plots
+- It should allow you to access the majority of add-on packages
+    + including Bioconductor ones
+- When you try and seek help, most R users will be familiar with the "classic" techniques presented
+- However, the data you try and analyse might not fit the data presented in the class....
+    + you might be itching to try out new tools you have heard of; including ggplot2
+- This course is designed to take you futher with R
+    + introduce more "cutting-edge" R
+- Taking advantage of more recent innovations in the language
+- Help you write more elegant solutions and code
+- Hopefully appealing to those familiar with other languages
+
 ## Advantages of R
 
 ![NYT](images/NYTimes_R_Article.png)
@@ -48,6 +64,7 @@ The main advantages are;
 - Visualisation and interactivity
 - Facilitaing ***Reproducible Research***
 
+
 ![duke-scandal](images/rep-research-nyt.png)
 
 Two Biostatiscians (later termed '*Forensic Bioinformaticians*') from M.D. Anderson used R extensively during their re-analysis and investigation of a Clinical Prognostication paper from Duke. The subsequent [scandal](https://www.youtube.com/watch?v=W5sZTNPMQRM) put Reproducible Research at the forefront of everyone's mind.
@@ -56,12 +73,13 @@ Keith Baggerly's talk on the subject is highy-recommended.
 
 <iframe width="420" height="315" src="https://www.youtube.com/embed/7gYIs7uYbMo" frameborder="0" allowfullscreen></iframe>
 
-## Support for R
+## How to get help
 
 - Online forums such as [Stack Overflow](http://stackoverflow.com/questions/tagged/r) regularly feature R
 - [Blogs](http://www.r-bloggers.com/)
-- Local [user groups](http://www.meetup.com/Cambridge-R-Users-Group-Meetup/) 
 - Documentation via `?` or `help.start()`
+- Many packages have user-guides or tutorials (know as *vignettes*)
+
 
 ##Various platforms supported
 
@@ -83,7 +101,7 @@ user
 - There are two ways to launch R:
     + From the command line (particularly useful if you're quite
 familiar with Linux; in the console at the prompt simply type `R`)
-    + As an application called ![rstudio](http://www.rstudio.com/wp-content/uploads/2014/03/blue-125.png) (very good for beginners)
+    + As an application called ![rstudio](http://www.rstudio.com/wp-content/uploads/2014/03/blue-125.png) (very good for beginners and experienced users alike)
     
 ##Launching R Using RStudio
 
@@ -93,7 +111,7 @@ of the screen and click
 ![RStudio screenshot](images/rstudio-windows.png)
 
 
-## Variables
+## The Basics: Variables
 
 - A variable is a letter or word which takes (or contains) a value. We
 use the assignment 'operator', `<-`
