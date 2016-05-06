@@ -63,7 +63,7 @@ img {
 <div id="header">
 <h1 class="title">Towards Analysis Workflows in R</h1>
 <h4 class="author"><em>Mark Dunning</em></h4>
-<h4 class="date"><em>Last modified: 05 May 2016</em></h4>
+<h4 class="date"><em>Last modified: 06 May 2016</em></h4>
 </div>
 
 
@@ -136,7 +136,8 @@ patients_clean &lt;- mutate(patients_clean, Height= str_replace_all(patients_cle
 <pre class="r"><code>patients_clean &lt;- read.delim(&quot;patient-data.txt&quot;) %&gt;% 
   tbl_df %&gt;% 
   mutate(Sex = factor(str_trim(Sex))) %&gt;% 
-  mutate(Height= as.numeric(str_replace_all(patients_clean$Height,pattern = &quot;cm&quot;,&quot;&quot;)))
+  mutate(Height= as.numeric(str_replace_all(Height,pattern = &quot;cm&quot;,&quot;&quot;)))
+
 patients_clean</code></pre>
 <pre><code>## Source: local data frame [100 x 15]
 ## 
@@ -228,7 +229,26 @@ patients_clean</code></pre>
 ## 6     7    Samuel  White    32   Male   TRUE 170.9500 95.6581459256895kg
 ## Variables not shown: Birth (fctr), State (fctr), Pet (fctr), Grade_Level
 ##   (int), Died (lgl), Count (dbl), Date (fctr)</code></pre>
-<p>Combining conditions in <code>filter</code> can be achieved adding <code>,</code> or using the Boolean operators <code>\</code>, <code>&amp;</code></p>
+<p>The <code>%in%</code> function can check for matches in a pre-defined vector</p>
+<pre class="r"><code>filter(patients_clean, Pet %in% c(&quot;CAT&quot;, &quot;Cat&quot;))</code></pre>
+<pre><code>## Source: local data frame [30 x 15]
+## 
+##       ID      Name     Race   Age    Sex Smokes   Height
+##    (int)    (fctr)   (fctr) (int) (fctr) (fctr)    (dbl)
+## 1      1 Demetrius    White    22   Male   TRUE 176.4791
+## 2      2   Rosario    White    25   Male   TRUE 174.7485
+## 3      5    Lavern      Cat    35   Male     No 178.6365
+## 4      6    Bernie   Native    30 Female  FALSE 159.7778
+## 5     10     Merle Hispanic    26 Female  FALSE 160.1210
+## 6     11    Martin    White    31 Female  FALSE 159.3178
+## 7     16    Lester    Black    21   Male   TRUE 178.7927
+## 8     18    Albert    White    23 Female  FALSE 157.0079
+## 9     21      Dong    White    22   Male  FALSE 168.1559
+## 10    24       Pat    Black    32 Female  FALSE 158.9396
+## ..   ...       ...      ...   ...    ...    ...      ...
+## Variables not shown: Weight (fctr), Birth (fctr), State (fctr), Pet
+##   (fctr), Grade_Level (int), Died (lgl), Count (dbl), Date (fctr)</code></pre>
+<p>Combining conditions in <code>filter</code> can be achieved adding <code>,</code> or using the Boolean operators <code>|</code>, <code>&amp;</code></p>
 <pre class="r"><code>filter(patients_clean, Sex == &quot;Male&quot;, Died)</code></pre>
 <pre><code>## Source: local data frame [32 x 15]
 ## 
@@ -249,6 +269,7 @@ patients_clean</code></pre>
 ##   (fctr), Grade_Level (int), Died (lgl), Count (dbl), Date (fctr)</code></pre>
 <p>The code in base R is a lot more verbose</p>
 <pre class="r"><code>patients[patients_clean$Sex == &quot;Male&quot; &amp; patients_clean$Died,]</code></pre>
+<p>Either Females, or Grade greater than 1</p>
 <pre class="r"><code>filter(patients_clean, Sex == &quot;Female&quot; | Grade_Level &gt; 1)</code></pre>
 <pre><code>## Source: local data frame [85 x 15]
 ## 
@@ -272,13 +293,14 @@ patients_clean</code></pre>
 <h2>Exercise</h2>
 <hr />
 <ul>
-<li>Select the Dog owners</li>
-<li>Select the Smokers with Grade more than 2 or 3</li>
+<li>Select the Smokers with Age over 30</li>
 <li>Select the patients that are still alive</li>
+<li>Select the patients who do NOT own dogs</li>
 <li>Select the patients from New York or New Jersey</li>
 </ul>
 <p>Feel free to experiment with different ways to do these</p>
 <hr />
+<p>We now have all the tools in place in order to retrieve the overweight smokers from our dataset. An additional step might be to write the filtered data frame out to a file. Recall that functions <code>write.table</code>, <code>write.csv</code> are used to write a data frame to a tab-delimited or csv file. Because these functions accept a data frame as their first argument, they fit easily into the pipeline framework as the last step.</p>
 </div>
 <div id="exercise-workflow-exercise.rmd" class="section level2">
 <h2>Exercise: workflow-exercise.Rmd</h2>
@@ -287,7 +309,7 @@ patients_clean</code></pre>
 <ul>
 <li>select the candidates (overweight smokers)</li>
 <li>make sure the candidates are still alive</li>
-<li>write the result to a file</li>
+<li>write the result to a csv file</li>
 </ul>
 <hr />
 </div>
@@ -388,54 +410,35 @@ patients_clean</code></pre>
 ## 10    98    Alva    White    33   Male  FALSE 178.4494   91.77367816887kg
 ## Variables not shown: Birth (fctr), State (fctr), Pet (fctr), Grade_Level
 ##   (int), Died (lgl), Count (dbl), Date (fctr)</code></pre>
-<pre class="r"><code> read.delim(&quot;patient-data.txt&quot;) %&gt;% 
+<p>With the workflow we have developed in the previous exercises, we can add extra steps to arrange by select the candidates with the highest BMI prior to writing to a file.</p>
+<pre class="r"><code>read.delim(&quot;patient-data.txt&quot;) %&gt;% 
   tbl_df %&gt;% 
   mutate(Sex = factor(str_trim(Sex))) %&gt;% 
-  mutate(Weight = as.numeric(str_replace_all(patients_clean$Weight,&quot;kg&quot;,&quot;&quot;))) %&gt;% 
-  mutate(Height= as.numeric(str_replace_all(patients_clean$Height,pattern = &quot;cm&quot;,&quot;&quot;))) %&gt;% 
+  mutate(Height= as.numeric(str_replace_all(Height,pattern = &quot;cm&quot;,&quot;&quot;))) %&gt;% 
+  mutate(Weight = as.numeric(str_replace_all(Weight,&quot;kg&quot;,&quot;&quot;))) %&gt;% 
   mutate(BMI = (Weight/(Height/100)^2), Overweight = BMI &gt; 25) %&gt;% 
-  mutate(Smokes = as.logical(str_replace_all(Smokes, &quot;Yes&quot;, TRUE))) %&gt;% 
-  mutate(Smokes = as.logical(str_replace_all(Smokes, &quot;No&quot;, FALSE))) %&gt;%
-  filter(Smokes &amp; Overweight) %&gt;% 
-  select(ID, Name, Birth, Smokes,Overweight,Age) %&gt;% 
-  top_n(10, Age)</code></pre>
-<pre><code>## Source: local data frame [10 x 6]
+  mutate(Smokes = str_replace_all(Smokes, &quot;Yes&quot;, TRUE)) %&gt;% 
+  mutate(Smokes = as.logical(str_replace_all(Smokes, &quot;No&quot;, FALSE))) %&gt;% 
+  select(ID, Name, Birth,BMI,Smokes,Overweight,Died) %&gt;% 
+  filter(Smokes &amp; Overweight &amp; !Died) %&gt;% 
+  arrange(desc(BMI)) %&gt;% 
+  top_n(10, BMI)</code></pre>
+<pre><code>## Source: local data frame [9 x 7]
 ## 
-##       ID     Name      Birth Smokes Overweight   Age
-##    (int)   (fctr)     (fctr)  (lgl)      (lgl) (int)
-## 1      2  Rosario 1972-07-22   TRUE       TRUE    25
-## 2      7   Samuel 1971-11-13   TRUE       TRUE    32
-## 3      8    Clair 1972-03-14   TRUE       TRUE    29
-## 4     15   Vernon 1971-11-05   TRUE       TRUE    32
-## 5     34     Rory 1971-09-12   TRUE       TRUE    34
-## 6     44 Lawrence 1972-10-13   TRUE       TRUE    31
-## 7     49  Richard 1971-09-11   TRUE       TRUE    26
-## 8     50   Carlos 1972-01-23   TRUE       TRUE    30
-## 9     53  Lindsay 1971-10-09   TRUE       TRUE    29
-## 10    99     Dean 1971-12-22   TRUE       TRUE    28</code></pre>
-</div>
-<div id="exercise-workflow-exercise.rmd-1" class="section level2">
-<h2>Exercise: workflow-exercise.Rmd</h2>
-<hr />
-<p>Modify the workflow to</p>
-<ul>
-<li>Add the Age variable to the final table
-<ul>
-<li>do you notice anything unusual about the values for <code>Age</code>?</li>
-</ul></li>
-<li>Arrange by age</li>
-<li>Select the top 5 oldest patients</li>
-</ul>
-<hr />
-<pre><code>## Source: local data frame [5 x 8]
-## 
-##      ID     Name      Birth      BMI Smokes Overweight  Died   Age
-##   (int)   (fctr)     (fctr)    (dbl)  (lgl)      (lgl) (lgl) (int)
-## 1     7   Samuel 1971-11-13 32.73286   TRUE       TRUE FALSE    32
-## 2    15   Vernon 1971-11-05 25.83838   TRUE       TRUE FALSE    32
-## 3    44 Lawrence 1972-10-13 27.06717   TRUE       TRUE FALSE    31
-## 4    50   Carlos 1972-01-23 26.00887   TRUE       TRUE FALSE    30
-## 5     8    Clair 1972-03-14 25.21343   TRUE       TRUE FALSE    29</code></pre>
+##      ID     Name      Birth      BMI Smokes Overweight  Died
+##   (int)   (fctr)     (fctr)    (dbl)  (lgl)      (lgl) (lgl)
+## 1     7   Samuel 1971-11-13 32.73286   TRUE       TRUE FALSE
+## 2    17    Robin 1971-10-23 28.11525   TRUE       TRUE FALSE
+## 3    45    Keith 1971-08-11 27.96600   TRUE       TRUE FALSE
+## 4    16   Lester 1972-08-15 27.80572   TRUE       TRUE FALSE
+## 5    44 Lawrence 1972-10-13 27.06717   TRUE       TRUE FALSE
+## 6    92    Jamie 1972-10-11 26.94385   TRUE       TRUE FALSE
+## 7    50   Carlos 1972-01-23 26.00887   TRUE       TRUE FALSE
+## 8    15   Vernon 1971-11-05 25.83838   TRUE       TRUE FALSE
+## 9     8    Clair 1972-03-14 25.21343   TRUE       TRUE FALSE</code></pre>
+<pre class="r"><code>  write.csv(&quot;candidates.csv&quot;)</code></pre>
+<pre><code>## &quot;&quot;,&quot;x&quot;
+## &quot;1&quot;,&quot;candidates.csv&quot;</code></pre>
 </div>
 <div id="re-usable-pipelines" class="section level2">
 <h2>Re-usable pipelines</h2>
@@ -450,8 +453,10 @@ patients_clean</code></pre>
   mutate(Smokes = as.logical(str_replace_all(Smokes, &quot;Yes&quot;, TRUE))) %&gt;% 
   mutate(Smokes = as.logical(str_replace_all(Smokes, &quot;No&quot;, FALSE))) %&gt;%
   filter(Smokes &amp; Overweight) %&gt;% 
-  select(ID, Name, Birth, Smokes,Overweight)  %&gt;% 
-  write.table(&quot;study-candidates.txt&quot;)</code></pre>
+  select(ID, Name, Birth, BMI, Smokes,Overweight)  %&gt;% 
+  arrange(desc(BMI)) %&gt;% 
+  top_n(10, BMI) %&gt;% 
+  write.table(&quot;study-candidates.csv&quot;)</code></pre>
 <p>As the file is quite large, we might want to switch to <code>readr</code> for smarter and faster reading</p>
 <pre class="r"><code>library(readr)
  read_tsv(&quot;cohort-data.txt&quot;) %&gt;% 
@@ -463,8 +468,10 @@ patients_clean</code></pre>
   mutate(Smokes = str_replace_all(Smokes, &quot;Yes&quot;, TRUE)) %&gt;% 
   mutate(Smokes = as.logical(str_replace_all(Smokes, &quot;No&quot;, FALSE))) %&gt;%
   filter(Smokes &amp; Overweight) %&gt;% 
-  select(ID, Name, Smokes,Overweight)  %&gt;% 
-  write.table(&quot;study-candidates.txt&quot;)</code></pre>
+  select(ID, Name, Birth, BMI, Smokes,Overweight)  %&gt;% 
+  arrange(desc(BMI)) %&gt;% 
+  top_n(10, BMI) %&gt;% 
+  write.table(&quot;study-candidates.csv&quot;)</code></pre>
 </div>
 <div id="summary" class="section level2">
 <h2>Summary</h2>

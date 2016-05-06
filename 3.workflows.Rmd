@@ -100,7 +100,8 @@ We can re-write our data cleaning steps from the previous section with;
 patients_clean <- read.delim("patient-data.txt") %>% 
   tbl_df %>% 
   mutate(Sex = factor(str_trim(Sex))) %>% 
-  mutate(Height= as.numeric(str_replace_all(patients_clean$Height,pattern = "cm","")))
+  mutate(Height= as.numeric(str_replace_all(Height,pattern = "cm","")))
+
 patients_clean
 ```
 
@@ -157,7 +158,14 @@ Again, to non R-users, this is less intuitive. However, the result is the same.
 head(patients_clean[patients_clean$Sex == "Male",])
 ```
 
-Combining conditions in `filter` can be achieved adding `,` or using the Boolean operators `\`, `&`
+The `%in%` function can check for matches in a pre-defined vector
+
+```{r}
+filter(patients_clean, Pet %in% c("CAT", "Cat"))
+```
+
+
+Combining conditions in `filter` can be achieved adding `,` or using the Boolean operators `|`, `&`
 
 ```{r}
 filter(patients_clean, Sex == "Male", Died)
@@ -169,21 +177,27 @@ The code in base R is a lot more verbose
 patients[patients_clean$Sex == "Male" & patients_clean$Died,]
 ```
 
+Either Females, or Grade greater than 1
+
 ```{r}
 filter(patients_clean, Sex == "Female" | Grade_Level > 1)
 ```
 
+
+
 ## Exercise
 ******
 
-  - Select the Dog owners
-  - Select the Smokers with Grade more than 2 or 3
+  - Select the Smokers with Age over 30
   - Select the patients that are still alive
+  - Select the patients who do NOT own dogs
   - Select the patients from New York or New Jersey
 
 Feel free to experiment with different ways to do these
 
 ******
+
+We now have all the tools in place in order to retrieve the overweight smokers from our dataset. An additional step might be to write the filtered data frame out to a file. Recall that functions `write.table`, `write.csv` are used to write a data frame to a tab-delimited or csv file. Because these functions accept a data frame as their first argument, they fit easily into the pipeline framework as the last step.
 
 
 ## Exercise: workflow-exercise.Rmd
@@ -194,7 +208,7 @@ Modify the workflow to
 
 - select the candidates (overweight smokers)
 - make sure the candidates are still alive
-- write the result to a file
+- write the result to a csv file
 
 ******
 
@@ -225,7 +239,6 @@ e.g. `Grade_Level` and then `Count`
 arrange(patients_clean, Grade_Level, Count)
 ```
 
-
 A really convenient function is `top_n`
 
 ```{r}
@@ -233,37 +246,9 @@ top_n(patients_clean,10,Height)
 top_n(patients_clean,10,Weight)
 ```
 
+With the workflow we have developed in the previous exercises, we can add extra steps to arrange by select the candidates with the highest BMI prior to writing to a file.
+
 ```{r}
- read.delim("patient-data.txt") %>% 
-  tbl_df %>% 
-  mutate(Sex = factor(str_trim(Sex))) %>% 
-  mutate(Weight = as.numeric(str_replace_all(patients_clean$Weight,"kg",""))) %>% 
-  mutate(Height= as.numeric(str_replace_all(patients_clean$Height,pattern = "cm",""))) %>% 
-  mutate(BMI = (Weight/(Height/100)^2), Overweight = BMI > 25) %>% 
-  mutate(Smokes = as.logical(str_replace_all(Smokes, "Yes", TRUE))) %>% 
-  mutate(Smokes = as.logical(str_replace_all(Smokes, "No", FALSE))) %>%
-  filter(Smokes & Overweight) %>% 
-  select(ID, Name, Birth, Smokes,Overweight,Age) %>% 
-  top_n(10, Age)
-```
-
-
-
-
-## Exercise: workflow-exercise.Rmd
-
-******
-
-Modify the workflow to 
-
-- Add the Age variable to the final table
-    + do you notice anything unusual about the values for `Age`?
-- Arrange by age
-- Select the top 5 oldest patients
-
-******
-
-```{r echo=FALSE}
 read.delim("patient-data.txt") %>% 
   tbl_df %>% 
   mutate(Sex = factor(str_trim(Sex))) %>% 
@@ -272,13 +257,14 @@ read.delim("patient-data.txt") %>%
   mutate(BMI = (Weight/(Height/100)^2), Overweight = BMI > 25) %>% 
   mutate(Smokes = str_replace_all(Smokes, "Yes", TRUE)) %>% 
   mutate(Smokes = as.logical(str_replace_all(Smokes, "No", FALSE))) %>% 
-  select(ID, Name, Birth,BMI,Smokes,Overweight,Died,Age) %>% 
+  select(ID, Name, Birth,BMI,Smokes,Overweight,Died) %>% 
   filter(Smokes & Overweight & !Died) %>% 
-  filter(Age > 0) %>% 
-  top_n(5,Age) %>% 
-  arrange(desc(Age))
-
+  arrange(desc(BMI)) %>% 
+  top_n(10, BMI)
+  write.csv("candidates.csv")
 ```
+
+
 
 ## Re-usable pipelines
 
@@ -297,8 +283,10 @@ This time we have a million patients, and shouldn't really be dealing with these
   mutate(Smokes = as.logical(str_replace_all(Smokes, "Yes", TRUE))) %>% 
   mutate(Smokes = as.logical(str_replace_all(Smokes, "No", FALSE))) %>%
   filter(Smokes & Overweight) %>% 
-  select(ID, Name, Birth, Smokes,Overweight)  %>% 
-  write.table("study-candidates.txt")
+  select(ID, Name, Birth, BMI, Smokes,Overweight)  %>% 
+  arrange(desc(BMI)) %>% 
+  top_n(10, BMI) %>% 
+  write.table("study-candidates.csv")
 ```
 
 As the file is quite large, we might want to switch to `readr` for smarter and faster reading
@@ -314,8 +302,10 @@ library(readr)
   mutate(Smokes = str_replace_all(Smokes, "Yes", TRUE)) %>% 
   mutate(Smokes = as.logical(str_replace_all(Smokes, "No", FALSE))) %>%
   filter(Smokes & Overweight) %>% 
-  select(ID, Name, Smokes,Overweight)  %>% 
-  write.table("study-candidates.txt")
+  select(ID, Name, Birth, BMI, Smokes,Overweight)  %>% 
+  arrange(desc(BMI)) %>% 
+  top_n(10, BMI) %>% 
+  write.table("study-candidates.csv")
 ```
 
 ## Summary
