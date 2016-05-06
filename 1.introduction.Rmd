@@ -92,24 +92,8 @@ of the screen and click
 
 ![RStudio screenshot](images/rstudio-windows.png)
 
-##Basic concepts in R - command line calculation
 
-- The command line can be used as a calculator. Type:
-
-```{r basic-calc1}
-2 + 2
-
-20/5 - sqrt(25) + 3^2
-
-sin(pi/2)
-
-```
-
-Note: The number in the square brackets is an indicator of the
-position in the output. In this case the output is a 'vector' of length 1
-(i.e. a single number). More on vectors coming up...
-
-##Basic concepts in R - variables
+## Variables
 
 - A variable is a letter or word which takes (or contains) a value. We
 use the assignment 'operator', `<-`
@@ -129,7 +113,6 @@ sqrt(myNumber)
 x + myNumber
 ```
 
-##Basic concepts in R - variables
 
 - We can change the value of an existing variable:
 
@@ -152,7 +135,7 @@ myNumber <- myNumber + sqrt(16)
 myNumber
 ```
 
-##Basic concepts in R - functions
+## Functions
 
 - **Functions** in R perform operations on **arguments** (the inputs(s) to the function). We have already used:
 ```{r eval=FALSE}
@@ -192,7 +175,7 @@ rnorm(n=10, mean=2,sd=3)
 ```
 
 
-##Basic concepts in R - vectors
+## Vectors
 
 - The basic data structure in R is a **vector** -- an ordered collection of values. 
 - R treats even single values as 1-element vectors. 
@@ -236,8 +219,6 @@ x == "A"
 x <- rnorm(10)
 x > 0
 ```
-
-
 
 All items in the vector **must** be the same type. If you attempt anything else, R will convert all values to the same type.
 
@@ -293,12 +274,11 @@ dim(iris)
 colnames(iris)
 ```
 
-Data for a particular column can be accessed using what is known as the `$` operator
+Data for a particular column can be accessed using what is known as the `$` operator. The result is a *vector*
 
 ```{r eval=FALSE}
 iris$Sepal.Length
 iris$Species
-iris$Species == "virginica"
 ```
 
 Here, `iris$Species` is a new type of object in R. It is an example of a *factor*, which is a type of object used frequently in data analysis. Rather than being merely a character string, the vector has a set of levels; **`r levels(iris$Species)`**. This allows us to perform various analyses that treat the values as belonging to different categories. For example, we might look to compare the distribution of length, width of different species and perform statistical testing. Having our data as factors aids such analyses.
@@ -321,11 +301,15 @@ Sometimes you may see this written as:
 boxplot(Sepal.Length~Species,data=iris)
 ```
 
+An *analysis of variance* (ANOVA) analysis can also tell us if the differences between the groups are statistically significant
+
+```{r}
+mod <- aov(iris$Petal.Length~iris$Species)
+anova(mod)
+```
 
 
 ## How can R enable Reproducible Research?
-
-
 
 Within RStudio we can write *markdown* documents, which are a mix of R code and text. The markdown file can be used as a template to generated PDF, HTML, or even Word documents. The clever bit is that all R code in the template can be execute and the results displayed (tables, graphics etc) along with the code. The compiled document can be passed to your collaborators and they should be able to generate the same results. Alternatively, you can choose to hide the code if your PI just wants to see the results, and not neccesarily what packages, parameters you used. Long-term R users may have heard of *Sweave*. Markdown is the same concept, but an easier to write (and read) syntax
 

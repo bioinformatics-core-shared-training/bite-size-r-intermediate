@@ -131,40 +131,7 @@ patients_clean</code></pre>
   mutate(Smokes = as.logical(str_replace_all(Smokes, &quot;No&quot;, FALSE))) %&gt;% 
   select(ID, Name, Birth,BMI,Smokes,Overweight,Died) %&gt;% 
   filter(Smokes &amp; Overweight &amp; !Died) %&gt;% 
-  write.table(&quot;candidates.txt&quot;)</code></pre>
-<hr />
-<p>Modify the workflow to</p>
-<ul>
-<li>Add the Age variable to the final table
-<ul>
-<li>do you notice anything unusual about the values for <code>Age</code>?</li>
-</ul></li>
-<li>Arrange by age</li>
-<li>Select the top 5 oldest patients</li>
-</ul>
-<hr />
-<pre class="r"><code>read.delim(&quot;patient-data.txt&quot;) %&gt;% 
-  tbl_df %&gt;% 
-  mutate(Sex = factor(str_trim(Sex))) %&gt;% 
-  mutate(Height= as.numeric(str_replace_all(Height,pattern = &quot;cm&quot;,&quot;&quot;))) %&gt;% 
-  mutate(Weight = as.numeric(str_replace_all(Weight,&quot;kg&quot;,&quot;&quot;))) %&gt;% 
-  mutate(BMI = (Weight/(Height/100)^2), Overweight = BMI &gt; 25) %&gt;% 
-  mutate(Smokes = str_replace_all(Smokes, &quot;Yes&quot;, TRUE)) %&gt;% 
-  mutate(Smokes = as.logical(str_replace_all(Smokes, &quot;No&quot;, FALSE))) %&gt;% 
-  select(ID, Name, Birth,BMI,Smokes,Overweight,Died,Age) %&gt;% 
-  filter(Smokes &amp; Overweight &amp; !Died) %&gt;% 
-  filter(Age &gt; 0) %&gt;% 
-  top_n(5,Age) %&gt;% 
-  arrange(desc(Age))</code></pre>
-<pre><code>## Source: local data frame [5 x 8]
-## 
-##      ID     Name      Birth      BMI Smokes Overweight  Died   Age
-##   (int)   (fctr)     (fctr)    (dbl)  (lgl)      (lgl) (lgl) (int)
-## 1     7   Samuel 1971-11-13 32.73286   TRUE       TRUE FALSE    32
-## 2    15   Vernon 1971-11-05 25.83838   TRUE       TRUE FALSE    32
-## 3    44 Lawrence 1972-10-13 27.06717   TRUE       TRUE FALSE    31
-## 4    50   Carlos 1972-01-23 26.00887   TRUE       TRUE FALSE    30
-## 5     8    Clair 1972-03-14 25.21343   TRUE       TRUE FALSE    29</code></pre>
+  write.csv(&quot;candidates.csv&quot;)</code></pre>
 
 
 </div>
