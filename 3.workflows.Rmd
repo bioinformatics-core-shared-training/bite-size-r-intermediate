@@ -32,7 +32,7 @@ we read as
 
 Could also do the same for our `mutate` statements, although this would quickly become convoluted..
 
-> pad to three digits the ID variable of the data frame created by trimming white space from the sex variable from the patients data frame
+> remove the cm characters from the Height variable of the data frame created by trimming white space from the sex variable from the patients data frame
 
 ```{r}
 patients_clean <- mutate(mutate(patients, Sex = factor(str_trim(Sex))),

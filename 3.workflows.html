@@ -85,7 +85,7 @@ img {
 </blockquote>
 <p>Could also do the same for our <code>mutate</code> statements, although this would quickly become convoluted..</p>
 <blockquote>
-<p>pad to three digits the ID variable of the data frame created by trimming white space from the sex variable from the patients data frame</p>
+<p>remove the cm characters from the Height variable of the data frame created by trimming white space from the sex variable from the patients data frame</p>
 </blockquote>
 <pre class="r"><code>patients_clean &lt;- mutate(mutate(patients, Sex = factor(str_trim(Sex))),
                          Height = str_replace_all(patients$Height,pattern=&quot;cm&quot;,&quot;&quot;))</code></pre>
