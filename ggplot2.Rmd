@@ -992,6 +992,7 @@ ggsave(pcPlot,filename = "anExampleplot.png",width = 15,height = 15,units = "cm"
 
 # References.
 
+- [Layered grammar of graphics](http://vita.had.co.nz/papers/layered-grammar.pdf)
 
 - [ggplot2 documentation](http://docs.ggplot2.org/current/)
 
