@@ -1,7 +1,7 @@
 ---
 title: "Introduction to ggplot2"
 author: "Thomas Carroll"
-date: "3 May 2016"
+date: "MRC-CSC/Shared-bioinformatics-training"
 output: 
   html_document:
     toc: true # table of content true
@@ -491,8 +491,13 @@ pcPlot + facet_grid(Smokes~Sex+Pet)
 
 # Exercise set 1
 
-[Link_to_Rmarkdown](http://mrccsc.github.io/ggplot2_exercise1.Rmd)
+[Link_to_exercises](http://mrccsc.github.io/exercise_1_exercises.html)
 
+[Link_to_exercises_with_images](http://mrccsc.github.io/exercise_1_exercises_images.html)
+
+[Link_to_Rmarkdown template](http://mrccsc.github.io/exercise_1_empty.Rmd)
+
+[Link_to_answers](http://mrccsc.github.io/exercise_1_answers.html)
 
 
 
@@ -669,7 +674,7 @@ What points of scale to be labeled and labels text  can also be controlled.
 ```{r, facet_grid_height_weight_BMIsizewithBreaks}
 pcPlot <- ggplot(data=patients_clean,
                  aes(x=Height,y=Weight,size=BMI))
-pcPlot + geom_point() + scale_size_continuous(range = c(3,6) ,breaks=c(25,35),labels=c("Good","Not So Good"))
+pcPlot + geom_point() + scale_size_continuous(range = c(3,6) ,breaks=c(25,30),labels=c("Good","Good but not 25"))
                   
 ```
 
@@ -864,11 +869,13 @@ To demonstrate customising a theme, in the example below we alter one element of
 pcPlot <- ggplot(data=patients_clean,
         mapping=aes(x=Weight,y=Height))+geom_point()
 pcPlot+theme(
-            text = element_text(colour="red")
+            text = element_text(colour="red"),
+            axis.text = element_text(colour="red")
            )
 ```
 
-Note because we are changing a *text* element we use the *element_text()* function.
+- Note because we are changing a *text* element we use the *element_text()* function.
+
 
 A detailed description of which elements are available and their associated element functions can be found by typing *?theme*.
 
@@ -881,6 +888,7 @@ pcPlot <- ggplot(data=patients_clean,
         mapping=aes(x=Weight,y=Height))+geom_point()
 pcPlot+theme(
             text = element_text(colour="red"),
+            axis.text = element_text(colour="red"),
             axis.title.y = element_text(angle=0)
            )
 ```
@@ -895,6 +903,7 @@ pcPlot <- ggplot(data=patients_clean,
   facet_grid(Sex~Smokes)
 pcPlot+theme(
             text = element_text(colour="red"),
+            axis.text = element_text(colour="red"),
             axis.title.y = element_text(angle=0),
             axis.line = element_line(linetype = 0),
             panel.background=element_rect(fill="white"),
@@ -924,14 +933,38 @@ pcPlot+
   theme(text = element_text(colour="red"))
 ```
 
+The consequence can be seen comparing the effect of theme() on a plot with a default theme or theme_minimal.
+
+Since the default theme, theme_grey() contains a specification for axis.text colour, i will not replace it with "+" operator. 
+
+```{r, theme_customMiniVsBW,echo=T,eval=F,collapse=TRUE}
+pcPlot+
+  theme(text = element_text(colour="red"))
+
+pcPlot+
+  theme_minimal()+
+  theme(text = element_text(colour="red"))
+```
+
+```{r, theme_customMiniVsBWDuck,echo=F,eval=T,collapse=TRUE}
+pcPlot+
+  theme(text = element_text(colour="red"))
+
+pcPlot+
+  theme_minimal()+
+  theme(text = element_text(colour="red"))
+```
+
+
+
 
 In contrast **%+replace%** replaces all elements within a theme regardless of whether they have been previously specfied in old theme.
 
 When using the **%+replace%** operator 
 
-- Themes elements specified in new scheme replace elements in old theme 
+- Theme elements specified in new scheme replace elements in old theme 
 
-- Theme elements in the old theme which have not been specified in new theme are replaced too by blank theme elements.
+- Theme elements in the old theme which have not been specified in new theme are also replaced by blank theme elements.
 
 ```{r, theme_custom84}
   oldTheme <- theme_bw()
@@ -987,8 +1020,14 @@ ggsave(pcPlot,filename = "anExampleplot.png",width = 15,height = 15,units = "cm"
 
 # Exercise set 2
 
-[Link_to_Rmarkdown](http://mrccsc.github.io/ggplot2_exercise2.Rmd)
 
+[Link_to_exercises](http://mrccsc.github.io/exercise_2_exercises.html)
+
+[Link_to_exercises_with_images](http://mrccsc.github.io/exercise_2_exercises_images.html)
+
+[Link_to_Rmarkdown template](http://mrccsc.github.io/exercise_2_empty.Rmd)
+
+[Link_to_answers](http://mrccsc.github.io/exercise_2_answers.html)
 
 # References.
 
