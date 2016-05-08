@@ -63,7 +63,7 @@ img {
 <div id="header">
 <h1 class="title">Towards Analysis Workflows in R</h1>
 <h4 class="author"><em>Mark Dunning</em></h4>
-<h4 class="date"><em>Last modified: 06 May 2016</em></h4>
+<h4 class="date"><em>Last modified: 08 May 2016</em></h4>
 </div>
 
 
@@ -88,14 +88,13 @@ img {
 <p>pad to three digits the ID variable of the data frame created by trimming white space from the sex variable from the patients data frame</p>
 </blockquote>
 <pre class="r"><code>patients_clean &lt;- mutate(mutate(patients, Sex = factor(str_trim(Sex))),
-                         ID = str_pad(ID,pad=&quot;0&quot;,width=3))</code></pre>
+                         Height = str_replace_all(patients$Height,pattern=&quot;cm&quot;,&quot;&quot;))</code></pre>
 <p>We always have to work out what the first statement was, and work forwards from that.</p>
 <ul>
 <li>the arguments to a function are far-away from the function call</li>
 </ul>
 <p>Alternatively, we could write each command as a separate line</p>
 <pre class="r"><code>patients_clean&lt;- mutate(patients, Sex = factor(str_trim(Sex)))
-patients_clean &lt;- mutate(patients_clean, ID=str_pad(patients_clean$ID,pad = &quot;0&quot;,width=3))
 patients_clean &lt;- mutate(patients_clean, Height= str_replace_all(patients_clean$Height,pattern = &quot;cm&quot;,&quot;&quot;))</code></pre>
 <ul>
 <li>prone to error if we copy-and paste</li>
@@ -410,7 +409,7 @@ patients_clean</code></pre>
 ## 10    98    Alva    White    33   Male  FALSE 178.4494   91.77367816887kg
 ## Variables not shown: Birth (fctr), State (fctr), Pet (fctr), Grade_Level
 ##   (int), Died (lgl), Count (dbl), Date (fctr)</code></pre>
-<p>With the workflow we have developed in the previous exercises, we can add extra steps to arrange by select the candidates with the highest BMI prior to writing to a file.</p>
+<p>With the workflow we have developed in the previous exercises, we can add extra steps to arrange and then select the candidates with the highest BMI prior to writing to a file.</p>
 <pre class="r"><code>read.delim(&quot;patient-data.txt&quot;) %&gt;% 
   tbl_df %&gt;% 
   mutate(Sex = factor(str_trim(Sex))) %&gt;% 

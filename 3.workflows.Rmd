@@ -36,7 +36,7 @@ Could also do the same for our `mutate` statements, although this would quickly 
 
 ```{r}
 patients_clean <- mutate(mutate(patients, Sex = factor(str_trim(Sex))),
-                         ID = str_pad(ID,pad="0",width=3))
+                         Height = str_replace_all(patients$Height,pattern="cm",""))
 ```
 
 We always have to work out what the first statement was, and work forwards from that.
@@ -47,7 +47,6 @@ Alternatively, we could write each command as a separate line
 
 ```{r}
 patients_clean<- mutate(patients, Sex = factor(str_trim(Sex)))
-patients_clean <- mutate(patients_clean, ID=str_pad(patients_clean$ID,pad = "0",width=3))
 patients_clean <- mutate(patients_clean, Height= str_replace_all(patients_clean$Height,pattern = "cm",""))
 ```
 
@@ -246,7 +245,7 @@ top_n(patients_clean,10,Height)
 top_n(patients_clean,10,Weight)
 ```
 
-With the workflow we have developed in the previous exercises, we can add extra steps to arrange by select the candidates with the highest BMI prior to writing to a file.
+With the workflow we have developed in the previous exercises, we can add extra steps to arrange and then select the candidates with the highest BMI prior to writing to a file.
 
 ```{r}
 read.delim("patient-data.txt") %>% 
