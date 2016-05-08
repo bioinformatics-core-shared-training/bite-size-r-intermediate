@@ -9,6 +9,11 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+
+Redo intro full ggplot2 code with code in plots..have to use default for long one to maintain look.
+
+Repeat same stpe for themes.
+
 ## Graphics in R
 
 The R language has extensive graphical capabilities.
@@ -35,7 +40,7 @@ On top of this central philosophy ggplot2 has:
 
 ## Grammar of Graphics - How to build a plot from its components.
 
-<div id="buildingblocks">
+<div id="buildingblocks" align="center">
   <img src="presentation1/Slide1.jpg" alt="">
 </div>  
 
@@ -780,12 +785,17 @@ Packages such as ggthemes also contain many useful collections of predined theme
 As well as making use of predifened theme styles, ggplot2 allows for control over the attributes and elements within a plot through a collection of related functions and attributes.
 
 **theme()** is the global function used to set the collections of elements' attributes for the current plot.
+Need to talk about + and replace
 
-Within the theme functions there are 3 general graphic elements which may be controlled:-
+?theme is super useful
+Could make table from here 
+
+Within the theme functions there are 5 general graphic elements which may be controlled:-
 
 - rect
 - line
 - text
+- title
 
 and 5 groups of related elements:-
 
