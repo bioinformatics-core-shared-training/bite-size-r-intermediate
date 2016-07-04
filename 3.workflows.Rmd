@@ -65,9 +65,9 @@ In computing, this is referring to as *piping*
 
 ## magrittr
 
-![not-a-pipe](images/pipe.jpeg)
+![](images/pipe.jpeg)
 
-![also-not-a-pipe](https://upload.wikimedia.org/wikipedia/en/b/b9/MagrittePipe.jpg)
+![](https://upload.wikimedia.org/wikipedia/en/b/b9/MagrittePipe.jpg)
 
 - the `magrittr` library implements this in R
 

@@ -48,14 +48,14 @@ On top of this central philosophy ggplot2 has:
 ## How to build a plot from its components.
 
 <div id="buildingblocks" align="center">
-  <img src="presentation1/Slide1.jpg" alt="">
+  <img src="Presentation1/Slide1.jpg" alt="">
 </div>  
 
 
 ## How ggplot2 builds a plot.
 
 <div id="buildingblocks" align="center">
-  <img src="presentation1/Slide2.jpg" alt="">
+  <img src="Presentation1/Slide2.jpg" alt="">
 </div>  
 
 Overview of example code for the ggplot2 scatter plot.
@@ -93,7 +93,7 @@ ggplot(data = <default data set>,
 ## What users are required to specify in ggplot2 to build a plot.
 
 <div id="buildingblocks" align="center">
-  <img src="presentation1/Slide3.jpg" alt="">
+  <img src="Presentation1/Slide3.jpg" alt="">
 </div>  
 
 Actual code for the ggplot2 scatter plot.
@@ -174,7 +174,7 @@ library(dplyr)
 library(stringr)
 library(lubridate)
 
-patients_clean <- read.delim("patients_clean_ggplot2.txt",sep="\t")
+patients_clean <- read.delim("patient-data-cleaned.txt",sep="\t")
 knitr:::kable(head(patients_clean))
 ```
 

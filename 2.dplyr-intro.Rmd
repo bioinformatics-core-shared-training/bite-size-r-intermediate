@@ -15,9 +15,9 @@ output: html_document
 - **`select`** and **`mutate`** verbs in dplyr
 - advice for cleaning strings and dates
 
-![tolstoy](images/tolstoy.jpg)
+![](images/tolstoy.jpg)
 
-![hadley](images/hadley.jpg)
+![](images/hadley.jpg)
 
 > Like families, tidy datasets are all alike but every messy dataset is messy in its own way - (Hadley Wickham)
 
@@ -27,7 +27,7 @@ http://vita.had.co.nz/papers/tidy-data.pdf
 
 Tidy data are important because they are an entry point for the *analysis cycle* we will describe during the course.
 
-![data-cycle](images/data-cycle.png)
+![](images/data-cycle.png)
 
 As we saw, our data, and especially data we might find out "in the wild", may need "cleaning"" before we can use it. We will discuss how to clean our data for analysis. However, there are steps you can take to make sure your data are tidy and organised before importing into R.
 
@@ -38,7 +38,7 @@ As we saw, our data, and especially data we might find out "in the wild", may ne
 
 We have already seen a ***tidy*** dataset in the form of [Fisher's iris dataset](https://en.wikipedia.org/wiki/Iris_flower_data_set). As we saw, it was possible to produce visualisations of the data using the `~` syntax.
 
-![iris](https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Petal-sepal.jpg/226px-Petal-sepal.jpg)
+![](https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Petal-sepal.jpg/226px-Petal-sepal.jpg)
 
 ```{r}
 data(iris)
