@@ -4,6 +4,10 @@ date: '`r format(Sys.time(), "Last modified: %d %b %Y")`'
 output: html_document
 ---
 
+### Summarising
+
+The first part of the exercise uses the patients dataset we've been using in previous sections of the course. After reading this into R, answer the following questions using the `summarise`, `summarise_each` and `mutate_each` functions.
+
 ```{r message=FALSE}
 library(dplyr)
 patients <- read.delim("patient-data-cleaned.txt", stringsAsFactors = FALSE) %>% tbl_df
@@ -38,6 +42,10 @@ patients %>% summarize(mean(Died))
 
 ******
 
+### Grouping
+
+The following questions require grouping of patients based on one or more attributes using the `group_by` function.
+
 Compare the average height of males and females in this patient cohort.
 
 Are smokers heavier or lighter on average than non-smokers in this dataset?
@@ -60,6 +68,12 @@ patients %>%
 
 ******
 
+### Joining
+
+The patients are all part of a diabetes study and have had their blood glucose concentration and diastolic blood pressure measured on several dates.
+
+This part of the exercise combines grouping, summarisation and joining operations to connect the diabetes study data to the patients table we've already been working with.
+
 ```{r}
 diabetes <- read.delim("diabetes.txt", stringsAsFactors = FALSE) %>% tbl_df
 diabetes %>% head(5)
@@ -69,9 +83,13 @@ diabetes %>% head(5)
 
 Find the number of visits made by each patient to the hospital to have blood glucose and pressure measurements taken.
 
+*[hint: use the `n` function from `dyplr`, type `?n` for help]*
+
 Find the date of the last visit made by each patient.
 
-Add these values as additional columns to the patients table.
+*[hint: use `arrange` to sort by date and the `last` function to select the last one]*
+
+Using the ID column to connect information about patients, add these values as additional columns to the patients table.
 
 - Can you do this as a single sequence of dplyr commands using the `%>%` symbol?
 
@@ -80,6 +98,7 @@ Add these values as additional columns to the patients table.
 ```{r}
 diabetes %>%
   group_by(ID) %>%
+  arrange(Date) %>%
   summarize(Visits = n(), LastVisit = last(Date)) %>%
   right_join(patients, by = "ID")
 ```
