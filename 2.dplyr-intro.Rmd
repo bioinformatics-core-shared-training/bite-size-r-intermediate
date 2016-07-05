@@ -431,22 +431,22 @@ patients_clean
 Rather than removing whitespace, sometimes we might want to adjust a set of strings so that they have a fixed width. We can do this be adding a *padding* character to each string if necessary. This operations is often done with a set of identifiers.
 
 ```{r}
-str_pad(patients$ID,pad = "0",width=3)
-patients_clean <- mutate(patients_clean, ID=str_pad(ID,pad = "0",width=3))
+str_pad(patients$ID,pad = "0",width=15)
+patients_clean <- mutate(patients_clean, ID=str_pad(ID,pad = "0",width=15))
 ```
 
 Note that we can perform several operations in the same command.
 
 ```{r}
-patients_clean <- mutate(patients, Sex = factor(str_trim(Sex)),ID=str_pad(ID,pad = "0",width=3))
+patients_clean <- mutate(patients, Sex = factor(str_trim(Sex)),ID=str_pad(ID,pad = "0",width=15))
 ```
 
 
 Similarly, we might want to trim all the strings between a particular start and end position
 
 ```{r}
-str_sub(patients$State, 1,3)
-str_sub(patients$Name, 2,5)
+str_sub(patients$ID, 1,2)
+str_sub(patients$ID, 4,5)
 ```
 
 Finally, we can convert entire strings to upper- or lower-case

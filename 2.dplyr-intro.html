@@ -117,7 +117,7 @@ $(document).ready(function () {
 
 <h1 class="title toc-ignore">Introduction to dplyr</h1>
 <h4 class="author"><em>Mark Dunning</em></h4>
-<h4 class="date"><em>Last modified: 04 Jul 2016</em></h4>
+<h4 class="date"><em>Last modified: 05 Jul 2016</em></h4>
 
 </div>
 
@@ -811,53 +811,63 @@ hist(patients_clean$Height)</code></pre>
 <div id="supplementary" class="section level2">
 <h2>Supplementary:</h2>
 <p>Rather than removing whitespace, sometimes we might want to adjust a set of strings so that they have a fixed width. We can do this be adding a <em>padding</em> character to each string if necessary. This operations is often done with a set of identifiers.</p>
-<pre class="r"><code>str_pad(patients$ID,pad = &quot;0&quot;,width=3)</code></pre>
-<pre><code>##   [1] &quot;AC/AH/001&quot; &quot;AC/AH/017&quot; &quot;AC/AH/020&quot; &quot;AC/AH/022&quot; &quot;AC/AH/029&quot;
-##   [6] &quot;AC/AH/033&quot; &quot;AC/AH/037&quot; &quot;AC/AH/044&quot; &quot;AC/AH/045&quot; &quot;AC/AH/048&quot;
-##  [11] &quot;AC/AH/049&quot; &quot;AC/AH/050&quot; &quot;AC/AH/052&quot; &quot;AC/AH/053&quot; &quot;AC/AH/057&quot;
-##  [16] &quot;AC/AH/061&quot; &quot;AC/AH/063&quot; &quot;AC/AH/076&quot; &quot;AC/AH/077&quot; &quot;AC/AH/086&quot;
-##  [21] &quot;AC/AH/089&quot; &quot;AC/AH/100&quot; &quot;AC/AH/104&quot; &quot;AC/AH/112&quot; &quot;AC/AH/113&quot;
-##  [26] &quot;AC/AH/114&quot; &quot;AC/AH/115&quot; &quot;AC/AH/127&quot; &quot;AC/AH/133&quot; &quot;AC/AH/150&quot;
-##  [31] &quot;AC/AH/154&quot; &quot;AC/AH/156&quot; &quot;AC/AH/159&quot; &quot;AC/AH/160&quot; &quot;AC/AH/164&quot;
-##  [36] &quot;AC/AH/171&quot; &quot;AC/AH/176&quot; &quot;AC/AH/180&quot; &quot;AC/AH/185&quot; &quot;AC/AH/186&quot;
-##  [41] &quot;AC/AH/192&quot; &quot;AC/AH/198&quot; &quot;AC/AH/207&quot; &quot;AC/AH/208&quot; &quot;AC/AH/210&quot;
-##  [46] &quot;AC/AH/211&quot; &quot;AC/AH/213&quot; &quot;AC/AH/219&quot; &quot;AC/AH/220&quot; &quot;AC/AH/221&quot;
-##  [51] &quot;AC/AH/225&quot; &quot;AC/AH/233&quot; &quot;AC/AH/241&quot; &quot;AC/AH/244&quot; &quot;AC/AH/248&quot;
-##  [56] &quot;AC/AH/249&quot; &quot;AC/SG/002&quot; &quot;AC/SG/003&quot; &quot;AC/SG/008&quot; &quot;AC/SG/009&quot;
-##  [61] &quot;AC/SG/010&quot; &quot;AC/SG/015&quot; &quot;AC/SG/016&quot; &quot;AC/SG/046&quot; &quot;AC/SG/055&quot;
-##  [66] &quot;AC/SG/056&quot; &quot;AC/SG/064&quot; &quot;AC/SG/065&quot; &quot;AC/SG/067&quot; &quot;AC/SG/068&quot;
-##  [71] &quot;AC/SG/072&quot; &quot;AC/SG/074&quot; &quot;AC/SG/084&quot; &quot;AC/SG/095&quot; &quot;AC/SG/099&quot;
-##  [76] &quot;AC/SG/101&quot; &quot;AC/SG/107&quot; &quot;AC/SG/116&quot; &quot;AC/SG/121&quot; &quot;AC/SG/122&quot;
-##  [81] &quot;AC/SG/123&quot; &quot;AC/SG/134&quot; &quot;AC/SG/139&quot; &quot;AC/SG/142&quot; &quot;AC/SG/155&quot;
-##  [86] &quot;AC/SG/165&quot; &quot;AC/SG/167&quot; &quot;AC/SG/172&quot; &quot;AC/SG/173&quot; &quot;AC/SG/179&quot;
-##  [91] &quot;AC/SG/181&quot; &quot;AC/SG/182&quot; &quot;AC/SG/191&quot; &quot;AC/SG/193&quot; &quot;AC/SG/194&quot;
-##  [96] &quot;AC/SG/197&quot; &quot;AC/SG/204&quot; &quot;AC/SG/216&quot; &quot;AC/SG/217&quot; &quot;AC/SG/234&quot;</code></pre>
-<pre class="r"><code>patients_clean &lt;- mutate(patients_clean, ID=str_pad(ID,pad = &quot;0&quot;,width=3))</code></pre>
+<pre class="r"><code>str_pad(patients$ID,pad = &quot;0&quot;,width=15)</code></pre>
+<pre><code>##   [1] &quot;000000AC/AH/001&quot; &quot;000000AC/AH/017&quot; &quot;000000AC/AH/020&quot;
+##   [4] &quot;000000AC/AH/022&quot; &quot;000000AC/AH/029&quot; &quot;000000AC/AH/033&quot;
+##   [7] &quot;000000AC/AH/037&quot; &quot;000000AC/AH/044&quot; &quot;000000AC/AH/045&quot;
+##  [10] &quot;000000AC/AH/048&quot; &quot;000000AC/AH/049&quot; &quot;000000AC/AH/050&quot;
+##  [13] &quot;000000AC/AH/052&quot; &quot;000000AC/AH/053&quot; &quot;000000AC/AH/057&quot;
+##  [16] &quot;000000AC/AH/061&quot; &quot;000000AC/AH/063&quot; &quot;000000AC/AH/076&quot;
+##  [19] &quot;000000AC/AH/077&quot; &quot;000000AC/AH/086&quot; &quot;000000AC/AH/089&quot;
+##  [22] &quot;000000AC/AH/100&quot; &quot;000000AC/AH/104&quot; &quot;000000AC/AH/112&quot;
+##  [25] &quot;000000AC/AH/113&quot; &quot;000000AC/AH/114&quot; &quot;000000AC/AH/115&quot;
+##  [28] &quot;000000AC/AH/127&quot; &quot;000000AC/AH/133&quot; &quot;000000AC/AH/150&quot;
+##  [31] &quot;000000AC/AH/154&quot; &quot;000000AC/AH/156&quot; &quot;000000AC/AH/159&quot;
+##  [34] &quot;000000AC/AH/160&quot; &quot;000000AC/AH/164&quot; &quot;000000AC/AH/171&quot;
+##  [37] &quot;000000AC/AH/176&quot; &quot;000000AC/AH/180&quot; &quot;000000AC/AH/185&quot;
+##  [40] &quot;000000AC/AH/186&quot; &quot;000000AC/AH/192&quot; &quot;000000AC/AH/198&quot;
+##  [43] &quot;000000AC/AH/207&quot; &quot;000000AC/AH/208&quot; &quot;000000AC/AH/210&quot;
+##  [46] &quot;000000AC/AH/211&quot; &quot;000000AC/AH/213&quot; &quot;000000AC/AH/219&quot;
+##  [49] &quot;000000AC/AH/220&quot; &quot;000000AC/AH/221&quot; &quot;000000AC/AH/225&quot;
+##  [52] &quot;000000AC/AH/233&quot; &quot;000000AC/AH/241&quot; &quot;000000AC/AH/244&quot;
+##  [55] &quot;000000AC/AH/248&quot; &quot;000000AC/AH/249&quot; &quot;000000AC/SG/002&quot;
+##  [58] &quot;000000AC/SG/003&quot; &quot;000000AC/SG/008&quot; &quot;000000AC/SG/009&quot;
+##  [61] &quot;000000AC/SG/010&quot; &quot;000000AC/SG/015&quot; &quot;000000AC/SG/016&quot;
+##  [64] &quot;000000AC/SG/046&quot; &quot;000000AC/SG/055&quot; &quot;000000AC/SG/056&quot;
+##  [67] &quot;000000AC/SG/064&quot; &quot;000000AC/SG/065&quot; &quot;000000AC/SG/067&quot;
+##  [70] &quot;000000AC/SG/068&quot; &quot;000000AC/SG/072&quot; &quot;000000AC/SG/074&quot;
+##  [73] &quot;000000AC/SG/084&quot; &quot;000000AC/SG/095&quot; &quot;000000AC/SG/099&quot;
+##  [76] &quot;000000AC/SG/101&quot; &quot;000000AC/SG/107&quot; &quot;000000AC/SG/116&quot;
+##  [79] &quot;000000AC/SG/121&quot; &quot;000000AC/SG/122&quot; &quot;000000AC/SG/123&quot;
+##  [82] &quot;000000AC/SG/134&quot; &quot;000000AC/SG/139&quot; &quot;000000AC/SG/142&quot;
+##  [85] &quot;000000AC/SG/155&quot; &quot;000000AC/SG/165&quot; &quot;000000AC/SG/167&quot;
+##  [88] &quot;000000AC/SG/172&quot; &quot;000000AC/SG/173&quot; &quot;000000AC/SG/179&quot;
+##  [91] &quot;000000AC/SG/181&quot; &quot;000000AC/SG/182&quot; &quot;000000AC/SG/191&quot;
+##  [94] &quot;000000AC/SG/193&quot; &quot;000000AC/SG/194&quot; &quot;000000AC/SG/197&quot;
+##  [97] &quot;000000AC/SG/204&quot; &quot;000000AC/SG/216&quot; &quot;000000AC/SG/217&quot;
+## [100] &quot;000000AC/SG/234&quot;</code></pre>
+<pre class="r"><code>patients_clean &lt;- mutate(patients_clean, ID=str_pad(ID,pad = &quot;0&quot;,width=15))</code></pre>
 <p>Note that we can perform several operations in the same command.</p>
-<pre class="r"><code>patients_clean &lt;- mutate(patients, Sex = factor(str_trim(Sex)),ID=str_pad(ID,pad = &quot;0&quot;,width=3))</code></pre>
+<pre class="r"><code>patients_clean &lt;- mutate(patients, Sex = factor(str_trim(Sex)),ID=str_pad(ID,pad = &quot;0&quot;,width=15))</code></pre>
 <p>Similarly, we might want to trim all the strings between a particular start and end position</p>
-<pre class="r"><code>str_sub(patients$State, 1,3)</code></pre>
-<pre><code>##   [1] &quot;New&quot; &quot;Flo&quot; &quot;Con&quot; &quot;Mas&quot; &quot;Kan&quot; &quot;Ill&quot; &quot;Col&quot; &quot;Sou&quot; &quot;Ill&quot; &quot;Mis&quot; &quot;Ala&quot;
-##  [12] &quot;Col&quot; &quot;Ida&quot; &quot;Flo&quot; &quot;New&quot; &quot;Pen&quot; &quot;Mis&quot; &quot;Ind&quot; &quot;Mic&quot; &quot;Mic&quot; &quot;Ore&quot; &quot;Tex&quot;
-##  [23] &quot;Nev&quot; &quot;Wis&quot; &quot;Uta&quot; &quot;Rho&quot; &quot;Pen&quot; &quot;Ill&quot; &quot;Vir&quot; &quot;Ill&quot; &quot;Tex&quot; &quot;Cal&quot; &quot;Geo&quot;
-##  [34] &quot;Nor&quot; &quot;Col&quot; &quot;Ida&quot; &quot;Tex&quot; &quot;Ari&quot; &quot;Iow&quot; &quot;Cal&quot; &quot;Mar&quot; &quot;Mic&quot; &quot;Tex&quot; &quot;Mar&quot;
-##  [45] &quot;New&quot; &quot;Ind&quot; &quot;Tex&quot; &quot;Ida&quot; &quot;Ohi&quot; &quot;New&quot; &quot;Ari&quot; &quot;Ind&quot; &quot;Ten&quot; &quot;Mar&quot; &quot;Mic&quot;
-##  [56] &quot;Pen&quot; &quot;New&quot; &quot;Ten&quot; &quot;New&quot; &quot;Cal&quot; &quot;Was&quot; &quot;Cal&quot; &quot;Nor&quot; &quot;Rho&quot; &quot;Mai&quot; &quot;Sou&quot;
-##  [67] &quot;Vir&quot; &quot;Cal&quot; &quot;Ida&quot; &quot;Ari&quot; &quot;Ken&quot; &quot;Col&quot; &quot;Tex&quot; &quot;Cal&quot; &quot;Pen&quot; &quot;Cal&quot; &quot;Mar&quot;
-##  [78] &quot;Wis&quot; &quot;Ohi&quot; &quot;Flo&quot; &quot;Wes&quot; &quot;Was&quot; &quot;Okl&quot; &quot;New&quot; &quot;New&quot; &quot;Ida&quot; &quot;Mis&quot; &quot;Flo&quot;
-##  [89] &quot;Kan&quot; &quot;Cal&quot; &quot;Nor&quot; &quot;Wis&quot; &quot;Ark&quot; &quot;Cal&quot; &quot;Mic&quot; &quot;Vir&quot; &quot;Ill&quot; &quot;Col&quot; &quot;Ken&quot;
-## [100] &quot;Ari&quot;</code></pre>
-<pre class="r"><code>str_sub(patients$Name, 2,5)</code></pre>
-<pre><code>##   [1] &quot;emet&quot; &quot;osar&quot; &quot;ulio&quot; &quot;upe&quot;  &quot;aver&quot; &quot;erni&quot; &quot;amue&quot; &quot;lair&quot; &quot;hirl&quot; &quot;erle&quot;
-##  [11] &quot;arti&quot; &quot;ranc&quot; &quot;ourt&quot; &quot;ranc&quot; &quot;erno&quot; &quot;este&quot; &quot;obin&quot; &quot;lber&quot; &quot;ommy&quot; &quot;yle&quot; 
-##  [21] &quot;ong&quot;  &quot;iche&quot; &quot;erem&quot; &quot;at&quot;   &quot;ugen&quot; &quot;ris&quot;  &quot;racy&quot; &quot;ame&quot;  &quot;lyde&quot; &quot;rett&quot;
-##  [31] &quot;ony&quot;  &quot;eorg&quot; &quot;dwar&quot; &quot;ory&quot;  &quot;hane&quot; &quot;evin&quot; &quot;erry&quot; &quot;rew&quot;  &quot;onal&quot; &quot;hris&quot;
-##  [41] &quot;omin&quot; &quot;an&quot;   &quot;obbi&quot; &quot;awre&quot; &quot;eith&quot; &quot;on&quot;   &quot;harl&quot; &quot;ay&quot;   &quot;icha&quot; &quot;arlo&quot;
-##  [51] &quot;ail&quot;  &quot;ario&quot; &quot;inds&quot; &quot;ean&quot;  &quot;ndre&quot; &quot;esus&quot; &quot;an&quot;   &quot;alte&quot; &quot;ana&quot;  &quot;ammy&quot;
-##  [61] &quot;heo&quot;  &quot;haun&quot; &quot;immi&quot; &quot;arl&quot;  &quot;van&quot;  &quot;erri&quot; &quot;on&quot;   &quot;hayn&quot; &quot;homa&quot; &quot;alen&quot;
-##  [71] &quot;amer&quot; &quot;ddie&quot; &quot;rian&quot; &quot;atth&quot; &quot;esli&quot; &quot;ason&quot; &quot;ol&quot;   &quot;onni&quot; &quot;udy&quot;  &quot;icha&quot;
-##  [81] &quot;arne&quot; &quot;aryl&quot; &quot;orda&quot; &quot;enne&quot; &quot;aymo&quot; &quot;lmer&quot; &quot;immy&quot; &quot;hitn&quot; &quot;ritt&quot; &quot;ogan&quot;
-##  [91] &quot;erry&quot; &quot;amie&quot; &quot;acy&quot;  &quot;onni&quot; &quot;osep&quot; &quot;tacy&quot; &quot;ntho&quot; &quot;lva&quot;  &quot;ean&quot;  &quot;uis&quot;</code></pre>
+<pre class="r"><code>str_sub(patients$ID, 1,2)</code></pre>
+<pre><code>##   [1] &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot;
+##  [15] &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot;
+##  [29] &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot;
+##  [43] &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot;
+##  [57] &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot;
+##  [71] &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot;
+##  [85] &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot;
+##  [99] &quot;AC&quot; &quot;AC&quot;</code></pre>
+<pre class="r"><code>str_sub(patients$ID, 4,5)</code></pre>
+<pre><code>##   [1] &quot;AH&quot; &quot;AH&quot; &quot;AH&quot; &quot;AH&quot; &quot;AH&quot; &quot;AH&quot; &quot;AH&quot; &quot;AH&quot; &quot;AH&quot; &quot;AH&quot; &quot;AH&quot; &quot;AH&quot; &quot;AH&quot; &quot;AH&quot;
+##  [15] &quot;AH&quot; &quot;AH&quot; &quot;AH&quot; &quot;AH&quot; &quot;AH&quot; &quot;AH&quot; &quot;AH&quot; &quot;AH&quot; &quot;AH&quot; &quot;AH&quot; &quot;AH&quot; &quot;AH&quot; &quot;AH&quot; &quot;AH&quot;
+##  [29] &quot;AH&quot; &quot;AH&quot; &quot;AH&quot; &quot;AH&quot; &quot;AH&quot; &quot;AH&quot; &quot;AH&quot; &quot;AH&quot; &quot;AH&quot; &quot;AH&quot; &quot;AH&quot; &quot;AH&quot; &quot;AH&quot; &quot;AH&quot;
+##  [43] &quot;AH&quot; &quot;AH&quot; &quot;AH&quot; &quot;AH&quot; &quot;AH&quot; &quot;AH&quot; &quot;AH&quot; &quot;AH&quot; &quot;AH&quot; &quot;AH&quot; &quot;AH&quot; &quot;AH&quot; &quot;AH&quot; &quot;AH&quot;
+##  [57] &quot;SG&quot; &quot;SG&quot; &quot;SG&quot; &quot;SG&quot; &quot;SG&quot; &quot;SG&quot; &quot;SG&quot; &quot;SG&quot; &quot;SG&quot; &quot;SG&quot; &quot;SG&quot; &quot;SG&quot; &quot;SG&quot; &quot;SG&quot;
+##  [71] &quot;SG&quot; &quot;SG&quot; &quot;SG&quot; &quot;SG&quot; &quot;SG&quot; &quot;SG&quot; &quot;SG&quot; &quot;SG&quot; &quot;SG&quot; &quot;SG&quot; &quot;SG&quot; &quot;SG&quot; &quot;SG&quot; &quot;SG&quot;
+##  [85] &quot;SG&quot; &quot;SG&quot; &quot;SG&quot; &quot;SG&quot; &quot;SG&quot; &quot;SG&quot; &quot;SG&quot; &quot;SG&quot; &quot;SG&quot; &quot;SG&quot; &quot;SG&quot; &quot;SG&quot; &quot;SG&quot; &quot;SG&quot;
+##  [99] &quot;SG&quot; &quot;SG&quot;</code></pre>
 <p>Finally, we can convert entire strings to upper- or lower-case</p>
 <pre class="r"><code>str_to_lower(patients$Pet)</code></pre>
 <pre><code>##   [1] &quot;cat&quot;   &quot;cat&quot;   &quot;dog&quot;   &quot;dog&quot;   &quot;cat&quot;   &quot;cat&quot;   &quot;dog&quot;   &quot;dog&quot;  
@@ -975,21 +985,22 @@ as.period(age)</code></pre>
 patients_clean</code></pre>
 <pre><code>## Source: local data frame [100 x 15]
 ## 
-##           ID      Name     Race   Age    Sex Smokes             Height
-##        (chr)    (fctr)   (fctr) (int) (fctr) (fctr)             (fctr)
-## 1  AC/AH/001 Demetrius    White    44   Male   TRUE 176.479144276913cm
-## 2  AC/AH/017   Rosario    White    43   Male   TRUE 174.748482460591cm
-## 3  AC/AH/020     Julio    Black    44   Male     No 173.944873836774cm
-## 4  AC/AH/022      Lupe    White    44   Male  FALSE 180.028888936188cm
-## 5  AC/AH/029    Lavern      Cat    43   Male     No 178.636539798649cm
-## 6  AC/AH/033    Bernie   Native    43 Female  FALSE 159.777836229305cm
-## 7  AC/AH/037    Samuel    White    44   Male   TRUE 170.949966267411cm
-## 8  AC/AH/044     Clair    White    44 Female   TRUE 161.826590769764cm
-## 9  AC/AH/045   Shirley    White    43   Male  FALSE  169.66230745064cm
-## 10 AC/AH/048     Merle Hispanic    44 Female  FALSE 160.121017002151cm
-## ..       ...       ...      ...   ...    ...    ...                ...
-## Variables not shown: Weight (fctr), Birth (fctr), State (fctr), Pet
-##   (fctr), Grade_Level (int), Died (lgl), Count (dbl), Date (fctr)</code></pre>
+##                 ID      Name     Race   Age    Sex Smokes
+##              (chr)    (fctr)   (fctr) (int) (fctr) (fctr)
+## 1  000000AC/AH/001 Demetrius    White    44   Male   TRUE
+## 2  000000AC/AH/017   Rosario    White    43   Male   TRUE
+## 3  000000AC/AH/020     Julio    Black    44   Male     No
+## 4  000000AC/AH/022      Lupe    White    44   Male  FALSE
+## 5  000000AC/AH/029    Lavern      Cat    43   Male     No
+## 6  000000AC/AH/033    Bernie   Native    43 Female  FALSE
+## 7  000000AC/AH/037    Samuel    White    44   Male   TRUE
+## 8  000000AC/AH/044     Clair    White    44 Female   TRUE
+## 9  000000AC/AH/045   Shirley    White    43   Male  FALSE
+## 10 000000AC/AH/048     Merle Hispanic    44 Female  FALSE
+## ..             ...       ...      ...   ...    ...    ...
+## Variables not shown: Height (fctr), Weight (fctr), Birth (fctr), State
+##   (fctr), Pet (fctr), Grade_Level (int), Died (lgl), Count (dbl), Date
+##   (fctr)</code></pre>
 </div>
 </div>
 

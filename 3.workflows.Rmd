@@ -163,6 +163,13 @@ The `%in%` function can check for matches in a pre-defined vector
 filter(patients_clean, Pet %in% c("CAT", "Cat"))
 ```
 
+Partial matches can be performed using `grepl`. This is used rather than the usual `grep` as it returns a *logical* rather than an *integer*
+
+```{r}
+grep("Jo", patients_clean$Name)
+grepl("Jo",patients_clean$Name)
+filter(patients_clean, grepl("Jo",Name))
+```
 
 Combining conditions in `filter` can be achieved adding `,` or using the Boolean operators `|`, `&`
 
@@ -259,7 +266,7 @@ read.delim("patient-data.txt") %>%
   select(ID, Name, Birth,BMI,Smokes,Overweight,Died) %>% 
   filter(Smokes & Overweight & !Died) %>% 
   arrange(desc(BMI)) %>% 
-  top_n(10, BMI)
+  top_n(10, BMI) %>% 
   write.csv("candidates.csv")
 ```
 
