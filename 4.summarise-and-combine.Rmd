@@ -75,7 +75,7 @@ It is also possible to summarise using a function that takes more than one value
 summarise(iris, correlation = cor(Petal.Width, Petal.Length))
 ```
 
-### Summarizing multiple columns
+### Summarising multiple columns
 
 We can apply the same function to each column using `summarise_each`.
 
@@ -217,7 +217,7 @@ groups(iris_ungrouped)
 
 ## Exercise: [Rmarkdown Template](summarise-and-combine-exercise.Rmd)
 
-Read a cleaned version of the patients dataset (patient-data-cleaned.txt) into RStudio and use `summarise`, `summarise_each`, `mutate_each` and `group_by` to answer the following questions:
+Read a cleaned version of the patients dataset (patient-data-cleaned.txt) into R and use `summarise`, `summarise_each`, `mutate_each` and `group_by` to answer the following questions:
 
 * What is the mean age, height and weight of patients in the patients dataset?
     * Modify the output by rounding these computed means to 2 decimal places
@@ -348,9 +348,9 @@ diabetes <- read.delim("diabetes.txt", stringsAsFactors = FALSE) %>% tbl_df
 diabetes
 ```
 
-* Find the number of visits made by each patient to the hospital to have blood glucose and pressure measurements taken.
+* Find the number of visits made by each patient to the hospital to have blood glucose and pressure measurements taken (_hint: use the `n` function from `dyplr`, type `?n` for help_).
 
-* Find the date of the last visit made by each patient.
+* Find the date of the last visit made by each patient (_hint: use `arrange` to sort by date and the `last` function to select the last one_).
 
 * Using the ID column to connect information about patients, add these values as additional columns to the patients table.
     * Can you do this as a single sequence of dplyr commands using the `%>%` symbol?
