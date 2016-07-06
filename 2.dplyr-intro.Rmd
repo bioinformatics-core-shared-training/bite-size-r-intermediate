@@ -89,6 +89,7 @@ gather(untidy, Treatment, Result, treatmenta:treatmentb) %>% mutate(Treatment = 
 
 ```{r,warning=FALSE}
 library(tidyr)
+
 untidy <- read.delim("tidyr-example.txt")
 untidy
 ```
@@ -108,6 +109,8 @@ The arguments are;
 gather(untidy, Treatment, Result, c(treatmenta,treatmentb))
 ```
 
+(*Ideally, the `Treatment` column should just be `a` or `b`, but we'll see how to change this later-on*)
+
 When specifying columns, an alternative is to ignore some column names
 
 ```{r warning=FALSE}
@@ -125,14 +128,14 @@ Note that after all these operations, the original data frame (`untidy`) is unal
   - we need to create a new variable to save the result
   - you should never work directly on the raw data
 
-```{r}
+```{r warning=FALSE}
 untidy
 tidy <- gather(untidy, Treatment, Result, c(treatmenta,treatmentb))
 ```
 
 ******
 
-## Example: Simulated clinical data
+## Exercise: Simulated clinical data
 
 Using data from the Mango Solutions training dataset
 
@@ -151,38 +154,58 @@ kable(head(messyData))
 
 - What variables and observations do we have?
 - What might a 'tidy' version of the dataset look like?
-- Use the `tidyr` package to create a tidy version of the data
-
+- Use the `gather` function from `tidyr`  to create a tidy version of the data
+    + call the object `tidyData` 
+    
 ******
 
 
-```{r echo=FALSE, results='asis',message=FALSE}
+```{r echo=FALSE, results='asis',message=FALSE,warning=FALSE}
 library(tidyr)
-tidy <- gather(messyData,Treatment, Count, -Subject)
+tidyData <- gather(messyData,Treatment, Count, -Subject)
 ```
 
+## Other useful functions in 'tidyr'
 
-`separate` from the same package will also sort out the treatment names.
+`tidyr` has a few more useful functions that we can demonstrate on the `tidyData` object you should have just created
+
+Firstly, `spread` has the opposite effect to `gather` and will translate tidy data back into human-readable form
 
 ```{r eval=FALSE}
-separate(tidy,Treatment,into=c("Treatment","Rep"))
+spread(tidyData, Treatment,Count)
 ```
 
 ```{r echo=FALSE}
-head(separate(tidy,Treatment,into=c("Treatment","Rep")))
+head(spread(tidyData, Treatment,Count))
 ```
 
-
-N.B. `spread` has the opposite effect to gather and will translate tidy data back into human-readable form
+Your `tidyData` object should look something like the following:
 
 ```{r eval=FALSE}
-spread(tidy, Treatment,Count)
+tidyData
 ```
 
 ```{r echo=FALSE}
-head(spread(tidy, Treatment,Count))
+head(tidyData)
 ```
 
+In the `Treatment` columns, we have values that have is a compound of a treatment name (either `Placebo` or `Treatment`) and some replicate number (`1`, `2` or `3`) separated by a common value `.`. 
+
+```{r}
+table(tidyData$Treatment)
+```
+
+We can resolve these values into two different columns using the  `separate` function. It should be able to guess that a `.` character is being used to join the two different parts of the name together.
+
+```{r eval=FALSE}
+separate(tidyData,Treatment,into=c("Treatment","Rep"))
+```
+
+```{r echo=FALSE}
+head(separate(tidyData,Treatment,into=c("Treatment","Rep")))
+```
+
+In separate we can explicitly say the separator being used. Apart from the `.` in our example other common values are `-`, `_`, `:`.
 
 ## dpylr introduction, and more data-cleaning
 
@@ -272,7 +295,9 @@ select(patients, Name)
 select(patients, Name, Race)
 ```
 
-Excluding certain columns in base R would require us to know the *index* we wanted to exclude, or to do something complicated with the column names
+Excluding certain columns in base R would require us to know the *index* we wanted to exclude, or to do something complicated with the column names.
+
+***Disclaimer*** there is actually a function called `subset` in base R with a similar style to `select`
 
 ```{r eval=FALSE}
 patients[,-2]
