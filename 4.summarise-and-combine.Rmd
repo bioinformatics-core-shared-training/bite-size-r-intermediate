@@ -215,7 +215,7 @@ groups(iris_ungrouped)
 
 `ungroup` can be quite helpful in more complicated chains of `dplyr` operations where the grouping is only required for some of the steps and would have unintended consequences for subsequent operations within the chain.
 
-## Exercise: [Rmarkdown Template](summarise-and-combine-exercise.Rmd)
+### Exercise: [Rmarkdown Template](summarise-and-combine-exercise.Rmd)
 
 Read a cleaned version of the patients dataset (patient-data-cleaned.txt) into R and use `summarise`, `summarise_each`, `mutate_each` and `group_by` to answer the following questions:
 
@@ -337,9 +337,9 @@ semi_join(df1, df2, by = "name")
 anti_join(df1, df2, by = "name")
 ```
 
-## Exercise
+### Exercise: [Rmarkdown Template](summarise-and-combine-exercise.Rmd)
 
-The exercise uses a more realistic dataset, building on the patients table we've already been working with.
+The exercise uses a more realistic dataset, building on the patients data frame we've already been working with.
 
 The patients are all part of a diabetes study and have had their blood glucose concentration and diastolic blood pressure measured on several dates.
 
@@ -348,18 +348,6 @@ diabetes <- read.delim("diabetes.txt", stringsAsFactors = FALSE) %>% tbl_df
 diabetes
 ```
 
-* Find the number of visits made by each patient to the hospital to have blood glucose and pressure measurements taken (_hint: use the `n` function from `dyplr`, type `?n` for help_).
+* Use the ID column to combine information about patients with the blood pressure and glucose measurements.
 
-* Find the date of the last visit made by each patient (_hint: use `arrange` to sort by date and the `last` function to select the last one_).
-
-* Using the ID column to connect information about patients, add these values as additional columns to the patients table.
-    * Can you do this as a single sequence of dplyr commands using the `%>%` symbol?
-
-```{r include=FALSE}
-diabetes %>%
-  group_by(ID) %>%
-  summarise(Measurements = n(), LastMeasurement = last(Date)) %>%
-  right_join(patients, by = "ID")
-```
-
-
+* Refine this to only include the most recent blood pressure and glucose measurements for each patient.

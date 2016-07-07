@@ -117,7 +117,7 @@ $(document).ready(function () {
 
 <h1 class="title toc-ignore">Grouping, Summarising and Joining</h1>
 <h4 class="author"><em>Matt Eldridge</em></h4>
-<h4 class="date"><em>Last modified: 05 Jul 2016</em></h4>
+<h4 class="date"><em>Last modified: 07 Jul 2016</em></h4>
 
 </div>
 
@@ -386,8 +386,8 @@ class(iris_ungrouped)</code></pre>
 <pre><code>NULL</code></pre>
 <p><code>ungroup</code> can be quite helpful in more complicated chains of <code>dplyr</code> operations where the grouping is only required for some of the steps and would have unintended consequences for subsequent operations within the chain.</p>
 </div>
-<div id="exercise-rmarkdown-template" class="section level2">
-<h2>Exercise: <a href="summarise-and-combine-exercise.Rmd">Rmarkdown Template</a></h2>
+<div id="exercise-rmarkdown-template" class="section level3">
+<h3>Exercise: <a href="summarise-and-combine-exercise.Rmd">Rmarkdown Template</a></h3>
 <p>Read a cleaned version of the patients dataset (patient-data-cleaned.txt) into R and use <code>summarise</code>, <code>summarise_each</code>, <code>mutate_each</code> and <code>group_by</code> to answer the following questions:</p>
 <ul>
 <li>What is the mean age, height and weight of patients in the patients dataset?
@@ -556,9 +556,9 @@ anti_join(df1, df2, by = &quot;name&quot;)</code></pre>
   (chr)  (chr)     (chr)
 1   Tom London   MRC-CSC</code></pre>
 </div>
-<div id="exercise" class="section level2">
-<h2>Exercise</h2>
-<p>The exercise uses a more realistic dataset, building on the patients table we’ve already been working with.</p>
+<div id="exercise-rmarkdown-template-1" class="section level3">
+<h3>Exercise: <a href="summarise-and-combine-exercise.Rmd">Rmarkdown Template</a></h3>
+<p>The exercise uses a more realistic dataset, building on the patients data frame we’ve already been working with.</p>
 <p>The patients are all part of a diabetes study and have had their blood glucose concentration and diastolic blood pressure measured on several dates.</p>
 <pre class="r"><code>diabetes &lt;- read.delim(&quot;diabetes.txt&quot;, stringsAsFactors = FALSE) %&gt;% tbl_df
 diabetes</code></pre>
@@ -578,12 +578,8 @@ diabetes</code></pre>
 10 AC/AH/001 2011-07-13     112    88
 ..       ...        ...     ...   ...</code></pre>
 <ul>
-<li><p>Find the number of visits made by each patient to the hospital to have blood glucose and pressure measurements taken (<em>hint: use the <code>n</code> function from <code>dyplr</code>, type <code>?n</code> for help</em>).</p></li>
-<li><p>Find the date of the last visit made by each patient (<em>hint: use <code>arrange</code> to sort by date and the <code>last</code> function to select the last one</em>).</p></li>
-<li>Using the ID column to connect information about patients, add these values as additional columns to the patients table.
-<ul>
-<li>Can you do this as a single sequence of dplyr commands using the <code>%&gt;%</code> symbol?</li>
-</ul></li>
+<li><p>Use the ID column to combine information about patients with the blood pressure and glucose measurements.</p></li>
+<li><p>Refine this to only include the most recent blood pressure and glucose measurements for each patient.</p></li>
 </ul>
 </div>
 </div>
