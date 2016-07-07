@@ -117,7 +117,7 @@ $(document).ready(function () {
 
 <h1 class="title toc-ignore">Introduction to dplyr</h1>
 <h4 class="author"><em>Mark Dunning</em></h4>
-<h4 class="date"><em>Last modified: 04 Jul 2016</em></h4>
+<h4 class="date"><em>Last modified: 07 Jul 2016</em></h4>
 
 </div>
 
@@ -242,6 +242,7 @@ head(iris)</code></pre>
 </ul>
 <p><strong><em>You can get these example data <a href="tidyr-example.txt">here</a></em></strong></p>
 <pre class="r"><code>library(tidyr)
+
 untidy &lt;- read.delim(&quot;tidyr-example.txt&quot;)
 untidy</code></pre>
 <pre><code>##           Name treatmenta treatmentb
@@ -266,6 +267,7 @@ untidy</code></pre>
 ## 4   John Smith treatmentb      2
 ## 5     Jane Doe treatmentb     11
 ## 6 Mary Johnson treatmentb      1</code></pre>
+<p>(<em>Ideally, the <code>Treatment</code> column should just be <code>a</code> or <code>b</code>, but we’ll see how to change this later-on</em>)</p>
 <p>When specifying columns, an alternative is to ignore some column names</p>
 <pre class="r"><code>gather(untidy, Treatment, Result, -Name)</code></pre>
 <pre><code>##           Name  Treatment Result
@@ -295,12 +297,10 @@ untidy</code></pre>
 ## 2     Jane Doe         16         11
 ## 3 Mary Johnson          3          1</code></pre>
 <pre class="r"><code>tidy &lt;- gather(untidy, Treatment, Result, c(treatmenta,treatmentb))</code></pre>
-<pre><code>## Warning: attributes are not identical across measure variables; they will
-## be dropped</code></pre>
 <hr />
 </div>
-<div id="example-simulated-clinical-data" class="section level2">
-<h2>Example: Simulated clinical data</h2>
+<div id="exercise-simulated-clinical-data" class="section level2">
+<h2>Exercise: Simulated clinical data</h2>
 <p>Using data from the Mango Solutions training dataset</p>
 <pre class="r"><code>library(mangoTraining)
 data(&quot;messyData&quot;)</code></pre>
@@ -376,20 +376,18 @@ data(&quot;messyData&quot;)</code></pre>
 <ul>
 <li>What variables and observations do we have?</li>
 <li>What might a ‘tidy’ version of the dataset look like?</li>
-<li>Use the <code>tidyr</code> package to create a tidy version of the data</li>
+<li>Use the <code>gather</code> function from <code>tidyr</code> to create a tidy version of the data
+<ul>
+<li>call the object <code>tidyData</code></li>
+</ul></li>
 </ul>
 <hr />
-<p><code>separate</code> from the same package will also sort out the treatment names.</p>
-<pre class="r"><code>separate(tidy,Treatment,into=c(&quot;Treatment&quot;,&quot;Rep&quot;))</code></pre>
-<pre><code>##   Subject Treatment Rep Count
-## 1       1   Placebo   1    45
-## 2       2   Placebo   1    56
-## 3       3   Placebo   1    39
-## 4       4   Placebo   1    42
-## 5       5   Placebo   1    50
-## 6       6   Placebo   1    47</code></pre>
-<p>N.B. <code>spread</code> has the opposite effect to gather and will translate tidy data back into human-readable form</p>
-<pre class="r"><code>spread(tidy, Treatment,Count)</code></pre>
+</div>
+<div id="other-useful-functions-in-tidyr" class="section level2">
+<h2>Other useful functions in ‘tidyr’</h2>
+<p><code>tidyr</code> has a few more useful functions that we can demonstrate on the <code>tidyData</code> object you should have just created</p>
+<p>Firstly, <code>spread</code> has the opposite effect to <code>gather</code> and will translate tidy data back into human-readable form</p>
+<pre class="r"><code>spread(tidyData, Treatment,Count)</code></pre>
 <pre><code>##   Subject Drug1.1 Drug1.2 Drug2.1 Drug2.2 Placebo.1 Placebo.2
 ## 1       1      40      30      51      37        45        41
 ## 2       2      53      43      47      49        56        57
@@ -397,6 +395,30 @@ data(&quot;messyData&quot;)</code></pre>
 ## 4       4      34      25      43      26        42        38
 ## 5       5      35      29      38      31        50        49
 ## 6       6      51      43      33      46        47        44</code></pre>
+<p>Your <code>tidyData</code> object should look something like the following:</p>
+<pre class="r"><code>tidyData</code></pre>
+<pre><code>##   Subject Treatment Count
+## 1       1 Placebo.1    45
+## 2       2 Placebo.1    56
+## 3       3 Placebo.1    39
+## 4       4 Placebo.1    42
+## 5       5 Placebo.1    50
+## 6       6 Placebo.1    47</code></pre>
+<p>In the <code>Treatment</code> columns, we have values that have is a compound of a treatment name (either <code>Placebo</code> or <code>Treatment</code>) and some replicate number (<code>1</code>, <code>2</code> or <code>3</code>) separated by a common value <code>.</code>.</p>
+<pre class="r"><code>table(tidyData$Treatment)</code></pre>
+<pre><code>## 
+##   Drug1.1   Drug1.2   Drug2.1   Drug2.2 Placebo.1 Placebo.2 
+##        33        33        33        33        33        33</code></pre>
+<p>We can resolve these values into two different columns using the <code>separate</code> function. It should be able to guess that a <code>.</code> character is being used to join the two different parts of the name together.</p>
+<pre class="r"><code>separate(tidyData,Treatment,into=c(&quot;Treatment&quot;,&quot;Rep&quot;))</code></pre>
+<pre><code>##   Subject Treatment Rep Count
+## 1       1   Placebo   1    45
+## 2       2   Placebo   1    56
+## 3       3   Placebo   1    39
+## 4       4   Placebo   1    42
+## 5       5   Placebo   1    50
+## 6       6   Placebo   1    47</code></pre>
+<p>In separate we can explicitly say the separator being used. Apart from the <code>.</code> in our example other common values are <code>-</code>, <code>_</code>, <code>:</code>.</p>
 </div>
 <div id="dpylr-introduction-and-more-data-cleaning" class="section level2">
 <h2>dpylr introduction, and more data-cleaning</h2>
@@ -553,7 +575,8 @@ patients</code></pre>
 ## 9    Shirley    White
 ## 10     Merle Hispanic
 ## ..       ...      ...</code></pre>
-<p>Excluding certain columns in base R would require us to know the <em>index</em> we wanted to exclude, or to do something complicated with the column names</p>
+<p>Excluding certain columns in base R would require us to know the <em>index</em> we wanted to exclude, or to do something complicated with the column names.</p>
+<p><strong><em>Disclaimer</em></strong> there is actually a function called <code>subset</code> in base R with a similar style to <code>select</code></p>
 <pre class="r"><code>patients[,-2]
 patients[,setdiff(colnames(patients), &quot;Name&quot;)]</code></pre>
 <pre class="r"><code>head(patients[,-2])
@@ -766,7 +789,7 @@ str_trim(patients$Sex)</code></pre>
 <li>compare to the <code>Count</code> column, for example</li>
 </ul>
 <p>We need an extra conversion step to make sure these are represented as <em>numeric</em> values.</p>
-<pre class="r"><code>patients_clean &lt;- mutate(patients_clean, Height= as.numeric(str_replace_all(patients_clean$Height,pattern = &quot;cm&quot;,&quot;&quot;)))
+<pre class="r"><code>patients_clean &lt;- mutate(patients_clean, Height= as.numeric(str_replace_all(Height,pattern = &quot;cm&quot;,&quot;&quot;)))
 hist(patients_clean$Height)</code></pre>
 <p><img src="data:image/png;base64,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oClpj187X3v+tfO1598wR4EOlZ3ityQF+pLI75p7SR0o0JS0x6+drz3/2vna82+Yo0APkdZXs8UC3UvkjSZfUxEFmpL2+LXztedfO197/g1zFOgzIhv/L1+g7WeKbNb8q8qjQFPSHr92vvb8a+drz79hrifSHyKy+OmPijz2/Pj1RXo/0/SLKqBAU9Iev3a+9vxr52vPv2GuAp27S8nviLUo/pF4CjQl7fFr52vPv3a+9vwb5n4xkfErFfpzyxebfUUlKNCUtMevna89/9r52vNvWI2Xs2t79Oz9R//w4LGvNPdqKlCgKWmPXztfe/6187Xn3zBeUDkE6xtIO197/rXzteffMAo0BOsbSDtfe/6187Xn3zAKNATrG0g7X3v+tfO1598wR4GOrdT8q8qjQFPSHr92vvb8a+drz79hjgKterXr5l9VHgWakvb4tfO15187X3v+DeuyQHu1tjb/qvIo0JS0x6+drz3/2vna82+Yo0CfKHj0+lNXkmVfaP5FFVCgKWmPXztfe/6187Xn37Auvj6fc7EsMrk5V+JAgaakPX7tfO35187Xnn/DuvwG54mycaYZF+JCgaakPX7tfO35187Xnn/DuizQj0TUvoinQFPSHr92vvb8a+drz79hXf+IfUUZ34TrcKJAU9Iev3a+9vxr52vPv2FdF+hScm4TrsOJAk1Je/za+drzr52vPf+GdVmgz4nc0IwLcaFAU9Iev3a+9vxr52vPv2FdFegra4g825QrcaBAU9Iev3a+9vxr52vPv2GOAt26w1Zr9BTZhJ/Cd8X6BtLO155/7Xzt+Tes61/lXFztE1AKNC3t8Wvna8+/dr72/BvmKNAlSq138NvNv6gCCjQl7fFr52vPv3a+9vwbxsvZhWB9A2nna8+/dr72/BtGgYZgfQNp52vPv3a+9vwbRoGGYH0Daedrz792vvb8G0aBhmB9A2nna8+/dr72/BvmKNDVa2j+xVGgKWmPXztfe/6187Xn37A0r0iv9sL0FGhK2uPXzteef+187fk3zFGLJ520YdSXLasMjntznfXymn9xFGhK2uPXzteef+187fk3zPV55U09Zalz327LZmc9saPInnOaflEFFGhK2uPXzteef+187fk3zFGg/11YvvlF4c7tIqc083rKUKApaY9fO197/rXzteffMEeBHi8Dpnbc+7m0fNq8yylH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gYagvYHIt52vvf4No0BD0N5A5NvO117/hlGgIWhvIPJt52uvf8Mo0BC0NxD5tvO1179hFGgI2huIfNv52uvfMAo0BO0NRL7tfO31bxgFGoL2BiLfdr72+jeMAg1BewORbztfe/0bRoGGoL2ByLedr73+DaNAQ9DeQOTbztde/4ZRoCFobyDybedrr3/DKNAQtDcQ+bbztde/YRRoCNobiHzb+drr3zAKNATtDUS+7Xzt9W8YBRqC9gYi33a+9vo3jAINQXsDkW87X3v9G0aBhqC9gci3na+9/g2jQEPQ3kDk287XXv+GUaAhaG8g8m3na69/wyjQELQ3EPm287XXv2EUaAjaG4h82/na698wCjQE7Q1Evu187fVvGAUagvYGIt92vvb6N4wCDUF7A5FvO197/RtGgYagvYHIt52vvf4No0BD0N5A5NvO117/hlGgIWhvIPJt52uvf8Mo0BC0NxD5tvO1179hFGgI2huIfNv52uvfMAo0BO0NRL7tfO31bxgFGoL2BiLfdr72+jeMAg1BewORbztfe/0bRoGGoL2ByLedr73+DaNAQ9DeQOTbztde/4ZRoCFobyDybedrr3/DKNAQtDcQ+bbztde/YRRoCNobiHzb+drr3zAKNATtDUS+7Xzt9W8YBRqC9gYi33a+9vo3jAINQXsDkW87X3v9G0aBhqC9gci3na+9/g2jQEPQ3kDk287XXv+GUaAhaG8g8m3na69/wyjQELQ3EPm287XXv2EUaAjaG4h82/na698wCjQE7Q1Evu187fVvGAUagvYGIt92vvb6N4wCDUF7A5FvO197/RtGgYagvYHIt52vvf4No0BD0N5A5NvO117/hlGgIWhvIPJt52uvf8Mo0BC0NxD5tvO1179hFGgI2huIfNv52uvfMAo0BO0NRL7tfO31bxgFGoL2BiLfdr72+jeMAg1BewORbztfe/0bRoGGoL2ByLedr73+DaNAQ9DeQOTbztde/4ZRoCFobyDybedrr3/DKNAQtDcQ+bbztde/YRRoCNobiHzb+drr3zAKNATtDUS+7Xzt9W8YBRqC9gYi33a+9vo3jAINQXsDkW87X3v9G0aBhqC9gci3na+9/g2jQEPQ3kDk287XXv+GUaAhaG8g8m3na69/wyjQELQ3EPm287XXv2EUaAjaG4h82/na698wCjQE7Q1Evu187fVvGAUagvYGIt92vvb6N4wCDUF7A5FvO197/RtGgYagvYHIt52vvf4No0BD0N5A5NvO117/hlGgIWhvIPJt52uvf8Mo0BC0NxD5tvO1179hTSnQzMu//+2kf2Tqfj8KlHzyU9Be/4Y1rEBffuKJ/K22K5eXyDIXflnnOShQ8slPQXv9G9awAh0h+VPP+p4UrP9WfeegQMknPwXt9W9Y4wt071xzLrvTSUdt3Sqy5oy6zkGBkk9+Ctrr37CGF+jjIn3Omx3den07kZPrOgcFSj75KWivf8MaXqD7i1yWP/TlarJQXd8GpUDJJz8F7fVvWMMLdGVZrb1w7A8if6n5Dh9NGFdpG7k4XZj2AtLeQOTbztde/4Y1vED7yr7FY2+LXFHzHXYSh33ShWkvIO0NRL7tfO31b1jDC3SQnFE81t5Tzqn5DveNqbJOyft2SnsBaW8g8m3na69/wxpeoMPliOKx90TG13MOvgdKPvkpaK9/wxpeoOfIinMLx64WebKec1Cg5JOfgvb6N6yRBbrtEZfePfnjQXJq/tBrg2XJtnrOQYGST34K2uvfsEYWaKxnS/7r9k9/M1DkwrrOQYGST34K2uvfsIYV6NW7b7RY4Wfpx0QHot/o/Pbsus5BgZJPfgra69+whr4a0yfP3vqrA7dYNinQ7UV2qu83OSlQ8slPQ3v9G9aMl7P7clr0/8ccX9cPkCIUKPnkp6C9/g3jBZVD0N5A5NvO117/hlGgIWhvIPJt52uvf8Mo0BC0NxD5tvO1179hFGgI2huIfNv52uvfMAo0BO0NRL7tfO31bxgFGoL2BiLfdr72+jeMAg1BewORbztfe/0bRoGGoL2ByLedr73+DaNAQ9DeQOTbztde/4ZRoCFobyDybedrr3/DKNAQtDcQ+bbztde/YRRoCNobiHzb+drr3zAKNATtDUS+7Xzt9W8YBRqC9gYi33a+9vo3jAINQXsDkW87X3v9G0aBhqC9gci3na+9/g2jQEPQ3kDk287XXv+GUaAhaG8g8m3na69/wyjQELQ3EPm287XXv2EUaAjaG4h82/na698wCjQE7Q1Evu187fVvGAUagvYGIt92vvb6N4wCDUF7A5FvO197/RtGgYagvYHIt52vvf4No0BD0N5A5NvO117/hlGgIWhvIPJt52uvf8Mo0BC0NxD5tvO1179hFGgI2huIfNv52uvfMAo0BO0NRL7tfO31bxgFGoL2BiLfdr72+jeMAg1BewORbztfe/0bRoGGoL2ByLedr73+DaNAQ9DeQOTbztde/4ZRoCFobyDybedrr3/DKNAQtDcQ+bbztde/YRRoCNobiHzb+drr3zAKNATtDUS+7Xzt9W8YBRqC9gYi33a+9vo3jAINQXsDkW87X3v9G0aBhqC9gci3na+9/g2jQEPQ3kDk287XXv+GUaAhaG8g8m3na69/wyjQELQ3EPm287XXv2EUaAjaG4h82/na698wCjQE7Q1Evu187fVvGAUagvYGIt92vvb6N4wCDUF7A5FvO197/RtGgYagvYHIt52vvf4No0BD0N5A5NvO117/hlGgIWhvIPJt52uvf8Mo0BC0NxD5tvO1179hFGgI2huIfNv52uvfMAo0BO0NRL7tfO31bxgFGoL2BiLfdr72+jeMAg1BewORbztfe/0bRoGGoL2ByLedr73+DaNAQ9DeQOTbztde/4ZRoCFobyDybedrr3/DKNAQtDcQ+bbztde/YRRoCNobiHzb+drr3zAKNATtDUS+7Xzt9W8YBRqC9gYi33a+9vo3jAINQXsDkW87X3v9G0aBhqC9gci3na+9/g2jQEPQ3kDk287XXv+GUaAhaG8g8m3na69/wyjQELQ3EPm287XXv2EUaAjaG4h82/na698wCjQE7Q1Evu187fVvGAUagvYGIt92vvb6N4wCDUF7A5FvO197/RtGgYagvYHIt52vvf4No0BD0N5A5NvO117/hlGgIWhvIPJt52uvf8Mo0BC0NxD5tvO1179hFGgI2huIfNv52uvfMAo0BO0NRL7tfO31bxgFGoL2BiLfdr72+jeMAg1BewORbztfe/0bRoGGoL2ByLedr73+DaNAQ9DeQOTbztde/4ZRoCFobyDybedrr3/DKNAQtDcQ+bbztde/YRRoCNobiHzb+drr3zAKNATtDUS+7Xzt9f/U97bRtfN7WkOnQEPQ3kDk287XXv+HibZrtYZOgYagvYHIt52vvf7HyLEPahqlN34KNATtDUS+7Xzt9W84nwINQXsDkW87X3v9G86nQEPQ3kDk287XXv+G8ynQELQ3EPm287XXv+F8CjQE7Q1Evu187fVvOJ8CDUF7A5FvO197/RvOp0BD0N5A5NvO117/hvMp0BC0NxD5tvO117/hfAo0BO0NRL7t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" width="672" /></p>
 <p>Other useful functions from <code>stringr</code>, and the <code>lubridate</code> package, are described after the exercise. If time allows, we will go through these in the class. If you finish the exercise early, feel free to take a look.</p>
@@ -811,53 +834,63 @@ hist(patients_clean$Height)</code></pre>
 <div id="supplementary" class="section level2">
 <h2>Supplementary:</h2>
 <p>Rather than removing whitespace, sometimes we might want to adjust a set of strings so that they have a fixed width. We can do this be adding a <em>padding</em> character to each string if necessary. This operations is often done with a set of identifiers.</p>
-<pre class="r"><code>str_pad(patients$ID,pad = &quot;0&quot;,width=3)</code></pre>
-<pre><code>##   [1] &quot;AC/AH/001&quot; &quot;AC/AH/017&quot; &quot;AC/AH/020&quot; &quot;AC/AH/022&quot; &quot;AC/AH/029&quot;
-##   [6] &quot;AC/AH/033&quot; &quot;AC/AH/037&quot; &quot;AC/AH/044&quot; &quot;AC/AH/045&quot; &quot;AC/AH/048&quot;
-##  [11] &quot;AC/AH/049&quot; &quot;AC/AH/050&quot; &quot;AC/AH/052&quot; &quot;AC/AH/053&quot; &quot;AC/AH/057&quot;
-##  [16] &quot;AC/AH/061&quot; &quot;AC/AH/063&quot; &quot;AC/AH/076&quot; &quot;AC/AH/077&quot; &quot;AC/AH/086&quot;
-##  [21] &quot;AC/AH/089&quot; &quot;AC/AH/100&quot; &quot;AC/AH/104&quot; &quot;AC/AH/112&quot; &quot;AC/AH/113&quot;
-##  [26] &quot;AC/AH/114&quot; &quot;AC/AH/115&quot; &quot;AC/AH/127&quot; &quot;AC/AH/133&quot; &quot;AC/AH/150&quot;
-##  [31] &quot;AC/AH/154&quot; &quot;AC/AH/156&quot; &quot;AC/AH/159&quot; &quot;AC/AH/160&quot; &quot;AC/AH/164&quot;
-##  [36] &quot;AC/AH/171&quot; &quot;AC/AH/176&quot; &quot;AC/AH/180&quot; &quot;AC/AH/185&quot; &quot;AC/AH/186&quot;
-##  [41] &quot;AC/AH/192&quot; &quot;AC/AH/198&quot; &quot;AC/AH/207&quot; &quot;AC/AH/208&quot; &quot;AC/AH/210&quot;
-##  [46] &quot;AC/AH/211&quot; &quot;AC/AH/213&quot; &quot;AC/AH/219&quot; &quot;AC/AH/220&quot; &quot;AC/AH/221&quot;
-##  [51] &quot;AC/AH/225&quot; &quot;AC/AH/233&quot; &quot;AC/AH/241&quot; &quot;AC/AH/244&quot; &quot;AC/AH/248&quot;
-##  [56] &quot;AC/AH/249&quot; &quot;AC/SG/002&quot; &quot;AC/SG/003&quot; &quot;AC/SG/008&quot; &quot;AC/SG/009&quot;
-##  [61] &quot;AC/SG/010&quot; &quot;AC/SG/015&quot; &quot;AC/SG/016&quot; &quot;AC/SG/046&quot; &quot;AC/SG/055&quot;
-##  [66] &quot;AC/SG/056&quot; &quot;AC/SG/064&quot; &quot;AC/SG/065&quot; &quot;AC/SG/067&quot; &quot;AC/SG/068&quot;
-##  [71] &quot;AC/SG/072&quot; &quot;AC/SG/074&quot; &quot;AC/SG/084&quot; &quot;AC/SG/095&quot; &quot;AC/SG/099&quot;
-##  [76] &quot;AC/SG/101&quot; &quot;AC/SG/107&quot; &quot;AC/SG/116&quot; &quot;AC/SG/121&quot; &quot;AC/SG/122&quot;
-##  [81] &quot;AC/SG/123&quot; &quot;AC/SG/134&quot; &quot;AC/SG/139&quot; &quot;AC/SG/142&quot; &quot;AC/SG/155&quot;
-##  [86] &quot;AC/SG/165&quot; &quot;AC/SG/167&quot; &quot;AC/SG/172&quot; &quot;AC/SG/173&quot; &quot;AC/SG/179&quot;
-##  [91] &quot;AC/SG/181&quot; &quot;AC/SG/182&quot; &quot;AC/SG/191&quot; &quot;AC/SG/193&quot; &quot;AC/SG/194&quot;
-##  [96] &quot;AC/SG/197&quot; &quot;AC/SG/204&quot; &quot;AC/SG/216&quot; &quot;AC/SG/217&quot; &quot;AC/SG/234&quot;</code></pre>
-<pre class="r"><code>patients_clean &lt;- mutate(patients_clean, ID=str_pad(ID,pad = &quot;0&quot;,width=3))</code></pre>
+<pre class="r"><code>str_pad(patients$ID,pad = &quot;0&quot;,width=15)</code></pre>
+<pre><code>##   [1] &quot;000000AC/AH/001&quot; &quot;000000AC/AH/017&quot; &quot;000000AC/AH/020&quot;
+##   [4] &quot;000000AC/AH/022&quot; &quot;000000AC/AH/029&quot; &quot;000000AC/AH/033&quot;
+##   [7] &quot;000000AC/AH/037&quot; &quot;000000AC/AH/044&quot; &quot;000000AC/AH/045&quot;
+##  [10] &quot;000000AC/AH/048&quot; &quot;000000AC/AH/049&quot; &quot;000000AC/AH/050&quot;
+##  [13] &quot;000000AC/AH/052&quot; &quot;000000AC/AH/053&quot; &quot;000000AC/AH/057&quot;
+##  [16] &quot;000000AC/AH/061&quot; &quot;000000AC/AH/063&quot; &quot;000000AC/AH/076&quot;
+##  [19] &quot;000000AC/AH/077&quot; &quot;000000AC/AH/086&quot; &quot;000000AC/AH/089&quot;
+##  [22] &quot;000000AC/AH/100&quot; &quot;000000AC/AH/104&quot; &quot;000000AC/AH/112&quot;
+##  [25] &quot;000000AC/AH/113&quot; &quot;000000AC/AH/114&quot; &quot;000000AC/AH/115&quot;
+##  [28] &quot;000000AC/AH/127&quot; &quot;000000AC/AH/133&quot; &quot;000000AC/AH/150&quot;
+##  [31] &quot;000000AC/AH/154&quot; &quot;000000AC/AH/156&quot; &quot;000000AC/AH/159&quot;
+##  [34] &quot;000000AC/AH/160&quot; &quot;000000AC/AH/164&quot; &quot;000000AC/AH/171&quot;
+##  [37] &quot;000000AC/AH/176&quot; &quot;000000AC/AH/180&quot; &quot;000000AC/AH/185&quot;
+##  [40] &quot;000000AC/AH/186&quot; &quot;000000AC/AH/192&quot; &quot;000000AC/AH/198&quot;
+##  [43] &quot;000000AC/AH/207&quot; &quot;000000AC/AH/208&quot; &quot;000000AC/AH/210&quot;
+##  [46] &quot;000000AC/AH/211&quot; &quot;000000AC/AH/213&quot; &quot;000000AC/AH/219&quot;
+##  [49] &quot;000000AC/AH/220&quot; &quot;000000AC/AH/221&quot; &quot;000000AC/AH/225&quot;
+##  [52] &quot;000000AC/AH/233&quot; &quot;000000AC/AH/241&quot; &quot;000000AC/AH/244&quot;
+##  [55] &quot;000000AC/AH/248&quot; &quot;000000AC/AH/249&quot; &quot;000000AC/SG/002&quot;
+##  [58] &quot;000000AC/SG/003&quot; &quot;000000AC/SG/008&quot; &quot;000000AC/SG/009&quot;
+##  [61] &quot;000000AC/SG/010&quot; &quot;000000AC/SG/015&quot; &quot;000000AC/SG/016&quot;
+##  [64] &quot;000000AC/SG/046&quot; &quot;000000AC/SG/055&quot; &quot;000000AC/SG/056&quot;
+##  [67] &quot;000000AC/SG/064&quot; &quot;000000AC/SG/065&quot; &quot;000000AC/SG/067&quot;
+##  [70] &quot;000000AC/SG/068&quot; &quot;000000AC/SG/072&quot; &quot;000000AC/SG/074&quot;
+##  [73] &quot;000000AC/SG/084&quot; &quot;000000AC/SG/095&quot; &quot;000000AC/SG/099&quot;
+##  [76] &quot;000000AC/SG/101&quot; &quot;000000AC/SG/107&quot; &quot;000000AC/SG/116&quot;
+##  [79] &quot;000000AC/SG/121&quot; &quot;000000AC/SG/122&quot; &quot;000000AC/SG/123&quot;
+##  [82] &quot;000000AC/SG/134&quot; &quot;000000AC/SG/139&quot; &quot;000000AC/SG/142&quot;
+##  [85] &quot;000000AC/SG/155&quot; &quot;000000AC/SG/165&quot; &quot;000000AC/SG/167&quot;
+##  [88] &quot;000000AC/SG/172&quot; &quot;000000AC/SG/173&quot; &quot;000000AC/SG/179&quot;
+##  [91] &quot;000000AC/SG/181&quot; &quot;000000AC/SG/182&quot; &quot;000000AC/SG/191&quot;
+##  [94] &quot;000000AC/SG/193&quot; &quot;000000AC/SG/194&quot; &quot;000000AC/SG/197&quot;
+##  [97] &quot;000000AC/SG/204&quot; &quot;000000AC/SG/216&quot; &quot;000000AC/SG/217&quot;
+## [100] &quot;000000AC/SG/234&quot;</code></pre>
+<pre class="r"><code>patients_clean &lt;- mutate(patients_clean, ID=str_pad(ID,pad = &quot;0&quot;,width=15))</code></pre>
 <p>Note that we can perform several operations in the same command.</p>
-<pre class="r"><code>patients_clean &lt;- mutate(patients, Sex = factor(str_trim(Sex)),ID=str_pad(ID,pad = &quot;0&quot;,width=3))</code></pre>
+<pre class="r"><code>patients_clean &lt;- mutate(patients, Sex = factor(str_trim(Sex)),ID=str_pad(ID,pad = &quot;0&quot;,width=15))</code></pre>
 <p>Similarly, we might want to trim all the strings between a particular start and end position</p>
-<pre class="r"><code>str_sub(patients$State, 1,3)</code></pre>
-<pre><code>##   [1] &quot;New&quot; &quot;Flo&quot; &quot;Con&quot; &quot;Mas&quot; &quot;Kan&quot; &quot;Ill&quot; &quot;Col&quot; &quot;Sou&quot; &quot;Ill&quot; &quot;Mis&quot; &quot;Ala&quot;
-##  [12] &quot;Col&quot; &quot;Ida&quot; &quot;Flo&quot; &quot;New&quot; &quot;Pen&quot; &quot;Mis&quot; &quot;Ind&quot; &quot;Mic&quot; &quot;Mic&quot; &quot;Ore&quot; &quot;Tex&quot;
-##  [23] &quot;Nev&quot; &quot;Wis&quot; &quot;Uta&quot; &quot;Rho&quot; &quot;Pen&quot; &quot;Ill&quot; &quot;Vir&quot; &quot;Ill&quot; &quot;Tex&quot; &quot;Cal&quot; &quot;Geo&quot;
-##  [34] &quot;Nor&quot; &quot;Col&quot; &quot;Ida&quot; &quot;Tex&quot; &quot;Ari&quot; &quot;Iow&quot; &quot;Cal&quot; &quot;Mar&quot; &quot;Mic&quot; &quot;Tex&quot; &quot;Mar&quot;
-##  [45] &quot;New&quot; &quot;Ind&quot; &quot;Tex&quot; &quot;Ida&quot; &quot;Ohi&quot; &quot;New&quot; &quot;Ari&quot; &quot;Ind&quot; &quot;Ten&quot; &quot;Mar&quot; &quot;Mic&quot;
-##  [56] &quot;Pen&quot; &quot;New&quot; &quot;Ten&quot; &quot;New&quot; &quot;Cal&quot; &quot;Was&quot; &quot;Cal&quot; &quot;Nor&quot; &quot;Rho&quot; &quot;Mai&quot; &quot;Sou&quot;
-##  [67] &quot;Vir&quot; &quot;Cal&quot; &quot;Ida&quot; &quot;Ari&quot; &quot;Ken&quot; &quot;Col&quot; &quot;Tex&quot; &quot;Cal&quot; &quot;Pen&quot; &quot;Cal&quot; &quot;Mar&quot;
-##  [78] &quot;Wis&quot; &quot;Ohi&quot; &quot;Flo&quot; &quot;Wes&quot; &quot;Was&quot; &quot;Okl&quot; &quot;New&quot; &quot;New&quot; &quot;Ida&quot; &quot;Mis&quot; &quot;Flo&quot;
-##  [89] &quot;Kan&quot; &quot;Cal&quot; &quot;Nor&quot; &quot;Wis&quot; &quot;Ark&quot; &quot;Cal&quot; &quot;Mic&quot; &quot;Vir&quot; &quot;Ill&quot; &quot;Col&quot; &quot;Ken&quot;
-## [100] &quot;Ari&quot;</code></pre>
-<pre class="r"><code>str_sub(patients$Name, 2,5)</code></pre>
-<pre><code>##   [1] &quot;emet&quot; &quot;osar&quot; &quot;ulio&quot; &quot;upe&quot;  &quot;aver&quot; &quot;erni&quot; &quot;amue&quot; &quot;lair&quot; &quot;hirl&quot; &quot;erle&quot;
-##  [11] &quot;arti&quot; &quot;ranc&quot; &quot;ourt&quot; &quot;ranc&quot; &quot;erno&quot; &quot;este&quot; &quot;obin&quot; &quot;lber&quot; &quot;ommy&quot; &quot;yle&quot; 
-##  [21] &quot;ong&quot;  &quot;iche&quot; &quot;erem&quot; &quot;at&quot;   &quot;ugen&quot; &quot;ris&quot;  &quot;racy&quot; &quot;ame&quot;  &quot;lyde&quot; &quot;rett&quot;
-##  [31] &quot;ony&quot;  &quot;eorg&quot; &quot;dwar&quot; &quot;ory&quot;  &quot;hane&quot; &quot;evin&quot; &quot;erry&quot; &quot;rew&quot;  &quot;onal&quot; &quot;hris&quot;
-##  [41] &quot;omin&quot; &quot;an&quot;   &quot;obbi&quot; &quot;awre&quot; &quot;eith&quot; &quot;on&quot;   &quot;harl&quot; &quot;ay&quot;   &quot;icha&quot; &quot;arlo&quot;
-##  [51] &quot;ail&quot;  &quot;ario&quot; &quot;inds&quot; &quot;ean&quot;  &quot;ndre&quot; &quot;esus&quot; &quot;an&quot;   &quot;alte&quot; &quot;ana&quot;  &quot;ammy&quot;
-##  [61] &quot;heo&quot;  &quot;haun&quot; &quot;immi&quot; &quot;arl&quot;  &quot;van&quot;  &quot;erri&quot; &quot;on&quot;   &quot;hayn&quot; &quot;homa&quot; &quot;alen&quot;
-##  [71] &quot;amer&quot; &quot;ddie&quot; &quot;rian&quot; &quot;atth&quot; &quot;esli&quot; &quot;ason&quot; &quot;ol&quot;   &quot;onni&quot; &quot;udy&quot;  &quot;icha&quot;
-##  [81] &quot;arne&quot; &quot;aryl&quot; &quot;orda&quot; &quot;enne&quot; &quot;aymo&quot; &quot;lmer&quot; &quot;immy&quot; &quot;hitn&quot; &quot;ritt&quot; &quot;ogan&quot;
-##  [91] &quot;erry&quot; &quot;amie&quot; &quot;acy&quot;  &quot;onni&quot; &quot;osep&quot; &quot;tacy&quot; &quot;ntho&quot; &quot;lva&quot;  &quot;ean&quot;  &quot;uis&quot;</code></pre>
+<pre class="r"><code>str_sub(patients$ID, 1,2)</code></pre>
+<pre><code>##   [1] &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot;
+##  [15] &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot;
+##  [29] &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot;
+##  [43] &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot;
+##  [57] &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot;
+##  [71] &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot;
+##  [85] &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot; &quot;AC&quot;
+##  [99] &quot;AC&quot; &quot;AC&quot;</code></pre>
+<pre class="r"><code>str_sub(patients$ID, 4,5)</code></pre>
+<pre><code>##   [1] &quot;AH&quot; &quot;AH&quot; &quot;AH&quot; &quot;AH&quot; &quot;AH&quot; &quot;AH&quot; &quot;AH&quot; &quot;AH&quot; &quot;AH&quot; &quot;AH&quot; &quot;AH&quot; &quot;AH&quot; &quot;AH&quot; &quot;AH&quot;
+##  [15] &quot;AH&quot; &quot;AH&quot; &quot;AH&quot; &quot;AH&quot; &quot;AH&quot; &quot;AH&quot; &quot;AH&quot; &quot;AH&quot; &quot;AH&quot; &quot;AH&quot; &quot;AH&quot; &quot;AH&quot; &quot;AH&quot; &quot;AH&quot;
+##  [29] &quot;AH&quot; &quot;AH&quot; &quot;AH&quot; &quot;AH&quot; &quot;AH&quot; &quot;AH&quot; &quot;AH&quot; &quot;AH&quot; &quot;AH&quot; &quot;AH&quot; &quot;AH&quot; &quot;AH&quot; &quot;AH&quot; &quot;AH&quot;
+##  [43] &quot;AH&quot; &quot;AH&quot; &quot;AH&quot; &quot;AH&quot; &quot;AH&quot; &quot;AH&quot; &quot;AH&quot; &quot;AH&quot; &quot;AH&quot; &quot;AH&quot; &quot;AH&quot; &quot;AH&quot; &quot;AH&quot; &quot;AH&quot;
+##  [57] &quot;SG&quot; &quot;SG&quot; &quot;SG&quot; &quot;SG&quot; &quot;SG&quot; &quot;SG&quot; &quot;SG&quot; &quot;SG&quot; &quot;SG&quot; &quot;SG&quot; &quot;SG&quot; &quot;SG&quot; &quot;SG&quot; &quot;SG&quot;
+##  [71] &quot;SG&quot; &quot;SG&quot; &quot;SG&quot; &quot;SG&quot; &quot;SG&quot; &quot;SG&quot; &quot;SG&quot; &quot;SG&quot; &quot;SG&quot; &quot;SG&quot; &quot;SG&quot; &quot;SG&quot; &quot;SG&quot; &quot;SG&quot;
+##  [85] &quot;SG&quot; &quot;SG&quot; &quot;SG&quot; &quot;SG&quot; &quot;SG&quot; &quot;SG&quot; &quot;SG&quot; &quot;SG&quot; &quot;SG&quot; &quot;SG&quot; &quot;SG&quot; &quot;SG&quot; &quot;SG&quot; &quot;SG&quot;
+##  [99] &quot;SG&quot; &quot;SG&quot;</code></pre>
 <p>Finally, we can convert entire strings to upper- or lower-case</p>
 <pre class="r"><code>str_to_lower(patients$Pet)</code></pre>
 <pre><code>##   [1] &quot;cat&quot;   &quot;cat&quot;   &quot;dog&quot;   &quot;dog&quot;   &quot;cat&quot;   &quot;cat&quot;   &quot;dog&quot;   &quot;dog&quot;  
@@ -975,21 +1008,22 @@ as.period(age)</code></pre>
 patients_clean</code></pre>
 <pre><code>## Source: local data frame [100 x 15]
 ## 
-##           ID      Name     Race   Age    Sex Smokes             Height
-##        (chr)    (fctr)   (fctr) (int) (fctr) (fctr)             (fctr)
-## 1  AC/AH/001 Demetrius    White    44   Male   TRUE 176.479144276913cm
-## 2  AC/AH/017   Rosario    White    43   Male   TRUE 174.748482460591cm
-## 3  AC/AH/020     Julio    Black    44   Male     No 173.944873836774cm
-## 4  AC/AH/022      Lupe    White    44   Male  FALSE 180.028888936188cm
-## 5  AC/AH/029    Lavern      Cat    43   Male     No 178.636539798649cm
-## 6  AC/AH/033    Bernie   Native    43 Female  FALSE 159.777836229305cm
-## 7  AC/AH/037    Samuel    White    44   Male   TRUE 170.949966267411cm
-## 8  AC/AH/044     Clair    White    44 Female   TRUE 161.826590769764cm
-## 9  AC/AH/045   Shirley    White    43   Male  FALSE  169.66230745064cm
-## 10 AC/AH/048     Merle Hispanic    44 Female  FALSE 160.121017002151cm
-## ..       ...       ...      ...   ...    ...    ...                ...
-## Variables not shown: Weight (fctr), Birth (fctr), State (fctr), Pet
-##   (fctr), Grade_Level (int), Died (lgl), Count (dbl), Date (fctr)</code></pre>
+##                 ID      Name     Race   Age    Sex Smokes
+##              (chr)    (fctr)   (fctr) (int) (fctr) (fctr)
+## 1  000000AC/AH/001 Demetrius    White    44   Male   TRUE
+## 2  000000AC/AH/017   Rosario    White    43   Male   TRUE
+## 3  000000AC/AH/020     Julio    Black    44   Male     No
+## 4  000000AC/AH/022      Lupe    White    44   Male  FALSE
+## 5  000000AC/AH/029    Lavern      Cat    43   Male     No
+## 6  000000AC/AH/033    Bernie   Native    43 Female  FALSE
+## 7  000000AC/AH/037    Samuel    White    44   Male   TRUE
+## 8  000000AC/AH/044     Clair    White    44 Female   TRUE
+## 9  000000AC/AH/045   Shirley    White    43   Male  FALSE
+## 10 000000AC/AH/048     Merle Hispanic    44 Female  FALSE
+## ..             ...       ...      ...   ...    ...    ...
+## Variables not shown: Height (fctr), Weight (fctr), Birth (fctr), State
+##   (fctr), Pet (fctr), Grade_Level (int), Died (lgl), Count (dbl), Date
+##   (fctr)</code></pre>
 </div>
 </div>
 

@@ -12,7 +12,7 @@ library(stringr)
 patients <- read.delim("patient-data.txt")
 patients <- tbl_df(patients)
 patients_clean <- mutate(patients, Sex = factor(str_trim(Sex)))
-patients_clean <- mutate(patients_clean, Height= as.numeric(str_replace_all(patients_clean$Height,pattern = "cm","")))
+patients_clean <- mutate(patients_clean, Height= as.numeric(str_replace_all(Height,pattern = "cm","")))
 ```
 
 

@@ -209,7 +209,7 @@ The information to map the data to the plot can be added now using the aes() fun
 ```{r ggplot_aes}
 pcPlot <- ggplot(data=patients_clean)
 
-pcPlot <- pcPlot+aes(x=Height,Weight)
+pcPlot <- pcPlot+aes(x=Height,y=Weight)
 
 pcPlot$mapping
 pcPlot$theme
@@ -223,7 +223,7 @@ Below the geom_point function is used to specify a point plot, a scatter plot of
 ```{r ggplot_aes_geom}
 pcPlot <- ggplot(data=patients_clean)
 
-pcPlot <- pcPlot+aes(x=Height,Weight)
+pcPlot <- pcPlot+aes(x=Height,y=Weight)
 pcPlot <- pcPlot+geom_point()
 
 pcPlot$mapping
@@ -244,7 +244,7 @@ More typically, the data and aesthetics are defined within ggplot function and g
 
 ```{r ggplot_simple_geom_point}
 pcPlot <- ggplot(data=patients_clean,
-                 mapping=aes(x=Height,Weight))
+                 mapping=aes(x=Height,y=Weight))
 pcPlot+geom_point()
 ```
 
@@ -273,7 +273,7 @@ Several geoms are available in ggplot2:-
 
 ```{r, line_simple}
 pcPlot <- ggplot(data=patients_clean,
-        mapping=aes(x=Height,Weight))
+        mapping=aes(x=Height,y=Weight))
 
 pcPlot_line <- pcPlot+geom_line() 
 
@@ -283,7 +283,7 @@ pcPlot_line
 
 ```{r, smooth_simple}
 pcPlot <- ggplot(data=patients_clean,
-        mapping=aes(x=Height,Weight))
+        mapping=aes(x=Height,y=Weight))
 
 pcPlot_smooth <- pcPlot+geom_smooth() 
 
