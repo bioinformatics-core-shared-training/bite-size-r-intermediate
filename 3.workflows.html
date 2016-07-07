@@ -117,7 +117,7 @@ $(document).ready(function () {
 
 <h1 class="title toc-ignore">Towards Analysis Workflows in R</h1>
 <h4 class="author"><em>Mark Dunning</em></h4>
-<h4 class="date"><em>Last modified: 05 Jul 2016</em></h4>
+<h4 class="date"><em>Last modified: 07 Jul 2016</em></h4>
 
 </div>
 
@@ -150,7 +150,7 @@ $(document).ready(function () {
 </ul>
 <p>Alternatively, we could write each command as a separate line</p>
 <pre class="r"><code>patients_clean&lt;- mutate(patients, Sex = factor(str_trim(Sex)))
-patients_clean &lt;- mutate(patients_clean, Height= str_replace_all(patients_clean$Height,pattern = &quot;cm&quot;,&quot;&quot;))</code></pre>
+patients_clean &lt;- mutate(patients_clean, Height= str_replace_all(Height,pattern = &quot;cm&quot;,&quot;&quot;))</code></pre>
 <ul>
 <li>prone to error if we copy-and paste</li>
 <li>notice how the output of one line is the input to the following line</li>
@@ -231,24 +231,8 @@ patients_clean</code></pre>
 <p>Take the steps used to clean the patients dataset and calculate BMI (see template for the code)</p>
 <ul>
 <li>Re-write in the piping framework</li>
-<li>Add a step to print just the ID, Name, Date of Birth, Smokes and Overweight columns</li>
 </ul>
 <hr />
-<pre><code>## Source: local data frame [100 x 6]
-## 
-##           ID      Name      Birth      BMI Smokes Overweight
-##       &lt;fctr&gt;    &lt;fctr&gt;     &lt;fctr&gt;    &lt;dbl&gt;  &lt;chr&gt;      &lt;lgl&gt;
-## 1  AC/AH/001 Demetrius 1972-02-11 24.74586   TRUE      FALSE
-## 2  AC/AH/017   Rosario 1972-07-22 27.26799   TRUE       TRUE
-## 3  AC/AH/020     Julio 1971-11-23 28.30182     No       TRUE
-## 4  AC/AH/022      Lupe 1971-10-03 27.37403  FALSE       TRUE
-## 5  AC/AH/029    Lavern 1972-11-23 30.41397     No       TRUE
-## 6  AC/AH/033    Bernie 1972-07-30 26.75882  FALSE       TRUE
-## 7  AC/AH/037    Samuel 1971-11-13 32.73286   TRUE       TRUE
-## 8  AC/AH/044     Clair 1972-03-14 25.21343   TRUE       TRUE
-## 9  AC/AH/045   Shirley 1972-10-10 26.85241  FALSE       TRUE
-## 10 AC/AH/048     Merle 1972-02-28 27.14491  FALSE       TRUE
-## ..       ...       ...        ...      ...    ...        ...</code></pre>
 <p>Now having displayed the relevant information for our patients, we want to extract rows of interest from the data frame.</p>
 </div>
 <div id="selecting-rows-the-filter-verb" class="section level2">
@@ -260,57 +244,56 @@ patients_clean</code></pre>
 <p>The <strong><code>filter</code></strong> verb is used to select rows from the data frame. The criteria we use to select can use the comparisons <code>==</code>, <code>&gt;</code>, <code>&lt;</code>, <code>!=</code></p>
 <p>e.g. select all the males</p>
 <pre class="r"><code>filter(patients_clean, Sex == &quot;Male&quot;) </code></pre>
-<pre><code>## Source: local data frame [52 x 15]
+<pre><code>## Source: local data frame [52 x 17]
 ## 
-##           ID      Name   Race   Age    Sex Smokes   Height
-##       &lt;fctr&gt;    &lt;fctr&gt; &lt;fctr&gt; &lt;int&gt; &lt;fctr&gt; &lt;fctr&gt;    &lt;dbl&gt;
-## 1  AC/AH/001 Demetrius  White    22   Male   TRUE 176.4791
-## 2  AC/AH/017   Rosario  White    25   Male   TRUE 174.7485
-## 3  AC/AH/020     Julio  Black    20   Male     No 173.9449
-## 4  AC/AH/022      Lupe  White    26   Male  FALSE 180.0289
-## 5  AC/AH/029    Lavern    Cat    35   Male     No 178.6365
-## 6  AC/AH/037    Samuel  White    32   Male   TRUE 170.9500
-## 7  AC/AH/045   Shirley  White    22   Male  FALSE 169.6623
-## 8  AC/AH/050   Frances  White    30   Male  FALSE 170.5112
-## 9  AC/AH/061    Lester  Black    21   Male   TRUE 178.7927
-## 10 AC/AH/077     Tommy  Black    23   Male  FALSE 167.5139
-## ..       ...       ...    ...   ...    ...    ...      ...
-## Variables not shown: Weight &lt;fctr&gt;, Birth &lt;fctr&gt;, State &lt;fctr&gt;, Pet
-##   &lt;fctr&gt;, Grade_Level &lt;int&gt;, Died &lt;lgl&gt;, Count &lt;dbl&gt;, Date &lt;fctr&gt;.</code></pre>
+##           ID      Name   Race   Age    Sex Smokes   Height   Weight
+##       &lt;fctr&gt;    &lt;fctr&gt; &lt;fctr&gt; &lt;int&gt; &lt;fctr&gt;  &lt;chr&gt;    &lt;dbl&gt;    &lt;dbl&gt;
+## 1  AC/AH/001 Demetrius  White    22   Male   TRUE 176.4791 77.07070
+## 2  AC/AH/017   Rosario  White    25   Male   TRUE 174.7485 83.26835
+## 3  AC/AH/020     Julio  Black    20   Male     No 173.9449 85.63231
+## 4  AC/AH/022      Lupe  White    26   Male  FALSE 180.0289 88.72032
+## 5  AC/AH/029    Lavern    Cat    35   Male     No 178.6365 97.05405
+## 6  AC/AH/037    Samuel  White    32   Male   TRUE 170.9500 95.65815
+## 7  AC/AH/045   Shirley  White    22   Male  FALSE 169.6623 77.29546
+## 8  AC/AH/050   Frances  White    30   Male  FALSE 170.5112 84.35048
+## 9  AC/AH/061    Lester  Black    21   Male   TRUE 178.7927 88.88607
+## 10 AC/AH/077     Tommy  Black    23   Male  FALSE 167.5139 84.15051
+## ..       ...       ...    ...   ...    ...    ...      ...      ...
+## Variables not shown: Birth &lt;fctr&gt;, State &lt;fctr&gt;, Pet &lt;fctr&gt;, Grade_Level
+##   &lt;int&gt;, Died &lt;lgl&gt;, Count &lt;dbl&gt;, Date &lt;fctr&gt;, BMI &lt;dbl&gt;, Overweight &lt;lgl&gt;.</code></pre>
 <p>In base R, we would do</p>
 <pre class="r"><code>patients_clean[patients_clean$Sex == &quot;Male&quot;,]</code></pre>
 <p>Again, to non R-users, this is less intuitive. However, the result is the same.</p>
-<pre><code>## Source: local data frame [6 x 15]
+<pre><code>## Source: local data frame [6 x 17]
 ## 
-##          ID      Name   Race   Age    Sex Smokes   Height
-##      &lt;fctr&gt;    &lt;fctr&gt; &lt;fctr&gt; &lt;int&gt; &lt;fctr&gt; &lt;fctr&gt;    &lt;dbl&gt;
-## 1 AC/AH/001 Demetrius  White    22   Male   TRUE 176.4791
-## 2 AC/AH/017   Rosario  White    25   Male   TRUE 174.7485
-## 3 AC/AH/020     Julio  Black    20   Male     No 173.9449
-## 4 AC/AH/022      Lupe  White    26   Male  FALSE 180.0289
-## 5 AC/AH/029    Lavern    Cat    35   Male     No 178.6365
-## 6 AC/AH/037    Samuel  White    32   Male   TRUE 170.9500
-## Variables not shown: Weight &lt;fctr&gt;, Birth &lt;fctr&gt;, State &lt;fctr&gt;, Pet
-##   &lt;fctr&gt;, Grade_Level &lt;int&gt;, Died &lt;lgl&gt;, Count &lt;dbl&gt;, Date &lt;fctr&gt;.</code></pre>
+##          ID      Name   Race   Age    Sex Smokes   Height   Weight
+##      &lt;fctr&gt;    &lt;fctr&gt; &lt;fctr&gt; &lt;int&gt; &lt;fctr&gt;  &lt;chr&gt;    &lt;dbl&gt;    &lt;dbl&gt;
+## 1 AC/AH/001 Demetrius  White    22   Male   TRUE 176.4791 77.07070
+## 2 AC/AH/017   Rosario  White    25   Male   TRUE 174.7485 83.26835
+## 3 AC/AH/020     Julio  Black    20   Male     No 173.9449 85.63231
+## 4 AC/AH/022      Lupe  White    26   Male  FALSE 180.0289 88.72032
+## 5 AC/AH/029    Lavern    Cat    35   Male     No 178.6365 97.05405
+## 6 AC/AH/037    Samuel  White    32   Male   TRUE 170.9500 95.65815
+## Variables not shown: Birth &lt;fctr&gt;, State &lt;fctr&gt;, Pet &lt;fctr&gt;, Grade_Level
+##   &lt;int&gt;, Died &lt;lgl&gt;, Count &lt;dbl&gt;, Date &lt;fctr&gt;, BMI &lt;dbl&gt;, Overweight &lt;lgl&gt;.</code></pre>
 <p>The <code>%in%</code> function can check for matches in a pre-defined vector</p>
-<pre class="r"><code>filter(patients_clean, Pet %in% c(&quot;CAT&quot;, &quot;Cat&quot;))</code></pre>
-<pre><code>## Source: local data frame [30 x 15]
+<pre class="r"><code>filter(patients_clean, Pet %in% c(&quot;CAT&quot;, &quot;Cat&quot;)) %&gt;% select(ID,Name, Race,Age,Pet)</code></pre>
+<pre><code>## Source: local data frame [30 x 5]
 ## 
-##           ID      Name     Race   Age    Sex Smokes   Height
-##       &lt;fctr&gt;    &lt;fctr&gt;   &lt;fctr&gt; &lt;int&gt; &lt;fctr&gt; &lt;fctr&gt;    &lt;dbl&gt;
-## 1  AC/AH/001 Demetrius    White    22   Male   TRUE 176.4791
-## 2  AC/AH/017   Rosario    White    25   Male   TRUE 174.7485
-## 3  AC/AH/029    Lavern      Cat    35   Male     No 178.6365
-## 4  AC/AH/033    Bernie   Native    30 Female  FALSE 159.7778
-## 5  AC/AH/048     Merle Hispanic    26 Female  FALSE 160.1210
-## 6  AC/AH/049    Martin    White    31 Female  FALSE 159.3178
-## 7  AC/AH/061    Lester    Black    21   Male   TRUE 178.7927
-## 8  AC/AH/076    Albert    White    23 Female  FALSE 157.0079
-## 9  AC/AH/089      Dong    White    22   Male  FALSE 168.1559
-## 10 AC/AH/112       Pat    Black    32 Female  FALSE 158.9396
-## ..       ...       ...      ...   ...    ...    ...      ...
-## Variables not shown: Weight &lt;fctr&gt;, Birth &lt;fctr&gt;, State &lt;fctr&gt;, Pet
-##   &lt;fctr&gt;, Grade_Level &lt;int&gt;, Died &lt;lgl&gt;, Count &lt;dbl&gt;, Date &lt;fctr&gt;.</code></pre>
+##           ID      Name     Race   Age    Pet
+##       &lt;fctr&gt;    &lt;fctr&gt;   &lt;fctr&gt; &lt;int&gt; &lt;fctr&gt;
+## 1  AC/AH/001 Demetrius    White    22    CAT
+## 2  AC/AH/017   Rosario    White    25    Cat
+## 3  AC/AH/029    Lavern      Cat    35    Cat
+## 4  AC/AH/033    Bernie   Native    30    Cat
+## 5  AC/AH/048     Merle Hispanic    26    Cat
+## 6  AC/AH/049    Martin    White    31    Cat
+## 7  AC/AH/061    Lester    Black    21    Cat
+## 8  AC/AH/076    Albert    White    23    Cat
+## 9  AC/AH/089      Dong    White    22    Cat
+## 10 AC/AH/112       Pat    Black    32    CAT
+## ..       ...       ...      ...   ...    ...</code></pre>
+<p>(<em>additional <code>select</code> statement added so you can see the <code>Pet</code> variable`</em>)</p>
 <p>Partial matches can be performed using <code>grepl</code>. This is used rather than the usual <code>grep</code> as it returns a <em>logical</em> rather than an <em>integer</em></p>
 <pre class="r"><code>grep(&quot;Jo&quot;, patients_clean$Name)</code></pre>
 <pre><code>## [1] 67 83 95</code></pre>
@@ -326,55 +309,91 @@ patients_clean</code></pre>
 ##  [89] FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE
 ## [100] FALSE</code></pre>
 <pre class="r"><code>filter(patients_clean, grepl(&quot;Jo&quot;,Name))</code></pre>
-<pre><code>## Source: local data frame [3 x 15]
+<pre><code>## Source: local data frame [3 x 17]
 ## 
-##          ID   Name   Race   Age    Sex Smokes   Height             Weight
-##      &lt;fctr&gt; &lt;fctr&gt; &lt;fctr&gt; &lt;int&gt; &lt;fctr&gt; &lt;fctr&gt;    &lt;dbl&gt;             &lt;fctr&gt;
-## 1 AC/SG/064    Jon  White     0 Female  FALSE 156.5484 71.6108123130692kg
-## 2 AC/SG/139 Jordan  White    21   Male  FALSE 173.3523 79.5769026795357kg
-## 3 AC/SG/194 Joseph  White    34   Male  FALSE 191.5574 79.3645658430449kg
-## Variables not shown: Birth &lt;fctr&gt;, State &lt;fctr&gt;, Pet &lt;fctr&gt;, Grade_Level
-##   &lt;int&gt;, Died &lt;lgl&gt;, Count &lt;dbl&gt;, Date &lt;fctr&gt;.</code></pre>
+##          ID   Name   Race   Age    Sex Smokes   Height   Weight      Birth
+##      &lt;fctr&gt; &lt;fctr&gt; &lt;fctr&gt; &lt;int&gt; &lt;fctr&gt;  &lt;chr&gt;    &lt;dbl&gt;    &lt;dbl&gt;     &lt;fctr&gt;
+## 1 AC/SG/064    Jon  White     0 Female  FALSE 156.5484 71.61081 1971-10-23
+## 2 AC/SG/139 Jordan  White    21   Male  FALSE 173.3523 79.57690 1972-01-26
+## 3 AC/SG/194 Joseph  White    34   Male  FALSE 191.5574 79.36457 1972-08-06
+## Variables not shown: State &lt;fctr&gt;, Pet &lt;fctr&gt;, Grade_Level &lt;int&gt;, Died
+##   &lt;lgl&gt;, Count &lt;dbl&gt;, Date &lt;fctr&gt;, BMI &lt;dbl&gt;, Overweight &lt;lgl&gt;.</code></pre>
 <p>Combining conditions in <code>filter</code> can be achieved adding <code>,</code> or using the Boolean operators <code>|</code>, <code>&amp;</code></p>
-<pre class="r"><code>filter(patients_clean, Sex == &quot;Male&quot;, Died)</code></pre>
-<pre><code>## Source: local data frame [32 x 15]
+<pre class="r"><code>filter(patients_clean, Sex == &quot;Male&quot;, Died) %&gt;% select(ID, Name, Race, Sex, Died)</code></pre>
+<pre><code>## Source: local data frame [32 x 5]
 ## 
-##           ID      Name     Race   Age    Sex Smokes   Height
-##       &lt;fctr&gt;    &lt;fctr&gt;   &lt;fctr&gt; &lt;int&gt; &lt;fctr&gt; &lt;fctr&gt;    &lt;dbl&gt;
-## 1  AC/AH/001 Demetrius    White    22   Male   TRUE 176.4791
-## 2  AC/AH/017   Rosario    White    25   Male   TRUE 174.7485
-## 3  AC/AH/022      Lupe    White    26   Male  FALSE 180.0289
-## 4  AC/AH/045   Shirley    White    22   Male  FALSE 169.6623
-## 5  AC/AH/050   Frances    White    30   Male  FALSE 170.5112
-## 6  AC/AH/077     Tommy    Black    23   Male  FALSE 167.5139
-## 7  AC/AH/100    Michel    White    29   Male  FALSE 175.6678
-## 8  AC/AH/114      Kris Hispanic     0   Male  FALSE 176.9776
-## 9  AC/AH/133     Clyde Hispanic    26   Male  FALSE 184.4273
-## 10 AC/AH/159    Edward    White    20   Male  FALSE 171.9395
-## ..       ...       ...      ...   ...    ...    ...      ...
-## Variables not shown: Weight &lt;fctr&gt;, Birth &lt;fctr&gt;, State &lt;fctr&gt;, Pet
-##   &lt;fctr&gt;, Grade_Level &lt;int&gt;, Died &lt;lgl&gt;, Count &lt;dbl&gt;, Date &lt;fctr&gt;.</code></pre>
+##           ID      Name     Race    Sex  Died
+##       &lt;fctr&gt;    &lt;fctr&gt;   &lt;fctr&gt; &lt;fctr&gt; &lt;lgl&gt;
+## 1  AC/AH/001 Demetrius    White   Male  TRUE
+## 2  AC/AH/017   Rosario    White   Male  TRUE
+## 3  AC/AH/022      Lupe    White   Male  TRUE
+## 4  AC/AH/045   Shirley    White   Male  TRUE
+## 5  AC/AH/050   Frances    White   Male  TRUE
+## 6  AC/AH/077     Tommy    Black   Male  TRUE
+## 7  AC/AH/100    Michel    White   Male  TRUE
+## 8  AC/AH/114      Kris Hispanic   Male  TRUE
+## 9  AC/AH/133     Clyde Hispanic   Male  TRUE
+## 10 AC/AH/159    Edward    White   Male  TRUE
+## ..       ...       ...      ...    ...   ...</code></pre>
 <p>The code in base R is a lot more verbose</p>
 <pre class="r"><code>patients[patients_clean$Sex == &quot;Male&quot; &amp; patients_clean$Died,]</code></pre>
-<p>Either Females, or Grade greater than 1</p>
-<pre class="r"><code>filter(patients_clean, Sex == &quot;Female&quot; | Grade_Level &gt; 1)</code></pre>
-<pre><code>## Source: local data frame [85 x 15]
+<p>Females with height more than 160</p>
+<pre class="r"><code>filter(patients_clean, Sex == &quot;Female&quot;, Height &gt;160)</code></pre>
+<pre><code>## Source: local data frame [27 x 17]
 ## 
-##           ID     Name     Race   Age    Sex Smokes   Height
-##       &lt;fctr&gt;   &lt;fctr&gt;   &lt;fctr&gt; &lt;int&gt; &lt;fctr&gt; &lt;fctr&gt;    &lt;dbl&gt;
-## 1  AC/AH/020    Julio    Black    20   Male     No 173.9449
-## 2  AC/AH/029   Lavern      Cat    35   Male     No 178.6365
-## 3  AC/AH/033   Bernie   Native    30 Female  FALSE 159.7778
-## 4  AC/AH/044    Clair    White    29 Female   TRUE 161.8266
-## 5  AC/AH/048    Merle Hispanic    26 Female  FALSE 160.1210
-## 6  AC/AH/049   Martin    White    31 Female  FALSE 159.3178
-## 7  AC/AH/050  Frances    White    30   Male  FALSE 170.5112
-## 8  AC/AH/052 Courtney    White     0 Female   TRUE 161.8411
-## 9  AC/AH/053  Francis    White    33 Female   TRUE 162.9728
-## 10 AC/AH/057   Vernon    White    32 Female   TRUE 168.4921
-## ..       ...      ...      ...   ...    ...    ...      ...
-## Variables not shown: Weight &lt;fctr&gt;, Birth &lt;fctr&gt;, State &lt;fctr&gt;, Pet
-##   &lt;fctr&gt;, Grade_Level &lt;int&gt;, Died &lt;lgl&gt;, Count &lt;dbl&gt;, Date &lt;fctr&gt;.</code></pre>
+##           ID     Name     Race   Age    Sex Smokes   Height   Weight
+##       &lt;fctr&gt;   &lt;fctr&gt;   &lt;fctr&gt; &lt;int&gt; &lt;fctr&gt;  &lt;chr&gt;    &lt;dbl&gt;    &lt;dbl&gt;
+## 1  AC/AH/044    Clair    White    29 Female   TRUE 161.8266 66.02854
+## 2  AC/AH/048    Merle Hispanic    26 Female  FALSE 160.1210 69.59613
+## 3  AC/AH/052 Courtney    White     0 Female   TRUE 161.8411 69.97055
+## 4  AC/AH/053  Francis    White    33 Female   TRUE 162.9728 62.50170
+## 5  AC/AH/057   Vernon    White    32 Female   TRUE 168.4921 73.35408
+## 6  AC/AH/063    Robin Hispanic     0 Female   TRUE 161.5270 73.35538
+## 7  AC/AH/086     Kyle    Black    27 Female  FALSE 160.4677 68.19624
+## 8  AC/AH/150    Brett    White    24 Female  FALSE 160.0885 68.94358
+## 9  AC/AH/154     Tony    White    33 Female  FALSE 162.3218 72.72234
+## 10 AC/AH/156   George    White    22 Female  FALSE 162.5854 69.75908
+## ..       ...      ...      ...   ...    ...    ...      ...      ...
+## Variables not shown: Birth &lt;fctr&gt;, State &lt;fctr&gt;, Pet &lt;fctr&gt;, Grade_Level
+##   &lt;int&gt;, Died &lt;lgl&gt;, Count &lt;dbl&gt;, Date &lt;fctr&gt;, BMI &lt;dbl&gt;, Overweight &lt;lgl&gt;.</code></pre>
+<p>Height more than 160 <em>or</em> Weight greater than 74</p>
+<pre class="r"><code>filter(patients_clean, Height &gt;160 | Weight &gt;74)</code></pre>
+<pre><code>## Source: local data frame [79 x 17]
+## 
+##           ID      Name     Race   Age    Sex Smokes   Height   Weight
+##       &lt;fctr&gt;    &lt;fctr&gt;   &lt;fctr&gt; &lt;int&gt; &lt;fctr&gt;  &lt;chr&gt;    &lt;dbl&gt;    &lt;dbl&gt;
+## 1  AC/AH/001 Demetrius    White    22   Male   TRUE 176.4791 77.07070
+## 2  AC/AH/017   Rosario    White    25   Male   TRUE 174.7485 83.26835
+## 3  AC/AH/020     Julio    Black    20   Male     No 173.9449 85.63231
+## 4  AC/AH/022      Lupe    White    26   Male  FALSE 180.0289 88.72032
+## 5  AC/AH/029    Lavern      Cat    35   Male     No 178.6365 97.05405
+## 6  AC/AH/037    Samuel    White    32   Male   TRUE 170.9500 95.65815
+## 7  AC/AH/044     Clair    White    29 Female   TRUE 161.8266 66.02854
+## 8  AC/AH/045   Shirley    White    22   Male  FALSE 169.6623 77.29546
+## 9  AC/AH/048     Merle Hispanic    26 Female  FALSE 160.1210 69.59613
+## 10 AC/AH/050   Frances    White    30   Male  FALSE 170.5112 84.35048
+## ..       ...       ...      ...   ...    ...    ...      ...      ...
+## Variables not shown: Birth &lt;fctr&gt;, State &lt;fctr&gt;, Pet &lt;fctr&gt;, Grade_Level
+##   &lt;int&gt;, Died &lt;lgl&gt;, Count &lt;dbl&gt;, Date &lt;fctr&gt;, BMI &lt;dbl&gt;, Overweight &lt;lgl&gt;.</code></pre>
+<p>Height more than 160 <em>or</em> Weight greater than 74 <em>and</em> Female</p>
+<pre class="r"><code>filter(patients_clean, Height &gt;160 | Weight &gt;74, Sex == &quot;Female&quot;)</code></pre>
+<pre><code>## Source: local data frame [27 x 17]
+## 
+##           ID     Name     Race   Age    Sex Smokes   Height   Weight
+##       &lt;fctr&gt;   &lt;fctr&gt;   &lt;fctr&gt; &lt;int&gt; &lt;fctr&gt;  &lt;chr&gt;    &lt;dbl&gt;    &lt;dbl&gt;
+## 1  AC/AH/044    Clair    White    29 Female   TRUE 161.8266 66.02854
+## 2  AC/AH/048    Merle Hispanic    26 Female  FALSE 160.1210 69.59613
+## 3  AC/AH/052 Courtney    White     0 Female   TRUE 161.8411 69.97055
+## 4  AC/AH/053  Francis    White    33 Female   TRUE 162.9728 62.50170
+## 5  AC/AH/057   Vernon    White    32 Female   TRUE 168.4921 73.35408
+## 6  AC/AH/063    Robin Hispanic     0 Female   TRUE 161.5270 73.35538
+## 7  AC/AH/086     Kyle    Black    27 Female  FALSE 160.4677 68.19624
+## 8  AC/AH/150    Brett    White    24 Female  FALSE 160.0885 68.94358
+## 9  AC/AH/154     Tony    White    33 Female  FALSE 162.3218 72.72234
+## 10 AC/AH/156   George    White    22 Female  FALSE 162.5854 69.75908
+## ..       ...      ...      ...   ...    ...    ...      ...      ...
+## Variables not shown: Birth &lt;fctr&gt;, State &lt;fctr&gt;, Pet &lt;fctr&gt;, Grade_Level
+##   &lt;int&gt;, Died &lt;lgl&gt;, Count &lt;dbl&gt;, Date &lt;fctr&gt;, BMI &lt;dbl&gt;, Overweight &lt;lgl&gt;.</code></pre>
 </div>
 <div id="exercise" class="section level2">
 <h2>Exercise</h2>
@@ -383,7 +402,7 @@ patients_clean</code></pre>
 <li>Select the Smokers with Age over 30</li>
 <li>Select the patients that are still alive</li>
 <li>Select the patients who do NOT own dogs</li>
-<li>Select the patients from New York or New Jersey</li>
+<li>Select the Female patients from New York or New Jersey</li>
 </ul>
 <p>Feel free to experiment with different ways to do these</p>
 <hr />
@@ -409,97 +428,112 @@ patients_clean</code></pre>
 <p>A related verb, that works on the rows of the table, is called <strong><code>arrange</code></strong>. You may have seen that we can use <code>order</code> in base R to re-order tables. Again, <code>arrange</code> is more intuitive.</p>
 <p>Lets say we want to sort our patients by height;</p>
 <pre class="r"><code>arrange(patients_clean, Height)</code></pre>
-<pre><code>## Source: local data frame [100 x 15]
+<pre><code>## Source: local data frame [100 x 17]
 ## 
-##           ID      Name     Race   Age    Sex Smokes   Height
-##       &lt;fctr&gt;    &lt;fctr&gt;   &lt;fctr&gt; &lt;int&gt; &lt;fctr&gt; &lt;fctr&gt;    &lt;dbl&gt;
-## 1  AC/SG/067    Thomas    White    24 Female  FALSE 156.0006
-## 2  AC/AH/208  Lawrence Hispanic    31 Female    Yes 156.3782
-## 3  AC/SG/010      Theo    Asian    32 Female  FALSE 156.4514
-## 4  AC/SG/064       Jon    White     0 Female  FALSE 156.5484
-## 5  AC/AH/076    Albert    White    23 Female  FALSE 157.0079
-## 6  AC/AH/104    Jeremy    White     0 Female  FALSE 157.0379
-## 7  AC/SG/074     Eddie Hispanic    25 Female     No 157.5677
-## 8  AC/SG/072   Cameron    Black    30 Female  FALSE 157.6721
-## 9  AC/SG/068 Valentine Hispanic    34 Female  FALSE 157.7601
-## 10 AC/AH/160      Rory    Asian    34 Female   TRUE 158.0671
-## ..       ...       ...      ...   ...    ...    ...      ...
-## Variables not shown: Weight &lt;fctr&gt;, Birth &lt;fctr&gt;, State &lt;fctr&gt;, Pet
-##   &lt;fctr&gt;, Grade_Level &lt;int&gt;, Died &lt;lgl&gt;, Count &lt;dbl&gt;, Date &lt;fctr&gt;.</code></pre>
+##           ID      Name     Race   Age    Sex Smokes   Height   Weight
+##       &lt;fctr&gt;    &lt;fctr&gt;   &lt;fctr&gt; &lt;int&gt; &lt;fctr&gt;  &lt;chr&gt;    &lt;dbl&gt;    &lt;dbl&gt;
+## 1  AC/SG/067    Thomas    White    24 Female  FALSE 156.0006 69.83886
+## 2  AC/AH/208  Lawrence Hispanic    31 Female   TRUE 156.3782 66.19042
+## 3  AC/SG/010      Theo    Asian    32 Female  FALSE 156.4514 65.03332
+## 4  AC/SG/064       Jon    White     0 Female  FALSE 156.5484 71.61081
+## 5  AC/AH/076    Albert    White    23 Female  FALSE 157.0079 66.55653
+## 6  AC/AH/104    Jeremy    White     0 Female  FALSE 157.0379 70.77162
+## 7  AC/SG/074     Eddie Hispanic    25 Female     No 157.5677 68.26696
+## 8  AC/SG/072   Cameron    Black    30 Female  FALSE 157.6721 71.82010
+## 9  AC/SG/068 Valentine Hispanic    34 Female  FALSE 157.7601 67.54445
+## 10 AC/AH/160      Rory    Asian    34 Female   TRUE 158.0671 69.79825
+## ..       ...       ...      ...   ...    ...    ...      ...      ...
+## Variables not shown: Birth &lt;fctr&gt;, State &lt;fctr&gt;, Pet &lt;fctr&gt;, Grade_Level
+##   &lt;int&gt;, Died &lt;lgl&gt;, Count &lt;dbl&gt;, Date &lt;fctr&gt;, BMI &lt;dbl&gt;, Overweight &lt;lgl&gt;.</code></pre>
 <p>Can specify descending order using <code>desc</code></p>
 <pre class="r"><code>arrange(patients_clean, desc(Height))</code></pre>
-<pre><code>## Source: local data frame [100 x 15]
+<pre><code>## Source: local data frame [100 x 17]
 ## 
-##           ID        Name     Race   Age    Sex Smokes   Height
-##       &lt;fctr&gt;      &lt;fctr&gt;   &lt;fctr&gt; &lt;int&gt; &lt;fctr&gt; &lt;fctr&gt;    &lt;dbl&gt;
-## 1  AC/SG/194      Joseph    White    34   Male  FALSE 191.5574
-## 2  AC/AH/207      Bobbie    White    34   Male    Yes 184.9876
-## 3  AC/AH/133       Clyde Hispanic    26   Male  FALSE 184.4273
-## 4  AC/SG/084       Brian Hispanic     0   Male  FALSE 184.3635
-## 5  AC/AH/127        Jame    White    24   Male  FALSE 184.3365
-## 6  AC/SG/003      Walter    White    34   Male  FALSE 183.1878
-## 7  AC/AH/186 Christopher    White    28   Male  FALSE 183.0974
-## 8  AC/SG/234        Luis Hispanic    31   Male  FALSE 182.1725
-## 9  AC/AH/221      Carlos    White    30   Male   TRUE 181.2262
-## 10 AC/AH/219         Jay    White     0   Male  FALSE 180.9550
-## ..       ...         ...      ...   ...    ...    ...      ...
-## Variables not shown: Weight &lt;fctr&gt;, Birth &lt;fctr&gt;, State &lt;fctr&gt;, Pet
-##   &lt;fctr&gt;, Grade_Level &lt;int&gt;, Died &lt;lgl&gt;, Count &lt;dbl&gt;, Date &lt;fctr&gt;.</code></pre>
+##           ID        Name     Race   Age    Sex Smokes   Height   Weight
+##       &lt;fctr&gt;      &lt;fctr&gt;   &lt;fctr&gt; &lt;int&gt; &lt;fctr&gt;  &lt;chr&gt;    &lt;dbl&gt;    &lt;dbl&gt;
+## 1  AC/SG/194      Joseph    White    34   Male  FALSE 191.5574 79.36457
+## 2  AC/AH/207      Bobbie    White    34   Male   TRUE 184.9876 85.52165
+## 3  AC/AH/133       Clyde Hispanic    26   Male  FALSE 184.4273 79.20560
+## 4  AC/SG/084       Brian Hispanic     0   Male  FALSE 184.3635 93.24622
+## 5  AC/AH/127        Jame    White    24   Male  FALSE 184.3365 90.41329
+## 6  AC/SG/003      Walter    White    34   Male  FALSE 183.1878 86.87020
+## 7  AC/AH/186 Christopher    White    28   Male  FALSE 183.0974 82.47352
+## 8  AC/SG/234        Luis Hispanic    31   Male  FALSE 182.1725 87.67045
+## 9  AC/AH/221      Carlos    White    30   Male   TRUE 181.2262 85.42076
+## 10 AC/AH/219         Jay    White     0   Male  FALSE 180.9550 89.50954
+## ..       ...         ...      ...   ...    ...    ...      ...      ...
+## Variables not shown: Birth &lt;fctr&gt;, State &lt;fctr&gt;, Pet &lt;fctr&gt;, Grade_Level
+##   &lt;int&gt;, Died &lt;lgl&gt;, Count &lt;dbl&gt;, Date &lt;fctr&gt;, BMI &lt;dbl&gt;, Overweight &lt;lgl&gt;.</code></pre>
 <p>Can use multiple variables in the sorting</p>
-<p>e.g. <code>Grade_Level</code> and then <code>Count</code></p>
-<pre class="r"><code>arrange(patients_clean, Grade_Level, Count)</code></pre>
-<pre><code>## Source: local data frame [100 x 15]
+<p>e.g. <code>Age</code> and then <code>Count</code></p>
+<pre class="r"><code>arrange(patients_clean, desc(Age), Count) %&gt;% select(ID:Sex,Count)</code></pre>
+<pre><code>## Source: local data frame [100 x 6]
 ## 
-##           ID    Name     Race   Age    Sex Smokes   Height
-##       &lt;fctr&gt;  &lt;fctr&gt;   &lt;fctr&gt; &lt;int&gt; &lt;fctr&gt; &lt;fctr&gt;    &lt;dbl&gt;
-## 1  AC/AH/045 Shirley    White    22   Male  FALSE 169.6623
-## 2  AC/AH/077   Tommy    Black    23   Male  FALSE 167.5139
-## 3  AC/SG/193  Ronnie    White    26 Female  FALSE 164.5555
-## 4  AC/AH/159  Edward    White    20   Male  FALSE 171.9395
-## 5  AC/AH/017 Rosario    White    25   Male   TRUE 174.7485
-## 6  AC/AH/207  Bobbie    White    34   Male    Yes 184.9876
-## 7  AC/SG/074   Eddie Hispanic    25 Female     No 157.5677
-## 8  AC/AH/044   Clair    White    29 Female   TRUE 161.8266
-## 9  AC/AH/114    Kris Hispanic     0   Male  FALSE 176.9776
-## 10 AC/AH/220 Richard    White    26   Male   TRUE 173.6746
-## ..       ...     ...      ...   ...    ...    ...      ...
-## Variables not shown: Weight &lt;fctr&gt;, Birth &lt;fctr&gt;, State &lt;fctr&gt;, Pet
-##   &lt;fctr&gt;, Grade_Level &lt;int&gt;, Died &lt;lgl&gt;, Count &lt;dbl&gt;, Date &lt;fctr&gt;.</code></pre>
-<p>A really convenient function is <code>top_n</code></p>
-<pre class="r"><code>top_n(patients_clean,10,Height)</code></pre>
-<pre><code>## Source: local data frame [10 x 15]
+##           ID    Name   Race   Age    Sex      Count
+##       &lt;fctr&gt;  &lt;fctr&gt; &lt;fctr&gt; &lt;int&gt; &lt;fctr&gt;      &lt;dbl&gt;
+## 1  AC/AH/029  Lavern    Cat    35   Male -1.2099217
+## 2  AC/SG/142 Kenneth  White    35   Male -0.6823066
+## 3  AC/AH/233  Marion  White    35 Female -0.5935629
+## 4  AC/SG/197   Stacy  White    35   Male  0.2437262
+## 5  AC/SG/123 Darnell  White    35 Female  1.1222881
+## 6  AC/SG/003  Walter  White    34   Male -1.9457515
+## 7  AC/AH/207  Bobbie  White    34   Male -1.0668187
+## 8  AC/SG/194  Joseph  White    34   Male -0.9830181
+## 9  AC/AH/113  Eugene  White    34   Male  0.0484683
+## 10 AC/SG/167   Jimmy  White    34 Female  0.3722623
+## ..       ...     ...    ...   ...    ...        ...</code></pre>
+<p><code>Age</code>, <code>Sex</code> and then <code>Count</code></p>
+<pre class="r"><code>arrange(patients_clean, desc(Age), Sex, Count) %&gt;% select(ID:Sex,Count)</code></pre>
+<pre><code>## Source: local data frame [100 x 6]
 ## 
-##           ID        Name     Race   Age    Sex Smokes   Height
-##       &lt;fctr&gt;      &lt;fctr&gt;   &lt;fctr&gt; &lt;int&gt; &lt;fctr&gt; &lt;fctr&gt;    &lt;dbl&gt;
-## 1  AC/AH/127        Jame    White    24   Male  FALSE 184.3365
-## 2  AC/AH/133       Clyde Hispanic    26   Male  FALSE 184.4273
-## 3  AC/AH/186 Christopher    White    28   Male  FALSE 183.0974
-## 4  AC/AH/207      Bobbie    White    34   Male    Yes 184.9876
-## 5  AC/AH/219         Jay    White     0   Male  FALSE 180.9550
-## 6  AC/AH/221      Carlos    White    30   Male   TRUE 181.2262
-## 7  AC/SG/003      Walter    White    34   Male  FALSE 183.1878
-## 8  AC/SG/084       Brian Hispanic     0   Male  FALSE 184.3635
-## 9  AC/SG/194      Joseph    White    34   Male  FALSE 191.5574
-## 10 AC/SG/234        Luis Hispanic    31   Male  FALSE 182.1725
-## Variables not shown: Weight &lt;fctr&gt;, Birth &lt;fctr&gt;, State &lt;fctr&gt;, Pet
-##   &lt;fctr&gt;, Grade_Level &lt;int&gt;, Died &lt;lgl&gt;, Count &lt;dbl&gt;, Date &lt;fctr&gt;.</code></pre>
-<pre class="r"><code>top_n(patients_clean,10,Weight)</code></pre>
-<pre><code>## Source: local data frame [10 x 15]
+##           ID      Name     Race   Age    Sex      Count
+##       &lt;fctr&gt;    &lt;fctr&gt;   &lt;fctr&gt; &lt;int&gt; &lt;fctr&gt;      &lt;dbl&gt;
+## 1  AC/AH/233    Marion    White    35 Female -0.5935629
+## 2  AC/SG/123   Darnell    White    35 Female  1.1222881
+## 3  AC/AH/029    Lavern      Cat    35   Male -1.2099217
+## 4  AC/SG/142   Kenneth    White    35   Male -0.6823066
+## 5  AC/SG/197     Stacy    White    35   Male  0.2437262
+## 6  AC/SG/167     Jimmy    White    34 Female  0.3722623
+## 7  AC/AH/160      Rory    Asian    34 Female  0.5422322
+## 8  AC/SG/068 Valentine Hispanic    34 Female  1.2780915
+## 9  AC/SG/003    Walter    White    34   Male -1.9457515
+## 10 AC/AH/207    Bobbie    White    34   Male -1.0668187
+## ..       ...       ...      ...   ...    ...        ...</code></pre>
+<p>A related function is <code>top_n</code></p>
+<pre class="r"><code>top_n(patients_clean,10,Height) %&gt;% arrange(Height)</code></pre>
+<pre><code>## Source: local data frame [10 x 17]
 ## 
-##           ID    Name     Race   Age    Sex Smokes   Height
-##       &lt;fctr&gt;  &lt;fctr&gt;   &lt;fctr&gt; &lt;int&gt; &lt;fctr&gt; &lt;fctr&gt;    &lt;dbl&gt;
-## 1  AC/AH/029  Lavern      Cat    35   Male     No 178.6365
-## 2  AC/AH/037  Samuel    White    32   Male   TRUE 170.9500
-## 3  AC/AH/114    Kris Hispanic     0   Male  FALSE 176.9776
-## 4  AC/AH/127    Jame    White    24   Male  FALSE 184.3365
-## 5  AC/AH/241 Lindsay    White    29   Male   TRUE 177.9423
-## 6  AC/SG/046    Carl Hispanic    21   Male  FALSE 180.9077
-## 7  AC/SG/084   Brian Hispanic     0   Male  FALSE 184.3635
-## 8  AC/SG/101   Jason    White    33   Male  FALSE 169.1347
-## 9  AC/SG/204 Anthony    White    28   Male     No 180.6568
-## 10 AC/SG/216    Alva    White    33   Male  FALSE 178.4494
-## Variables not shown: Weight &lt;fctr&gt;, Birth &lt;fctr&gt;, State &lt;fctr&gt;, Pet
-##   &lt;fctr&gt;, Grade_Level &lt;int&gt;, Died &lt;lgl&gt;, Count &lt;dbl&gt;, Date &lt;fctr&gt;.</code></pre>
+##           ID        Name     Race   Age    Sex Smokes   Height   Weight
+##       &lt;fctr&gt;      &lt;fctr&gt;   &lt;fctr&gt; &lt;int&gt; &lt;fctr&gt;  &lt;chr&gt;    &lt;dbl&gt;    &lt;dbl&gt;
+## 1  AC/AH/219         Jay    White     0   Male  FALSE 180.9550 89.50954
+## 2  AC/AH/221      Carlos    White    30   Male   TRUE 181.2262 85.42076
+## 3  AC/SG/234        Luis Hispanic    31   Male  FALSE 182.1725 87.67045
+## 4  AC/AH/186 Christopher    White    28   Male  FALSE 183.0974 82.47352
+## 5  AC/SG/003      Walter    White    34   Male  FALSE 183.1878 86.87020
+## 6  AC/AH/127        Jame    White    24   Male  FALSE 184.3365 90.41329
+## 7  AC/SG/084       Brian Hispanic     0   Male  FALSE 184.3635 93.24622
+## 8  AC/AH/133       Clyde Hispanic    26   Male  FALSE 184.4273 79.20560
+## 9  AC/AH/207      Bobbie    White    34   Male   TRUE 184.9876 85.52165
+## 10 AC/SG/194      Joseph    White    34   Male  FALSE 191.5574 79.36457
+## Variables not shown: Birth &lt;fctr&gt;, State &lt;fctr&gt;, Pet &lt;fctr&gt;, Grade_Level
+##   &lt;int&gt;, Died &lt;lgl&gt;, Count &lt;dbl&gt;, Date &lt;fctr&gt;, BMI &lt;dbl&gt;, Overweight &lt;lgl&gt;.</code></pre>
+<pre class="r"><code>top_n(patients_clean,10,Weight) %&gt;% arrange(Weight)</code></pre>
+<pre><code>## Source: local data frame [10 x 17]
+## 
+##           ID    Name     Race   Age    Sex Smokes   Height   Weight
+##       &lt;fctr&gt;  &lt;fctr&gt;   &lt;fctr&gt; &lt;int&gt; &lt;fctr&gt;  &lt;chr&gt;    &lt;dbl&gt;    &lt;dbl&gt;
+## 1  AC/AH/127    Jame    White    24   Male  FALSE 184.3365 90.41329
+## 2  AC/AH/114    Kris Hispanic     0   Male  FALSE 176.9776 90.64677
+## 3  AC/SG/216    Alva    White    33   Male  FALSE 178.4494 91.77368
+## 4  AC/SG/204 Anthony    White    28   Male     No 180.6568 91.98184
+## 5  AC/AH/241 Lindsay    White    29   Male   TRUE 177.9423 92.42098
+## 6  AC/SG/101   Jason    White    33   Male  FALSE 169.1347 92.75626
+## 7  AC/SG/084   Brian Hispanic     0   Male  FALSE 184.3635 93.24622
+## 8  AC/AH/037  Samuel    White    32   Male   TRUE 170.9500 95.65815
+## 9  AC/AH/029  Lavern      Cat    35   Male     No 178.6365 97.05405
+## 10 AC/SG/046    Carl Hispanic    21   Male  FALSE 180.9077 97.38353
+## Variables not shown: Birth &lt;fctr&gt;, State &lt;fctr&gt;, Pet &lt;fctr&gt;, Grade_Level
+##   &lt;int&gt;, Died &lt;lgl&gt;, Count &lt;dbl&gt;, Date &lt;fctr&gt;, BMI &lt;dbl&gt;, Overweight &lt;lgl&gt;.</code></pre>
 <p>With the workflow we have developed in the previous exercises, we can add extra steps to arrange and then select the candidates with the highest BMI prior to writing to a file.</p>
 <pre class="r"><code>read.delim(&quot;patient-data.txt&quot;) %&gt;% 
   tbl_df %&gt;% 

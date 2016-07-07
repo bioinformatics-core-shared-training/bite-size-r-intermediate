@@ -47,7 +47,7 @@ Alternatively, we could write each command as a separate line
 
 ```{r}
 patients_clean<- mutate(patients, Sex = factor(str_trim(Sex)))
-patients_clean <- mutate(patients_clean, Height= str_replace_all(patients_clean$Height,pattern = "cm",""))
+patients_clean <- mutate(patients_clean, Height= str_replace_all(Height,pattern = "cm",""))
 ```
 
 
@@ -118,15 +118,14 @@ Note that we didn't need to specify `patients_clean` as an argument to the `muta
 Take the steps used to clean the patients dataset and calculate BMI (see template for the code)
 
 - Re-write in the piping framework
-- Add a step to print just the ID, Name, Date of Birth, Smokes and Overweight columns
+
 
 ******
 
 ```{r echo=FALSE}
-mutate(patients_clean, Weight = as.numeric(str_replace_all(patients_clean$Weight,"kg",""))) %>% 
+mutate(patients_clean, Weight = as.numeric(str_replace_all(Weight,"kg",""))) %>% 
   mutate(BMI = (Weight/(Height/100)^2), Overweight = BMI > 25) %>% 
-  mutate(Smokes = str_replace_all(Smokes, "Yes", TRUE)) %>% 
-  select(ID, Name, Birth,BMI,Smokes,Overweight)
+  mutate(Smokes = str_replace_all(Smokes, "Yes", TRUE)) -> patients_clean
 
 ```
 
@@ -160,8 +159,9 @@ head(patients_clean[patients_clean$Sex == "Male",])
 The `%in%` function can check for matches in a pre-defined vector
 
 ```{r}
-filter(patients_clean, Pet %in% c("CAT", "Cat"))
+filter(patients_clean, Pet %in% c("CAT", "Cat")) %>% select(ID,Name, Race,Age,Pet)
 ```
+(*additional `select` statement added so you can see the `Pet` variable`*)
 
 Partial matches can be performed using `grepl`. This is used rather than the usual `grep` as it returns a *logical* rather than an *integer*
 
@@ -174,7 +174,7 @@ filter(patients_clean, grepl("Jo",Name))
 Combining conditions in `filter` can be achieved adding `,` or using the Boolean operators `|`, `&`
 
 ```{r}
-filter(patients_clean, Sex == "Male", Died)
+filter(patients_clean, Sex == "Male", Died) %>% select(ID, Name, Race, Sex, Died)
 ```
 
 The code in base R is a lot more verbose
@@ -183,13 +183,23 @@ The code in base R is a lot more verbose
 patients[patients_clean$Sex == "Male" & patients_clean$Died,]
 ```
 
-Either Females, or Grade greater than 1
+Females with height more than 160
 
 ```{r}
-filter(patients_clean, Sex == "Female" | Grade_Level > 1)
+filter(patients_clean, Sex == "Female", Height >160)
 ```
 
+Height more than 160 *or* Weight greater than 74
 
+```{r}
+filter(patients_clean, Height >160 | Weight >74)
+```
+
+Height more than 160 *or* Weight greater than 74 *and* Female
+
+```{r}
+filter(patients_clean, Height >160 | Weight >74, Sex == "Female")
+```
 
 ## Exercise
 ******
@@ -197,7 +207,7 @@ filter(patients_clean, Sex == "Female" | Grade_Level > 1)
   - Select the Smokers with Age over 30
   - Select the patients that are still alive
   - Select the patients who do NOT own dogs
-  - Select the patients from New York or New Jersey
+  - Select the Female patients from New York or New Jersey
 
 Feel free to experiment with different ways to do these
 
@@ -239,17 +249,23 @@ arrange(patients_clean, desc(Height))
 
 Can use multiple variables in the sorting
 
-e.g. `Grade_Level` and then `Count`
+e.g. `Age` and then `Count`
 
 ```{r}
-arrange(patients_clean, Grade_Level, Count)
+arrange(patients_clean, desc(Age), Count) %>% select(ID:Sex,Count)
 ```
 
-A really convenient function is `top_n`
+`Age`, `Sex` and then `Count`
 
 ```{r}
-top_n(patients_clean,10,Height)
-top_n(patients_clean,10,Weight)
+arrange(patients_clean, desc(Age), Sex, Count) %>% select(ID:Sex,Count)
+```
+
+A related function is `top_n`
+
+```{r}
+top_n(patients_clean,10,Height) %>% arrange(Height)
+top_n(patients_clean,10,Weight) %>% arrange(Weight)
 ```
 
 With the workflow we have developed in the previous exercises, we can add extra steps to arrange and then select the candidates with the highest BMI prior to writing to a file.

@@ -423,7 +423,7 @@ However, what do you notice about the class reported for the Height column after
 We need an extra conversion step to make sure these are represented as *numeric* values.
 
 ```{r}
-patients_clean <- mutate(patients_clean, Height= as.numeric(str_replace_all(patients_clean$Height,pattern = "cm","")))
+patients_clean <- mutate(patients_clean, Height= as.numeric(str_replace_all(Height,pattern = "cm","")))
 hist(patients_clean$Height)
 ```
 
