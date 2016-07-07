@@ -115,7 +115,7 @@ $(document).ready(function () {
 
 
 <h1 class="title toc-ignore">Summarising, Grouping and Joining Exercise</h1>
-<h4 class="date"><em>Last modified: 05 Jul 2016</em></h4>
+<h4 class="date"><em>Last modified: 07 Jul 2016</em></h4>
 
 </div>
 
@@ -220,38 +220,88 @@ diabetes %&gt;% head(5)</code></pre>
 ## 4 AC/AH/001 2011-03-31     111    92
 ## 5 AC/AH/001 2011-04-03      94    83</code></pre>
 <hr />
-<p>Find the number of visits made by each patient to the hospital to have blood glucose and pressure measurements taken.</p>
-<p><em>[hint: use the <code>n</code> function from <code>dyplr</code>, type <code>?n</code> for help]</em></p>
-<p>Find the date of the last visit made by each patient.</p>
-<p><em>[hint: use <code>arrange</code> to sort by date and the <code>last</code> function to select the last one]</em></p>
-<p>Using the ID column to connect information about patients, add these values as additional columns to the patients table.</p>
+<p>Join the blood pressure and glucose measurements and the dates they were taken to the patient data using the ID column.</p>
 <ul>
-<li>Can you do this as a single sequence of dplyr commands using the <code>%&gt;%</code> symbol?</li>
+<li>How many rows are there in the resultant data frame? Compare this with the sizes of the patients and diabetes data frames. Why are these different?</li>
 </ul>
 <hr />
-<pre class="r"><code>diabetes %&gt;%
+<pre class="r"><code>combined &lt;- left_join(diabetes, patients, by = &quot;ID&quot;)
+combined</code></pre>
+<pre><code>## Source: local data frame [1,316 x 21]
+## 
+##           ID     Date.x Glucose    BP      Name  Race   Age   Sex Smokes
+##        (chr)      (chr)   (int) (int)     (chr) (chr) (int) (chr)  (chr)
+## 1  AC/AH/001 2011-03-07     100    98 Demetrius White    44  Male Smoker
+## 2  AC/AH/001 2011-03-14     110    89 Demetrius White    44  Male Smoker
+## 3  AC/AH/001 2011-03-24      94    88 Demetrius White    44  Male Smoker
+## 4  AC/AH/001 2011-03-31     111    92 Demetrius White    44  Male Smoker
+## 5  AC/AH/001 2011-04-03      94    83 Demetrius White    44  Male Smoker
+## 6  AC/AH/001 2011-05-21     110    93 Demetrius White    44  Male Smoker
+## 7  AC/AH/001 2011-06-24     105    79 Demetrius White    44  Male Smoker
+## 8  AC/AH/001 2011-07-11      88    86 Demetrius White    44  Male Smoker
+## 9  AC/AH/001 2011-07-11     101    92 Demetrius White    44  Male Smoker
+## 10 AC/AH/001 2011-07-13     112    88 Demetrius White    44  Male Smoker
+## ..       ...        ...     ...   ...       ...   ...   ...   ...    ...
+## Variables not shown: Height (dbl), Weight (dbl), Birth (chr), State (chr),
+##   Pet (chr), Grade_Level (int), Died (lgl), Count (dbl), Date.y (chr),
+##   Grade (int), BMI (dbl), Overweight (lgl)</code></pre>
+<pre class="r"><code>nrow(combined)</code></pre>
+<pre><code>## [1] 1316</code></pre>
+<pre class="r"><code>dim(combined)</code></pre>
+<pre><code>## [1] 1316   21</code></pre>
+<pre class="r"><code>dim(patients)</code></pre>
+<pre><code>## [1] 100  18</code></pre>
+<pre class="r"><code>dim(diabetes)</code></pre>
+<pre><code>## [1] 1316    4</code></pre>
+<hr />
+<p>Create a new data frame that only includes the most recent blood pressure and glucose measurement for each patient and then join this to the patients data frame.</p>
+<p><em>[hint: use <code>group_by</code> to work on groups of observations for each patient separately, sort by date using <code>arrange</code> and then select the last row using <code>summarize_each</code> with the function <code>last</code>]</em></p>
+<ul>
+<li>Again compare the size of the resultant data frame with the patients and diabetes data frames.</li>
+</ul>
+<hr />
+<pre class="r"><code>last_visit &lt;- diabetes %&gt;%
   group_by(ID) %&gt;%
   arrange(Date) %&gt;%
-  summarize(Visits = n(), LastVisit = last(Date)) %&gt;%
-  right_join(patients, by = &quot;ID&quot;)</code></pre>
-<pre><code>## Source: local data frame [100 x 20]
+  summarize_each(funs(last)) %&gt;%
+  rename(`Last Visit` = Date)
+last_visit</code></pre>
+<pre><code>## Source: local data frame [100 x 4]
 ## 
-##           ID Visits  LastVisit      Name     Race   Age    Sex     Smokes
-##        (chr)  (int)      (chr)     (chr)    (chr) (int)  (chr)      (chr)
-## 1  AC/AH/001     16 2011-08-28 Demetrius    White    44   Male     Smoker
-## 2  AC/AH/017     15 2011-09-02   Rosario    White    43   Male     Smoker
-## 3  AC/AH/020     14 2011-07-25     Julio    Black    44   Male Non-Smoker
-## 4  AC/AH/022     12 2011-08-29      Lupe    White    44   Male Non-Smoker
-## 5  AC/AH/029      9 2011-07-24    Lavern      Cat    43   Male Non-Smoker
-## 6  AC/AH/033     17 2011-08-16    Bernie   Native    43 Female Non-Smoker
-## 7  AC/AH/037     15 2011-08-28    Samuel    White    44   Male     Smoker
-## 8  AC/AH/044     15 2011-08-10     Clair    White    44 Female     Smoker
-## 9  AC/AH/045     16 2011-08-22   Shirley    White    43   Male Non-Smoker
-## 10 AC/AH/048     10 2011-08-09     Merle Hispanic    44 Female Non-Smoker
-## ..       ...    ...        ...       ...      ...   ...    ...        ...
-## Variables not shown: Height (dbl), Weight (dbl), Birth (chr), State (chr),
-##   Pet (chr), Grade_Level (int), Died (lgl), Count (dbl), Date (chr), Grade
-##   (int), BMI (dbl), Overweight (lgl)</code></pre>
+##           ID Last Visit Glucose    BP
+##        (chr)      (chr)   (int) (int)
+## 1  AC/AH/001 2011-08-28     118    86
+## 2  AC/AH/017 2011-09-02     145    82
+## 3  AC/AH/020 2011-07-25     136    75
+## 4  AC/AH/022 2011-08-29     126    96
+## 5  AC/AH/029 2011-07-24     104    71
+## 6  AC/AH/033 2011-08-16     141    77
+## 7  AC/AH/037 2011-08-28     114    83
+## 8  AC/AH/044 2011-08-10     104    85
+## 9  AC/AH/045 2011-08-22     114    79
+## 10 AC/AH/048 2011-08-09     139    77
+## ..       ...        ...     ...   ...</code></pre>
+<pre class="r"><code>combined &lt;- left_join(last_visit, patients, by = &quot;ID&quot;)
+combined</code></pre>
+<pre><code>## Source: local data frame [100 x 21]
+## 
+##           ID Last Visit Glucose    BP      Name     Race   Age    Sex
+##        (chr)      (chr)   (int) (int)     (chr)    (chr) (int)  (chr)
+## 1  AC/AH/001 2011-08-28     118    86 Demetrius    White    44   Male
+## 2  AC/AH/017 2011-09-02     145    82   Rosario    White    43   Male
+## 3  AC/AH/020 2011-07-25     136    75     Julio    Black    44   Male
+## 4  AC/AH/022 2011-08-29     126    96      Lupe    White    44   Male
+## 5  AC/AH/029 2011-07-24     104    71    Lavern      Cat    43   Male
+## 6  AC/AH/033 2011-08-16     141    77    Bernie   Native    43 Female
+## 7  AC/AH/037 2011-08-28     114    83    Samuel    White    44   Male
+## 8  AC/AH/044 2011-08-10     104    85     Clair    White    44 Female
+## 9  AC/AH/045 2011-08-22     114    79   Shirley    White    43   Male
+## 10 AC/AH/048 2011-08-09     139    77     Merle Hispanic    44 Female
+## ..       ...        ...     ...   ...       ...      ...   ...    ...
+## Variables not shown: Smokes (chr), Height (dbl), Weight (dbl), Birth
+##   (chr), State (chr), Pet (chr), Grade_Level (int), Died (lgl), Count
+##   (dbl), Date (chr), Grade (int), BMI (dbl), Overweight (lgl)</code></pre>
+<hr />
 </div>
 
 

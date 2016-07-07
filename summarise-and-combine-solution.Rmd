@@ -81,24 +81,44 @@ diabetes %>% head(5)
 
 ******
 
-Find the number of visits made by each patient to the hospital to have blood glucose and pressure measurements taken.
+Join the blood pressure and glucose measurements and the dates they were taken to the patient data using the ID column.
 
-*[hint: use the `n` function from `dyplr`, type `?n` for help]*
-
-Find the date of the last visit made by each patient.
-
-*[hint: use `arrange` to sort by date and the `last` function to select the last one]*
-
-Using the ID column to connect information about patients, add these values as additional columns to the patients table.
-
-- Can you do this as a single sequence of dplyr commands using the `%>%` symbol?
+- How many rows are there in the resultant data frame? Compare this with the sizes of the patients and diabetes data frames. Why are these different?
 
 ******
 
 ```{r}
-diabetes %>%
+combined <- left_join(diabetes, patients, by = "ID")
+combined
+
+nrow(combined)
+
+dim(combined)
+dim(patients)
+dim(diabetes)
+```
+
+******
+
+Create a new data frame that only includes the most recent blood pressure and glucose measurement for each patient and then join this to the patients data frame.
+
+*[hint: use `group_by` to work on groups of observations for each patient separately, sort by date using `arrange` and then select the last row using `summarize_each` with the function `last`]*
+
+- Again compare the size of the resultant data frame with the patients and diabetes data 
+frames.
+
+******
+
+```{r}
+last_visit <- diabetes %>%
   group_by(ID) %>%
   arrange(Date) %>%
-  summarize(Visits = n(), LastVisit = last(Date)) %>%
-  right_join(patients, by = "ID")
+  summarize_each(funs(last)) %>%
+  rename(`Last Visit` = Date)
+last_visit
+
+combined <- left_join(last_visit, patients, by = "ID")
+combined
 ```
+
+******
