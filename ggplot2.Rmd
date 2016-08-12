@@ -295,10 +295,10 @@ pcPlot_smooth
 ## Geoms - Bar and frequency plots
 
 ```{r, bar_simple}
-pcPlot <- ggplot(data=patients_clean[1:3,],
-        mapping=aes(x=ID,y=Weight))
+pcPlot <- ggplot(data=patients_clean,
+        mapping=aes(x=Sex))
 
-pcPlot_bar <- pcPlot+geom_bar(stat="identity") 
+pcPlot_bar <- pcPlot+geom_bar() 
 
 pcPlot_bar
 
