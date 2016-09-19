@@ -115,7 +115,7 @@ The bottom-left with the blinking cursor is the R console `>` and ready for you 
 
 ![](images/128px-SHARP_ELSIMATE_EL-W221.jpg)
 
-At a basic level, we can use R as a calculator to compute simple sums with the `+`, `-`, `*` (for multiplication) and `/` (for division). 
+At a basic level, we can use R as a calculator to compute simple sums with the `+`, `-`, `*` (for multiplication) and `/` (for division) symbols. 
 
 ```{r}
 2 + 2
@@ -124,9 +124,9 @@ At a basic level, we can use R as a calculator to compute simple sums with the `
 10 / 2
 ```
 
-The answer is displayed a the console with a `[1]` in front of it. The `1` inside the square brackets is a place-holder to signify how many values were returned (in this case only one). We will talk about dealing with lists of numbers shortly...
+The answer is displayed at the console with a `[1]` in front of it. The `1` inside the square brackets is a place-holder to signify how many values were in the answer (in this case only one). We will talk about dealing with lists of numbers shortly...
 
-R respects the [BODMAS](https://en.wikipedia.org/wiki/Order_of_operations#Mnemonics) system to decide which operations should be performed first in an expression involving multiple operators. If in doubt, brackets can always be used.
+In the case of expressions involving multiple operations, R respects the [BODMAS](https://en.wikipedia.org/wiki/Order_of_operations#Mnemonics) system to decide the order in which operations should be performed.
 
 ```{r}
 2 + 2 *3
@@ -134,7 +134,7 @@ R respects the [BODMAS](https://en.wikipedia.org/wiki/Order_of_operations#Mnemon
 (2 + 2) * 3
 ```
 
-R is capable of more complicated arithmetic such as trigonometry and logarithms; like you would find on a scientific calculator. Of course, R also has a plethora of statistical operations as we will see.
+R is capable of more complicated arithmetic such as trigonometry and logarithms; like you would find on a fancy scientific calculator. Of course, R also has a plethora of statistical operations as we will see.
 
 ![](images/128px-Casio-fx115ES-5564.jpg)
 
@@ -150,8 +150,8 @@ We can only go so far with performing simple calculations like this. Eventually 
 
 ## Variables
 
-- A variable is a letter or word which takes (or contains) a value. We
-use the assignment 'operator', `<-`
+A variable is a letter or word which takes (or contains) a value. We
+use the assignment 'operator', `<-` to create a variable and store some value in it. 
 
 ```{r variables1}
 x <- 10
@@ -159,17 +159,19 @@ x
 myNumber <- 25
 myNumber
 ```
-- We can perform arithmetic on variables:
+We also can perform arithmetic on variables using functions:
+
 ```{r variables2}
 sqrt(myNumber)
 ```
-- We can add variables together:
+
+We can add variables together:
 ```{r variables3}
 x + myNumber
 ```
 
 
-- We can change the value of an existing variable:
+We can change the value of an existing variable:
 
 ```{r variables4}
 x <- 21
@@ -190,16 +192,22 @@ myNumber <- myNumber + sqrt(16)
 myNumber
 ```
 
+When we are feeling lazy we might give our variables short names (`x`, `y`, `i`...etc), but a better practice would be to give them meaningful names. There are some restrictions on creating variable names. They cannot start with a number or contain characters such as `:`, `$`. Link?
+
+Naming variables is a matter of taste. Some conventions exist such as a separating words with `-` or using *c*amel*C*aps. Whatever convention you decided, stick with
+
 ## Functions
 
-- **Functions** in R perform operations on **arguments** (the inputs(s) to the function). We have already used:
+**Functions** in R perform operations on **arguments** (the inputs(s) to the function). We have already used:
+
 ```{r eval=FALSE}
 sin(x)
 ```
+
 this returns the sine of x. In this case the function has one argument: **x**. Arguments are always contained in parentheses -- curved brackets, **()** -- separated by commas.
 
 
-Arguments can be named or unnamed, but if they are unnamed they must be ordered (we will see later how to find the right order). When testing code, it is easier and safer to name the arguments
+Arguments can be named or unnamed, but if they are unnamed they must be ordered (we will see later how to find the right order). The names of the arguments are determined by the author of the function and can be found in the help page for the function. When testing code, it is easier and safer to name the arguments. `seq` is a function for generating a numeric sequence *from* and *to* particular numbers. Type `?seq` to get the help page for this function.
 
 ```{r functions2}
 seq(from = 2, to = 20, by = 4)
@@ -212,10 +220,9 @@ Arguments can have *default* values, meaning we do not need to specify values fo
 
 ```{r}
 rnorm(n=10)
-
 ```
 
-The normal distribution is defined by a mean and standard deviation. However, in the above example we didn't tell R what mean and standard deviation we wanted. So how does R know what to do? All arguments to a function and their default values are listed in the help page
+The normal distribution is defined by a *mean* (average) and *standard deviation* (spread). However, in the above example we didn't tell R what mean and standard deviation we wanted. So how does R know what to do? All arguments to a function and their default values are listed in the help page
 
 (*N.B sometimes help pages can describe more than one function*)
 
@@ -227,6 +234,7 @@ In this case, we see that the defaults for mean and standard deviation are 0 and
 
 ```{r}
 rnorm(n=10, mean=2,sd=3)
+rnorm(10, 2, 3)
 ```
 
 In the examples above, `seq` and `rnorm` were both outputting a series of numbers, which is called a *vector* in R and is the most-fundamental data-type.
@@ -236,23 +244,40 @@ In the examples above, `seq` and `rnorm` were both outputting a series of number
 - The basic data structure in R is a **vector** -- an ordered collection of values. 
 - R treats even single values as 1-element vectors. 
 - The function `c` *combines* its arguments into a vector:
+- Remember that as `c` is a function, we specify it's arguments in curved brackets`(...)`
 
 ```{r vectors1}
 x <- c(3,4,5,6)
 x
 ```
-- The square brackets `[]` indicate the position within the vector (the ***index***). We can extract individual elements by using the `[]` notation:
+
+The square brackets `[]` indicate the position within the vector (the ***index***). We can extract individual elements by using the `[]` notation:
+
 ```{r vectors2}
 x[1]
 x[4]
 ```
 
-- We can even put a vector inside the square brackets: (*vector indexing*)
+We can even put a vector inside the square brackets: (*vector indexing*)
 
 ```{r vectors3}
 y <- c(2,3)
 x[y]
 ```
+
+
+When applying all standard arithmetic operations to vectors, application is element-wise. Thus, we say that R supports *vectorised* operations.
+
+```{r vector-arithmetic1}
+x <- 1:10
+y <- x*2
+y
+z <- x^2
+
+x + y
+```
+
+Vectorised operations are extremely powerful. Operations that would require a *for* loop (or similar) in other languages such as **C**, **Python**, can be performed in a single line of R code.
 
 A vector can also contain text; called a character vector. Such a vector can also be constructed using the `c` function.
 
@@ -276,27 +301,18 @@ x <- rnorm(10)
 x > 0
 ```
 
-All items in the vector **must** be the same type. If you attempt anything else, R will convert all values to the same type.
+However, all items in the vector **must** be the same type. If you attempt anything else, R will convert all values to the same (most basic) type.
 
 ```{r}
 x <- c(1, 2, "three")
 x
 ```
 
-## Vector arithmetic
-
-- When applying all standard arithmetic operations to vectors, application is element-wise
-
-```{r vector-arithmetic1}
-x <- 1:10
-y <- x*2
-y
-z <- x^2
-
-x + y
-```
-
 ## Packages in R
+
+So far we have used functions that are available with the *base* distribution of R; the functions you get with a clean install of R. The open-source nature of R encourages others to write their own functions for their particular data-type or analyses.
+
+Packages are distributed through *repositories*. The most-common ones are CRAN and Bioconductor. CRAN alone has many thousands of packages.
 
 The **Packages** tab in the bottom-right panel of RStudio lists all packages that you currently have installed. Clicking on a package name will show a list of functions that available once that package has been loaded. The `library` function is used to load a package and make it's functions / data available in your current R session. *You need to do this every time you load a new RStudio session*. 
 
@@ -476,7 +492,7 @@ Should we wish to see all rows, or all columns, we can neglect either the row or
 ```{r eval=FALSE}
 gapminder[1,]
 gapminder[,1]
-patients[,c(1,2)]
+gapminder[,c(1,2)]
 ```
 
 
@@ -498,7 +514,7 @@ For example we could compare the `lifeExp` variable to 40. The result is a *vect
 gapminder$lifeExp < 40
 ```
 
-This R code can be put inside the square brackets.
+This R code can be put inside the square brackets to select rows of interest (those observations where the life expectancy variable is less than 40. 
 
 ```{r eval=FALSE}
 gapminder[gapminder$lifeExp < 40, ]
@@ -509,10 +525,29 @@ head(gapminder[gapminder$lifeExp < 40, ])
 
 ```
 
-Testing for equality can be done using `==`. This will only give `TRUE` for entries that are *exactly* the same as the test string. N.B. For partial matches, regular expressions can be used.
+The `,` is important as this tells R to display all columns. If we wanted a subset of the columns we would put their indices after the `,`
+
+```{r eval=FALSE}
+gapminder[gapminder$lifeExp < 40, 1:4]
+```
+
+```{r echo=FALSE}
+head(gapminder[gapminder$lifeExp < 40,1:4 ])
+
+```
+
+
+Testing for equality can be done using `==`. This will only give `TRUE` for entries that are *exactly* the same as the test string. 
 
 ```{r}
 gapminder[gapminder$country == "Zambia",]
+
+```
+
+N.B. For partial matches, the `grep` function and / or *regular expressions* (if you know them) can be used.
+
+```{r}
+gapminder[grep("and", gapminder$country),]
 ```
 
 
@@ -559,7 +594,7 @@ sort(countries)
 sort(countries,decreasing = TRUE)
 ```
 
-However, if we want to sort an entire data frame a different approach is needed. The trick is to use `order`. Rather than giving a sorted set of *values*, it will give sorted *indices*. 
+However, if we want to sort an entire data frame a different approach is needed. The trick is to use `order`. Rather than giving a sorted set of *values*, it will give sorted *indices*. These indices can then be used for a subset operation.
 
 ```{r}
 leastPop <- gapminder[order(gapminder$pop),]
@@ -603,7 +638,6 @@ pie(c(Sky = 78, "Sunny side of pyramid" = 17, "Shady side of pyramid" = 5),
     init.angle = 315, col = c("deepskyblue", "yellow", "yellow3"), border = FALSE)
 ```
 
-## Plotting
 
 - Simple plots are supported in the *base* distribution of R (what you get automatically when you download R). 
     + `boxplot`, `hist`, `barplot`,... all of which are extensions of the basic `plot` function
@@ -619,22 +653,25 @@ pie(c(Sky = 78, "Sunny side of pyramid" = 17, "Shady side of pyramid" = 5),
     
 *Disclaimer 2*:- later in the course, we will see a slightly-nicer way of plotting using `ggplot2`.
 
+Plots can be constructed from vectors of numeric data, such as the data we get from a particular column in a data frame
 
 ```{r}
 hist(gapminder$lifeExp)
 ```
 
+Scatter plots of two variables require two arguments; one for the `x` and one for the `y` axis.
 
 ```{r}
 plot(gapminder$pop,gapminder$lifeExp)
 ```
 
+Barplots are commonly-used for counts of categorical data
 
 ```{r}
 barplot(table(gapminder$continent))
 ```
 
-
+Boxplots are good for visualising and comparing distributions. Here the `~` symbol sets up a formula, the effect of which is to put the categorical variable on the `x` axis and continuous variable on the `y` axis.
 
 ```{r}
 boxplot(gapminder$gdpPercap ~ gapminder$continent)
@@ -646,7 +683,7 @@ boxplot(gapminder$gdpPercap ~ gapminder$continent)
 
 - R recognises many preset names as colours. To get a full list use `colours()`, or check this [online reference](http://www.stat.columbia.edu/~tzheng/files/Rcolor.pdf).
 
-- Plotting characters can be specified using a pre-defined number
+- Plotting characters can be specified using a pre-defined number:-
 
 ```{r echo=FALSE}
 par(mar=c(0.1,0.1,0.1,0.1))
@@ -691,7 +728,7 @@ Any plots created in-between the `pdf(..)` and `dev.off()` lines will get saved 
 
 ## The canvas model
 
-It is important to realise that base graphics in R uses a *"canvas model"* to create graphics. That said, we can only overlay extra information on-top of an exising plot and cannot "undo" what is already drawn.
+It is important to realise that base graphics in R uses a *"canvas model"* to create graphics. We can only overlay extra information on-top of an exising plot and cannot "undo" what is already drawn.
 
 Let's suppose we want to visualise and life expectancy and population of countries in Europe and Africa. First, create two datasets to represent European and African countries in the year 2002
 
@@ -705,7 +742,7 @@ afrData <- gapminder[gapminder$continent == "Africa" & gapminder$year == 2002,]
 dim(afrData)
 ```
 
-We can start by plotting the life expectancy of the European countries.
+We can start by plotting the life expectancy of the European countries as red dots.
 
 ```{r}
 plot(euroData$pop, euroData$lifeExp,col="red",
@@ -714,7 +751,7 @@ plot(euroData$pop, euroData$lifeExp,col="red",
      ylab="Life Expectancy")
 ```
 
-The `points` function can put extra points on an existing plot. 
+The `points` function can be used put extra points corresponding to African countries on the existing plot. 
 
 ```{r eval=FALSE}
 points(afrData$pop, afrData$lifeExp,col="blue",pch=16)
@@ -734,7 +771,7 @@ Wait, how many African countries did we have?
 nrow(afrData)
 ```
 
-The problem here is that the initial limits of the y axis were defined using the life expectancy range of the European data. We can only add points to the existing plotting window, so any African countries with life expectancy outside this will not get displayed.
+The problem here is that the initial limits of the y axis were defined using the life expectancy range of the European data. We can only add points to the existing plotting window, so any African countries with life expectancy outside this range will not get displayed.
 
 We can define the axes when we create the plot using `xlim` and `ylim`.
 
@@ -808,10 +845,4 @@ t.test(x,y,var.equal = FALSE)
 
 Were our data not normally-distributed we could use `wilcox.test`, for example.  Fortunately, most statistical tests can be accessed in a similar manner, so it is easy to switch between using different tests provided your data are in the correct format. To re-iterate, the skill is in choosing which test is appropriate.
 
-
-
-```{r}
-model <- aov(gapminder$gdpPercap~gapminder$continent)
-anova(model)
-```
 
