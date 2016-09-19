@@ -192,9 +192,9 @@ myNumber <- myNumber + sqrt(16)
 myNumber
 ```
 
-When we are feeling lazy we might give our variables short names (`x`, `y`, `i`...etc), but a better practice would be to give them meaningful names. There are some restrictions on creating variable names. They cannot start with a number or contain characters such as `:`, `$`. Link?
+When we are feeling lazy we might give our variables short names (`x`, `y`, `i`...etc), but a better practice would be to give them meaningful names. There are some restrictions on creating variable names. They cannot start with a number or contain characters such as `.`, `_`, '-'. Naming variables the same as in-built functions in R, such as `c`, `T`, `mean` should also be avoided.
 
-Naming variables is a matter of taste. Some conventions exist such as a separating words with `-` or using *c*amel*C*aps. Whatever convention you decided, stick with
+Naming variables is a matter of taste. Some [conventions](http://adv-r.had.co.nz/Style.html) exist such as a separating words with `-` or using *c*amel*C*aps. Whatever convention you decided, stick with it!
 
 ## Functions
 
