@@ -304,7 +304,7 @@ patients[,-2]
 patients[,setdiff(colnames(patients), "Name")]
 ```
 
-```{r eval=FALSE}
+```{r echo=FALSE}
 head(patients[,-2])
 head(patients[,setdiff(colnames(patients), "Name")])
 ```

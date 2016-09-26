@@ -575,8 +575,28 @@ patients</code></pre>
 <p><strong><em>Disclaimer</em></strong> there is actually a function called <code>subset</code> in base R with a similar style to <code>select</code></p>
 <pre class="r"><code>patients[,-2]
 patients[,setdiff(colnames(patients), &quot;Name&quot;)]</code></pre>
-<pre class="r"><code>head(patients[,-2])
-head(patients[,setdiff(colnames(patients), &quot;Name&quot;)])</code></pre>
+<pre><code>## # A tibble: 6 × 14
+##          ID   Race   Age    Sex Smokes             Height
+##      &lt;fctr&gt; &lt;fctr&gt; &lt;int&gt; &lt;fctr&gt; &lt;fctr&gt;             &lt;fctr&gt;
+## 1 AC/AH/001  White    22   Male   TRUE 176.479144276913cm
+## 2 AC/AH/017  White    25   Male   TRUE 174.748482460591cm
+## 3 AC/AH/020  Black    20   Male     No 173.944873836774cm
+## 4 AC/AH/022  White    26   Male  FALSE 180.028888936188cm
+## 5 AC/AH/029    Cat    35   Male     No 178.636539798649cm
+## 6 AC/AH/033 Native    30 Female  FALSE 159.777836229305cm
+## # ... with 8 more variables: Weight &lt;fctr&gt;, Birth &lt;fctr&gt;, State &lt;fctr&gt;,
+## #   Pet &lt;fctr&gt;, Grade_Level &lt;int&gt;, Died &lt;lgl&gt;, Count &lt;dbl&gt;, Date &lt;fctr&gt;</code></pre>
+<pre><code>## # A tibble: 6 × 14
+##          ID   Race   Age    Sex Smokes             Height
+##      &lt;fctr&gt; &lt;fctr&gt; &lt;int&gt; &lt;fctr&gt; &lt;fctr&gt;             &lt;fctr&gt;
+## 1 AC/AH/001  White    22   Male   TRUE 176.479144276913cm
+## 2 AC/AH/017  White    25   Male   TRUE 174.748482460591cm
+## 3 AC/AH/020  Black    20   Male     No 173.944873836774cm
+## 4 AC/AH/022  White    26   Male  FALSE 180.028888936188cm
+## 5 AC/AH/029    Cat    35   Male     No 178.636539798649cm
+## 6 AC/AH/033 Native    30 Female  FALSE 159.777836229305cm
+## # ... with 8 more variables: Weight &lt;fctr&gt;, Birth &lt;fctr&gt;, State &lt;fctr&gt;,
+## #   Pet &lt;fctr&gt;, Grade_Level &lt;int&gt;, Died &lt;lgl&gt;, Count &lt;dbl&gt;, Date &lt;fctr&gt;</code></pre>
 <p>Compare to dplyr version….<em>“Select all columns apart from Name”</em></p>
 <pre class="r"><code>select(patients, -Name)</code></pre>
 <pre><code>## # A tibble: 100 × 14
