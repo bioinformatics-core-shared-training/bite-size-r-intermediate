@@ -132,7 +132,7 @@ mutate(patients_clean, Weight = as.numeric(str_replace_all(Weight,"kg",""))) %>%
 Now having displayed the relevant information for our patients, we want to extract rows of interest from the data frame.
 
 
-## Selecting rows: The `filter` verb
+## Restricting rows: The `filter` verb
 
 ![](images/filter.png)
 
@@ -334,9 +334,9 @@ library(readr)
 
 In the past two sections we have introduced the concept of pipeline and various verbs in dplyr that will help us to manipulate our data
 
-- select; for choosing columns
+- select; for selecting columns
 - mutate; for adding new columns
-- filter; for selecting rows
+- filter; for restricting rows
 - arrange; for ordering rows
 
 We can use these in any order we like to create a workflow. When faced with a dataset, we should asked ourselves what steps we want to perform.
