@@ -32,7 +32,7 @@ Tidy data are important because they are an entry point for the *analysis cycle*
 As we saw, our data, and especially data we might find out "in the wild", may need "cleaning"" before we can use it. We will discuss how to clean our data for analysis. However, there are steps you can take to make sure your data are tidy and organised before importing into R.
 
 - [Karl Broman's tutorial on Data Organisation](http://kbroman.org/dataorg/)
-- ["Data Carpentry" workshop](http://lgatto.github.io/2015-09-10-CAM/)
+- ["Data Carpentry" workshop](http://lgatto.github.io/2016-05-16-CAM/)
 
 
 
@@ -255,7 +255,7 @@ As we mentioned, `dplyr` introduces a series of ***verbs*** that can be used to 
 
 N.B. base R does provide a function called `subset` which allowed similar operations.
 
-![select](images/select.png)
+![](images/select.png)
 
 The default dispaly of a `tbl_df` object is to print the data frame in an intelligent manner, so not to flood the R console. If we want to control what variables are printed we can use the `select` function, which allows us to print certain columns to the screen.
 

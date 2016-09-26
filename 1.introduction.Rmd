@@ -15,7 +15,7 @@ Spreadsheets are a common entry-point for many types of analyses. Whilst they ar
 - Unwieldy and difficult to deal with large amounts of data
 - How can you (or someone else?) repeat what you did several months, or years down the line?
 
-![spreadsheet](images/spreadsheet-full.png)
+![](images/spreadsheet-full.png)
 
 This course aims to translate how we think of data in spreadsheets to a series of operations that can be performed and chained together in R.
 
@@ -70,7 +70,7 @@ Hadley also has these words of advice that we should bear in mind as we proceed 
 
 The data frame object in R allows us to work with "tabular" data, like we might be used to dealing with in Excel, where our data can be thought of having rows and columns. The values in each column have to all be of the same type (i.e. all numbers or all text).
 
-![iris](https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Petal-sepal.jpg/226px-Petal-sepal.jpg)
+![](https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Petal-sepal.jpg/226px-Petal-sepal.jpg)
 
 The `iris` data frame is a [classic dataset](https://en.wikipedia.org/wiki/Iris_flower_data_set) that is built into R. To load these data, we use the `data` function with the name `iris` (notice no quotation marks) in brackets. The data frame can then be printed to screen by typing it's name (`iris`).
 
@@ -135,7 +135,7 @@ anova(mod)
 
 ## How can R enable Reproducible Research?
 
-![duke-scandal](images/rep-research-nyt.png)
+![](images/rep-research-nyt.png)
 
 Two Biostatiscians (later termed '*Forensic Bioinformaticians*') from M.D. Anderson used R extensively during their re-analysis and investigation of a Clinical Prognostication paper from Duke. The subsequent [scandal](https://www.youtube.com/watch?v=W5sZTNPMQRM) put Reproducible Research at the forefront of everyone's mind.
 
@@ -151,7 +151,7 @@ Markdown can also generate presentations and courses. Indeed, all the [materials
 
 
 
-![markdown](images/markdown-annotated.png)
+![](images/markdown-annotated.png)
 
 1. Header information
 2. Section heading
