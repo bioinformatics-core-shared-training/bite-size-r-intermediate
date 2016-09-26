@@ -91,7 +91,7 @@ A commonly-used function is `head` which will print the first six rows to the sc
 head(iris)
 ```
 
-We can notice that there are `r nrow(iris)` rows and `r ncol(iris)` columns. There is also a function in R, `dim`, that will print the dimensions for us. The `colnames` function will also print the names of the functions.
+We can notice that there are `r nrow(iris)` rows and `r ncol(iris)` columns. There is also a function in R, `dim`, that will print the dimensions for us. The `colnames` function will also print the names of the columns.
 
 ```{r}
 dim(iris)
