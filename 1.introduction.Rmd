@@ -64,7 +64,7 @@ Hadley also has these words of advice that we should bear in mind as we proceed 
 - Hopefully appealing to those familiar with other languages
 
 
-
+The [pre-course recap](https://rawgit.com/bioinformatics-core-shared-training/r-intermediate/master/0.r-recap.html) should hopefully cover most of what you need to know. Before starting the course proper, we will recap *data frames* and the *R markdown* reporting framework.
 
 ## The data frame
 
