@@ -136,9 +136,9 @@ Now having displayed the relevant information for our patients, we want to extra
 
 ![](images/filter.png)
 
-The **`filter`** verb is used to select rows from the data frame. The criteria we use to select can use the comparisons `==`, `>`, `<`, `!=`
+The **`filter`** verb is used to choose rows from the data frame. The criteria we use to choose can use the comparisons `==`, `>`, `<`, `!=`
 
-e.g. select all the males
+e.g. choose all the males
 
 ```{r}
 filter(patients_clean, Sex == "Male") 
@@ -204,10 +204,10 @@ filter(patients_clean, Height >160 | Weight >74, Sex == "Female")
 ## Exercise
 ******
 
-  - Select the Smokers with Age over 30
-  - Select the patients that are still alive
-  - Select the patients who do NOT own dogs
-  - Select the Female patients from New York or New Jersey
+  - Choose the Smokers with Age over 30
+  - Choose the patients that are still alive
+  - Choose the patients who do NOT own dogs
+  - Choose the Female patients from New York or New Jersey
 
 Feel free to experiment with different ways to do these
 
@@ -222,7 +222,7 @@ We now have all the tools in place in order to retrieve the overweight smokers f
 
 Modify the workflow to 
 
-- select the candidates (overweight smokers)
+- Choose the candidates (overweight smokers)
 - make sure the candidates are still alive
 - write the result to a csv file
 
