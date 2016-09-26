@@ -28,7 +28,7 @@ patients <- tbl_df(read.delim("patient-data.txt"))
 
 we read as 
 
-> apply the `tbl_df` to the result of reading the file `patient-data.txt`
+> apply the `tbl_df` function to the result of reading the file `patient-data.txt`
 
 Could also do the same for our `mutate` statements, although this would quickly become convoluted..
 
@@ -134,7 +134,7 @@ Now having displayed the relevant information for our patients, we want to extra
 
 ## Selecting rows: The `filter` verb
 
-![filter](images/filter.png)
+![](images/filter.png)
 
 The **`filter`** verb is used to select rows from the data frame. The criteria we use to select can use the comparisons `==`, `>`, `<`, `!=`
 
@@ -231,7 +231,7 @@ Modify the workflow to
 
 ## Ordering rows: The `arrange` verb
 
-![arrange](images/arrange.png)
+![](images/arrange.png)
 
 A related verb, that works on the rows of the table, is called **`arrange`**. You may have seen that we can use `order` in base R to re-order tables. Again, `arrange` is more intuitive.
 
