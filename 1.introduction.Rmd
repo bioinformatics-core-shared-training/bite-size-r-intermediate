@@ -57,7 +57,7 @@ Hadley also has these words of advice that we should bear in mind as we proceed 
 - When you try and seek help, most R users will be familiar with the "classic" techniques presented
 - However, the data you try and analyse might not fit the data presented in the class....
     + you might be itching to try out new tools you have heard of; including ggplot2
-- This course is designed to take you futher with R
+- This course is designed to take you further with R
     + introduce more "cutting-edge" R
 - Taking advantage of more recent innovations in the language
 - Help you write more elegant solutions and code
@@ -137,15 +137,15 @@ anova(mod)
 
 ![](images/rep-research-nyt.png)
 
-Two Biostatiscians (later termed '*Forensic Bioinformaticians*') from M.D. Anderson used R extensively during their re-analysis and investigation of a Clinical Prognostication paper from Duke. The subsequent [scandal](https://www.youtube.com/watch?v=W5sZTNPMQRM) put Reproducible Research at the forefront of everyone's mind.
+Two Biostatisticians (later termed '*Forensic Bioinformaticians*') from M.D. Anderson used R extensively during their re-analysis and investigation of a Clinical Prognostication paper from Duke. The subsequent [scandal](https://www.youtube.com/watch?v=W5sZTNPMQRM) put Reproducible Research at the forefront of everyone's mind.
 
-Keith Baggerly's talk on the subject is highy-recommended.
+Keith Baggerly's talk on the subject is high-recommended.
 
 <iframe width="420" height="315" src="https://www.youtube.com/embed/7gYIs7uYbMo" frameborder="0" allowfullscreen></iframe>
 
 
 
-Within RStudio we can write *markdown* documents, which are a mix of R code and text. The markdown file can be used as a template to generated PDF, HTML, or even Word documents. The clever bit is that all R code in the template can be execute and the results displayed (tables, graphics etc) along with the code. The compiled document can be passed to your collaborators and they should be able to generate the same results. Alternatively, you can choose to hide the code if your PI just wants to see the results, and not neccesarily what packages, parameters you used. Long-term R users may have heard of *Sweave*. Markdown is the same concept, but an easier to write (and read) syntax
+Within RStudio we can write *markdown* documents, which are a mix of R code and text. The markdown file can be used as a template to generated PDF, HTML, or even Word documents. The clever bit is that all R code in the template can be execute and the results displayed (tables, graphics etc) along with the code. The compiled document can be passed to your collaborators and they should be able to generate the same results. Alternatively, you can choose to hide the code if your PI just wants to see the results, and not necessarily what packages, parameters you used. Long-term R users may have heard of *Sweave*. Markdown is the same concept, but an easier to write (and read) syntax
 
 Markdown can also generate presentations and courses. Indeed, all the [materials for this course](https://github.com/cambiotraining/r-intermediate) were written in markdown.
 

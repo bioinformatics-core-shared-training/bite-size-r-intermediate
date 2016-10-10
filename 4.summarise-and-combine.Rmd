@@ -221,7 +221,7 @@ Read a cleaned version of the patients dataset (patient-data-cleaned.txt) into R
 
 * What is the mean age, height and weight of patients in the patients dataset?
     * Modify the output by rounding these computed means to 2 decimal places
-* See what happens if you try to compute the mean of a logical (boolean) variable
+* See what happens if you try to compute the mean of a logical (Boolean) variable
     * What proportion of our patient cohort has died?
 * Compare the average height of males and females in this patient cohort.
 * Are smokers heavier or lighter on average than non-smokers in this dataset?

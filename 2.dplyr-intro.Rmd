@@ -54,7 +54,7 @@ untidy <- data.frame(Name = c("John Smith","Jane Doe","Mary Johnson"),treatmenta
 kable(untidy)
 ```
 
-Data in this format are quite familiar to us, but not easily-interpretable by the computer. We need to think of the dataset in terms of *variables* and *values*. In this example dataset we have *18* values and *3* variables
+Data in this format are quite familiar to us, but not easily-interpret able by the computer. We need to think of the dataset in terms of *variables* and *values*. In this example dataset we have *18* values and *3* variables
 
 1. Person (John, Jane or Mary)
 2. Treatment (A or B)
@@ -79,7 +79,7 @@ gather(untidy, Treatment, Result, treatmenta:treatmentb) %>% mutate(Treatment = 
 `gather` is a function in the `tidyr` package that can collapse multiple columns into key-value pairs. 
 
 - similar to `stack` in base R
-- or `melt` in the `reshape` / `reshape2` pacakges
+- or `melt` in the `reshape` / `reshape2` packages
 
 ***You can get these example data [here](tidyr-example.txt)***
 
@@ -133,7 +133,7 @@ tidy <- gather(untidy, Treatment, Result, c(treatmenta,treatmentb))
 
 ## Exercise: Simulated clinical data
 
-Using data from the Mango Solutions training dataset
+Using data from the Mango Solutions training data set
 
 ```{r,warning=FALSE}
 library(mangoTraining)
@@ -253,7 +253,7 @@ N.B. base R does provide a function called `subset` which allowed similar operat
 
 ![](images/select.png)
 
-The default dispaly of a `tbl_df` object is to print the data frame in an intelligent manner, so not to flood the R console. If we want to control what variables are printed we can use the `select` function, which allows us to print certain columns to the screen.
+The default display of a `tbl_df` object is to print the data frame in an intelligent manner, so not to flood the R console. If we want to control what variables are printed we can use the `select` function, which allows us to print certain columns to the screen.
 
 
 In the R introduction, we saw how to extract columns from a data frame with a `$` symbol. 
@@ -277,7 +277,7 @@ Non R users probably find these commands a bit obtuse
 - need to remember the row and column index
 - `[,...]` means display all rows
 
-However, `select` is a lot more intuitive; easier to convert to the sentance "Select the Name column from patients"
+However, `select` is a lot more intuitive; easier to convert to the sentence "Select the Name column from patients"
 
   - Notice the lack of `""`
 
@@ -483,7 +483,7 @@ str_to_upper(patients$Name)
 
 Dates are often problematic as they may be encoded in lots of different schemes
 
-If we wanted the year in which wach person was born it would be tempting to *trim* the first four characters of the string. However, getting the month or day might be a bit more problematic.
+If we wanted the year in which each person was born it would be tempting to *trim* the first four characters of the string. However, getting the month or day might be a bit more problematic.
 
 ```{r}
 str_sub(patients$Birth,1,4)
