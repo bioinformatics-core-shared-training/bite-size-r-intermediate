@@ -1,101 +1,101 @@
-"ID"	"Name"	"Race"	"Age"	"Sex"	"Smokes"	"Height"	"Weight"	"Birth"	"State"	"Pet"	"Grade_Level"	"Died"	"Count"	"Date"
-"AC/AH/001"	"Demetrius"	"White"	22	"Male"	"TRUE"	"176.479144276913cm"	"77.0707023167105kg"	"1972-02-11"	"New York"	"CAT"	1	TRUE	-0.744001141912098	"2015-03-04"
-"AC/AH/017"	"Rosario"	"White"	25	" Male"	"TRUE"	"174.748482460591cm"	"83.2683499179022kg"	"1972-07-22"	"Florida"	"Cat"	1	TRUE	-1.07145310227991	"2015-03-04"
-"AC/AH/020"	"Julio"	"Black"	20	"Male"	"No"	"173.944873836774cm"	"85.6323107011968kg"	"1971-11-23"	"Connecticut"	"DOG"	2	FALSE	-0.821563556819928	"2015-03-04"
-"AC/AH/022"	"Lupe"	"White"	26	"Male"	"FALSE"	"180.028888936188cm"	"88.7203170843447kg"	"1971-10-03"	"Massachusetts"	"Dog"	1	TRUE	0.49766714707184	"2015-03-04"
-"AC/AH/029"	"Lavern"	"Cat"	35	"Male"	"No"	"178.636539798649cm"	"97.0540533225734kg"	"1972-11-23"	"Kansas"	"Cat"	3	FALSE	-1.20992173526052	"2015-03-04"
-"AC/AH/033"	"Bernie"	"Native"	30	"Female"	"FALSE"	"159.777836229305cm"	"68.312471247052kg"	"1972-07-30"	"Illinois"	"Cat"	2	FALSE	0.524161757703584	"2015-03-04"
-"AC/AH/037"	"Samuel"	"White"	32	"Male"	"TRUE"	"170.949966267411cm"	"95.6581459256895kg"	"1971-11-13"	"Colorado"	"Dog"	1	FALSE	0.327791576337816	"2015-03-04"
-"AC/AH/044"	"Clair"	"White"	29	"Female"	"TRUE"	"161.826590769764cm"	"66.028536339608kg"	"1972-03-14"	"South Carolina"	"Dog"	1	FALSE	-0.896952864039829	"2015-03-04"
-"AC/AH/045"	"Shirley"	"White"	22	"Male"	"FALSE"	"169.66230745064cm"	"77.2954550926939kg"	"1972-10-10"	"Illinois"	"Dog"	1	TRUE	-2.35821484177335	"2015-03-04"
-"AC/AH/048"	"Merle"	"Hispanic"	26	" Female"	"FALSE"	"160.121017002151cm"	"69.5961280454617kg"	"1972-02-28"	"Missouri"	"Cat"	1	TRUE	1.51246318821496	"2015-03-04"
-"AC/AH/049"	"Martin"	"White"	31	"Female"	"FALSE"	"159.317771924405cm"	"64.920442105117kg"	"1971-04-02"	"Alaska"	"Cat"	3	TRUE	0.714900002801279	"2015-03-04"
-"AC/AH/050"	"Frances"	"White"	30	"Male"	"FALSE"	"170.511182466002cm"	"84.3504821028372kg"	"1972-01-25"	"Colorado"	"Dog"	99	TRUE	0.119075231578236	"2015-04-04"
-"AC/AH/052"	"Courtney"	"White"	0	"Female"	"TRUE"	"161.841114171417cm"	"69.9705548836931kg"	"1972-06-08"	"Idaho"	"None"	1	TRUE	-0.570266919152442	"2015-04-04"
-"AC/AH/053"	"Francis"	"White"	33	"Female"	"TRUE"	"162.972800928628cm"	"62.5016983970221kg"	"1972-04-09"	"Florida"	"Dog"	1	FALSE	0.427981784272859	"2015-04-04"
-"AC/AH/057"	"Vernon"	"White"	32	"Female"	"TRUE"	"168.492070621664cm"	"73.3540772541499kg"	"1971-11-05"	"New Jersey"	"None"	1	FALSE	-0.545769859431155	"2015-04-04"
-"AC/AH/061"	"Lester"	"Black"	21	"Male"	"TRUE"	"178.79271245124cm"	"88.8860701841483kg"	"1972-08-15"	"Pennsylvania"	"Cat"	3	FALSE	-1.06339423302425	"2015-04-04"
-"AC/AH/063"	"Robin"	"Hispanic"	0	"Female"	"TRUE"	"161.526950060893cm"	"73.3553762180612kg"	"1971-10-23"	"Missouri"	"None"	1	FALSE	-0.0988180833302691	"2015-04-04"
-"AC/AH/076"	"Albert"	"White"	23	"Female"	"FALSE"	"157.007940802956cm"	"66.5565302636182kg"	"1972-10-15"	"Indiana"	"Cat"	2	FALSE	0.639712746155842	"2015-04-04"
-"AC/AH/077"	"Tommy"	"Black"	23	"Male"	"FALSE"	"167.513882310362cm"	"84.1505069519618kg"	"1972-05-02"	"Michigan"	"None"	1	TRUE	-1.45519750049088	"2015-04-04"
-"AC/AH/086"	"Kyle"	"Black"	27	"Female"	"FALSE"	"160.467682023732cm"	"68.1962419258896kg"	"1972-02-12"	"Michigan"	"Bird"	1	FALSE	0.825692068884252	"2015-04-04"
-"AC/AH/089"	"Dong"	"White"	22	"Male"	"FALSE"	"168.155907190232cm"	"87.6620062323495kg"	"1971-03-02"	"Oregon"	"Cat"	2	FALSE	1.01960454924787	"2015-04-04"
-"AC/AH/100"	"Michel"	"White"	29	"Male"	"FALSE"	"175.66777084267cm"	"88.8206218764594kg"	"1972-02-03"	"Texas"	"Dog"	2	TRUE	-3.13588733632742	"2015-04-04"
-"AC/AH/104"	"Jeremy"	"White"	0	"Female"	"FALSE"	"157.037913573008cm"	"70.7716248889977kg"	"1972-10-21"	"Nevada"	"Dog"	3	TRUE	1.78569248727003	"2015-04-04"
-"AC/AH/112"	"Pat"	"Black"	32	"Female"	"FALSE"	"158.939583245318cm"	"65.1437838081649kg"	"1971-04-25"	"Wisconsin"	"CAT"	3	FALSE	0.4741686923138	"2015-05-04"
-"AC/AH/113"	"Eugene"	"White"	34	"Male"	"FALSE"	"172.716839170661cm"	"67.6201078673582kg"	"1972-05-18"	"Utah"	"Dog"	2	FALSE	0.048468298385088	"2015-05-04"
-"AC/AH/114"	"Kris"	"Hispanic"	0	"Male"	"FALSE"	"176.977586728274cm"	"90.6467686495169kg"	"1971-11-18"	"Rhode Island"	"None"	1	TRUE	-0.805980518478259	"2015-05-04"
-"AC/AH/115"	"Tracy"	"Bi-Racial"	21	" Female"	"No"	"159.789957498506cm"	"61.1321433573969kg"	"1971-05-06"	"Pennsylvania"	"Cat"	2	FALSE	-1.48047714818106	"2015-05-04"
-"AC/AH/127"	"Jame"	"White"	24	"Male"	"FALSE"	"184.336500085597cm"	"90.413290088493kg"	"1971-05-17"	"Illinois"	"Dog"	3	FALSE	-1.41303694930931	"2015-05-04"
-"AC/AH/133"	"Clyde"	"Hispanic"	26	"Male"	"FALSE"	"184.427325125592cm"	"79.2055991536244kg"	"1972-05-03"	"Virginia"	"NONE"	3	TRUE	-0.250386843858922	"2015-05-04"
-"AC/AH/150"	"Brett"	"White"	24	"Female"	"FALSE"	"160.088496345253cm"	"68.9435841033188kg"	"1972-10-18"	"Illinois"	"Dog"	2	TRUE	-0.987944396968794	"2015-05-04"
-"AC/AH/154"	"Tony"	"White"	33	"Female"	"FALSE"	"162.321786051352cm"	"72.7223350167367kg"	"1971-04-09"	"Texas"	"Dog"	3	FALSE	-0.916260890390137	"2015-06-04"
-"AC/AH/156"	"George"	"White"	22	"Female"	"FALSE"	"162.585351426249cm"	"69.759082330845kg"	"1971-03-11"	"California"	"Dog"	3	FALSE	-0.282744343181381	"2015-06-04"
-"AC/AH/159"	"Edward"	"White"	20	"Male"	"FALSE"	"171.939544533309cm"	"82.1098370845095kg"	"1972-11-21"	"Georgia"	"Cat"	1	TRUE	-1.17802438690115	"2015-06-04"
-"AC/AH/160"	"Rory"	"Asian"	34	"Female"	"TRUE"	"158.067100936248cm"	"69.7982544608857kg"	"1971-09-12"	"North Carolina"	"Cat"	99	TRUE	0.542232182896128	"2015-06-04"
-"AC/AH/164"	"Shane"	"Hispanic"	25	"Female"	"FALSE"	"158.350255621594cm"	"69.7167161018125kg"	"1971-09-27"	"Colorado"	"Cat"	1	FALSE	1.42059747136105	"2015-06-04"
-"AC/AH/171"	"Devin"	"White"	29	"Female"	"FALSE"	"162.177573247088cm"	"67.8066283341514kg"	"1971-02-28"	"Idaho"	"NULL"	3	FALSE	1.67706905018475	"2015-06-04"
-"AC/AH/176"	"Jerry"	"Asian"	26	"Female"	"FALSE"	"159.377027816947cm"	"70.3679623514105kg"	"1972-04-17"	"Texas"	"None"	3	FALSE	0.0199045850243468	"2015-06-04"
-"AC/AH/180"	"Drew"	"White"	30	"Male"	"FALSE"	"171.452845564866cm"	"84.290297181851kg"	"1972-10-29"	"Arizona"	"Dog"	2	TRUE	-0.193116406446963	"2015-06-04"
-"AC/AH/185"	"Ronald"	"White"	20	" Male"	"FALSE"	"176.634409501327cm"	"83.7021249441173kg"	"1972-09-09"	"Iowa"	"None"	2	TRUE	0.690270239199076	"2015-06-04"
-"AC/AH/186"	"Christopher"	"White"	28	"Male"	"FALSE"	"183.09741318033cm"	"82.4735229907799kg"	"1972-03-26"	"California"	"None"	3	FALSE	0.772944522675263	"2015-07-04"
-"AC/AH/192"	"Dominique"	"White"	23	"Male"	"No"	"177.144987851656cm"	"88.6957728338517kg"	"1972-01-21"	"Maryland"	"None"	3	FALSE	1.7585146659134	"2015-07-04"
-"AC/AH/198"	"Van"	"White"	31	"Male"	"FALSE"	"171.079432315637cm"	"72.5084204704738kg"	"1972-07-15"	"Michigan"	"Cat"	99	FALSE	-0.217705638851103	"2015-07-04"
-"AC/AH/207"	"Bobbie"	"White"	34	"Male"	"Yes"	"184.987555809117cm"	"85.5216473586341kg"	"1971-10-02"	"Texas"	"Cat"	1	TRUE	-1.06681870989891	"2015-07-04"
-"AC/AH/208"	"Lawrence"	"Hispanic"	31	" Female"	"Yes"	"156.378164701238cm"	"66.1904177228371kg"	"1972-10-13"	"Maryland"	"Dog"	1	FALSE	-0.294446334602069	"2015-07-04"
-"AC/AH/210"	"Keith"	"Hispanic"	0	"Female"	"TRUE"	"162.654647127329cm"	"73.9883534056105kg"	"1971-08-11"	"New York"	"Horse"	2	FALSE	0.869654611101995	"2015-07-04"
-"AC/AH/211"	"Son"	"White"	31	"Male"	"No"	"173.951601670025cm"	"82.5401917658389kg"	"1971-03-29"	"Indiana"	"Cat"	3	FALSE	1.20950175114019	"2015-08-04"
-"AC/AH/213"	"Charlie"	"White"	33	"Male"	"FALSE"	"176.464523045101cm"	"82.7520138351478kg"	"1972-10-15"	"Texas"	"Dog"	1	TRUE	-0.169468289607342	"2015-08-04"
-"AC/AH/219"	"Jay"	"White"	0	"Male"	"FALSE"	"180.955013317484cm"	"89.5095376248154kg"	"1972-03-10"	"Idaho"	"Dog"	2	TRUE	0.948978723711187	"2015-08-04"
-"AC/AH/220"	"Richard"	"White"	26	"Male"	"TRUE"	"173.674631137262cm"	"80.0520716781511kg"	"1971-09-11"	"Ohio"	"Dog"	1	TRUE	-0.776640790963934	"2015-08-04"
-"AC/AH/221"	"Carlos"	"White"	30	" Male"	"TRUE"	"181.226190966678cm"	"85.4207584026441kg"	"1972-01-23"	"New York"	"Dog"	2	FALSE	0.354514715004421	"2015-08-04"
-"AC/AH/225"	"Gail"	"White"	33	" Male"	"FALSE"	"169.237155575223cm"	"90.1189176050561kg"	"1972-01-14"	"Arizona"	"Cat"	99	TRUE	0.242400361897716	"2015-08-04"
-"AC/AH/233"	"Marion"	"White"	35	"Female"	"FALSE"	"160.113933254055cm"	"69.6644893953437kg"	"1972-01-01"	"Indiana"	"None"	3	TRUE	-0.593562866679289	"2015-08-04"
-"AC/AH/241"	"Lindsay"	"White"	29	"Male"	"TRUE"	"177.942314757011cm"	"92.4209777707246kg"	"1971-10-09"	"Tennessee"	"None"	1	TRUE	-0.615950945142789	"2015-08-04"
-"AC/AH/244"	"Sean"	"White"	0	"Female"	"FALSE"	"167.171343536368cm"	"67.8142575305591kg"	"1972-08-05"	"Maryland"	"None"	2	TRUE	-1.5009826577059	"2015-08-04"
-"AC/AH/248"	"Andrea"	"White"	24	"Male"	"FALSE"	"180.439805768885cm"	"89.5638115753323kg"	"1972-06-04"	"Michigan"	"DOG"	3	TRUE	1.8500403482832	"2015-08-04"
-"AC/AH/249"	"Jesus"	"Hispanic"	29	"Female"	"FALSE"	"160.013296578283cm"	"68.975260566987kg"	"1972-09-17"	"Pennsylvania"	"Cat"	3	FALSE	0.105984876857536	"2015-09-04"
-"AC/SG/002"	"Jan"	"White"	30	"Female"	"FALSE"	"164.775913756854cm"	"71.5588111141904kg"	"1972-06-20"	"New York"	"None"	2	FALSE	-0.524072907531833	"2015-09-04"
-"AC/SG/003"	"Walter"	"White"	34	"Male"	"FALSE"	"183.187817298641cm"	"86.8701965479714kg"	"1972-11-01"	"Tennessee"	"Cat"	3	TRUE	-1.94575154915594	"2015-09-04"
-"AC/SG/008"	"Dana"	"White"	22	"Female"	"FALSE"	"158.351124111373cm"	"70.0793148046335kg"	"1973-01-01"	"New York"	"Dog"	99	TRUE	-1.83897295126463	"2015-09-04"
-"AC/SG/009"	"Sammy"	"White"	21	"Male"	"TRUE"	"172.009009896093cm"	"85.6136428744651kg"	"1973-02-12"	"California"	"Dog"	2	TRUE	1.37523802019441	"2015-09-04"
-"AC/SG/010"	"Theo"	"Asian"	32	"Female"	"FALSE"	"156.451408273755cm"	"65.0333216298281kg"	"1971-08-01"	"Washington"	"Cat"	3	FALSE	-1.16520031092115	"2015-09-04"
-"AC/SG/015"	"Shaun"	"White"	26	"Female"	"FALSE"	"163.366208290007cm"	"71.0992209365445kg"	"1972-04-03"	"California"	"None"	2	TRUE	0.0113761492434546	"2015-09-04"
-"AC/SG/016"	"Jimmie"	"Black"	32	"Male"	"FALSE"	"170.450988103792cm"	"80.5270161408938kg"	"1972-06-25"	"North Carolina"	"None"	3	TRUE	-0.727503303500818	"2015-09-04"
-"AC/SG/046"	"Carl"	"Hispanic"	21	"Male"	"FALSE"	"180.90772042007cm"	"97.3835285144635kg"	"1972-12-04"	"Rhode Island"	"Cat"	3	TRUE	-0.281157380979083	"2015-09-04"
-"AC/SG/055"	"Evan"	"White"	24	"Male"	"FALSE"	"179.075969322231cm"	"77.5103609414093kg"	"1971-10-26"	"Maine"	"None"	3	FALSE	0.19033041490806	"2015-09-04"
-"AC/SG/056"	"Merrill"	"Asian"	30	"Male"	"FALSE"	"175.183635275558cm"	"86.6774534074267kg"	"1972-06-05"	"South Carolina"	NA	3	FALSE	0.349889485927416	"2015-09-04"
-"AC/SG/064"	"Jon"	"White"	0	"Female"	"FALSE"	"156.548351429587cm"	"71.6108123130692kg"	"1971-10-23"	"Virginia"	"Cat"	3	TRUE	-0.100611049695983	"2015-09-04"
-"AC/SG/065"	"Shayne"	"White"	32	" Female"	"FALSE"	"168.737134493969cm"	"72.0367130422003kg"	"1971-03-15"	"California"	"None"	99	TRUE	0.156756094634502	"2015-10-04"
-"AC/SG/067"	"Thomas"	"White"	24	"Female"	"FALSE"	"156.000614479285cm"	"69.8388645308035kg"	"1971-11-27"	"Idaho"	"Cat"	3	TRUE	0.402059611016474	"2015-10-04"
-"AC/SG/068"	"Valentine"	"Hispanic"	34	"Female"	"FALSE"	"157.760092888146cm"	"67.5444505602896kg"	"1972-07-10"	"Arizona"	"NULL"	3	FALSE	1.27809148099357	"2015-10-04"
-"AC/SG/072"	"Cameron"	"Black"	30	"Female"	"FALSE"	"157.672065178831cm"	"71.8201003923612kg"	"1971-04-01"	"Kentucky"	"NONE"	2	TRUE	1.62598820129778	"2015-10-04"
-"AC/SG/074"	"Eddie"	"Hispanic"	25	"Female"	"No"	"157.567687701813cm"	"68.2669628109541kg"	"1972-02-12"	"Colorado"	"None"	1	FALSE	-0.988386349784	"2015-10-04"
-"AC/SG/084"	"Brian"	"Hispanic"	0	"Male"	"FALSE"	"184.363512271227cm"	"93.2462170418945kg"	"1972-04-23"	"Texas"	"CAT"	3	TRUE	1.11756522069205	"2015-10-04"
-"AC/SG/095"	"Matthew"	"White"	33	"Female"	"TRUE"	"163.415931442804cm"	"64.1147849956082kg"	"1973-01-21"	"California"	"Dog"	1	FALSE	-0.536867164412629	"2015-10-04"
-"AC/SG/099"	"Leslie"	"Asian"	20	"Female"	"FALSE"	"158.459043921563cm"	"68.1014280897704kg"	"1971-12-11"	"Pennsylvania"	"Dog"	2	FALSE	-0.131532646975097	"2015-11-04"
-"AC/SG/101"	"Jason"	"White"	33	"Male"	"FALSE"	"169.134734851319cm"	"92.756262807277kg"	"1972-01-23"	"California"	"Cat"	2	FALSE	-0.357715128140917	"2015-11-04"
-"AC/SG/107"	"Sol"	"White"	21	"Female"	"FALSE"	"161.579229744537cm"	"68.9806805304974kg"	"1973-01-23"	"Maryland"	"None"	1	FALSE	1.3160205994913	"2015-11-04"
-"AC/SG/116"	"Connie"	"Black"	24	"Male"	"FALSE"	"173.31068258135cm"	"80.3554434687238kg"	"1971-09-18"	"Wisconsin"	"None"	2	TRUE	0.937263983394416	"2015-11-04"
-"AC/SG/121"	"Rudy"	"White"	33	"Male"	"FALSE"	"175.283898792069cm"	"74.8369787338998kg"	"1972-01-10"	"Ohio"	"None"	99	FALSE	1.09832728066119	"2015-12-04"
-"AC/SG/122"	"Michal"	"Hispanic"	32	"Female"	"FALSE"	"159.669936297322cm"	"69.4870645504039kg"	"1972-09-28"	"Florida"	"Dog"	1	FALSE	1.14889218612053	"2015-12-04"
-"AC/SG/123"	"Darnell"	"White"	35	" Female"	"FALSE"	"162.328480666927cm"	"67.5474911796218kg"	"1972-02-29"	"West Virginia"	"Dog"	2	FALSE	1.12228812402354	"2015-12-04"
-"AC/SG/134"	"Daryl"	"White"	28	"Female"	"FALSE"	"158.257938115058cm"	"66.7401990828035kg"	"1971-06-25"	"Washington"	"Dog"	3	TRUE	0.310838952114664	"2015-12-04"
-"AC/SG/139"	"Jordan"	"White"	21	"Male"	"FALSE"	"173.352345661106cm"	"79.5769026795357kg"	"1972-01-26"	"Oklahoma"	"Dog"	1	FALSE	0.40347825609712	"2015-12-04"
-"AC/SG/142"	"Kenneth"	"White"	35	"Male"	"FALSE"	"170.832237023187cm"	"89.7675651797337kg"	"1972-12-19"	"New York"	"None"	1	TRUE	-0.682306601989997	"2015-12-04"
-"AC/SG/155"	"Raymond"	"White"	31	"Male"	"FALSE"	"174.219633648371cm"	"86.5730787295724kg"	"1971-03-09"	"New Jersey"	"None"	3	TRUE	-0.414694461886087	"2015-12-04"
-"AC/SG/165"	"Elmer"	"White"	32	"Male"	"FALSE"	"178.190785612887cm"	"86.9113858369951kg"	"1972-05-05"	"Idaho"	"Dog"	3	TRUE	0.153548883855358	"2016-01-04"
-"AC/SG/167"	"Jimmy"	"White"	34	"Female"	"FALSE"	"161.725794554111cm"	"73.1368225417363kg"	"1972-04-29"	"Mississippi"	"Cat"	2	FALSE	0.372262286634222	"2016-01-04"
-"AC/SG/172"	"Whitney"	"White"	0	" Female"	"FALSE"	"161.726775141973cm"	"67.7051589339419kg"	"1971-09-11"	"Florida"	"Cat"	3	TRUE	-0.938937136014841	"2016-01-04"
-"AC/SG/173"	"Britt"	"White"	31	"Female"	"FALSE"	"158.313633215947cm"	"71.6997813573422kg"	"1971-04-11"	"Kansas"	"Dog"	2	FALSE	-0.328940782897807	"2016-01-04"
-"AC/SG/179"	"Logan"	"White"	25	"Male"	"FALSE"	"167.398265173526cm"	"80.8163345646156kg"	"1971-12-30"	"California"	"CAT"	3	FALSE	1.1750745061672	"2016-01-04"
-"AC/SG/181"	"Terry"	"Hispanic"	22	"Female"	"FALSE"	"161.697150373473cm"	"71.0582106588425kg"	"1972-06-08"	"North Carolina"	"None"	3	FALSE	0.171163616619875	"2016-01-04"
-"AC/SG/182"	"Jamie"	"Hispanic"	24	"Female"	"TRUE"	"160.264712431665cm"	"69.2046762743645kg"	"1972-10-11"	"Wisconsin"	"None"	3	FALSE	1.3152012538356	"2016-01-04"
-"AC/SG/191"	"Lacy"	"Hispanic"	31	"Male"	"FALSE"	"177.517945573813cm"	"76.374998450507kg"	"1971-06-12"	"Arkansas"	NA	3	FALSE	0.524009654069596	"2016-01-04"
-"AC/SG/193"	"Ronnie"	"White"	26	"Female"	"FALSE"	"164.555476119958cm"	"68.4283083462713kg"	"1972-11-23"	"California"	"NULL"	1	FALSE	-1.37163518476561	"2016-02-04"
-"AC/SG/194"	"Joseph"	"White"	34	"Male"	"FALSE"	"191.557419647206cm"	"79.3645658430449kg"	"1972-08-06"	"Michigan"	"NONE"	2	TRUE	-0.983018077616758	"2016-02-04"
-"AC/SG/197"	"Stacy"	"White"	35	"Male"	"FALSE"	"165.81661992556cm"	"85.2722090249059kg"	"1971-07-15"	"Virginia"	"DOG"	2	TRUE	0.243726154639749	"2016-02-04"
-"AC/SG/204"	"Anthony"	"White"	28	"Male"	"No"	"180.656762518383cm"	"91.9818422000367kg"	"1971-03-16"	"Illinois"	"None"	1	TRUE	-0.538972358286023	"2016-02-04"
-"AC/SG/216"	"Alva"	"White"	33	"Male"	"FALSE"	"178.449365369477cm"	"91.77367816887kg"	"1972-09-18"	"Colorado"	"Dog"	3	FALSE	0.723624215247829	"2016-02-04"
-"AC/SG/217"	"Dean"	"White"	28	"Female"	"Yes"	"163.514401731942cm"	"68.5119830390914kg"	"1971-12-22"	"Kentucky"	"Dog"	2	TRUE	0.807742893650206	"2016-02-04"
-"AC/SG/234"	"Luis"	"Hispanic"	31	"Male"	"FALSE"	"182.172456275796cm"	"87.670446385381kg"	"1971-11-23"	"Arizona"	"Cat"	2	TRUE	-1.57604265065437	"2016-02-04"
+"ID"	"Name"	"Race"	"Sex"	"Smokes"	"Height"	"Weight"	"Birth"	"State"	"Pet"	"Grade_Level"	"Died"	"Count"	"Date"
+"AC/AH/001"	"Demetrius"	"White"	"Male"	"FALSE"	"182.87cm"	"76.57kg"	1972-01-31	"Georgia"	"Dog"	2	FALSE	0.01	2015-11-25
+"AC/AH/017"	"Rosario"	"White"	"Male"	"FALSE"	"179.12cm"	"80.43kg"	1972-06-09	"Missouri"	"Dog"	2	FALSE	-1.31	2015-11-25
+"AC/AH/020"	"Julio"	"Black"	" Male"	"FALSE"	"169.15cm"	"75.48kg"	1972-07-03	"Pennsylvania"	"None"	2	FALSE	-0.17	2015-11-25
+"AC/AH/022"	"Lupe"	"White"	"Male"	"FALSE"	"175.66cm"	"94.54kg"	1972-08-11	"Florida"	"Cat"	1	FALSE	-1.1	2015-11-25
+"AC/AH/029"	"Lavern"	"White"	"Female"	"FALSE"	"164.47cm"	"71.78kg"	1973-06-06	"Iowa"	"NULL"	2	TRUE	1.42	2015-11-25
+"AC/AH/033"	"Bernie"	"Dog"	"Female"	"TRUE"	"158.27cm"	"69.9kg"	1973-06-25	"Maryland"	"Dog"	2	FALSE	0.29	2015-11-25
+"AC/AH/037"	"Samuel"	"White"	"Female"	"FALSE"	"161.69cm"	"68.85kg"	1972-03-20	"Pennsylvania"	"None"	1	FALSE	0.16	2015-11-25
+"AC/AH/044"	"Clair"	"White"	"Female"	"No"	"165.84cm"	"70.44kg"	1973-05-05	"North Carolina"	"None"	1	FALSE	-0.07	2015-11-25
+"AC/AH/045"	"Shirley"	"White"	"Male"	"FALSE"	"181.32cm"	"76.9kg"	1971-12-25	"Louisiana"	"Dog"	1	FALSE	-1.43	2015-11-25
+"AC/AH/048"	"Merle"	"Hispanic"	" Male"	"FALSE"	"167.37cm"	"79.06kg"	1973-07-13	"North Carolina"	"None"	2	FALSE	0.54	2015-12-25
+"AC/AH/049"	"Martin"	"White"	"Female"	"FALSE"	"160.06cm"	"72.37kg"	1972-04-28	"California"	"Horse"	2	TRUE	-2.41	2015-12-25
+"AC/AH/050"	"Frances"	"White"	"Female"	"FALSE"	"166.48cm"	"67.34kg"	1971-11-08	"Michigan"	"None"	1	FALSE	1.05	2015-12-25
+"AC/AH/052"	"Courtney"	"White"	"Male"	"TRUE"	"175.39cm"	"92.22kg"	1972-03-16	"Indiana"	"Bird"	3	FALSE	-0.04	2015-12-25
+"AC/AH/053"	"Francis"	"White"	"Female"	"TRUE"	"164.7cm"	"75.69kg"	1971-11-16	"Virginia"	"Dog"	1	FALSE	-0.65	2015-12-25
+"AC/AH/057"	"Vernon"	"White"	"Female"	"TRUE"	"163.79cm"	"65.76kg"	1972-01-06	"Illinois"	"Cat"	3	FALSE	0.06	2015-12-25
+"AC/AH/061"	"Lester"	"Black"	"Male"	"FALSE"	"181.13cm"	"72.33kg"	1972-11-16	"Wisconsin"	"Dog"	99	TRUE	-0.15	2015-12-25
+"AC/AH/063"	"Robin"	"Hispanic"	"Male"	"FALSE"	"169.24cm"	"73.3kg"	1971-11-16	"Illinois"	"None"	3	FALSE	0.68	2015-12-25
+"AC/AH/076"	"Albert"	"White"	"Male"	"FALSE"	"176.22cm"	"97.67kg"	1973-04-08	"Louisiana"	"Cat"	2	FALSE	-1.97	2015-12-25
+"AC/AH/077"	"Tommy"	"Black"	"Male"	"FALSE"	"174.09cm"	"72.2kg"	1973-02-01	"Washington"	"Cat"	3	FALSE	-1.18	2015-12-25
+"AC/AH/086"	"Kyle"	"Black"	"Male"	"TRUE"	"180.11cm"	"75.72kg"	1973-05-12	"Georgia"	"Cat"	3	FALSE	0.4	2015-12-25
+"AC/AH/089"	"Dong"	"White"	"Male"	"FALSE"	"179.24cm"	"75.54kg"	1972-03-11	"California"	"None"	2	TRUE	-0.47	2015-12-25
+"AC/AH/100"	"Michel"	"White"	"Female"	"FALSE"	"161.92cm"	"69.92kg"	1972-12-27	"Georgia"	"Dog"	1	FALSE	0.5	2015-12-25
+"AC/AH/104"	"Jeremy"	"White"	"Male"	"TRUE"	"169.85cm"	"90.63kg"	1972-04-12	"Kentucky"	"None"	1	TRUE	-0.2	2015-12-25
+"AC/AH/112"	"Pat"	"Black"	" Female"	"FALSE"	"160.57cm"	"63.54kg"	1973-06-26	"California"	"NA"	99	TRUE	0.69	2016-01-25
+"AC/AH/113"	"Eugene"	"White"	" Female"	"No"	"168.24cm"	"69.57kg"	1972-02-07	"Massachusetts"	"NA"	2	FALSE	0.38	2016-01-25
+"AC/AH/114"	"Kris"	"Hispanic"	"Male"	"FALSE"	"177.75cm"	"74.84kg"	1972-11-19	"Pennsylvania"	"Bird"	3	FALSE	0.15	2016-01-25
+"AC/AH/115"	"Tracy"	"Bi-Racial"	"Male"	"TRUE"	"183.21cm"	"83.36kg"	1973-09-29	"California"	"Dog"	2	FALSE	0.05	2016-01-25
+"AC/AH/127"	"Jame"	"White"	"Male"	"FALSE"	"167.75cm"	"82.06kg"	1972-10-29	"Texas"	"Dog"	1	TRUE	0.63	2016-01-25
+"AC/AH/133"	"Clyde"	"Hispanic"	"Male"	"FALSE"	"181.15cm"	"83.93kg"	1973-10-13	"Washington"	"Cat"	3	TRUE	-0.81	2016-02-25
+"AC/AH/150"	"Brett"	"White"	"Male"	"TRUE"	"181.56cm"	"79.54kg"	1972-05-03	"Kentucky"	"Dog"	1	TRUE	0.92	2016-02-25
+"AC/AH/154"	"Tony"	"White"	"Female"	"FALSE"	"160.03cm"	"64.3kg"	1973-08-30	"California"	"DOG"	1	TRUE	-0.1	2016-02-25
+"AC/AH/156"	"George"	"White"	"Male"	"FALSE"	"165.62cm"	"76.72kg"	1972-07-09	"California"	"Dog"	1	TRUE	0.61	2016-02-25
+"AC/AH/159"	"Edward"	"White"	"Male"	"No"	"181.64cm"	"96.91kg"	1972-12-04	"Connecticut"	"Cat"	2	FALSE	-0.39	2016-02-25
+"AC/AH/160"	"Rory"	"Asian"	"Female"	"FALSE"	"159.67cm"	"71.88kg"	1973-09-22	"Florida"	"Cat"	2	TRUE	0.74	2016-02-25
+"AC/AH/164"	"Shane"	"Hispanic"	"Male"	"TRUE"	"177.03cm"	"74.04kg"	1972-02-18	"Florida"	"None"	2	FALSE	0.15	2016-02-25
+"AC/AH/171"	"Devin"	"White"	"Female"	"No"	"163.35cm"	"70.46kg"	1973-04-16	"California"	"Bird"	3	TRUE	1.68	2016-03-25
+"AC/AH/176"	"Jerry"	"Asian"	"Male"	"FALSE"	"175.21cm"	"83.65kg"	1973-05-01	"Virginia"	"Dog"	3	TRUE	0.41	2016-03-25
+"AC/AH/180"	"Drew"	"White"	"Female"	"FALSE"	"160.8cm"	"64.77kg"	1973-02-18	"Oregon"	"CAT"	1	TRUE	-2.17	2016-03-25
+"AC/AH/185"	"Ronald"	"White"	"Male"	"FALSE"	"166.46cm"	"76.83kg"	1972-08-17	"Colorado"	"None"	99	TRUE	-1.32	2016-03-25
+"AC/AH/186"	"Christopher"	"White"	"Female"	"FALSE"	"157.95cm"	"67.41kg"	1972-05-06	"New Jersey"	"Dog"	3	TRUE	-1.89	2016-03-25
+"AC/AH/192"	"Dominique"	"White"	"Male"	"FALSE"	"180.61cm"	"83.59kg"	1972-03-24	"Michigan"	"None"	3	TRUE	-0.6	2016-03-25
+"AC/AH/198"	"Van"	"White"	"Female"	"FALSE"	"159.52cm"	"67.99kg"	1972-12-02	"Missouri"	"CAT"	2	FALSE	-0.4	2016-03-25
+"AC/AH/207"	"Bobbie"	"White"	"Female"	"FALSE"	"163.01cm"	"65.19kg"	1973-05-17	"Florida"	"Dog"	2	FALSE	1.07	2016-03-25
+"AC/AH/208"	"Lawrence"	"Hispanic"	"Female"	"FALSE"	"165.8cm"	"71.77kg"	1973-08-07	"Louisiana"	"None"	1	FALSE	-1.21	2016-03-25
+"AC/AH/210"	"Keith"	"Hispanic"	"Female"	"TRUE"	"170.03cm"	"66.68kg"	1972-08-28	"New York"	"Dog"	99	FALSE	-0.66	2016-03-25
+"AC/AH/211"	"Son"	"White"	"Female"	"FALSE"	"157.16cm"	"69.64kg"	1973-07-14	"California"	"Cat"	2	TRUE	-0.7	2016-04-25
+"AC/AH/213"	"Charlie"	"White"	"Female"	"Yes"	"164.58cm"	"72.99kg"	1972-01-25	"Louisiana"	"Dog"	1	FALSE	-0.32	2016-04-25
+"AC/AH/219"	"Jay"	"White"	"Female"	"FALSE"	"163.47cm"	"72.89kg"	1972-04-07	"North Carolina"	"Bird"	1	TRUE	0.33	2016-04-25
+"AC/AH/220"	"Richard"	"White"	"Male"	"FALSE"	"185.43cm"	"87.23kg"	1973-07-13	"Florida"	"Cat"	1	FALSE	1.29	2016-04-25
+"AC/AH/221"	"Carlos"	"White"	"Female"	"FALSE"	"165.34cm"	"70.84kg"	1972-02-01	"Michigan"	"Dog"	99	TRUE	1.69	2016-04-25
+"AC/AH/225"	"Gail"	"White"	"Female"	"FALSE"	"163.45cm"	"67.67kg"	1972-10-21	"Michigan"	"Cat"	2	FALSE	-0.74	2016-04-25
+"AC/AH/233"	"Marion"	"White"	" Female"	"FALSE"	"163.97cm"	"66.71kg"	1971-12-23	"Ohio"	"Cat"	3	TRUE	-1.07	2016-04-25
+"AC/AH/241"	"Lindsay"	"White"	"Female"	"FALSE"	"161.38cm"	"73.55kg"	1972-02-08	"Florida"	"Cat"	3	FALSE	-0.82	2016-05-25
+"AC/AH/244"	"Sean"	"White"	"Female"	"FALSE"	"160.09cm"	"65.93kg"	1973-01-25	"Maryland"	"None"	99	TRUE	0.5	2016-05-25
+"AC/AH/248"	"Andrea"	"White"	"Male"	"FALSE"	"178.64cm"	"97.05kg"	1973-01-12	"Indiana"	"Cat"	1	TRUE	-1.21	2016-05-25
+"AC/AH/249"	"Jesus"	"Hispanic"	"Female"	"TRUE"	"159.78cm"	"68.31kg"	1972-04-23	"Alabama"	"Cat"	2	TRUE	0.52	2016-05-25
+"AC/SG/002"	"Jan"	"White"	"Female "	"TRUE"	"161.57cm"	"67.92kg"	1973-07-03	"Arizona"	"Dog"	3	FALSE	0.33	2016-05-25
+"AC/SG/003"	"Walter"	"White"	"Female "	"No"	"161.83cm"	"66.03kg"	1972-07-11	"Oregon"	"None"	2	TRUE	-0.9	2016-05-25
+"AC/SG/008"	"Dana"	"White"	" Male"	"Yes"	"169.66cm"	"77.3kg"	1973-05-26	"Nevada"	"Dog"	1	TRUE	-2.36	2016-05-25
+"AC/SG/009"	"Sammy"	"White"	"Male"	"FALSE"	"166.84cm"	"88.25kg"	1972-03-04	"Vermont"	"Dog"	1	FALSE	1.51	2016-06-25
+"AC/SG/010"	"Theo"	"Asian"	"Female"	"FALSE"	"159.32cm"	"64.92kg"	1973-01-29	"New York"	"Cat"	2	TRUE	0.71	2016-06-25
+"AC/SG/015"	"Shaun"	"White"	"Male"	"Yes"	"170.51cm"	"84.35kg"	1972-11-09	"New Jersey"	"DOG"	3	TRUE	0.12	2016-06-25
+"AC/SG/016"	"Jimmie"	"Black"	"Female"	"FALSE"	"161.84cm"	"69.97kg"	1972-04-03	"Arizona"	"Cat"	3	TRUE	-0.57	2016-06-25
+"AC/SG/046"	"Carl"	"Hispanic"	"Male"	"FALSE"	"171.41cm"	"81.7kg"	1973-08-05	"Mississippi"	"Bird"	2	TRUE	0.43	2016-06-25
+"AC/SG/055"	"Evan"	"White"	"Male"	"FALSE"	"166.75cm"	"79.06kg"	1972-02-24	"Illinois"	"Bird"	3	TRUE	-0.55	2016-07-25
+"AC/SG/056"	"Merrill"	"Asian"	"Female"	"Yes"	"166.19cm"	"67.46kg"	1972-11-27	"Indiana"	"NULL"	3	TRUE	-1.06	2016-07-25
+"AC/SG/064"	"Jon"	"White"	"Male "	"FALSE"	"169.16cm"	"90.08kg"	1972-10-04	"Illinois"	"Cat"	2	TRUE	-0.1	2016-07-25
+"AC/SG/065"	"Shayne"	"White"	"Female"	"FALSE"	"157.01cm"	"66.56kg"	1972-04-05	"California"	"Dog"	3	TRUE	0.64	2016-07-25
+"AC/SG/067"	"Thomas"	"White"	"Male"	"FALSE"	"167.51cm"	"84.15kg"	1972-07-19	"Pennsylvania"	"Bird"	2	TRUE	-1.46	2016-07-25
+"AC/SG/068"	"Valentine"	"Hispanic"	"Female"	"FALSE"	"160.47cm"	"68.2kg"	1972-04-15	"Tennessee"	"Cat"	3	TRUE	0.83	2016-07-25
+"AC/SG/072"	"Cameron"	"Black"	"Female"	"TRUE"	"162.33cm"	"66.47kg"	1972-02-15	"California"	"NULL"	3	FALSE	1.02	2016-07-25
+"AC/SG/074"	"Eddie"	"Hispanic"	"Male"	"FALSE"	"175.67cm"	"88.82kg"	1973-10-04	"Georgia"	"None"	99	FALSE	-3.14	2016-07-25
+"AC/SG/084"	"Brian"	"Hispanic"	"Male"	"FALSE"	"174.25cm"	"80.93kg"	1972-03-06	"Virginia"	"DOG"	2	TRUE	1.79	2016-07-25
+"AC/SG/095"	"Matthew"	"White"	" Female"	"FALSE"	"158.94cm"	"65.14kg"	1973-05-26	"Hawaii"	"Dog"	1	FALSE	0.47	2016-07-25
+"AC/SG/099"	"Leslie"	"Asian"	" Male"	"FALSE"	"172.72cm"	"67.62kg"	1972-02-04	"Ohio"	"Cat"	1	FALSE	0.05	2016-07-25
+"AC/SG/101"	"Jason"	"White"	"Female"	"FALSE"	"159.23cm"	"69.96kg"	1973-09-28	"Michigan"	"Dog"	2	TRUE	-0.81	2016-07-25
+"AC/SG/107"	"Sol"	"White"	"Male"	"FALSE"	"176.54cm"	"90.76kg"	1973-01-28	"Hawaii"	"None"	3	FALSE	-1.48	2016-08-25
+"AC/SG/116"	"Connie"	"Black"	"Male"	"FALSE"	"184.34cm"	"90.41kg"	1972-06-05	"Florida"	"None"	3	TRUE	-1.41	2016-08-25
+"AC/SG/121"	"Rudy"	"White"	"Female"	"FALSE"	"163.94cm"	"71.47kg"	1973-03-12	"Michigan"	"Cat"	3	FALSE	-0.25	2016-08-25
+"AC/SG/122"	"Michal"	"Hispanic"	"Female "	"FALSE"	"160.09cm"	"68.94kg"	1971-12-16	"South Carolina"	"DOG"	1	FALSE	-0.99	2016-08-25
+"AC/SG/123"	"Darnell"	"White"	" Female"	"TRUE"	"162.32cm"	"72.72kg"	1972-09-03	"North Carolina"	"Bird"	1	TRUE	-0.92	2016-08-25
+"AC/SG/134"	"Daryl"	"White"	"Female "	"TRUE"	"162.59cm"	"69.76kg"	1972-05-28	"Texas"	"CAT"	2	TRUE	-0.28	2016-08-25
+"AC/SG/139"	"Jordan"	"White"	"Male"	"FALSE"	"171.94cm"	"82.11kg"	1973-10-06	"Michigan"	"None"	1	FALSE	-1.18	2016-08-25
+"AC/SG/142"	"Kenneth"	"White"	"Female"	"FALSE"	"158.07cm"	"69.8kg"	1972-05-15	"Kansas"	"Dog"	3	FALSE	0.54	2016-08-25
+"AC/SG/155"	"Raymond"	"White"	"Female"	"FALSE"	"158.35cm"	"69.72kg"	1972-06-02	"California"	"Cat"	3	TRUE	1.42	2016-08-25
+"AC/SG/165"	"Elmer"	"White"	"Female"	"FALSE"	"162.18cm"	"67.81kg"	1972-03-25	"Washington"	"Bird"	1	TRUE	1.68	2016-08-25
+"AC/SG/167"	"Jimmy"	"White"	"Female"	"FALSE"	"159.38cm"	"70.37kg"	1973-09-30	"Washington"	"None"	2	TRUE	0.02	2016-09-25
+"AC/SG/172"	"Whitney"	"White"	"Male"	"No"	"171.45cm"	"84.29kg"	1972-02-25	"Florida"	"Dog"	2	TRUE	-0.19	2016-09-25
+"AC/SG/173"	"Britt"	"White"	"Female"	"TRUE"	"163.17cm"	"64.47kg"	1973-06-19	"California"	"NONE"	2	FALSE	0.69	2016-09-25
+"AC/SG/179"	"Logan"	"White"	"Male"	"FALSE"	"183.1cm"	"82.47kg"	1972-10-24	"Ohio"	"Dog"	3	TRUE	0.77	2016-09-25
+"AC/SG/181"	"Terry"	"Hispanic"	"Male"	"FALSE"	"177.14cm"	"88.7kg"	1971-11-24	"Indiana"	"CAT"	3	TRUE	1.76	2016-09-25
+"AC/SG/182"	"Jamie"	"Hispanic"	"Male"	"TRUE"	"171.08cm"	"72.51kg"	1973-03-25	"Louisiana"	"None"	3	TRUE	-0.22	2016-09-25
+"AC/SG/191"	"Lacy"	"Hispanic"	"Female"	"FALSE"	"159.33cm"	"70.68kg"	1973-06-21	"Texas"	"None"	3	TRUE	-1.07	2016-09-25
+"AC/SG/193"	"Ronnie"	"White"	"Male "	"TRUE"	"185.43cm"	"73.63kg"	1973-06-05	"Iowa"	"Dog"	3	FALSE	-0.29	2016-09-25
+"AC/SG/194"	"Joseph"	"White"	"Female"	"FALSE"	"162.65cm"	"73.99kg"	1972-08-04	"Maryland"	"CAT"	3	FALSE	0.87	2016-10-25
+"AC/SG/197"	"Stacy"	"White"	"Female"	"FALSE"	"159.44cm"	"66.21kg"	1972-11-08	"New York"	"Cat"	1	TRUE	1.21	2016-10-25
+"AC/SG/204"	"Anthony"	"White"	"Female"	"FALSE"	"164.11cm"	"70.66kg"	1972-06-17	"California"	"Dog"	3	FALSE	-0.17	2016-10-25
+"AC/SG/216"	"Alva"	"White"	" Female"	"FALSE"	"159.13cm"	"66.96kg"	1972-06-19	"Alabama"	"None"	1	TRUE	0.95	2016-10-25
+"AC/SG/217"	"Dean"	"White"	"Female"	"FALSE"	"160.58cm"	"71.49kg"	1972-11-11	"Ohio"	"None"	1	TRUE	-0.78	2016-10-25
+"AC/SG/234"	"Luis"	"Hispanic"	"Female"	"FALSE"	"164.88cm"	"68.07kg"	1971-11-10	"Pennsylvania"	"Cat"	3	TRUE	0.35	2016-10-25

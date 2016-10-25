@@ -8,6 +8,8 @@ output: html_document
 
 ```{r}
 library(wakefield)
+library(stringr)
+library(dplyr)
 set.seed(666)
 
 random_patients <- function(n) {
@@ -16,7 +18,7 @@ random_patients <- function(n) {
     id,
     name,
     race,
-    age,
+#    age,
     sex,
     smokes,
     height_cm(name = "Height"),
@@ -26,7 +28,7 @@ random_patients <- function(n) {
     pet,
     grade_level(x=1:3),
     died,    
-    normal(name="Count"),
+    normal_round(name="Count",digits=2),
     date_stamp)
   )
   
@@ -35,8 +37,8 @@ random_patients <- function(n) {
 }
 
 patients <- random_patients(100)
-patients$Height <- ifelse(patients$Sex == "Male",rnorm(n=100,mean=175.3,sd=6),rnorm(n=100,161.9,sd=3))
-patients$Weight <- ifelse(patients$Sex == "Male",rnorm(n=100,mean=84,sd=6),rnorm(n=100,69,sd=3))
+patients$Height <- round(ifelse(patients$Sex == "Male",rnorm(n=100,mean=175.3,sd=6),rnorm(n=100,161.9,sd=3)),2)
+patients$Weight <- round(ifelse(patients$Sex == "Male",rnorm(n=100,mean=84,sd=6),rnorm(n=100,69,sd=3)),2)
 patients$Weight <- paste0(patients$Weight, "kg")
 ```
 
@@ -48,13 +50,8 @@ rand_rows <- sample(1:100,10)
 patients$Smokes[rand_rows] <- sample(c("Yes","No"),10,replace=TRUE)
 ```
 
-2. Put some zeros in the `Age` column
+2. Add cm to the Height column
 
-```{r}
-
-rand_rows <- sample(1:100,10)
-patients$Age[rand_rows] <- 0
-```
 
 ```{r}
 patients$Height <- as.character(patients$Height)
@@ -68,6 +65,9 @@ patients$Height <- paste0(patients$Height,"cm")
 rand_rows <- sample(1:100,10)
 patients$Sex <- as.character(patients$Sex)
 patients$Sex[rand_rows] <- paste0(" ", patients$Sex[rand_rows])
+rand_rows <- sample(1:100,6)
+patients$Sex[rand_rows] <- paste0(patients$Sex[rand_rows], " ")
+
 ```
 
 4. upper-case convert some of the pets
@@ -100,10 +100,14 @@ patients$Grade_Level <- as.numeric(patients$Grade_Level)
 patients$Grade_Level[rand_rows] <- 99
 ```
 
-7. convert IDs to numbers
+7. Put in the IDs from the diabetes data
 
 ```{r}
-patients$ID <- as.numeric(patients$ID)
+diabetes <- read.delim("diabetes.txt")
+patients$ID <- unique(diabetes$ID)
+##First 57 IDs are from centre AH
+
+
 ```
 
 
@@ -113,14 +117,90 @@ head(patients)
 write.table(patients, file="patient-data.txt",sep="\t",row.names = FALSE)
 ```
 
-Generate some random gene measurements
+
+Clean the data
 
 ```{r}
-library(stringr)
-counts <- matrix(rnorm(820),ncol=82)
-colnames(counts) <- str_pad(sample(1:100,82),pad="0",width=3)
+library(lubridate)
+grds <- patients$Grade_Level
 
-counts <- data.frame(GeneID = LETTERS[1:10],counts)
-write.table(counts, file="gene-counts.txt",sep="\t",quote=FALSE)
+dob <- ymd(patients$Birth)
+today <- ymd("20160509")
+age <- interval(dob, today)
+
+read.delim("patient-data.txt") %>% 
+  tbl_df %>% 
+  mutate(Age = year(as.period(age))) %>% 
+  mutate(Sex = factor(str_trim(Sex))) %>% 
+  mutate(Height= as.numeric(str_replace_all(Height,pattern = "cm",""))) %>% 
+  mutate(Weight = as.numeric(str_replace_all(Weight,"kg",""))) %>% 
+  mutate(BMI = round((Weight/(Height/100)^2),2), Overweight = BMI > 25) %>% 
+  mutate(Smokes = str_replace_all(Smokes, "Yes", TRUE)) %>% 
+  mutate(Smokes = as.logical(str_replace_all(Smokes, "No", FALSE))) %>% 
+  mutate(Pet = str_to_title(Pet)) %>% 
+  mutate(Grade_Level = ifelse(Grade_Level == 99, NA,Grade_Level)) %>% 
+  rename(Grade = Grade_Level) %>% 
+  mutate(Pet = str_replace_all(Pet, "Null","NA")) %>% 
+  mutate(Race = ifelse(Race %in% c("Asian","Bi-Racial","Black","Hispanic","White"), Race, NA)) -> patients_clean
+ patients_clean
+```
+
+
+```{r}
+write.table(patients_clean,file="patient-data-cleaned.txt",sep="\t",row.names = FALSE)
+```
+
+Now for a larger set
+
+```{r}
+
+random_patients <- function(n) {
+  as.data.frame(r_data_frame(
+    n,
+    id,
+#    name,
+    race,
+#    age,
+    sex,
+    smokes,
+    height_cm(name = "Height"),
+    normal(name="Weight"),
+    birth(random = TRUE, x = NULL, start = Sys.Date() - 365 * 45, k = 365*2,by = "1 days"),
+    state,
+    pet,
+    grade_level(x=1:3),
+    died,    
+    normal_round(name="Count",digits=2),
+    date_stamp)
+  )
+  
+  
+  
+}
+
+cohort <- random_patients(10023)
+cohort$Height <- round(ifelse(cohort$Sex == "Male",rnorm(n=100,mean=175.3,sd=6),rnorm(n=100,161.9,sd=3)),2)
+cohort$Weight <- round(ifelse(cohort$Sex == "Male",rnorm(n=100,mean=84,sd=6),rnorm(n=100,69,sd=3)),2)
+cohort$Weight <- paste0(cohort$Weight, "kg")
+cohort$Height <- as.character(cohort$Height)
+cohort$Height <- paste0(cohort$Height,"cm")
+rand_rows <- sample(1:1000,10)
+cohort$Sex <- as.character(cohort$Sex)
+cohort$Sex[rand_rows] <- paste0(" ", cohort$Sex[rand_rows])
+rand_rows <- sample(1:1000,6)
+cohort$Sex[rand_rows] <- paste0(cohort$Sex[rand_rows], " ")
+rand_rows <- sample(1:100,10)
+cohort$Pet <- as.character(cohort$Pet)
+cohort$Pet[rand_rows] <- toupper(cohort$Pet[rand_rows])
+no_pet <- which(patients$Pet == "None")
+cohort$Pet[sample(no_pet,2)] <- "NA"
+cohort$Pet[sample(no_pet,3)] <- "NULL"
+  
+rand_rows <- sample(1:100,7)
+cohort$Grade_Level <- as.numeric(cohort$Grade_Level)
+cohort$Grade_Level[rand_rows] <- 99
+
+write.table(cohort, file="cohort-data.txt",sep="\t",row.names = FALSE)
+
 ```
 

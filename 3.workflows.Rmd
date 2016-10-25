@@ -159,7 +159,7 @@ head(patients_clean[patients_clean$Sex == "Male",])
 The `%in%` function can check for matches in a pre-defined vector
 
 ```{r}
-filter(patients_clean, Pet %in% c("CAT", "Cat")) %>% select(ID,Name, Race,Age,Pet)
+filter(patients_clean, Pet %in% c("CAT", "Cat")) %>% select(ID,Name, Race,Pet)
 ```
 (*additional `select` statement added so you can see the `Pet` variable`*)
 
@@ -249,16 +249,16 @@ arrange(patients_clean, desc(Height))
 
 Can use multiple variables in the sorting
 
-e.g. `Age` and then `Count`
+e.g. `Grade_Level` and then `Count`
 
 ```{r}
-arrange(patients_clean, desc(Age), Count) %>% select(ID:Sex,Count)
+arrange(patients_clean, desc(Grade_Level), Count) %>% select(ID:Sex,Count)
 ```
 
-`Age`, `Sex` and then `Count`
+`Grade_Level`, `Sex` and then `Count`
 
 ```{r}
-arrange(patients_clean, desc(Age), Sex, Count) %>% select(ID:Sex,Count)
+arrange(patients_clean, desc(Grade_Level), Sex, Count) %>% select(ID:Sex,Count)
 ```
 
 A related function is `top_n`
@@ -279,7 +279,7 @@ read.delim("patient-data.txt") %>%
   mutate(BMI = (Weight/(Height/100)^2), Overweight = BMI > 25) %>% 
   mutate(Smokes = str_replace_all(Smokes, "Yes", TRUE)) %>% 
   mutate(Smokes = as.logical(str_replace_all(Smokes, "No", FALSE))) %>% 
-  select(ID, Name, Birth,BMI,Smokes,Overweight,Died) %>% 
+  select(ID, Birth,BMI,Smokes,Overweight,Died) %>% 
   filter(Smokes & Overweight & !Died) %>% 
   arrange(desc(BMI)) %>% 
   top_n(10, BMI) %>% 
@@ -305,9 +305,8 @@ This time we have a million patients, and shouldn't really be dealing with these
   mutate(Smokes = as.logical(str_replace_all(Smokes, "Yes", TRUE))) %>% 
   mutate(Smokes = as.logical(str_replace_all(Smokes, "No", FALSE))) %>%
   filter(Smokes & Overweight) %>% 
-  select(ID, Name, Birth, BMI, Smokes,Overweight)  %>% 
+  select(ID, Birth, BMI, Smokes,Overweight)  %>% 
   arrange(desc(BMI)) %>% 
-  top_n(10, BMI) %>% 
   write.table("study-candidates.csv")
 ```
 
@@ -324,9 +323,8 @@ library(readr)
   mutate(Smokes = str_replace_all(Smokes, "Yes", TRUE)) %>% 
   mutate(Smokes = as.logical(str_replace_all(Smokes, "No", FALSE))) %>%
   filter(Smokes & Overweight) %>% 
-  select(ID, Name, Birth, BMI, Smokes,Overweight)  %>% 
+  select(ID,  Birth, BMI, Smokes,Overweight)  %>% 
   arrange(desc(BMI)) %>% 
-  top_n(10, BMI) %>% 
   write.table("study-candidates.csv")
 ```
 
