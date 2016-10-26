@@ -110,6 +110,34 @@ patients$ID <- unique(diabetes$ID)
 
 ```
 
+8. Retain only the first occurence of each date
+
+```{r}
+dates <- unique(patients$Date)
+firstDate <- match(dates, patients$Date)
+patients$Date <- ""
+patients$Date[firstDate] <- as.character(dates)
+colnames(patients)[ncol(patients)] <- "Data Entered Study"
+```
+
+9. Change some names to upper case
+
+```{r}
+rand_rows <- sample(1:nrow(patients), 20)
+patients$Name <- as.character(patients$Name)
+patients$Name[rand_rows] <- str_to_upper(as.character(patients$Name[rand_rows]))
+```
+
+10. Introduce typos in 'California'
+
+```{r}
+cal <- sample(grep("California", patients$State),2)
+patients$State <- as.character(patients$State)
+patients$State[cal] <- "Californa"
+car <- sample(grep("Carolina", patients$State),2)
+patients$State[car] <- gsub("Carolina", "Caroline",patients$State[car])
+
+```
 
 
 ```{r}
@@ -138,6 +166,7 @@ read.delim("patient-data.txt") %>%
   mutate(Smokes = str_replace_all(Smokes, "Yes", TRUE)) %>% 
   mutate(Smokes = as.logical(str_replace_all(Smokes, "No", FALSE))) %>% 
   mutate(Pet = str_to_title(Pet)) %>% 
+  mutate(Name = str_to_title(Name)) %>% 
   mutate(Grade_Level = ifelse(Grade_Level == 99, NA,Grade_Level)) %>% 
   rename(Grade = Grade_Level) %>% 
   mutate(Pet = str_replace_all(Pet, "Null","NA")) %>% 
