@@ -254,38 +254,38 @@ summarise_each(iris, funs(mean), one_of(columns))</code></pre>
 patients &lt;- read.delim(&quot;patient-data-cleaned.txt&quot;, stringsAsFactors = FALSE) %&gt;% tbl_df
 patients</code></pre>
 <pre><code># A tibble: 100 × 17
-          ID      Name  Race    Sex Smokes Height Weight      Birth
-       &lt;chr&gt;     &lt;chr&gt; &lt;int&gt;  &lt;chr&gt;  &lt;lgl&gt;  &lt;dbl&gt;  &lt;dbl&gt;      &lt;chr&gt;
-1  AC/AH/001 Demetrius     6   Male  FALSE 182.87  76.57 1972-02-06
-2  AC/AH/017   Rosario     6   Male  FALSE 179.12  80.43 1972-06-15
-3  AC/AH/020     Julio     3   Male  FALSE 169.15  75.48 1972-07-09
-4  AC/AH/022      Lupe     6   Male  FALSE 175.66  94.54 1972-08-17
-5  AC/AH/029    Lavern     6 Female  FALSE 164.47  71.78 1973-06-12
-6  AC/AH/033    Bernie    NA Female   TRUE 158.27  69.90 1973-07-01
-7  AC/AH/037    Samuel     6 Female  FALSE 161.69  68.85 1972-03-26
-8  AC/AH/044     Clair     6 Female  FALSE 165.84  70.44 1973-05-11
-9  AC/AH/045   Shirley     6   Male  FALSE 181.32  76.90 1971-12-31
-10 AC/AH/048     Merle     5   Male  FALSE 167.37  79.06 1973-07-19
+          ID      Name     Race    Sex     Smokes Height Weight      Birth
+       &lt;chr&gt;     &lt;chr&gt;    &lt;chr&gt;  &lt;chr&gt;      &lt;chr&gt;  &lt;dbl&gt;  &lt;dbl&gt;      &lt;chr&gt;
+1  AC/AH/001 Demetrius    White   Male Non-Smoker 182.87  76.57 1972-02-06
+2  AC/AH/017   Rosario    White   Male Non-Smoker 179.12  80.43 1972-06-15
+3  AC/AH/020     Julio    Black   Male Non-Smoker 169.15  75.48 1972-07-09
+4  AC/AH/022      Lupe    White   Male Non-Smoker 175.66  94.54 1972-08-17
+5  AC/AH/029    Lavern    White Female Non-Smoker 164.47  71.78 1973-06-12
+6  AC/AH/033    Bernie     &lt;NA&gt; Female     Smoker 158.27  69.90 1973-07-01
+7  AC/AH/037    Samuel    White Female Non-Smoker 161.69  68.85 1972-03-26
+8  AC/AH/044     Clair    White Female Non-Smoker 165.84  70.44 1973-05-11
+9  AC/AH/045   Shirley    White   Male Non-Smoker 181.32  76.90 1971-12-31
+10 AC/AH/048     Merle Hispanic   Male Non-Smoker 167.37  79.06 1973-07-19
 # ... with 90 more rows, and 9 more variables: State &lt;chr&gt;, Pet &lt;chr&gt;,
-#   Grade &lt;int&gt;, Died &lt;lgl&gt;, Count &lt;dbl&gt;, Data.Entered.Study &lt;chr&gt;,
+#   Grade &lt;int&gt;, Died &lt;lgl&gt;, Count &lt;dbl&gt;, Date.Entered.Study &lt;chr&gt;,
 #   Age &lt;int&gt;, BMI &lt;dbl&gt;, Overweight &lt;lgl&gt;</code></pre>
 <pre class="r"><code># now let's round the patient's weight and height to 1 decimal place
 patients %&gt;% mutate_each(funs(round(., digits = 1)), Height, Weight)</code></pre>
 <pre><code># A tibble: 100 × 17
-          ID      Name  Race    Sex Smokes Height Weight      Birth
-       &lt;chr&gt;     &lt;chr&gt; &lt;int&gt;  &lt;chr&gt;  &lt;lgl&gt;  &lt;dbl&gt;  &lt;dbl&gt;      &lt;chr&gt;
-1  AC/AH/001 Demetrius     6   Male  FALSE  182.9   76.6 1972-02-06
-2  AC/AH/017   Rosario     6   Male  FALSE  179.1   80.4 1972-06-15
-3  AC/AH/020     Julio     3   Male  FALSE  169.2   75.5 1972-07-09
-4  AC/AH/022      Lupe     6   Male  FALSE  175.7   94.5 1972-08-17
-5  AC/AH/029    Lavern     6 Female  FALSE  164.5   71.8 1973-06-12
-6  AC/AH/033    Bernie    NA Female   TRUE  158.3   69.9 1973-07-01
-7  AC/AH/037    Samuel     6 Female  FALSE  161.7   68.8 1972-03-26
-8  AC/AH/044     Clair     6 Female  FALSE  165.8   70.4 1973-05-11
-9  AC/AH/045   Shirley     6   Male  FALSE  181.3   76.9 1971-12-31
-10 AC/AH/048     Merle     5   Male  FALSE  167.4   79.1 1973-07-19
+          ID      Name     Race    Sex     Smokes Height Weight      Birth
+       &lt;chr&gt;     &lt;chr&gt;    &lt;chr&gt;  &lt;chr&gt;      &lt;chr&gt;  &lt;dbl&gt;  &lt;dbl&gt;      &lt;chr&gt;
+1  AC/AH/001 Demetrius    White   Male Non-Smoker  182.9   76.6 1972-02-06
+2  AC/AH/017   Rosario    White   Male Non-Smoker  179.1   80.4 1972-06-15
+3  AC/AH/020     Julio    Black   Male Non-Smoker  169.2   75.5 1972-07-09
+4  AC/AH/022      Lupe    White   Male Non-Smoker  175.7   94.5 1972-08-17
+5  AC/AH/029    Lavern    White Female Non-Smoker  164.5   71.8 1973-06-12
+6  AC/AH/033    Bernie     &lt;NA&gt; Female     Smoker  158.3   69.9 1973-07-01
+7  AC/AH/037    Samuel    White Female Non-Smoker  161.7   68.8 1972-03-26
+8  AC/AH/044     Clair    White Female Non-Smoker  165.8   70.4 1973-05-11
+9  AC/AH/045   Shirley    White   Male Non-Smoker  181.3   76.9 1971-12-31
+10 AC/AH/048     Merle Hispanic   Male Non-Smoker  167.4   79.1 1973-07-19
 # ... with 90 more rows, and 9 more variables: State &lt;chr&gt;, Pet &lt;chr&gt;,
-#   Grade &lt;int&gt;, Died &lt;lgl&gt;, Count &lt;dbl&gt;, Data.Entered.Study &lt;chr&gt;,
+#   Grade &lt;int&gt;, Died &lt;lgl&gt;, Count &lt;dbl&gt;, Date.Entered.Study &lt;chr&gt;,
 #   Age &lt;int&gt;, BMI &lt;dbl&gt;, Overweight &lt;lgl&gt;</code></pre>
 </div>
 </div>

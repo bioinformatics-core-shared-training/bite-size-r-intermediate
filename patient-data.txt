@@ -1,4 +1,4 @@
-"ID"	"Name"	"Race"	"Sex"	"Smokes"	"Height"	"Weight"	"Birth"	"State"	"Pet"	"Grade_Level"	"Died"	"Count"	"Data Entered Study"
+"ID"	"Name"	"Race"	"Sex"	"Smokes"	"Height"	"Weight"	"Birth"	"State"	"Pet"	"Grade_Level"	"Died"	"Count"	"Date Entered Study"
 "AC/AH/001"	"Demetrius"	"White"	"Male"	"FALSE"	"182.87cm"	"76.57kg"	1972-02-06	"Georgia"	"Dog"	2	FALSE	0.01	"2015-12-01"
 "AC/AH/017"	"Rosario"	"White"	"Male"	"FALSE"	"179.12cm"	"80.43kg"	1972-06-15	"Missouri"	"Dog"	2	FALSE	-1.31	""
 "AC/AH/020"	"Julio"	"Black"	" Male"	"FALSE"	"169.15cm"	"75.48kg"	1972-07-09	"Pennsylvania"	"None"	2	FALSE	-0.17	""

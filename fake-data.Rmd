@@ -117,7 +117,7 @@ dates <- unique(patients$Date)
 firstDate <- match(dates, patients$Date)
 patients$Date <- ""
 patients$Date[firstDate] <- as.character(dates)
-colnames(patients)[ncol(patients)] <- "Data Entered Study"
+colnames(patients)[ncol(patients)] <- "Date Entered Study"
 ```
 
 9. Change some names to upper case
@@ -156,6 +156,7 @@ dob <- ymd(patients$Birth)
 today <- ymd("20160509")
 age <- interval(dob, today)
 
+
 read.delim("patient-data.txt") %>% 
   tbl_df %>% 
   mutate(Age = year(as.period(age))) %>% 
@@ -163,14 +164,14 @@ read.delim("patient-data.txt") %>%
   mutate(Height= as.numeric(str_replace_all(Height,pattern = "cm",""))) %>% 
   mutate(Weight = as.numeric(str_replace_all(Weight,"kg",""))) %>% 
   mutate(BMI = round((Weight/(Height/100)^2),2), Overweight = BMI > 25) %>% 
-  mutate(Smokes = str_replace_all(Smokes, "Yes", TRUE)) %>% 
-  mutate(Smokes = as.logical(str_replace_all(Smokes, "No", FALSE))) %>% 
+  mutate(Smokes = str_replace_all(Smokes, "Yes|TRUE", "Smoker")) %>% 
+  mutate(Smokes = str_replace_all(Smokes, "No|FALSE", "Non-Smoker")) %>% 
   mutate(Pet = str_to_title(Pet)) %>% 
   mutate(Name = str_to_title(Name)) %>% 
   mutate(Grade_Level = ifelse(Grade_Level == 99, NA,Grade_Level)) %>% 
   rename(Grade = Grade_Level) %>% 
   mutate(Pet = str_replace_all(Pet, "Null","NA")) %>% 
-  mutate(Race = ifelse(Race %in% c("Asian","Bi-Racial","Black","Hispanic","White"), Race, NA)) -> patients_clean
+  mutate(Race = factor(Race,levels=c("Asian","Bi-Racial","Black","Hispanic","White",NA))) -> patients_clean
  patients_clean
 ```
 
