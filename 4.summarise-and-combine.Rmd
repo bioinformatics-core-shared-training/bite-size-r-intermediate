@@ -2,7 +2,14 @@
 title: "Grouping, Summarising and Joining"
 author: "Matt Eldridge"
 date: '`r format(Sys.time(), "Last modified: %d %b %Y")`'
-output: html_document
+output:
+  html_document:
+    toc: yes
+    toc_float: yes
+  html_notebook:
+    code_folding: none
+    toc: yes
+    toc_float: yes
 ---
 
 ```{r echo=FALSE, message=FALSE,warning=FALSE}
@@ -32,10 +39,15 @@ https://www.rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf
 
 We can compute summary statistics for selected columns in our dataset using the `summarise` verb. For example, we could use `summarise` to calculate the average length of petals in the `iris` dataset.
 
+Let's first remind ourselves what the iris dataset looks like.
+
 ```{r}
-# let's first remind ourselves what the iris dataset looks like
 tbl_df(iris)
-# now let's compute the mean petal length
+```
+
+Now let's compute the mean petal length.
+
+```{r}
 summarise(iris, mean(Petal.Length))
 ```
 
@@ -127,11 +139,16 @@ Here, we've had to specify the '.' character to represent the columns that we're
 
 `mutate_each` is particularly useful for rounding values to a specified number of decimal places or significant figures.
 
+To show rounding in action let's read in a cleaned version of the patient dataset.
+
 ```{r}
-# to show rounding in action let's read in a cleaned version of the patient dataset
 patients <- read.delim("patient-data-cleaned.txt", stringsAsFactors = FALSE) %>% tbl_df
 patients
-# now let's round the patient's weight and height to 1 decimal place
+```
+
+Now let's round the patient's weight and height to 1 decimal place.
+
+```{r}
 patients %>% mutate_each(funs(round(., digits = 1)), Height, Weight)
 ```
 
@@ -199,15 +216,28 @@ But we're getting ahead of ourselves! Plotting with `ggplot2` is for the next pa
 
 Some of you might be wondering what's going on _under the hood_ with this `group_by` function. The help page for `group_by` is a little on the technical side but essentially tells us that the data frame we pass it gets converted into a `grouped_df` data frame object. `dplyr` functions that operate on a `grouped_df` object know to treat this in a special way, operating on each group separately. The following sequence of R commands might help to make this a bit clearer.
 
+First let's take a look at the class of the iris data frame.
+
 ```{r}
-# first let's take a look at the class of the iris data frame
 class(iris)
-# now we'll create a grouped version with group_by and look at its class
+```
+
+Now we'll create a grouped version with `group_by` and look at its class.
+
+```{r}
 iris_grouped <- group_by(iris, Species)
 class(iris_grouped)
-# the groups function lets us see the groups
+```
+
+The `groups` function lets us see the groups.
+
+```{r}
 groups(iris_grouped)
-# the ungroup function removes the grouping
+```
+
+The `ungroup` function removes the grouping.
+
+```{r}
 iris_ungrouped <- ungroup(iris_grouped)
 class(iris_ungrouped)
 groups(iris_ungrouped)
@@ -237,7 +267,7 @@ In many real life situations, data are spread across multiple tables or spreadsh
 
 To illustrate join operations we'll first consider the most common type, a "left join". In the schematic below the two data frames share a common column, V1. We can combine the two data frames into a single data frame by matching rows in the first data frame with those in the second data frame that share the same value of V1.
 
-![dplyr_join](images/dplyr_left_join.png)
+![dplyr left join](images/dplyr_left_join.png)
 
 `left_join` returns all rows from the first data frame regardless of whether there is a match in the second data frame. Rows with no match are included in the resulting data frame but have `NA` values in the additional columns coming from the second data frame. Here's an example in which data about some interesting people are contained in two tables. The name column identifies each of the people concerned and is used for matching rows from the two tables.
 
@@ -270,7 +300,7 @@ right_join(df1, df2, by = "name")
 
 It is also possible to return only those rows where matches could be made. The `inner_join` function accomplishes this.
 
-![dplyr_join](images/dplyr_inner_join.png)
+![dplyr inner join](images/dplyr_inner_join.png)
 
 ```{r}
 inner_join(df1, df2, by = "name")
@@ -280,7 +310,7 @@ inner_join(df1, df2, by = "name")
 
 We've seen how missing rows from one table can be retained in the joined data frame using `left_join` or `right_join` but sometimes data for a given subject may be missing from either of the tables and we still want that subject to appear in the combined table. A `full_join` will return all rows and all columns from the two tables and where there are no matching values, `NA` values are used to fill in the missing values.
 
-![dplyr_join](images/dplyr_full_join.png)
+![dplyr full join](images/dplyr_full_join.png)
 
 ```{r}
 full_join(df1, df2, by = "name")
