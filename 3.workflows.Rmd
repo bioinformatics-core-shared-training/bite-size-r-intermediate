@@ -2,7 +2,7 @@
 title: "Towards Analysis Workflows in R"
 author: "Mark Dunning"
 date: '`r format(Sys.time(), "Last modified: %d %b %Y")`'
-output: html_document
+output: html_notebook
 ---
 # [Course Home](http://bioinformatics-core-shared-training.github.io/r-intermediate/)
 
@@ -12,23 +12,16 @@ output: html_document
 - **filter** verb
 - **arrange** verb
 
-```{r echo=FALSE,warning=FALSE}
-suppressPackageStartupMessages(library(dplyr))
-library(stringr)
-library(tidyr)
-patients <- tbl_df(read.delim("patient-data.txt"))
-```
-
 
 We've ended up with a long chain of steps to perform on our data. It is quite common to nest commands in R into a single line;
 
 ```{r}
-patients <- tbl_df(read.delim("patient-data.txt"))
+patients <- head(read.delim("patient-data.txt"))
 ```
 
 we read as 
 
-> apply the `tbl_df` function to the result of reading the file `patient-data.txt`
+> apply the `head` function to the result of reading the file `patient-data.txt`
 
 Could also do the same for our `mutate` statements, although this would quickly become convoluted..
 
@@ -78,20 +71,12 @@ In computing, this is referring to as *piping*
   - Use the special function ` %>% ` at the end of the line
   - Shortcut in RStudio: CTRL + SHIFT + M, CMD + SHIFT + M (Mac)
   
-```{r eval=FALSE}
+```{r}
 read.delim("patient-data.txt") %>% 
-  tbl_df
+  head
 ```
 
 The `read.delim` function produces a *data frame* as an output, and the `tbl_df` function only has one argument (a data frame). All the `dplyr` verbs that we will discuss today can be pipelined with ` %>% ` as they take a data frame as input, and produce a data frame as output.
-
-Note that we need an assignment if we want to save the result
-
-```{r}
-patients <- read.delim("patient-data.txt") %>% 
-  tbl_df
-```
-
 
 We can re-write our data cleaning steps from the previous section with;
 
@@ -111,23 +96,35 @@ Note that we didn't need to specify `patients_clean` as an argument to the `muta
 - it as assumed that the output of one line acts as the first argument to the next line
 - we don't need to create temporary variables
 
+If you prefer, you can put the `->` at the end of the chain of commands to assign to a variable
+
+```{r}
+read.delim("patient-data.txt") %>% 
+  tbl_df %>% 
+  mutate(Sex = factor(str_trim(Sex))) %>% 
+  mutate(Height= as.numeric(str_replace_all(Height,pattern = "cm",""))) -> patients_clean
+
+patients_clean
+```
+
+
 ## Exercise: [Rmarkdown Template](workflow-exercise.Rmd)
 
 ******
 
-Take the steps used to clean the patients dataset and calculate BMI (see template for the code)
+Take the steps used to clean the patients dataset and calculate BMI (see template in `workflow-exercise.Rmd` for the code)
 
 - Re-write in the piping framework
 
 
-******
-
-```{r echo=FALSE}
-mutate(patients_clean, Weight = as.numeric(str_replace_all(Weight,"kg",""))) %>% 
-  mutate(BMI = (Weight/(Height/100)^2), Overweight = BMI > 25) %>% 
-  mutate(Smokes = str_replace_all(Smokes, "Yes", TRUE)) -> patients_clean
+```{r}
+## Your answer here
 
 ```
+
+
+******
+
 
 Now having displayed the relevant information for our patients, we want to extract rows of interest from the data frame.
 
@@ -146,14 +143,14 @@ filter(patients_clean, Sex == "Male")
 
 In base R, we would do
 
-```{r eval=FALSE}
+```{r}
 patients_clean[patients_clean$Sex == "Male",]
 ```
 
 Again, to non R-users, this is less intuitive. However, the result is the same.
 
-```{r echo=FALSE}
-head(patients_clean[patients_clean$Sex == "Male",])
+```{r}
+patients_clean[patients_clean$Sex == "Male",]
 ```
 
 The `%in%` function can check for matches in a pre-defined vector
@@ -179,7 +176,7 @@ filter(patients_clean, Sex == "Male", Died) %>% select(ID, Name, Race, Sex, Died
 
 The code in base R is a lot more verbose
 
-```{r eval=FALSE}
+```{r}
 patients[patients_clean$Sex == "Male" & patients_clean$Died,]
 ```
 
@@ -211,22 +208,32 @@ filter(patients_clean, Height >160 | Weight >74, Sex == "Female")
 
 Feel free to experiment with different ways to do these
 
+
+```{r}
+### Your answer here
+
+
+```
+
+
 ******
 
 We now have all the tools in place in order to retrieve the overweight smokers from our dataset. An additional step might be to write the filtered data frame out to a file. Recall that functions `write.table`, `write.csv` are used to write a data frame to a tab-delimited or csv file. Because these functions accept a data frame as their first argument, they fit easily into the pipeline framework as the last step.
 
 
-## Exercise: workflow-exercise.Rmd
-
-******
-
-Modify the workflow to 
-
-- Choose the candidates (overweight smokers)
-- make sure the candidates are still alive
-- write the result to a csv file
-
-******
+```{r}
+read.delim("patient-data.txt") %>% 
+  tbl_df %>% 
+  mutate(Sex = factor(str_trim(Sex))) %>% 
+  mutate(Height= as.numeric(str_replace_all(Height,pattern = "cm",""))) %>% 
+  mutate(Weight = as.numeric(str_replace_all(Weight,"kg",""))) %>% 
+  mutate(BMI = (Weight/(Height/100)^2), Overweight = BMI > 25) %>% 
+  mutate(Smokes = str_replace_all(Smokes, "Yes", TRUE)) %>% 
+  mutate(Smokes = as.logical(str_replace_all(Smokes, "No", FALSE))) %>% 
+  select(ID, Birth,BMI,Smokes,Overweight,Died) %>% 
+  filter(Smokes & Overweight & !Died) %>% 
+  write.csv("candidates.csv")
+```
 
 
 ## Ordering rows: The `arrange` verb
@@ -292,10 +299,10 @@ read.delim("patient-data.txt") %>%
 
 Imagine we have a second dataset that we want to process; `cohort-data.txt`. 
 
-This time we have a million patients, and shouldn't really be dealing with these data in Excel. However, once we have defined a pipeline on our smaller dataset, we can see how it scales to the new data
+This time we have around 10,000 patients, and shouldn't really be dealing with these data in Excel. However, once we have defined a pipeline on our smaller dataset, we can see how it scales to the new data
 
 
-```{r eval=FALSE}
+```{r}
  read.delim("cohort-data.txt") %>% 
   tbl_df %>% 
   mutate(Sex = factor(str_trim(Sex))) %>% 
@@ -312,7 +319,7 @@ This time we have a million patients, and shouldn't really be dealing with these
 
 As the file is quite large, we might want to switch to `readr` for smarter and faster reading
 
-```{r eval=FALSE}
+```{r}
 library(readr)
  read_tsv("cohort-data.txt") %>% 
   tbl_df %>% 
@@ -342,6 +349,3 @@ We can use these in any order we like to create a workflow. When faced with a da
 - The piping facility in R should allow us to express the workflow in a way that is intuitive and easy-to-ready
 
 
-## Solution
-
-See [here](workflow-solution.html)

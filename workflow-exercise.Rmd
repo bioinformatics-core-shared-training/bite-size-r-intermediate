@@ -7,9 +7,9 @@ output: html_document
 
 ******
 
-Take the steps used to clean the patients dataset and calculate BMI (see template for the code)
+Take the steps used to clean the patients dataset and calculate BMI (see below for the code)
 - Re-write in the piping framework
-- Add a step to print just the ID, Name, Date of Birth, Smokes and Overweight columns
+
 
 ******
 
@@ -29,21 +29,7 @@ patients_clean <- mutate(patients_clean, Smokes = as.logical(str_replace_all(Smo
 
 
 ```{r}
-## YOUR CODE HERE
+## Re-write the above template using 'pipes'
+
+
 ```
-
-## Exercise: workflow-exercise.Rmd
-
-******
-
-Modify the workflow 
-
-- to select the candidates (overweight smokers that are still alive)
-- write the result to a csv file
-
-******
-
-```{r}
-##YOUR CODE HERE
-```
-

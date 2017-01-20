@@ -28,28 +28,3 @@ patients_clean <- read.delim("patient-data.txt") %>%
 
 patients_clean
 ```
-
-******
-
-Modify the workflow 
-
-- to select the candidates (overweight smokers that are still alive)
-- write the result to a file
-
-******
-
-
-```{r}
-read.delim("patient-data.txt") %>% 
-  tbl_df %>% 
-  mutate(Sex = factor(str_trim(Sex))) %>% 
-  mutate(Height= as.numeric(str_replace_all(Height,pattern = "cm",""))) %>% 
-  mutate(Weight = as.numeric(str_replace_all(Weight,"kg",""))) %>% 
-  mutate(BMI = (Weight/(Height/100)^2), Overweight = BMI > 25) %>% 
-  mutate(Smokes = str_replace_all(Smokes, "Yes", TRUE)) %>% 
-  mutate(Smokes = as.logical(str_replace_all(Smokes, "No", FALSE))) %>% 
-  filter(Smokes & Overweight & !Died) %>% 
-  write.csv("candidates.csv")
-```
-
-
