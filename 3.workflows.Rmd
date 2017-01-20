@@ -2,7 +2,14 @@
 title: "Towards Analysis Workflows in R"
 author: "Mark Dunning"
 date: '`r format(Sys.time(), "Last modified: %d %b %Y")`'
-output: html_notebook
+output:
+  html_notebook:
+    code_folding: none
+    toc: yes
+    toc_float: yes
+  html_document:
+    toc: yes
+    toc_float: yes
 ---
 # [Course Home](http://bioinformatics-core-shared-training.github.io/r-intermediate/)
 
@@ -50,15 +57,13 @@ patients_clean <- mutate(patients_clean, Height= str_replace_all(Height,pattern 
 - notice how the output of one line is the input to the following line
 
 
-## Introducing piping
+# Introducing piping
 
 The output of one operations gets used as the input of the next
 
 In computing, this is referring to as *piping* 
 
 - unix commands use the `|` symbol
-
-## magrittr
 
 ![](images/pipe.jpeg)
 
@@ -121,11 +126,11 @@ patients_clean
 ```
 
 
-## Exercise: [Rmarkdown Template](workflow-exercise.Rmd)
+## Exercise: Re-writing a workflow using pipes
 
 ******
-
-Take the steps used to clean the patients dataset and calculate BMI (see template in `workflow-exercise.Rmd` for the code)
+- [Rmarkdown Template](workflow-exercise.Rmd)
+- Take the steps used to clean the patients dataset and calculate BMI (see template in `workflow-exercise.Rmd` for the code)
 ```{r}
 patients <- read.delim("patient-data.txt")
 patients <- tbl_df(patients)
@@ -228,7 +233,7 @@ filter(patients_clean, Height >160 | Weight >74, Sex == "Female")
 ```
 
 ******
-## Exercise
+## Exercise: filter
 
 Use `filter` to print the following subsets of the dataset
 
@@ -257,6 +262,7 @@ Feel free to experiment with different ways to do these
 
 
 ******
+## Finalising the workflow
 
 We now have all the tools in place in order to retrieve the overweight smokers from our dataset. 
 

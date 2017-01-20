@@ -2,7 +2,14 @@
 title: "Introduction to dplyr"
 author: "Mark Dunning"
 date: '`r format(Sys.time(), "Last modified: %d %b %Y")`'
-output: html_notebook
+output:
+  html_notebook:
+    code_folding: none
+    toc: yes
+    toc_float: yes
+  html_document:
+    toc: yes
+    toc_float: yes
 ---
 
 # [Course Home](http://bioinformatics-core-shared-training.github.io/r-intermediate/)
@@ -24,6 +31,8 @@ output: html_notebook
 http://vimeo.com/33727555
 
 http://vita.had.co.nz/papers/tidy-data.pdf
+
+# Tidy Data
 
 Tidy data are important because they are an entry point for the *analysis cycle* we will describe during the course.
 
@@ -105,7 +114,7 @@ John Smith    |    b       |    2
 Jane Doe      |    b       |    11
 Mary Johnson  |    b       |    1
 
-
+## Using tidyr to tidy a dataset
 
 `gather` is a function in the `tidyr` package that can collapse multiple columns into key-value pairs. 
 
@@ -196,7 +205,7 @@ messyData
 ```
 
 
-## dpylr introduction, and more data-cleaning
+# dplyr: select and mutate
 
 We are going to explore some of the basic features of `dplyr` using some patient data; the kind of data that we might encounter in the wild. However, rather than using real-life data we are going to make some up. There is a package called `wakefield` that is particularly convenient for this task.
 
@@ -236,7 +245,7 @@ The `tbl_df` function in dplyr creates a new object with more-convenient default
 glimpse(patients)
 ```
 
-## Aims
+
 
 ***We are planning a study that will involve overweight smokers. So one of our first task is to identify a list of candidates. ***
 
@@ -318,7 +327,7 @@ see also
 - contains, matches, ends_with
 
 ******
-## Exercise
+## Exercise: select
 
 - Print all the columns between `Height` and `Grade_Level`
 - Print all the columns between `Height` and `Grade_Level`, but NOT `Pet`
@@ -340,7 +349,7 @@ There are several ways to solve these. Feel free to explore
 ******
 
 
-## Transforming / cleaning the data
+## Transforming / cleaning variables
 
 
 We can now begin to explore the data. Imagine that we want to do a simple barplot to the number of males and females. Using base graphics, we can do this with;
@@ -414,7 +423,8 @@ hist(patients_clean$Height)
 
 Other useful functions from `stringr`, and the `lubridate` package, are described after the exercise. If time allows, we will go through these in the class. If you finish the exercise early, feel free to take a look.
 
-## Exercise - See [Rmarkdown template](dplyr-exercise.Rmd)
+## Exercise: Cleaning the patients data
+- See [Rmarkdown template](dplyr-exercise.Rmd)
 - For a follow-on study, we are interested in overweight smokers
     + clean the `Smokes` column to contain just `TRUE` or `FALSE` values
 - We need to calculate the Body Mass Index (BMI) for each of our patients
@@ -433,7 +443,7 @@ Other useful functions from `stringr`, and the `lubridate` package, are describe
 [See](dplyr-solution.html)
 
 
-## Supplementary:
+# Supplementary:
 
 ***If times allows, here are some other useful functions for dealing with strings and dates***
 
