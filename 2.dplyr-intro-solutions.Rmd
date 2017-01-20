@@ -45,8 +45,6 @@ select(patients, which(nchar(colnames(patients))<4))
 ```
 
 
-
-
 - We want to calculate the Body Mass Index (BMI) for each of our patients
 - $BMI = (Weight) / (Height^2)$ 
     + where Weight is measured in Kilograms, and Height in Metres

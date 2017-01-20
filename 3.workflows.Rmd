@@ -234,7 +234,7 @@ filter(patients_clean, Height >160 | Weight >74, Sex == "Female")
 
 ******
 ## Exercise: filter
-
+See [3.workflows-exercise.Rmd](Markdown template)
 Use `filter` to print the following subsets of the dataset
 
   - Choose the patients that are still alive
@@ -254,11 +254,6 @@ Use `filter` to print the following subsets of the dataset
 Feel free to experiment with different ways to do these
 
 
-```{r}
-### Your answer here
-
-
-```
 
 
 ******

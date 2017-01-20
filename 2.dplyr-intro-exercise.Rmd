@@ -5,12 +5,34 @@ date: '`r format(Sys.time(), "Last modified: %d %b %Y")`'
 output: html_document
 ---
 
+First load
 ```{r}
 library(dplyr)
-library(stringr)
 
 patients <- read.delim("patient-data.txt")
-patients <- tbl_df(patients)
+
+```
+
+## Exercise: select
+
+- Print all the columns between `Height` and `Grade_Level`
+- Print all the columns between `Height` and `Grade_Level`, but NOT `Pet`
+- Print the columns `Height` and `Weight`
+    + try to do this without specifying the full names of the columns
+- (OPTIONAL)
+- Print the columns in alphabetical order
+- Print all the columns whose name is less than 4 characters in length
+
+There are several ways to solve these. Feel free to explore
+
+```{r}
+### Your answer here
+
+```
+
+
+```{r}
+library(stringr)
 patients_clean <- mutate(patients, Sex = factor(str_trim(Sex)))
 patients_clean <- mutate(patients_clean, Height= as.numeric(str_replace_all(Height,pattern = "cm","")))
 ```
@@ -26,7 +48,7 @@ patients_clean <- mutate(patients_clean, Height= as.numeric(str_replace_all(Heig
 
 
 ```{r}
-##YOUR CODE HERE.....
+### Your answer here
 
 ```
 
