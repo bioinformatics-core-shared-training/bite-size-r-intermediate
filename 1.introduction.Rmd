@@ -64,122 +64,27 @@ Hadley also has these words of advice that we should bear in mind as we proceed 
 - Hopefully appealing to those familiar with other languages
 
 
-The [pre-course recap](https://rawgit.com/bioinformatics-core-shared-training/r-intermediate/master/0.r-recap.html) should hopefully cover most of what you need to know. Before starting the course proper, we will recap *data frames* and the *R markdown* reporting framework.
+The [pre-course recap](https://rawgit.com/bioinformatics-core-shared-training/r-intermediate/master/0.r-recap.html) should hopefully cover most of what you need to know. 
 
-## The data frame
+## How do we run this course
 
-The data frame object in R allows us to work with "tabular" data, like we might be used to dealing with in Excel, where our data can be thought of having rows and columns. The values in each column have to all be of the same type (i.e. all numbers or all text).
-
-![](https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Petal-sepal.jpg/226px-Petal-sepal.jpg)
-
-The `iris` data frame is a [classic dataset](https://en.wikipedia.org/wiki/Iris_flower_data_set) that is built into R. To load these data, we use the `data` function with the name `iris` (notice no quotation marks) in brackets. The data frame can then be printed to screen by typing it's name (`iris`).
-
-N.B. As we will see later, we tend to read datasets into R using `read.csv`, `read.delim` or similar functions.
+- The traditional way to enter R commands is via the Terminal, or using the console in RStudio (bottom-left)
+- However, for this course we will use a relatively new feature called *R-notebooks*.
+- An R-notebook mixes plain text with R code
+    + The R code can be run from inside the document and the results are displayed directly underneath
+- Each *chunk* of R code looks something like this. 
 
 ```{r}
-data(iris)
+
 ```
 
-The `View` function will create a tab in RStudio that we can use to browse the data.
-
-```{r eval=FALSE}
-View(iris)
-```
-
-A commonly-used function is `head` which will print the first six rows to the screen, otherwise R will attempt to show the entire object (very annoying for large objects!).
-```{r}
-head(iris)
-```
-
-We can notice that there are `r nrow(iris)` rows and `r ncol(iris)` columns. There is also a function in R, `dim`, that will print the dimensions for us. The `colnames` function will also print the names of the columns.
+- Each line of R can be executed by clicking on the line and pressing CTRL and ENTER
+- Or you can press the green triangle on the right-hand side to run everything in the chunk
+- Try this now!
 
 ```{r}
-dim(iris)
-colnames(iris)
+print("Hello World")
+
 ```
 
-Data for a particular column can be accessed using what is known as the `$` operator. The result is a *vector*
-
-```{r eval=FALSE}
-iris$Sepal.Length
-iris$Species
-```
-
-Here, `iris$Species` is a new type of object in R. It is an example of a *factor*, which is a type of object used frequently in data analysis. Rather than being merely a character string, the vector has a set of levels; **`r levels(iris$Species)`**. This allows us to perform various analyses that treat the values as belonging to different categories. For example, we might look to compare the distribution of length, width of different species and perform statistical testing. Having our data as factors aids such analyses.
-
-The `summary` function is a versatile function to summarise an object. For this dataset, it reports the distribution of values in the first four columns, and a summary of the *categories* in the final column.
-
-```{r}
-summary(iris)
-```
-
-We will explore plotting in much more detail later on the course. R provides a wide-variety of [plotting options](http://www.statmethods.net/graphs/index.html) as part of the *base* distribution. Without going into too much detail, the following will create a boxplot of the values in `Sepal.Length` column categorised into the different values of `Species`. Such a plot allows us to look for differences in mean between different groups, and also assess the variability of the data.
-
-```{r}
-boxplot(iris$Sepal.Length~iris$Species)
-```
-
-Sometimes you may see this written as:
-
-```{r}
-boxplot(Sepal.Length~Species,data=iris)
-```
-
-An *analysis of variance* (ANOVA) analysis can also tell us if the differences between the groups are statistically significant
-
-```{r}
-mod <- aov(iris$Petal.Length~iris$Species)
-anova(mod)
-```
-
-
-## How can R enable Reproducible Research?
-
-![](images/rep-research-nyt.png)
-
-Two Biostatisticians (later termed '*Forensic Bioinformaticians*') from M.D. Anderson used R extensively during their re-analysis and investigation of a Clinical Prognostication paper from Duke. The subsequent [scandal](https://www.youtube.com/watch?v=W5sZTNPMQRM) put Reproducible Research at the forefront of everyone's mind.
-
-Keith Baggerly's talk on the subject is high-recommended.
-
-<iframe width="420" height="315" src="https://www.youtube.com/embed/7gYIs7uYbMo" frameborder="0" allowfullscreen></iframe>
-
-
-
-Within RStudio we can write *markdown* documents, which are a mix of R code and text. The markdown file can be used as a template to generated PDF, HTML, or even Word documents. The clever bit is that all R code in the template can be execute and the results displayed (tables, graphics etc) along with the code. The compiled document can be passed to your collaborators and they should be able to generate the same results. Alternatively, you can choose to hide the code if your PI just wants to see the results, and not necessarily what packages, parameters you used. Long-term R users may have heard of *Sweave*. Markdown is the same concept, but an easier to write (and read) syntax
-
-Markdown can also generate presentations and courses. Indeed, all the [materials for this course](https://github.com/cambiotraining/r-intermediate) were written in markdown.
-
-
-
-![](images/markdown-annotated.png)
-
-1. Header information
-2. Section heading
-3. Plain text
-4. R code to be run
-5. Plain text
-6. R code to be run
-
-
-
-
-Each line of R code can be executed in the R console by placing the cursor on the line and pressing `CTRL + ENTER`. You can also highlight multiple lines of code. NB. You do not need to highlight to the backtick (`\``) symbols. 
-
-Hitting the ***Knit*** button (*) will run all R code in order and (providing there are no errors!) you will get a PDF or HTML document. The resultant document will contain all the plain text you wrote, the R code, and any outputs (including graphs, tables etc) that R produced. You can then distribute this document to have a reproducible account of your analysis.
-
-## How to use the template
-
-- Change your name, add a title and date in the header section
-- Add notes, explanations of code etc in the white space between code chunks. You can add new lines with `ENTER`. Clicking the `?` next to the `Knit HTML` button will give more information about how to format this text. You can introduce **bold** and *italics* for example.
-- Some code chunks are left blank. These are for you to write the R code required to answer the questions
-- You can try to knit the document at any point to see how it looks
-
-
-## A Short Analysis Example
-
-- Open the file `iris.Rmd`
-    + this contains the code we have just looked at to load and visualise the `iris` dataset
-    + change the header information to contain your name and the date
-    + compile the document by pressing the ***Knit HTML*** button. This should produce a file called `iris.html`
-    + modify the Rmd file so that the boxplot of the `Petal.Length` variable is produced, rather than `Sepal.Length`
-    
+- For some of the exercises you will be given a blank markdown (.Rmd) file in order to record your solutions 

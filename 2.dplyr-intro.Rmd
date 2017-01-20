@@ -2,7 +2,7 @@
 title: "Introduction to dplyr"
 author: "Mark Dunning"
 date: '`r format(Sys.time(), "Last modified: %d %b %Y")`'
-output: html_document
+output: html_notebook
 ---
 
 # [Course Home](http://bioinformatics-core-shared-training.github.io/r-intermediate/)
@@ -34,25 +34,53 @@ As we saw, our data, and especially data we might find out "in the wild", may ne
 - [Karl Broman's tutorial on Data Organisation](http://kbroman.org/dataorg/)
 - ["Data Carpentry" workshop](http://lgatto.github.io/2016-05-16-CAM/)
 
+![](images/oh-the-horror.png)
 
 
-We have already seen a ***tidy*** dataset in the form of [Fisher's iris dataset](https://en.wikipedia.org/wiki/Iris_flower_data_set). 
+## The data frame
+
+The data frame object in R allows us to work with "tabular" data, like we might be used to dealing with in Excel, where our data can be thought of having rows and columns. The values in each column have to all be of the same type (i.e. all numbers or all text).
+
+![](https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Petal-sepal.jpg/226px-Petal-sepal.jpg)
+
+The `iris` data frame is a [classic dataset](https://en.wikipedia.org/wiki/Iris_flower_data_set) that is built into R. To load these data, we use the `data` function with the name `iris` (notice no quotation marks) in brackets. The data frame can then be printed to screen by typing it's name (`iris`). This dataset is also a good example of data in the tidy form.
+
+N.B. As we will see later, we tend to read datasets into R using `read.csv`, `read.delim` or similar functions.
 
 ```{r}
-data(iris)
-head(iris)
+iris
 ```
 
+The `View` function will create a tab in RStudio that we can use to browse the data.
+
+```{r eval=FALSE}
+View(iris)
+```
+
+The following will create a boxplot of the values in `Sepal.Length` column categorised into the different values of `Species`. Such a plot allows us to look for differences in mean between different groups, and also assess the variability of the data.
+
+```{r}
+boxplot(iris$Sepal.Length~iris$Species)
+```
+
+
+An *analysis of variance* (ANOVA) analysis can also tell us if the differences between the groups are statistically significant
+
+```{r}
+mod <- aov(iris$Petal.Length~iris$Species)
+anova(mod)
+```
 
 ## Example (from tidyr paper)
 
 Consider the following....
 
-```{r echo=FALSE,results='asis',warning=FALSE}
-library(knitr)
-untidy <- data.frame(Name = c("John Smith","Jane Doe","Mary Johnson"),treatmenta = c("-",16,3),treatmentb=c(2,11,1))
-kable(untidy)
-```
+Name          | treatmenta | treatmentb
+------------- | -----------|-----------
+John Smith    |    -       |    2
+Jane Doe      |    16      |    11 
+Mary Johnson  |    3       |    1
+
 
 Data in this format are quite familiar to us, but not easily-interpret able by the computer. We need to think of the dataset in terms of *variables* and *values*. In this example dataset we have *18* values and *3* variables
 
@@ -68,12 +96,15 @@ The guiding principles:
 
 The tidy form of this data thus becomes;
 
+Name          | Treatment  | Result
+------------- | -----------|-----------
+John Smith    |    a       |    -
+Jane Doe      |    a       |    16 
+Mary Johnson  |    a       |    3
+John Smith    |    b       |    2
+Jane Doe      |    b       |    11
+Mary Johnson  |    b       |    1
 
-```{r echo=FALSE,warning=FALSE}
-library(tidyr)
-suppressPackageStartupMessages(library(dplyr))
-gather(untidy, Treatment, Result, treatmenta:treatmentb) %>% mutate(Treatment = gsub("treatment","",Treatment))
-```
 
 
 `gather` is a function in the `tidyr` package that can collapse multiple columns into key-value pairs. 
@@ -81,18 +112,7 @@ gather(untidy, Treatment, Result, treatmenta:treatmentb) %>% mutate(Treatment = 
 - similar to `stack` in base R
 - or `melt` in the `reshape` / `reshape2` packages
 
-***You can get these example data [here](tidyr-example.txt)***
-
-```{r,warning=FALSE}
-library(tidyr)
-
-untidy <- read.delim("tidyr-example.txt")
-untidy
-```
-
-
-
-The arguments are;
+The arguments to `gather` are;
 
 - the data frame you want to manipulate
 - the name of the *key* column you want to create
@@ -133,75 +153,48 @@ tidy <- gather(untidy, Treatment, Result, c(treatmenta,treatmentb))
 
 ## Exercise: Simulated clinical data
 
-Using data from the Mango Solutions training data set
+Lets read some typical data from a clinical trial.
+
+- Each patient was given a number of different treatments; Placebo, and two different drugs
+    + Two replicates of each
+- Some kind of measurement was performed to assess the effect of the drug
+- Overall question is the effect of the treatment 
 
 ```{r,warning=FALSE}
-library(mangoTraining)
-data("messyData")
-
+messyData <- read.delim("clinicalData.txt")
+messyData
 ```
 
-
-```{r results='asis',echo=FALSE}
-library(mangoTraining)
-data("messyData")
-kable(head(messyData))
-```
 
 - What variables and observations do we have?
 - What might a 'tidy' version of the dataset look like?
-- Use the `gather` function from `tidyr`  to create a tidy version of the data
-    + call the object `tidyData` 
-    
-******
+- Can you make the following boxplot to visualise the effect of the different treatments?
+
+![](images/tidy-boxplot.png)
+
+  
+```{r}
+### Your answer here...
 
 
-```{r echo=FALSE, results='asis',message=FALSE,warning=FALSE}
-library(tidyr)
-tidyData <- gather(messyData,Treatment, Count, -Subject)
 ```
+
+******
 
 ## Other useful functions in 'tidyr'
 
 `tidyr` has a few more useful functions that we can demonstrate on the `tidyData` object you should have just created
-
-Firstly, `spread` has the opposite effect to `gather` and will translate tidy data back into human-readable form
-
-```{r eval=FALSE}
-spread(tidyData, Treatment,Count)
-```
-
-```{r echo=FALSE}
-head(spread(tidyData, Treatment,Count))
-```
-
-Your `tidyData` object should look something like the following:
-
-```{r eval=FALSE}
-tidyData
-```
-
-```{r echo=FALSE}
-head(tidyData)
-```
-
-In the `Treatment` columns, we have values that have is a compound of a treatment name (either `Placebo` or `Treatment`) and some replicate number (`1`, `2` or `3`) separated by a common value `.`. 
+- `spread` has the opposite effect to `gather` and will translate tidy data back into human-readable form
+    + arguments are the *Key* and *Value* columns in the tidy data frame
+- `separate` can be used to split column names that are comprised by two different parts with a common separating character. e.g. `Drug1.1`, `Drug1.2` etc.
+    + it should be able to guess that a `.` character is being used to join the two different parts of the name together
+    + we can explicitly say the separator being used. Apart from the `.` in our example other common values are `-`, `_`, `:`.
 
 ```{r}
-table(tidyData$Treatment)
+## Example of spread and separate
+
 ```
 
-We can resolve these values into two different columns using the  `separate` function. It should be able to guess that a `.` character is being used to join the two different parts of the name together.
-
-```{r eval=FALSE}
-separate(tidyData,Treatment,into=c("Treatment","Rep"))
-```
-
-```{r echo=FALSE}
-head(separate(tidyData,Treatment,into=c("Treatment","Rep")))
-```
-
-In separate we can explicitly say the separator being used. Apart from the `.` in our example other common values are `-`, `_`, `:`.
 
 ## dpylr introduction, and more data-cleaning
 
@@ -223,6 +216,8 @@ View(patients)
 
 
 Using `dplyr`, `patients` can be converted to a special kind of data frame; the `tbl_df`. The main difference is that the whole data frame does not get printed to screen. All operations that we could do on a data frame can be applied to a `tbl_df`.
+
+N.B. This conversion is not really necessary when run R code interactively in an R notebook
 
 ```{r}
 library(dplyr)
@@ -300,11 +295,6 @@ patients[,-2]
 patients[,setdiff(colnames(patients), "Name")]
 ```
 
-```{r echo=FALSE}
-head(patients[,-2])
-head(patients[,setdiff(colnames(patients), "Name")])
-```
-
 Compare to dplyr version....*"Select all columns apart from Name"*
 
 ```{r}
@@ -333,8 +323,19 @@ see also
 - Print all the columns between `Height` and `Grade_Level`
 - Print all the columns between `Height` and `Grade_Level`, but NOT `Pet`
 - Print the columns `Height` and `Weight`
+    + try to do this without specifying the full names of the columns
+- (OPTIONAL)
+- Print the columns in alphabetical order
+- Print all the columns whose name is less than 4 characters in length
 
 There are several ways to solve these. Feel free to explore
+
+
+```{r}
+### Your answer here
+
+```
+
 
 ******
 
@@ -348,16 +349,8 @@ We can now begin to explore the data. Imagine that we want to do a simple barplo
 barplot(table(select(patients,Sex)))
 ```
 
-******
-
-- What do you think the problem might be?
-- Try printing out all values for this column, or using the `nchar` function to determine the problem
-
-******
 
 So we notice that the Sex column has "whitespace"; not an uncommon problem if data have been entered manually.
-
-
 
 ```{r}
 table(select(patients, Sex))
@@ -383,6 +376,7 @@ Once we have worked-out how to created a cleaned version of the variable, we nee
 mutate(patients, Sex2 = str_trim(Sex))
 mutate(patients, Sex = str_trim(Sex))
 patients_clean <- mutate(patients, Sex = factor(str_trim(Sex)))
+patients_clean
 ```
 
 
@@ -390,11 +384,6 @@ We might want to look at the distribution of heights amongst our patients. Howev
 
 ```{r eval=FALSE}
 hist(select(patients,Height))
-```
-
-```{r echo=FALSE}
-err <- try(hist(select(patients,Height)),silent = TRUE)
-cat(err)
 ```
 
 The problem is that R thinks that values are not numbers. Why might that be?
@@ -434,12 +423,9 @@ Other useful functions from `stringr`, and the `lubridate` package, are describe
 - A BMI of 25 is considered overweight, calculate a new variable to indicate which individuals are overweight
 - (EXTRA) What other problems can you find in the data?
 
-```{r echo=FALSE}
-patients_clean <- mutate(patients_clean, Weight = as.numeric(str_replace_all(patients_clean$Weight,"kg","")))
-patients_clean <- mutate(patients_clean, BMI = (Weight/(Height/100)^2), Overweight = BMI > 25)
-patients_clean <- mutate(patients_clean, Smokes = str_replace_all(Smokes, "Yes", TRUE))
-patients_clean <- mutate(patients_clean, Smokes = as.logical(str_replace_all(Smokes, "No", FALSE)))
-patients_clean
+```{r}
+
+
 ```
 
 ## Solution
@@ -448,6 +434,8 @@ patients_clean
 
 
 ## Supplementary:
+
+***If times allows, here are some other useful functions for dealing with strings and dates***
 
 Rather than removing whitespace, sometimes we might want to adjust a set of strings so that they have a fixed width. We can do this be adding a *padding* character to each string if necessary. This operations is often done with a set of identifiers.
 
