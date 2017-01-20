@@ -27,7 +27,9 @@ Could also do the same for our `mutate` statements, although this would quickly 
 
 > remove the cm characters from the Height variable of the data frame created by trimming white space from the sex variable from the patients data frame
 
-```{r}
+```{r message=FALSE}
+library(dplyr)
+library(stringr)
 patients_clean <- mutate(mutate(patients, Sex = factor(str_trim(Sex))),
                          Height = str_replace_all(patients$Height,pattern="cm",""))
 ```
@@ -66,17 +68,27 @@ In computing, this is referring to as *piping*
 
 ## Simple example
 
-> read the file `patient-data.txt` ***and then*** use the `tbl_df` function
+> read the file `patient-data.txt` ***and then*** use the `head` function
 
-  - Use the special function ` %>% ` at the end of the line
-  - Shortcut in RStudio: CTRL + SHIFT + M, CMD + SHIFT + M (Mac)
-  
+- Use the special function ` %>% ` at the end of the line
+- Shortcut in RStudio: CTRL + SHIFT + M, CMD + SHIFT + M (Mac)
+- We don't need to add any arguments to head
++ The first argument is the output from the previous line
+
 ```{r}
 read.delim("patient-data.txt") %>% 
-  head
+  head()
 ```
 
-The `read.delim` function produces a *data frame* as an output, and the `tbl_df` function only has one argument (a data frame). All the `dplyr` verbs that we will discuss today can be pipelined with ` %>% ` as they take a data frame as input, and produce a data frame as output.
+The `read.delim` function produces a *data frame* as an output, and the `head` function only has one argument (a data frame). All the `dplyr` verbs that we will discuss today can be pipelined with ` %>% ` as they take a data frame as input, and produce a data frame as output.
+
+We can write the following to print the first ten lines of a file:-
+
+```{r}
+read.delim("patient-data.txt") %>% 
+  head(10)
+```
+
 
 We can re-write our data cleaning steps from the previous section with;
 
@@ -96,6 +108,7 @@ Note that we didn't need to specify `patients_clean` as an argument to the `muta
 - it as assumed that the output of one line acts as the first argument to the next line
 - we don't need to create temporary variables
 
+
 If you prefer, you can put the `->` at the end of the chain of commands to assign to a variable
 
 ```{r}
@@ -113,6 +126,16 @@ patients_clean
 ******
 
 Take the steps used to clean the patients dataset and calculate BMI (see template in `workflow-exercise.Rmd` for the code)
+```{r}
+patients <- read.delim("patient-data.txt")
+patients <- tbl_df(patients)
+patients_clean <- mutate(patients, Sex = factor(str_trim(Sex)))
+patients_clean <- mutate(patients_clean, Height= as.numeric(str_replace_all(patients_clean$Height,pattern = "cm","")))
+patients_clean <- mutate(patients_clean, Weight = as.numeric(str_replace_all(patients_clean$Weight,"kg","")))
+patients_clean <- mutate(patients_clean, BMI = (Weight/(Height/100)^2), Overweight = BMI > 25)
+patients_clean <- mutate(patients_clean, Smokes = str_replace_all(Smokes, "Yes", TRUE))
+patients_clean <- mutate(patients_clean, Smokes = as.logical(str_replace_all(Smokes, "No", FALSE)))
+```
 
 - Re-write in the piping framework
 
@@ -125,9 +148,7 @@ Take the steps used to clean the patients dataset and calculate BMI (see templat
 
 ******
 
-
-Now having displayed the relevant information for our patients, we want to extract rows of interest from the data frame.
-
+Now that we have cleaned the data we want to extract rows of interest from the data frame.
 
 ## Restricting rows: The `filter` verb
 
@@ -153,6 +174,14 @@ Again, to non R-users, this is less intuitive. However, the result is the same.
 patients_clean[patients_clean$Sex == "Male",]
 ```
 
+We can also use `!` to reverse the values in a logical vector and check for values that do not equal a particular value
+
+```{r}
+filter(patients_clean, Sex != "Female")
+```
+
+
+
 The `%in%` function can check for matches in a pre-defined vector
 
 ```{r}
@@ -177,7 +206,7 @@ filter(patients_clean, Sex == "Male", Died) %>% select(ID, Name, Race, Sex, Died
 The code in base R is a lot more verbose
 
 ```{r}
-patients[patients_clean$Sex == "Male" & patients_clean$Died,]
+patients_clean[patients_clean$Sex == "Male" & patients_clean$Died,]
 ```
 
 Females with height more than 160
@@ -198,13 +227,24 @@ Height more than 160 *or* Weight greater than 74 *and* Female
 filter(patients_clean, Height >160 | Weight >74, Sex == "Female")
 ```
 
-## Exercise
 ******
+## Exercise
 
-  - Choose the Smokers with Age over 30
+Use `filter` to print the following subsets of the dataset
+
   - Choose the patients that are still alive
-  - Choose the patients who do NOT own dogs
   - Choose the Female patients from New York or New Jersey
+  - Choose the patients who own a Pet that is not a dog
+    + recall that `is.na` can check for values that are `NA`
+  - (OPTIONAL)
+  - Patients born in June
+    + you could check out the notes on dealing with dates in the previous section for this
+  - Patients with a Number > 100
+    + Patient Number is the third component of the ID variable
+    + e.g. `AC/AH/001` is patient Number 1; `AC/AH/017` is patient Number 17
+  - Patients that entered the study on 2016-05-31
+    + the column containing this data is incomplete; blank entries are assumed to be the same as the last non-blank entry above
+    + the function `fill` from `tidyr` will help here
 
 Feel free to experiment with different ways to do these
 
@@ -218,8 +258,11 @@ Feel free to experiment with different ways to do these
 
 ******
 
-We now have all the tools in place in order to retrieve the overweight smokers from our dataset. An additional step might be to write the filtered data frame out to a file. Recall that functions `write.table`, `write.csv` are used to write a data frame to a tab-delimited or csv file. Because these functions accept a data frame as their first argument, they fit easily into the pipeline framework as the last step.
+We now have all the tools in place in order to retrieve the overweight smokers from our dataset. 
 
+- An additional step might be to write the filtered data frame out to a file. 
+- Recall that functions `write.table`, `write.csv` are used to write a data frame to a tab-delimited or csv file. Because these functions accept a data frame as their first argument, they fit easily into the pipeline framework as the last step.
++ we never have to create a variable for our data
 
 ```{r}
 read.delim("patient-data.txt") %>% 
@@ -283,7 +326,7 @@ read.delim("patient-data.txt") %>%
   mutate(Sex = factor(str_trim(Sex))) %>% 
   mutate(Height= as.numeric(str_replace_all(Height,pattern = "cm",""))) %>% 
   mutate(Weight = as.numeric(str_replace_all(Weight,"kg",""))) %>% 
-  mutate(BMI = (Weight/(Height/100)^2), Overweight = BMI > 25) %>% 
+  mutate(BMI = round(Weight/(Height/100)^2,1), Overweight = BMI > 25) %>% 
   mutate(Smokes = str_replace_all(Smokes, "Yes", TRUE)) %>% 
   mutate(Smokes = as.logical(str_replace_all(Smokes, "No", FALSE))) %>% 
   select(ID, Birth,BMI,Smokes,Overweight,Died) %>% 
@@ -293,7 +336,8 @@ read.delim("patient-data.txt") %>%
   write.csv("candidates.csv")
 ```
 
-
+The downside with such pipelines is that they can be problematic to debug
+- Best to build the pipeline step-by-step
 
 ## Re-usable pipelines
 
@@ -303,12 +347,12 @@ This time we have around 10,000 patients, and shouldn't really be dealing with t
 
 
 ```{r}
- read.delim("cohort-data.txt") %>% 
+read.delim("cohort-data.txt") %>% 
   tbl_df %>% 
   mutate(Sex = factor(str_trim(Sex))) %>% 
   mutate(Weight = as.numeric(str_replace_all(Weight,"kg",""))) %>% 
   mutate(Height= as.numeric(str_replace_all(Height,pattern = "cm",""))) %>% 
-  mutate(BMI = (Weight/(Height/100)^2), Overweight = BMI > 25) %>% 
+  mutate(BMI = round(Weight/(Height/100)^2,1), Overweight = BMI > 25) %>% 
   mutate(Smokes = as.logical(str_replace_all(Smokes, "Yes", TRUE))) %>% 
   mutate(Smokes = as.logical(str_replace_all(Smokes, "No", FALSE))) %>%
   filter(Smokes & Overweight) %>% 
@@ -321,19 +365,22 @@ As the file is quite large, we might want to switch to `readr` for smarter and f
 
 ```{r}
 library(readr)
- read_tsv("cohort-data.txt") %>% 
+read_tsv("cohort-data.txt") %>% 
   tbl_df %>% 
   mutate(Sex = factor(str_trim(Sex))) %>% 
   mutate(Weight = as.numeric(str_replace_all(Weight,"kg",""))) %>% 
   mutate(Height= as.numeric(str_replace_all(Height,pattern = "cm",""))) %>% 
-  mutate(BMI = (Weight/(Height/100)^2), Overweight = BMI > 25) %>% 
-  mutate(Smokes = str_replace_all(Smokes, "Yes", TRUE)) %>% 
+  mutate(BMI = round(Weight/(Height/100)^2,1), Overweight = BMI > 25) %>% 
+  mutate(Smokes = as.logical(str_replace_all(Smokes, "Yes", TRUE))) %>% 
   mutate(Smokes = as.logical(str_replace_all(Smokes, "No", FALSE))) %>%
   filter(Smokes & Overweight) %>% 
-  select(ID,  Birth, BMI, Smokes,Overweight)  %>% 
+  select(ID, Birth, BMI, Smokes,Overweight)  %>% 
   arrange(desc(BMI)) %>% 
   write.table("study-candidates.csv")
 ```
+
+
+
 
 ## Summary
 
