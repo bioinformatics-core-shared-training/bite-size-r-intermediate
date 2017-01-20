@@ -10,35 +10,26 @@ The first part of the exercise uses the patients dataset we've been using in pre
 
 ```{r message=FALSE}
 library(dplyr)
-patients <- read.delim("patient-data-cleaned.txt", stringsAsFactors = FALSE) %>% tbl_df
+patients <- read.delim("patient-data-cleaned.txt", stringsAsFactors = FALSE)
 patients %>% head(5)
 ```
-
-******
 
 Compute the mean age, height and weight of patients in the patients dataset
 
 - Modify the output by adding a step to round to 2 decimal places
 
-******
-
 ```{r}
 ## YOUR CODE HERE
 ```
-
-******
 
 See what happens if you try to compute the mean of a logical (boolean) variable
 
 - What proportion of our patient cohort has died?
 
-******
-
 ```{r}
 ## YOUR CODE HERE
 ```
 
-******
 
 ### Grouping
 
@@ -48,13 +39,10 @@ Compare the average height of males and females in this patient cohort.
 
 Are smokers heavier or lighter on average than non-smokers in this dataset?
 
-******
-
 ```{r}
 ## YOUR CODE HERE
 ```
 
-******
 
 ### Joining
 
@@ -63,35 +51,32 @@ The patients are all part of a diabetes study and have had their blood glucose c
 This part of the exercise combines grouping, summarisation and joining operations to connect the diabetes study data to the patients table we've already been working with.
 
 ```{r}
-diabetes <- read.delim("diabetes.txt", stringsAsFactors = FALSE) %>% tbl_df
+diabetes <- read.delim("diabetes.txt", stringsAsFactors = FALSE)
 diabetes %>% head(5)
 ```
 
-******
+The goal is to compare the blood pressure of smokers and non-smokers, similar to the comparison of the average weight we made in the previous part of the exercise.
 
-Join the blood pressure and glucose measurements and the dates they were taken to the patient data using the ID column.
-
-- How many rows are there in the resultant data frame? Compare this with the sizes of the patients and diabetes data frames. Why are these different?
-
-******
+First, calculate the average blood pressure for each individual in the `diabetes` data frame.
 
 ```{r}
 ## YOUR CODE HERE
 ```
 
-******
-
-Create a new data frame that only includes the most recent blood pressure and glucose measurement for each patient and then join this to the patients data frame.
-
-*[hint: use `group_by` to work on groups of observations for each patient separately, sort by date using `arrange` and then select the last row using `summarize_each` with the function `last`]*
-
-- Again compare the size of the resultant data frame with the patients and diabetes data 
-frames.
-
-******
+Now use one of the join functions to combine these average blood pressure measurements with the `patients` data frame containing information on whether the patient is a smoker.
 
 ```{r}
 ## YOUR CODE HERE
 ```
 
-******
+Finally, calculate the average blood pressure for smokers and non-smokers on the resulting, combined data frame.
+
+```{r}
+## YOUR CODE HERE
+```
+
+Can you write this as a single dplyr chain?
+
+```{r}
+## YOUR CODE HERE
+```
