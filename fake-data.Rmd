@@ -234,3 +234,24 @@ write.table(cohort, file="cohort-data.txt",sep="\t",row.names = FALSE)
 
 ```
 
+```{r}
+set.seed(20170120)
+Placebo.1 <- rnorm(10,mean = 50, sd=3)
+Placebo.2 <- rnorm(10, mean=48, sd=5)
+
+Drug1.1 <- rnorm(10, mean=45, sd=3)
+Drug1.2 <- rnorm(10, mean=43, sd=5)
+
+Drug2.1 <- rnorm(10, 41,sd=2)
+Drug2.2 <- rnorm(10, 37,sd=3)
+
+clinicalData <- data.frame(Subject = paste0("Patient",1:10), Placebo.1, Placebo.2, Drug1.1,Drug1.2,Drug2.1,Drug2.2) %>% 
+  mutate_each(funs(round(.,2)),-Subject)
+
+write.table(clinicalData, file="clinicalData.txt",row.names=FALSE,sep="\t")
+tidyData <- gather(messyData, Treatment, Value,-Subject)
+png("images/tidy-boxplot.png")
+boxplot(tidyData$Value ~ tidyData$Treatment)
+dev.off()
+```
+
