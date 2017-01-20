@@ -3,23 +3,23 @@ title: "Grouping, Summarising and Joining"
 author: "Matt Eldridge"
 date: '`r format(Sys.time(), "Last modified: %d %b %Y")`'
 output:
-  html_document:
-    toc: yes
-    toc_float: yes
   html_notebook:
     code_folding: none
     toc: yes
     toc_float: yes
+  html_document:
+    toc: yes
+    toc_float: yes
 ---
 
-```{r echo=FALSE, message=FALSE,warning=FALSE}
+```{r echo=FALSE, message=FALSE, warning=FALSE}
 knitr::opts_chunk$set(comment = NA)
 library(dplyr)
 ```
 
 # Overview of this section
 
-We will now turn out attention to some of the more advanced operations you can perform on
+We will now turn our attention to some of the more advanced operations you can perform on
 data frames using `dplyr`.
 
 - **summarise** operation
@@ -42,7 +42,7 @@ We can compute summary statistics for selected columns in our dataset using the 
 Let's first remind ourselves what the iris dataset looks like.
 
 ```{r}
-tbl_df(iris)
+iris
 ```
 
 Now let's compute the mean petal length.
@@ -130,7 +130,7 @@ summarise_each(iris, funs(mean), one_of(columns))
 When looking at the help documentation for `summarise_each` you may have noticed a related function, `mutate_each`. This is a very useful function for applying the same operation to several columns within a table. For example, in the `iris` dataset the measurements are in centimetres but we can convert these to millimetres quite easily.
 
 ```{r}
-mutate_each(iris, funs(. * 10), -Species) %>% tbl_df
+mutate_each(iris, funs(. * 10), -Species)
 ```
 
 Here, we've had to specify the '.' character to represent the columns that we're multiplying by 10.
@@ -142,7 +142,7 @@ Here, we've had to specify the '.' character to represent the columns that we're
 To show rounding in action let's read in a cleaned version of the patient dataset.
 
 ```{r}
-patients <- read.delim("patient-data-cleaned.txt", stringsAsFactors = FALSE) %>% tbl_df
+patients <- read.delim("patient-data-cleaned.txt", stringsAsFactors = FALSE)
 patients
 ```
 
@@ -203,7 +203,7 @@ Returning to one of the earlier examples, we can also compute the correlation be
 iris %>% group_by(Species) %>% summarise(correlation = cor(Petal.Width, Petal.Length))
 ```
 
-Hold on a minute, wasn't the correlation coefficient for the overall dataset quite a lot higher? (yes, it was `r summarise(iris, correlation = cor(Petal.Width, Petal.Length)) %>% round(digits = 2)`). What's going on here? A plot might help to understand why. 
+Hold on a minute, wasn't the correlation coefficient for the overall dataset quite a lot higher? (yes, it was 0.96). What's going on here? A plot might help to understand why. 
 
 ```{r}
 library(ggplot2)
@@ -271,8 +271,9 @@ To illustrate join operations we'll first consider the most common type, a "left
 
 `left_join` returns all rows from the first data frame regardless of whether there is a match in the second data frame. Rows with no match are included in the resulting data frame but have `NA` values in the additional columns coming from the second data frame. Here's an example in which data about some interesting people are contained in two tables. The name column identifies each of the people concerned and is used for matching rows from the two tables.
 
+Let's create some data frames that we can join.
+
 ```{r}
-# let's create some data frames that we can join
 df1 <- data_frame(
   name = c("Matt", "Mark", "Tom"),
   home = c("Harston", "Histon", "London"),
@@ -338,7 +339,6 @@ left_join(df1, df2, by = "name")
 We can specify multiple columns to use for matching rows. This is useful where the uniquely-identifying information for a subject is containing in more than one column. The following extends our simple example to use both name and home for matching rows.
 
 ```{r}
-# let's create some data frames that we can join
 df1 <- data_frame(
   name = c("Matt", "Mark", "Mark", "Tom"),
   home = c("Harston", "Histon", "Hardwick", "London"),
@@ -374,10 +374,9 @@ The exercise uses a more realistic dataset, building on the patients data frame 
 The patients are all part of a diabetes study and have had their blood glucose concentration and diastolic blood pressure measured on several dates.
 
 ```{r}
-diabetes <- read.delim("diabetes.txt", stringsAsFactors = FALSE) %>% tbl_df
+diabetes <- read.delim("diabetes.txt", stringsAsFactors = FALSE)
 diabetes
 ```
 
-* Use the ID column to combine information about patients with the blood pressure and glucose measurements.
-
-* Refine this to only include the most recent blood pressure and glucose measurements for each patient.
+* Compare the average blood pressures of smokers and non-smokers
+    * First calculate the average blood pressure measurement for each patient then combine with the smoking attribute in the `patients` data frame
