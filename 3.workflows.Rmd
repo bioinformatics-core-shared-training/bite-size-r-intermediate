@@ -129,7 +129,7 @@ patients_clean
 ## Exercise: Re-writing a workflow using pipes
 
 ******
-- [Rmarkdown Template](workflow-exercise.Rmd)
+- [Rmarkdown Template](3.workflow-exercise.Rmd)
 - Take the steps used to clean the patients dataset and calculate BMI (see template in `workflow-exercise.Rmd` for the code)
 ```{r}
 patients <- read.delim("patient-data.txt")

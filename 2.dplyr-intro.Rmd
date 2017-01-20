@@ -424,7 +424,7 @@ hist(patients_clean$Height)
 Other useful functions from `stringr`, and the `lubridate` package, are described after the exercise. If time allows, we will go through these in the class. If you finish the exercise early, feel free to take a look.
 
 ## Exercise: Cleaning the patients data
-- See [Rmarkdown template](dplyr-exercise.Rmd)
+- See [Rmarkdown template](2.dplyr-intro.Rmd)
 - For a follow-on study, we are interested in overweight smokers
     + clean the `Smokes` column to contain just `TRUE` or `FALSE` values
 - We need to calculate the Body Mass Index (BMI) for each of our patients
