@@ -4,7 +4,6 @@ author: "Mark Dunning"
 date: '`r format(Sys.time(), "Last modified: %d %b %Y")`'
 output:
   html_notebook:
-    code_folding: none
     toc: yes
     toc_float: yes
   html_document:
@@ -23,7 +22,7 @@ output:
 We've ended up with a long chain of steps to perform on our data. It is quite common to nest commands in R into a single line;
 
 ```{r}
-patients <- head(read.delim("patient-data.txt"))
+head(read.delim("patient-data.txt"))
 ```
 
 we read as 
@@ -37,6 +36,7 @@ Could also do the same for our `mutate` statements, although this would quickly 
 ```{r message=FALSE}
 library(dplyr)
 library(stringr)
+patients <- read.delim("patient-data.txt")
 patients_clean <- mutate(mutate(patients, Sex = factor(str_trim(Sex))),
                          Height = str_replace_all(patients$Height,pattern="cm",""))
 ```
@@ -70,6 +70,7 @@ In computing, this is referring to as *piping*
 ![](https://upload.wikimedia.org/wikipedia/en/b/b9/MagrittePipe.jpg)
 
 - the `magrittr` library implements this in R
+    + this library is automatically loaded with `dplyr`
 
 ## Simple example
 
@@ -87,7 +88,7 @@ read.delim("patient-data.txt") %>%
 
 The `read.delim` function produces a *data frame* as an output, and the `head` function only has one argument (a data frame). All the `dplyr` verbs that we will discuss today can be pipelined with ` %>% ` as they take a data frame as input, and produce a data frame as output.
 
-We can write the following to print the first ten lines of a file:-
+We can write the following to print the first ten lines of a file;
 
 ```{r}
 read.delim("patient-data.txt") %>% 
@@ -129,7 +130,6 @@ patients_clean
 ## Exercise: Re-writing a workflow using pipes
 
 ******
-- [Rmarkdown Template](3.workflow-exercise.Rmd)
 - Take the steps used to clean the patients dataset and calculate BMI (see template in `workflow-exercise.Rmd` for the code)
 ```{r}
 patients <- read.delim("patient-data.txt")
@@ -146,7 +146,7 @@ patients_clean <- mutate(patients_clean, Smokes = as.logical(str_replace_all(Smo
 
 
 ```{r}
-## Your answer here
+## Your answer here or 3.workflows-exercises.Rmd
 
 ```
 
@@ -202,9 +202,12 @@ grepl("Jo",patients_clean$Name)
 filter(patients_clean, grepl("Jo",Name))
 ```
 
-Combining conditions in `filter` can be achieved adding `,` or using the Boolean operators `|`, `&`
+Combining conditions in `filter` can be achieved adding `,` or using the Boolean operators `|`, `&`. In fact, the `&` isn't required and we can add extra conditions by separating them with a `,`.
+
+
 
 ```{r}
+filter(patients_clean, Sex == "Male" & Died) %>% select(ID, Name, Race, Sex, Died)
 filter(patients_clean, Sex == "Male", Died) %>% select(ID, Name, Race, Sex, Died)
 ```
 
@@ -212,12 +215,6 @@ The code in base R is a lot more verbose
 
 ```{r}
 patients_clean[patients_clean$Sex == "Male" & patients_clean$Died,]
-```
-
-Females with height more than 160
-
-```{r}
-filter(patients_clean, Sex == "Female", Height >160)
 ```
 
 Height more than 160 *or* Weight greater than 74
@@ -234,11 +231,11 @@ filter(patients_clean, Height >160 | Weight >74, Sex == "Female")
 
 ******
 ## Exercise: filter
-See [3.workflows-exercise.Rmd](Markdown template)
+
 Use `filter` to print the following subsets of the dataset
 
-  - Choose the patients that are still alive
   - Choose the Female patients from New York or New Jersey
+  - Choose the overweight smokers that are still alive
   - Choose the patients who own a Pet that is not a dog
     + recall that `is.na` can check for values that are `NA`
   - (OPTIONAL)
@@ -253,6 +250,11 @@ Use `filter` to print the following subsets of the dataset
 
 Feel free to experiment with different ways to do these
 
+```{r}
+
+## Your answer here or 3.workflows-exercises.Rmd
+
+```
 
 
 
@@ -265,13 +267,15 @@ We now have all the tools in place in order to retrieve the overweight smokers f
 - Recall that functions `write.table`, `write.csv` are used to write a data frame to a tab-delimited or csv file. Because these functions accept a data frame as their first argument, they fit easily into the pipeline framework as the last step.
 + we never have to create a variable for our data
 
+N.B. we also add an extra rounding to the BMI values so they display a bit nicer
+
 ```{r}
 read.delim("patient-data.txt") %>% 
   tbl_df %>% 
   mutate(Sex = factor(str_trim(Sex))) %>% 
   mutate(Height= as.numeric(str_replace_all(Height,pattern = "cm",""))) %>% 
   mutate(Weight = as.numeric(str_replace_all(Weight,"kg",""))) %>% 
-  mutate(BMI = (Weight/(Height/100)^2), Overweight = BMI > 25) %>% 
+  mutate(BMI = round(Weight/(Height/100)^2,1), Overweight = BMI > 25) %>% 
   mutate(Smokes = str_replace_all(Smokes, "Yes", TRUE)) %>% 
   mutate(Smokes = as.logical(str_replace_all(Smokes, "No", FALSE))) %>% 
   select(ID, Birth,BMI,Smokes,Overweight,Died) %>% 
@@ -309,10 +313,11 @@ arrange(patients_clean, desc(Grade_Level), Count) %>% select(ID:Sex,Count)
 `Grade_Level`, `Sex` and then `Count`
 
 ```{r}
-arrange(patients_clean, desc(Grade_Level), Sex, Count) %>% select(ID:Sex,Count)
+arrange(patients_clean, desc(Grade_Level), Sex, Count) %>% select(ID:Sex,Grade_Level,Count)
 ```
 
 A related function is `top_n`
+- Although it does not seem to guarentee the results will be ordered
 
 ```{r}
 top_n(patients_clean,10,Height) %>% arrange(Height)
@@ -338,7 +343,8 @@ read.delim("patient-data.txt") %>%
 ```
 
 The downside with such pipelines is that they can be problematic to debug
-- Best to build the pipeline step-by-step
+
+- Best to build the pipeline step-by-step and check the output at each stage
 
 ## Re-usable pipelines
 
@@ -346,6 +352,7 @@ Imagine we have a second dataset that we want to process; `cohort-data.txt`.
 
 This time we have around 10,000 patients, and shouldn't really be dealing with these data in Excel. However, once we have defined a pipeline on our smaller dataset, we can see how it scales to the new data
 
+- In practice, we would probably want to check the output at each stage
 
 ```{r}
 read.delim("cohort-data.txt") %>% 
@@ -364,6 +371,8 @@ read.delim("cohort-data.txt") %>%
 
 As the file is quite large, we might want to switch to `readr` for smarter and faster reading
 
+- `readr` is another *tidyverse* package for data science
+
 ```{r}
 library(readr)
 read_tsv("cohort-data.txt") %>% 
@@ -380,6 +389,25 @@ read_tsv("cohort-data.txt") %>%
   write.table("study-candidates.csv")
 ```
 
+We might also want to make our cut-off for overweight a variable
+
+```{r}
+oWeightCutOff <- 25
+
+library(readr)
+read_tsv("cohort-data.txt") %>% 
+  tbl_df %>% 
+  mutate(Sex = factor(str_trim(Sex))) %>% 
+  mutate(Weight = as.numeric(str_replace_all(Weight,"kg",""))) %>% 
+  mutate(Height= as.numeric(str_replace_all(Height,pattern = "cm",""))) %>% 
+  mutate(BMI = round(Weight/(Height/100)^2,1), Overweight = BMI > oWeightCutOff) %>% 
+  mutate(Smokes = as.logical(str_replace_all(Smokes, "Yes", TRUE))) %>% 
+  mutate(Smokes = as.logical(str_replace_all(Smokes, "No", FALSE))) %>%
+  filter(Smokes & Overweight) %>% 
+  select(ID, Birth, BMI, Smokes,Overweight)  %>% 
+  arrange(desc(BMI)) %>% 
+  write.table("study-candidates.csv")
+```
 
 
 

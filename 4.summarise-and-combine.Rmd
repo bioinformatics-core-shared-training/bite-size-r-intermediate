@@ -245,7 +245,7 @@ groups(iris_ungrouped)
 
 `ungroup` can be quite helpful in more complicated chains of `dplyr` operations where the grouping is only required for some of the steps and would have unintended consequences for subsequent operations within the chain.
 
-### Exercise: [Rmarkdown Template](4.summarise-and-combine-exercise.Rmd)
+## Exercise: [Rmarkdown Template](4.summarise-and-combine-exercises.Rmd)
 
 Read a cleaned version of the patients dataset (patient-data-cleaned.txt) into R and use `summarise`, `summarise_each`, `mutate_each` and `group_by` to answer the following questions:
 
@@ -367,7 +367,7 @@ semi_join(df1, df2, by = "name")
 anti_join(df1, df2, by = "name")
 ```
 
-### Exercise: [Rmarkdown Template](4.summarise-and-combine-exercise.Rmd)
+## Exercise: [Rmarkdown Template](4.summarise-and-combine-exercises.Rmd)
 
 The exercise uses a more realistic dataset, building on the patients data frame we've already been working with.
 

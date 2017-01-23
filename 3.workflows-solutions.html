@@ -118,7 +118,7 @@ $(document).ready(function () {
 
 <h1 class="title toc-ignore">Workflow solutions</h1>
 <h4 class="author"><em>Mark Dunning</em></h4>
-<h4 class="date"><em>Last modified: 20 Jan 2017</em></h4>
+<h4 class="date"><em>Last modified: 23 Jan 2017</em></h4>
 
 </div>
 
@@ -175,26 +175,6 @@ patients_clean</code></pre>
 <hr />
 <p>Use <code>filter</code> to print the following subsets of the dataset</p>
 <ul>
-<li>Choose the patients that are still alive</li>
-</ul>
-<pre class="r"><code>filter(patients_clean, !Died)</code></pre>
-<pre><code>## # A tibble: 46 × 16
-##           ID      Name     Race    Sex Smokes Height Weight      Birth
-##       &lt;fctr&gt;    &lt;fctr&gt;   &lt;fctr&gt; &lt;fctr&gt;  &lt;lgl&gt;  &lt;dbl&gt;  &lt;dbl&gt;     &lt;fctr&gt;
-## 1  AC/AH/001 Demetrius    White   Male  FALSE 182.87  76.57 1972-02-06
-## 2  AC/AH/017   Rosario    White   Male  FALSE 179.12  80.43 1972-06-15
-## 3  AC/AH/020     Julio    Black   Male  FALSE 169.15  75.48 1972-07-09
-## 4  AC/AH/022      Lupe    White   Male  FALSE 175.66  94.54 1972-08-17
-## 5  AC/AH/033    Bernie      Dog Female   TRUE 158.27  69.90 1973-07-01
-## 6  AC/AH/037    Samuel    White Female  FALSE 161.69  68.85 1972-03-26
-## 7  AC/AH/044     Clair    White Female  FALSE 165.84  70.44 1973-05-11
-## 8  AC/AH/045   Shirley    White   Male  FALSE 181.32  76.90 1971-12-31
-## 9  AC/AH/048     Merle Hispanic   Male  FALSE 167.37  79.06 1973-07-19
-## 10 AC/AH/050   Frances    White Female  FALSE 166.48  67.34 1971-11-14
-## # ... with 36 more rows, and 8 more variables: State &lt;fctr&gt;, Pet &lt;fctr&gt;,
-## #   Grade_Level &lt;int&gt;, Died &lt;lgl&gt;, Count &lt;dbl&gt;, Date.Entered.Study &lt;fctr&gt;,
-## #   BMI &lt;dbl&gt;, Overweight &lt;lgl&gt;</code></pre>
-<ul>
 <li>Choose the Female patients from New York or New Jersey</li>
 </ul>
 <pre class="r"><code>filter(patients_clean, Sex == &quot;Female&quot;, State %in% c(&quot;New York&quot;, &quot;New Jersey&quot;))</code></pre>
@@ -231,42 +211,45 @@ patients_clean</code></pre>
 ## #   Died &lt;lgl&gt;, Count &lt;dbl&gt;, Date.Entered.Study &lt;fctr&gt;, BMI &lt;dbl&gt;,
 ## #   Overweight &lt;lgl&gt;</code></pre>
 <ul>
-<li>Choose the patients who do NOT own dogs</li>
+<li>Choose the overweight smokers that are still alive</li>
 </ul>
-<pre class="r"><code>filter(patients_clean, Pet != &quot;Dog&quot; , Pet != &quot;DOG&quot;) %&gt;% count(Pet)</code></pre>
-<pre><code>## # A tibble: 7 × 2
-##      Pet     n
-##   &lt;fctr&gt; &lt;int&gt;
-## 1   Bird     9
-## 2    Cat    24
-## 3    CAT     5
-## 4  Horse     1
-## 5   None    23
-## 6   NONE     1
-## 7   NULL     3</code></pre>
-<pre class="r"><code>filter(patients_clean, !Pet %in% c(&quot;Dog&quot;,&quot;DOG&quot;)) %&gt;% count(Pet)</code></pre>
-<pre><code>## # A tibble: 8 × 2
-##      Pet     n
-##   &lt;fctr&gt; &lt;int&gt;
-## 1   Bird     9
-## 2    Cat    24
-## 3    CAT     5
-## 4  Horse     1
-## 5   None    23
-## 6   NONE     1
-## 7   NULL     3
-## 8     NA     2</code></pre>
-<pre class="r"><code>filter(patients_clean, tolower(Pet) != &quot;dog&quot;) %&gt;% count(Pet)</code></pre>
-<pre><code>## # A tibble: 7 × 2
-##      Pet     n
-##   &lt;fctr&gt; &lt;int&gt;
-## 1   Bird     9
-## 2    Cat    24
-## 3    CAT     5
-## 4  Horse     1
-## 5   None    23
-## 6   NONE     1
-## 7   NULL     3</code></pre>
+<pre class="r"><code>filter(patients_clean, Overweight, !Died)</code></pre>
+<pre><code>## # A tibble: 31 × 16
+##           ID     Name     Race    Sex Smokes Height Weight      Birth
+##       &lt;fctr&gt;   &lt;fctr&gt;   &lt;fctr&gt; &lt;fctr&gt;  &lt;lgl&gt;  &lt;dbl&gt;  &lt;dbl&gt;     &lt;fctr&gt;
+## 1  AC/AH/017  Rosario    White   Male  FALSE 179.12  80.43 1972-06-15
+## 2  AC/AH/020    Julio    Black   Male  FALSE 169.15  75.48 1972-07-09
+## 3  AC/AH/022     Lupe    White   Male  FALSE 175.66  94.54 1972-08-17
+## 4  AC/AH/033   Bernie      Dog Female   TRUE 158.27  69.90 1973-07-01
+## 5  AC/AH/037   Samuel    White Female  FALSE 161.69  68.85 1972-03-26
+## 6  AC/AH/044    Clair    White Female  FALSE 165.84  70.44 1973-05-11
+## 7  AC/AH/048    Merle Hispanic   Male  FALSE 167.37  79.06 1973-07-19
+## 8  AC/AH/052 Courtney    White   Male   TRUE 175.39  92.22 1972-03-22
+## 9  AC/AH/053  FRANCIS    White Female   TRUE 164.70  75.69 1971-11-22
+## 10 AC/AH/063    Robin Hispanic   Male  FALSE 169.24  73.30 1971-11-22
+## # ... with 21 more rows, and 8 more variables: State &lt;fctr&gt;, Pet &lt;fctr&gt;,
+## #   Grade_Level &lt;int&gt;, Died &lt;lgl&gt;, Count &lt;dbl&gt;, Date.Entered.Study &lt;fctr&gt;,
+## #   BMI &lt;dbl&gt;, Overweight &lt;lgl&gt;</code></pre>
+<ul>
+<li>Choose the patients who own a Pet that is not a dog</li>
+</ul>
+<pre class="r"><code>filter(patients_clean, !Pet %in% c(&quot;None&quot;,&quot;NONE&quot;,&quot;NULL&quot;), !is.na(Pet), !Pet %in% c(&quot;DOG&quot;,&quot;Dog&quot;))</code></pre>
+<pre><code>## # A tibble: 39 × 16
+##           ID     Name     Race    Sex Smokes Height Weight      Birth
+##       &lt;fctr&gt;   &lt;fctr&gt;   &lt;fctr&gt; &lt;fctr&gt;  &lt;lgl&gt;  &lt;dbl&gt;  &lt;dbl&gt;     &lt;fctr&gt;
+## 1  AC/AH/022     Lupe    White   Male  FALSE 175.66  94.54 1972-08-17
+## 2  AC/AH/049   Martin    White Female  FALSE 160.06  72.37 1972-05-04
+## 3  AC/AH/052 Courtney    White   Male   TRUE 175.39  92.22 1972-03-22
+## 4  AC/AH/057   Vernon    White Female   TRUE 163.79  65.76 1972-01-12
+## 5  AC/AH/076   Albert    White   Male  FALSE 176.22  97.67 1973-04-14
+## 6  AC/AH/077    Tommy    Black   Male  FALSE 174.09  72.20 1973-02-07
+## 7  AC/AH/086     KYLE    Black   Male   TRUE 180.11  75.72 1973-05-18
+## 8  AC/AH/114     Kris Hispanic   Male  FALSE 177.75  74.84 1972-11-25
+## 9  AC/AH/133    CLYDE Hispanic   Male  FALSE 181.15  83.93 1973-10-19
+## 10 AC/AH/159   Edward    White   Male  FALSE 181.64  96.91 1972-12-10
+## # ... with 29 more rows, and 8 more variables: State &lt;fctr&gt;, Pet &lt;fctr&gt;,
+## #   Grade_Level &lt;int&gt;, Died &lt;lgl&gt;, Count &lt;dbl&gt;, Date.Entered.Study &lt;fctr&gt;,
+## #   BMI &lt;dbl&gt;, Overweight &lt;lgl&gt;</code></pre>
 <ul>
 <li>Patients born in June</li>
 </ul>

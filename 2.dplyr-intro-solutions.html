@@ -118,11 +118,161 @@ $(document).ready(function () {
 
 <h1 class="title toc-ignore">Solutions to dplyr introduction</h1>
 <h4 class="author"><em>Mark Dunning</em></h4>
-<h4 class="date"><em>Last modified: 20 Jan 2017</em></h4>
+<h4 class="date"><em>Last modified: 23 Jan 2017</em></h4>
 
 </div>
 
 
+<div id="tidy-data" class="section level2">
+<h2>Tidy data</h2>
+<p>Read the simulated clinical dataset and put into the tidy form. Also load the <code>tidyr</code> package that we are going to use. - Can you make a boxplot to visualise the effect of the different treatments?</p>
+<pre class="r"><code>library(tidyr)
+messyData &lt;- read.delim(&quot;clinicalData.txt&quot;)</code></pre>
+<pre class="r"><code>## Your answer here
+tidyData &lt;- gather(messyData, key = Treatment, value = Value,-Subject)
+tidyData</code></pre>
+<pre><code>##      Subject Treatment Value
+## 1   Patient1 Placebo.1 49.84
+## 2   Patient2 Placebo.1 46.75
+## 3   Patient3 Placebo.1 48.70
+## 4   Patient4 Placebo.1 51.68
+## 5   Patient5 Placebo.1 48.91
+## 6   Patient6 Placebo.1 53.54
+## 7   Patient7 Placebo.1 53.56
+## 8   Patient8 Placebo.1 46.15
+## 9   Patient9 Placebo.1 50.52
+## 10 Patient10 Placebo.1 46.97
+## 11  Patient1 Placebo.2 53.79
+## 12  Patient2 Placebo.2 49.77
+## 13  Patient3 Placebo.2 48.11
+## 14  Patient4 Placebo.2 48.14
+## 15  Patient5 Placebo.2 48.30
+## 16  Patient6 Placebo.2 44.71
+## 17  Patient7 Placebo.2 46.99
+## 18  Patient8 Placebo.2 43.23
+## 19  Patient9 Placebo.2 56.24
+## 20 Patient10 Placebo.2 44.76
+## 21  Patient1   Drug1.1 48.42
+## 22  Patient2   Drug1.1 49.65
+## 23  Patient3   Drug1.1 40.49
+## 24  Patient4   Drug1.1 38.27
+## 25  Patient5   Drug1.1 43.10
+## 26  Patient6   Drug1.1 47.50
+## 27  Patient7   Drug1.1 49.24
+## 28  Patient8   Drug1.1 47.31
+## 29  Patient9   Drug1.1 43.36
+## 30 Patient10   Drug1.1 44.86
+## 31  Patient1   Drug1.2 48.37
+## 32  Patient2   Drug1.2 41.62
+## 33  Patient3   Drug1.2 49.15
+## 34  Patient4   Drug1.2 41.10
+## 35  Patient5   Drug1.2 39.37
+## 36  Patient6   Drug1.2 42.88
+## 37  Patient7   Drug1.2 46.42
+## 38  Patient8   Drug1.2 38.32
+## 39  Patient9   Drug1.2 48.63
+## 40 Patient10   Drug1.2 50.07
+## 41  Patient1   Drug2.1 40.80
+## 42  Patient2   Drug2.1 39.14
+## 43  Patient3   Drug2.1 40.32
+## 44  Patient4   Drug2.1 40.74
+## 45  Patient5   Drug2.1 43.29
+## 46  Patient6   Drug2.1 39.48
+## 47  Patient7   Drug2.1 37.40
+## 48  Patient8   Drug2.1 43.99
+## 49  Patient9   Drug2.1 41.61
+## 50 Patient10   Drug2.1 39.01
+## 51  Patient1   Drug2.2 38.28
+## 52  Patient2   Drug2.2 41.89
+## 53  Patient3   Drug2.2 35.10
+## 54  Patient4   Drug2.2 41.15
+## 55  Patient5   Drug2.2 34.86
+## 56  Patient6   Drug2.2 35.60
+## 57  Patient7   Drug2.2 38.77
+## 58  Patient8   Drug2.2 33.75
+## 59  Patient9   Drug2.2 34.38
+## 60 Patient10   Drug2.2 36.22</code></pre>
+<pre class="r"><code>boxplot(tidyData$Value~tidyData$Treatment)</code></pre>
+<p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABUAAAAPACAMAAADDuCPrAAAC/VBMVEUAAAABAQECAgIDAwMEBAQFBQUGBgYHBwcICAgJCQkKCgoLCwsMDAwNDQ0ODg4PDw8QEBARERESEhITExMUFBQVFRUWFhYXFxcYGBgZGRkaGhobGxscHBwdHR0eHh4fHx8gICAhISEiIiIjIyMkJCQlJSUmJiYnJycoKCgpKSkqKiorKyssLCwtLS0uLi4vLy8wMDAxMTEyMjIzMzM0NDQ1NTU2NjY3Nzc4ODg5OTk6Ojo7Ozs8PDw9PT0+Pj4/Pz9AQEBBQUFCQkJDQ0NERERFRUVGRkZHR0dISEhJSUlKSkpLS0tMTExNTU1OTk5PT09QUFBRUVFSUlJTU1NUVFRVVVVWVlZXV1dYWFhZWVlaWlpbW1tcXFxdXV1eXl5fX19gYGBhYWFiYmJjY2NkZGRlZWVmZmZnZ2doaGhpaWlqampra2tsbGxtbW1ubm5vb29wcHBxcXFycnJzc3N0dHR1dXV2dnZ3d3d4eHh5eXl6enp7e3t8fHx9fX1+fn5/f3+AgICBgYGCgoKDg4OEhISFhYWGhoaHh4eIiIiJiYmKioqLi4uMjIyNjY2Ojo6Pj4+QkJCRkZGSkpKTk5OUlJSVlZWWlpaXl5eYmJiZmZmampqbm5ucnJydnZ2enp6fn5+goKChoaGioqKjo6OkpKSlpaWmpqanp6eoqKipqamqqqqrq6usrKytra2urq6vr6+wsLCxsbGysrKzs7O1tbW2tra3t7e4uLi5ubm6urq7u7u8vLy9vb2+vr6/v7/AwMDBwcHCwsLDw8PExMTFxcXGxsbHx8fIyMjJycnKysrLy8vMzMzNzc3Ozs7Pz8/Q0NDR0dHS0tLT09PU1NTV1dXW1tbX19fY2NjZ2dna2trb29vc3Nzd3d3e3t7f39/g4ODh4eHi4uLj4+Pk5OTl5eXm5ubn5+fo6Ojp6enq6urr6+vs7Ozt7e3u7u7v7+/w8PDx8fHy8vLz8/P09PT19fX29vb39/f4+Pj5+fn6+vr7+/v8/Pz9/f3+/v7///9P/i37AAAACXBIWXMAAB2HAAAdhwGP5fFlAAAgAElEQVR4nO3debwkZX3o/2cGhhlQwBFQNkUmiogL6kSvhhj0BwNuKC5wE9EgQlABLwavGROMZBFFrkIUEUbD1cBFr2O4GlFEcLnCjQZxYWLEIEZ2UGSL7Mycfv1On2WWMzXdVc+peuo81e/3H8yZOj3V39PV9RnO6epnQg+AKKHtAQByJaAAkQQUIJKAAkQSUIBIAgoQSUABIgkoQCQBBYgkoACRBBQgkoACRBJQgEgCChBJQAEiCShAJAEFiCSgAJEEFCCSgAJEElCASAIKEElAASIJKEAkAQWIJKAAkQQUIJKAAkQSUIBIAgoQSUABIgkoQCQBBYgkoACRBBQgkoACRBJQgEgCChBJQAEiCShAJAEFiCSgAJEEFCCSgAJEElCASAIKEElAASIJKEAkAQWIJKAAkQQUIJKAAkQSUIBIAgoQSUABIgkoQCQBBYgkoACRBBQgkoACRBJQgEgCChBJQAEiCShAJAEFiCSgAJEEFCCSgAJEElCASAIKEElAASIJKEAkAQWIJKAAkQQUIJKAAkQSUIBIAgoQSUABIgkoQCQBBYgkoACRBBQgkoACRBJQgEgCChBJQAEiCShAJAEFiCSgAJEEFCCSgAJEElCASAIKEElAASIJKEAkAQWIJKAAkQQUIJKAAkQSUIBIAgoQSUABIgkoQCQBBYgkoACRBBQgkoACRBJQgEgCChBJQAEiCShAJAEFiCSgAJEEFCCSgAJEElCASAIKEElAASIJKEAkAQWIJKAAkQQUIJKAAkQSUIBIAgoQSUABIgkoQCQBBYgkoACRBBQgkoACRBJQgEgCChBJQAEiCShAJAEFiCSgAJEEFCCSgAJEElCASAIKEElAASIJKEAkAQWIJKAAkQQUIJKAAkQSUIBIAgoQSUABIgkoQCQBBYgkoACRBBQg0pwO6C+PPRqgLu++r+ZGzemA/lkAqM/na27UnA7on4ZDVgDU47+E82pu1BwP6GltjwB0xhsFFCCOgAJEElCASAIKEElAASIJKEAkAQWIJKAAkQQUIJKAAkQSUIBIAgoQSUABIgkoQCQBBYgkoACRBBQgkoACRBJQYM566BfDXPPvQ29yb3PzCSgwVz3yhDr+4cxtftXYgAIKzFVjy5YMMz88adhNnndPYwMKKJCxxeHOFu9dQIGMCWhCAgrdIqAJCSh0i4AmJKDQLQKakIBCtwhoQgIK3SKgCQkodMsRy8ZavHcBBYgkoACRBBQgkoACRBJQgEiZBnRs1efPXnlV9VffBBS6ZfXDbd57RgFdddllUx+tPnNylcCdTr2/4j4EFLplnyc80uK9ZxTQfcPUru976dqVUp99XbV9CCh0iwvpS1ob0DeMl3Png5cft9/CEPaqtlSqgEK3CGhJ0wH9TghbfPDB/kfXHhDCeyrtQ0ChWwS0pOmAHh7C6VOb7t8jbFXpx6ACCt0ioCVNB3T3sMea6W0XhHBxlX0IKHSLgJY0HdBF4U1rt10fwser7ENAoVsEtKTpgO4QTlq7bc38cHKVfQgodIuAljQd0H3CMWu33RTCp6rsQ0ChWwS0pOmAnhx2W/veg7NCuLzKPgQUusV6oCWNB3TZMaddePVvdggnTm26Zsew/eoq+xBQoD55BXTC/AVT37ff+bHFIZxaaR8CCtQno4CedejSx0y/hfP4/ob+Ozpf+GClfQgoUJ+MAtp3xxWfe/8RL9p5MqAHhnBwtXdyCihQo8wCOuX+2/v/Pf6EwS8grfnFRt4ioEBt8gxoOW8JBQ5oeyqgRtYDbcpHlmxkYdi37amAGlkPNELsivTPDa9uYBqgLS6kL6mOFekFFLpFQEuqY0V6AYVuEdCS6liRXkChWwS0pDpWpBdQ6BYBLamOFekFFLpFQEuqY0V6AYVuEdCS6liRXkChWwS0pDpWpBdQ6BbrgZZUx4r0AgrUJ8OAzmZFegEF6pNXQGe9Ir2AAvXJK6CzXpFeQIH6ZBTQOlakF1CgPhkFtG+2K9ILKHSL9UCrK7cifQEBhW6xHmhCAgrd4kL6hAQUukVAExJQ6BYBTUhAoVsENCEBhW4R0IQEFLpFQBMSUOgWAU1IQKFbBDQhAYVusR5oQgIK1EdAASIJKEAkAQWIJKAAkQQUyJj1QBMSUOgW64EmJKDQLS6kT0hAobfmqiuHuXToLa5p+6uYIqAJCSj03h7qcE7bX8YkAU1IQKG3Yukw24fdht3ked9u+8uYJKAJCSiUcHRY0fYIZQloQgIKJQhoSQIKzCSgJQkoMJOAliSgwEwZBdR6oAkJKJSQUUDbJaDATEeHT7Y9Qh4EFJjpwt/7Wdsj5EFAASIJKEAkAQUyZj3QhAQUusV6oAkJKHSLC+kTElAo4/a2ByhNQBMSUCjh1PnfaHuEsgQ0IQGFEjJ6J5KAJiSgUIKAliSgwEwCWpKAAjMJaEkCCswkoCUJKDBTRgG1HmhCAgolZBTQdgkoMJP1QEsSUGAm64GWJKAAkQQUIJKAAhmzHmhCAgrdYj3QhAQUusWF9AkJKJRhPdByBBSYyXqgJQkoMFNG70QS0IQEFEoQ0JIEFJhJQEsSUGAmAS1JQIGZBLQkAQVmyiig1gNNSEChhIwC2i4BBWayHmhJAgrMZD3QkgQUIJKAAkQSUCBj1gNNSEChW6wHmpCA0nn3XjlH/HB1ii/XhfQJCSidt2+YK05I8eUKaEICSuctCc9YOhcsCYek+HIFNCEBpfOWhF+0PcKElQIaQ0ChTQKakIBCtwhoQgIK3SKgCQkodIuAJiSg0C0jFlDrgSYkoHTeiAW0XQIK3SKgCQkodIuAJiSg0C0CmpCAQrcIaEICCt0yYgG1HmhCAkrnjVhArQeakIDSeSMWUBfSJySgdJ6AJiSg0C0CmpCAQrcIaEICCt0ioAkJKHSLgCYkoNAtApqQgEK3CGhCAgrdMmIBtR5oQgJK541YQNsloNAtAppQhgFdc+vPf/z9q29aHfNnBZTOE9CEMgvoI18/+jlbhgkLn/nWr1ZeRUBA6TwBTSirgI59cfewgSd/oeIeBJTOE9CEcgro2LsnqrnDnvscdNA+e+04r/+b5dVegRNQOm/EAmo90LLOHQ/msjNvmP7tr889dEEI51TahYDSeSMWUOuBlrR6l7DwyxtuWrVz2P6hKvsQUDpvxALqQvqSLg/htJnbvhXC16rsQ0DpPAFNKKOAnhPCLTO3je0YzqiyDwGl8wQ0oYwCekYI92608anhlCr7EFA6T0ATyiigXwrhmzO33b6g2vwCSucJaEIZBfSuBWHpbzfctOawMO/GKvsQUDpPQBPKKKC9t4aw5wXrfRf/0KX7hvD6SrsQUDpPQBPKKaB37NF/B+fL3/fR875y0fln/PXrtxn/7W63V9qFgNJ5AppQTgHt3bIszPDi26rtQUDpvBELqPVAyxu78DWL1tVz0Su+WvWhE9AJfzVv5t9EEbb4YttfBoVGLKDtyiug4+793jnvfeefHHX8e8+5/L4hN33oW5fM9BQB7VteQz/D/M+3/WVQSEATyi6gFbyh6LR/XttT5eHosKLtEYgkoAl1OaCf2X8jW4f92p4qDwKaLwFNKNOAjq36/Nkrr6r+w2M/Ay1JQPMloAllFNBVl1029dHqM58w8e34TqfeX3EfAlqSgOZrxAJqPdCS9g1Tu77vpWt/ovns66rtQ0BLEtB8jVhArQda0tqA9l8c2vng5cfttzCEve6ptA8BLUlA85VRQP9h+ewtCsfPfidnRP0blb0sA/qdELb44IP9j649IIT3VNqHgJYkoPnKJ6A/qeNyunpcGPlFZhjQw0M4fWrT/XuErSr9GFRASzp74ffaHoFI+QT0yrDLKbN25GGz38czw8rILzLDgO4e9lgzve2CEC6uso8mA/rgaUO/UXj5W4fd4s9/0Nh8jIicAro0ySRDHTJKAV0U3rR22/UhfLzKPpoM6P+u5VuJ5zQ2HyNCQCsbqYDuEE5au23N/HBylX00GdDfnjbsG4WjwpOHfjPxncbmY0QIaGUjFdB9wjFrt90Uwqeq7KPdn4FeEvZv8d4ZEQJa2UgF9OSw29pLZ88K4fIq+xBQOk9AKxuVgC475rQLr/7NDuHEqU3X7Bi2r3QBl4DSeUvCyw+ZC14ooDGaDOiE+Qumvm+/82OLQzi10j4EtKRPP+b7bY9ApCW1vJpZBwGN0FhAzzp06WOmj8zx/Q39d3S+8MFK+xDQklxIny8BrWwkAtp3xxWfe/8RL9p5MqAHhnBwtXdyCmhZApovAa1sZAI65f6Jf0ru+BMqvYDU125AvxNe0eK9VyKg+RLQykYtoNHaDejqM1e1eO+VCGi+BLQyAS3Je+FLEtB8LQlnrJwL/lRAYwhoFwhovlwHWpmAliSgJQlovgS0MgEtSUBLEtB8CWhlAlqSgJZkPdB8CWhlAlpSuwEd+/S1Ld47I0JAKxPQktoN6GXhlS3eOyNCQCsT0JK8E4nOE9DKBLQkAaXzBLQyAS1JQOk8Aa1MQEsSUDpPQCsT0JIEtCTrgeZLQCsT0JIEtCQX0udLQCsT0JIEtCQBzZeAViagJVkPtCQBzZeAViagJY3EeqCHt70M5LT5H03x5TKDgFYmoCWNxHvh81lQlyYIaGUCWtKIBDSXE4gm5HP8BbSAgLYtnxOIJuRz/AW0gIC2LZ8TiCbkc/wFtEBHA/r9Fy+dI/5i2Kj5nEA0IZ/jL6AFOhrQ97T9gsxa84eNms8JRBPyOf4CWqCjAV0e3nHlnBCGPsD5nEA0IZ/jL6AFOhvQU2qdJJqAMlg+x19ACwhoswSUwfI5/gJaQECbJaAMls/xvzLstmJOWCqg5QhoQgLajnyO/5VtvyC7joCWIqAJCWg78jn+AlpAQJsloAyWz/EX0AIC2iwBZbB8jr+AFhDQZgkog+Vz/AW0gIA2S0AZLJ/jf2XY/ug5YYmAliOgCQloO/I5/q4DLSCgzRJQBsvn+AtoAQFtloAyWD7HX0ALCGizBJTB8jn+AlpAQJsloAyWz/EX0AIC2iwBZbB8jr+AFhDQZgkog+Vz/AW0gIA2S0AZLJ/jL6AFBLRZAspg+Rx/AS0goM0SUAbL5/gLaAEBbZaAMlg+x19ACwhoswSUwfI5/gJaQECbJaAMls/xF9ACAtosAWWwfI6/gBYQ0GYJKIPlc/wFtICANktAGSyf4y+gBQS0WQLKYPkcfwEtIKDNElAGy+f4C2gBAW2WgDJYPsdfQAsIaLMElMHyOf4CWkBAmyWgDJbP8RfQAgLaLAFlsHyOv4AWENBmCSiD5XP8BbSAgDZLQBksn+MvoAUEtFkCymBLwh8ePVtveP5bZr2P/QU0hoA2S0AZ7OlhrvjjIZMKaAEBbZaAMtgPV8zei8Iba9jLDUMmFdACAtosAaV5R4cVCe5FQAsIaLMElOYJaEkCWpKAViag+RLQkgS0JAGtTEDz9fmnXZXgXgS0gIA2S0DpCgEtIKDNElC6QkALCGizBJSuENACAtosAaUrBLSAgDZLQOkKAS0goM0SUBJ4IMWdCGgBAW2WgNK8MxdenuBeBLSAgDZLQGmeC+lLEtCSBLQyAc2XgJYkoCUJaGUCmi8BLUlASxLQygQ0XwJakoCWJKCVCWi+BLQkAS1JQCsT0HwJaEkCWtLy8LJT5gQBZdbuunOIw8Ppw27yn7MfQ0ALdDagc8awUQWUwf57HU/D+Z+d9RwCWkBAmzZsVAFlsA8/dvEQj9psm2E32e2iWc8hoAUEtGnDRhVQ8iCgBQS0acNGFVDyIKAFBLRpw0YVUPIgoAU6G9B9l88JAkpXCGiBzgbUdaAVCSiDCWgBAW2WgNIVAlpAQJsloHSFgBYQ0GYJKF0hoAUEtFkCSlcIaAEBbZaA0hUCWkBAmyWgdIWAFkgS0LFVnz975VVjlf+cgCYkoAwmoAUaC+iqyy6b+mj1mU+YeEvOTqfeX3EfApqQgDKYgBZoLKD7TqfjvpeufVfjs6+rtg8BTUhAGUxACzQf0DeMl3Png5cft9/CEPa6p9I+BDQhAWUwAS3QeEC/E8IWH3yw/9G1B4Twnkr7ENCEBJTBBLRA4wE9PITTpzbdv0fYqtKPQQU0IQFlMAEt0HhAdw97rJnedkEIF1fZh4AmJKAMJqAFGg/oovCmtduuD+HjVfYhoAkJKIMJaIHGA7pDOGnttjXzw8lV9iGgCQkogwlogcYDuk84Zu22m0L4VJV9CGhCAspgAlqg8YCeHHZ7eHrbWSFcXmUfApqQgDKYgBZoMqDLjjntwqt/s0M4cWrTNTuG7VdX2YeAJiSgDCagBZoM6IT5C6a+b7/zY4tDOLXSPgQ0IQFlMAEt0FhAzzp06WOm38J5fH9D/x2dL3yw0j4ENCEBZTABLdDoakx3XPG59x/xop0nA3pgCAdXeyengKYkoAwmoAVSLGd3/+39/x5/wuAXkH69ciO7h1dF3qWAViagDCagBebOgsoHhwKxR0xAKxNQBhPQAnMnoBcdspHF4cDInQloZQLKYAJaIFVADzvsgup/yM9AExJQBhPQAqkCGtZ7R2dpApqQgDKYgBYQ0GYJKF0hoAUaC+jNF20ghMMmfq20DwFNSEAZ7MqwZOMrZao643/Mfh8vGIWAnlf0ovrwnGxgRAL6h0fPBfsLKAP9qPiUbkPECyoTMgroyuKvvNI+RiSgc4WAMsjDJ2x8oUxlW4RXz34n77g78kvIKKBjpy8I4WnLp4Wwz8SvlfYhoEkJKI1bHO5s8d4zCmiv9/3xNBx13/T9eBFpEwSUESKg5d19aAh7/evU/QjoJggoI0RAKxhbsSgsWjE2cT8CugkCyggR0Equ2jOE19/VE9BNWxJOXjEXHC2gNE9Aq7n3zSE86bsCummuA2WEHHPwWIv3nl9Ae71zHxU2P3WNgG6KgEIiOQa097O9QzhAQDdFQCGRLAPae+Dt/ZcoBLSYgEIieQa01/vCtgK6KQIKieQa0N7dN95Y8d9D6hPQhASUzss2oHEENCEBJYEHftvmvQtoSQJamYCSwPN3eqTFexfQkgS0MgElARfSJySgCQkoCQhoQgKakICSgIAmJKAJ1RLQ3/5imJ/+69CbtHmG0TABTUhAE6ojoI/sWseqUFv/qoYvh7lJQBMS0ITqCOjYsiXDzA9PGnaT50VcMkwmBDQhAU0o0c9A2z2BaJuAJiSgCQkoCQhoQgKakICSgPVAExLQhASUzhPQkgS0MgGl8wS0JAGtTEDpPAEtSUArE1A6T0BLEtDKEgX0iGVtvojAaBPQkgS0Mu+FJwHrgSYkoAkJKAlYDzQhAU1IQEnAhfQJCWhCAkoCApqQgCYkoCQgoAkJaEKJAtruiwi0TUATEtCEEgX093Zt80UE2iagCQloQi6kJwEBTUhAExJQZm34P+mybfhhi/+ki4CWJKCVCSiz9chOdfyTLo++tbEBBbQkAa1MQJmtsVcM/SddtnnU0Ju8pLnXGQW0JAGtTEDpPAEtaXl47NC/6IZ64u6z34eAziCgtEdAS/pUHT+LqcVTho0qoJCIgJZ149CXA4c6N+wz+51c/9CwSQUUEhHQhC4J+6e4mxELqPVAaY+AJiSg0C0CmpCAQrcIaEICCt0ioAkJKHSLgCYkoNAtAprQN8KyFHczYgG1HijtEdCE7nrN+SnuZsQCaj1Q2iOg3TNiAXUhPe0R0O4RUEhEQLtHQCERAe0eAYVEBLR7BBQSEdCUrns4xb0IKCQioAn9ZLM3p7gbAYVEBDQh70RqgoDSHgFNSECbYD1Q2iOgCQkodIuAJiSg0C0CmpCAQrcIaEICCt0ioAkJKHSLgCZkPdAmWA+U9ghoQtYDbYL1QGmPgHbPiAXUhfS0R0C7R0AhEQHtHgGFRAS0ewS0Fb864pAhXvvkfYfd5JDPtv1lUImAdo+AtuIfQx2e1/aXQSUCmpL1QBswVwL6yJdWDvGX4ZnDbrLymra/DCoR0ISsB9qEuRLQ4RK9kYKEBDQh70RqgoDSHgFNSECbkM96oALaPQKakICONgHtHgFNSEBnePiEoZf1JHL03QkeEAHtHgFNSEBn+HEtV/7U4v8keEAEtHsENCEBneHKsGTodT1JvCCsTPCAXBFel+BeSElAExLQGa4MS5NMMtQhSQLa+9rNKe6FhAQ0IeuBzjBqAaVzBDQh64HOIKBkTkC7R0ArE1DiCGj3CGhlAkocAe0eAa1MQIkjoN0joJWlCej9x12a4F5ISUC7R0ArSxPQb4UDE9wLKQloStYD3dCIBdQ7kbpHQBOyHugMAkrmBDShZO9E2nbxbD1q/jaz34eAbkhAu0dAE0p0Ar287YU51nrfkEkFlMwJaEKJTqBH7py9w8PpNexl2KQCSuYENKGMTqCjw4oE9yKgZE5AE8roBBLQBmR0/ClJQBPK6AQS0AZYD7R7BDShjAJ6bPh0gnsZsYBaD7R7BDShROuB1uH60+9NcC+jFlA6R0ATSrQeaD4ElMwJKO0RUDInoLRHQMmcgNIeASVzGQZ0za0///H3r75pdcyfFdA55cqwzf5zwuOtB0qUzAL6yNePfs6Wk++zXvjMt371kap/XkBLuu3sBxPcy5XtvlV/fdYDJUZWAR374u4bPuuf/IWKexiJ9UDrcHztz4siIxbQjK4DpqScAjr27omn+g577nPQQfvsteO8/m+Wj1XaxUisB1qHVO9EmjMElBg5BfTc8ef5sjNvmP7tr889dEEI51TahXcilSSgDcjo+FNSRgFdvUtY+OUNN63aOWz/UJV9CGhJAtqAjI4/JWUU0MtDOG3mtm+F8LUq+xDQklIF9CmXzAl/IKBEySig54Rwy8xtYzuGM6rsQ0BLshpTAzI6/pSUUUDPCGHjBS6eGk6psg8BLUlAG5DR8aekjAL6pRC+OXPb7QuqzS+gJQloA6wH2j0ZBfSuBWHpbzfctOawMO/GKvsQ0JKsB9oE64F2TkYB7b01hD0vWO+7+Icu3TeE11fahfVAS7IeKJSQU0Dv2COEsPDl7/voeV+56Pwz/vr124z/drfbK+3CeqBzioCSuZwC2rtl2cyr9158W7U9eC/8nCKgZC6rgPbGLnzNonX1XPSKr1Z7I6eAzjECSubyCui4e793znvf+SdHHf/ecy6/b8hNrzllI7uEVzY7HlUIKJnLLqAVHFT0lr3ntj0V64xYQK0H2j1dDuhlyzfy+PDStqfKQ6r1QEcqoNYD7Z58A3rYYRdU/0PWAy0p1XqgIxXQjK4DpqR8AxrCSdX/kPVAS/JOpAYIaPcIaEIZnUAC2oCMjj8lZRTQmy/aQAiHTfxaaR8CWpKANiCj409JGQX0vOKVcCvtQ0BLEtAGZHT8KSmjgK4U0HQEtAEZHX9KyiigY6cvCOFpa69ICmGfiV8r7UNASxLQBmR0/Ckpo4D2et9fEsJR0+8/8iJSkwS0AdYD7Z6sAtq7+9AQ9vrXqfsR0AZZD7QJ1gPtnLwC2htbsSgsWjGxhEiGAbUe6AyjFlA6J7OA9npX7RnC6+/qZRlQ64HOIKBkLruA9u59cwhP+m6WAWUGASVz+QW01zv3UWHzU9cIaP4ElMzlGNDez/YO4QABzZ+AkrksA9p74O39S+gFNHcjFlDrgXZPngHt9b6wrYA2yXqgDbAeaPfkGtDe3TfeeE/1P2U90JKsB9qAjK4DpqRsAxrHeqAleSdSAwS0ewQ0oYxOIAFtQEbHn5IENKGMTqBUAZ0zBJQYAppQRidQmoD+eru2uzlty1UJvtyMjj8lCWhCGZ1AaQI6YjI6/pQkoAlldAJlFNDLv9L2BGVldPwpSUATyugEyiigO81PsXBUHawH2j0CmlBGAU2zHmgtFoc72x6hLOuBdo6AJmQ90CZkFFA6R0ATsh5oEwSU9ggomRNQ2iOgZC5NQH/88v3niL9K8NVSloCSuTQB/fO2L/Vfa7MEXy1lCSiZSxPQ5eGoS+aEMKdPsJEjoBRJsx5oLR4/L8UFA8vDKQnupQQBnVMENCXrgTbg60n+NQ4BpYiAJmQ90HwJKEUENKGM3okkoDMIKEUENCEBzZeAUkRAExLQfAkoRQQ0IQHNl4BSREATEtAmpFkPVEApIqAJzZmA/vxDpwzx/PDaYTc5bY68BT3NeqACShEBrc+qYW8i+VB47rCbfCPJKnKvreU9hR9IMepwqd6JJKBsTEBrc1EtVXpxY/Ot56r3LB/i7fudMOwmJ9+WYtThBJT2CGhtfjF0vZ4XP+4ZQ9fa+XBj83WVgNIeASVzAkp7BJTMCSjtEVAyJ6C0R0DJnIDSHgElc9YDpT0CSuasB0p7BBRKEFCKCCiUIKAUEVAoQUApIqBQgoBSREChBAGliICSOeuB0h4BJXPWA6U9AkrmvBOJ9ggomRNQ2iOgZE5AaY+AkjkBpT0CSuYElPYIKJkTUNojoMxpFw77t+2WLwrHD7vJubOfQ0ApIqDMZQ9vVsu/dXrtrAcRUIoIKHPaylOGOfKwoTf51Nis5xBQiggolCCgFBFQKEFAKSKgUIKAUkRAoQQBpYiAQgkCShEBhRIElCICCiUIKEUEFEoQUIoIKJQgoBQRUChBQCkioFCCgFJEQKEEAaWIgEIJAkoRAYUSBJQiAgolCChFBBRKEFCKCCiUIKAUEVAoQUApIqBQgoBSREChBAGliIBCCQJKEQGFEgSUIgIKJQgoRQQUShBQiggolCCgFBFQKEFAKSKgUIKAUkRAoQQBpYiAQgkCShEBhRIElCICCiUIKEUEFEoQUIoIKJSwPBx1yZwgoHOKgEIJy8Oc0fZDwXoEFEoQUIoIKJQgoBQRUChBQCkioFCCgFJEQKGE5eHJ+88JAjqnCCiU4DpQiggolCCgFMk0oGOrPn/2yqvGKv85ASWOgFIko4CuuuyyqY9Wn/mEiZ+m73Tq/RX3IaDEEVCKZBTQfaefOve9dO0Lks++rto+BJQ4AkqRHAP6hvFy7nzw8uP2W/NLmpIAABPiSURBVBjCXvdU2oeAEkdAKZJhQL8TwhYffLD/0bUHhPCeSvsQUOIIKEUyDOjhIZw+ten+PcJWlX4MKqDEEVCKZBjQ3cMea6a3XRDCxVX2IaDEEVCKZBjQReFNa7ddH8LHq+xDQIkjoBTJMKA7hJPWblszP5xcZR8CShwBpUiGAd0nHLN2200hfKrKPgSUOAJKkQwDenLY7eHpbWeFcHmVfQgocQSUInkFdNkxp1149W92CCdObbpmx7D96ir7EFDiCChF8grohPkLpr5vv/Nji0M4tdI+BJQ4AkqRjAJ61qFLHzP9Fs7j+xv67+h84YOV9iGgxBFQimQU0L47rvjc+4940c6TAT0whIOrvZNTQIkkoBTJLKBT7r+9/9/jT6j0AlKfgBJHQCmSZ0DL+eExR8+0fXhF21ORJQGlSJcD+oqif5Hrd9ueiiwJKEWyDejYr//ttiEr0v/7io3sG/42zXh0jIBSJK+Ajl115t/8/S/HP7jvxO3G/29ylxNur7iDPw2nNTAW3bc8nHTnnCCgc0pWAb3hJf1vwjd779iDy6a+IX/cFdX2IKDE8e/CUySngN6x29Qz6OMfC2Hek/dbMi+E7W+utAsBJc4/bbd4jljW9kPBenIK6NtC2Pq4T3xwr7DDruG5V49v+OUBIby50i4EFKhPRgF9YMuw8y/Hf733WSEsumli0yPPCgsqXUovoLTo/97R9gTULKOA/jSE/znxwWfW/X/nhSF8pco+BJT2XBkOaXsEapZRQL8cwi8nPrgmhA9Obbs5hDOq7ENAac8lYf+2R6BmGQX07BAemPjgzhA+M7Vtzfzw/ir7EFDaI6Ddk1FAzw/h2okPHtpuu5VT264P4ewq+xBQ2iOg3ZNRQK8M4UMzt33Wz0DJhoB2T0YBfWSH8OgfbbjpnieGre6tsg8BpT0C2j0ZBbT3gRAWHf6JK9f+/tf/a9cQjqy0CwGlPQLaPTkF9JH+EvTh2Onfvrj/uyfeVWkXAkp7BLR7cgpo7+G/ecx6Ad17vJ+/f2O1PQgo7flmOLDtEahZVgHt9R789ie+Nv3xS55/5KVrKv55AaU99/23r7Y9AjXLLKCzJaBAfQQUIJKAAkQSUIBIAgoQSUAhFeuBdo6AQiLWA+0eAYVEvBOpewQUEhHQ7hFQSERAu0dAIREB7R4BhUQEtHsEFBIR0O4RUKjFmq+uHOIvwzOH3WTlDW1/GVQioFCLC0Idnt/2l0ElAgq1uOWPDxnitU950bCbHHZu218GlQgoQCQBBYgkoACRBBQgkoACRBJQgEgCChBJQAEiCShAJAEFiCSgAJEEFCCSgAJEElCASAIKEElAASIJKEAkAQWIJKAAkQQUINLIBXS7Je15wvzNFmRis3mbtz1CWfPntT1BWZvPc/zrN3+zFk/pJY8erYD+XS3/9CzApMtrbtScDujYf/yiReeGpd/OxCvDu9oeoaytw4Vtj1DShx3/BmwdftjmSX1T3Y2a0wFt1yVh/7ZHKOvosKLtEcpaHO5se4SSHP8m5HP8yxHQTXICNSGfE8jxb0I+x78cAd0kJ1AT8jmBHP8m5HP8yxHQTXICNSGfE8jxb0I+x78cAd0kJ1AT8jmBHP8m5HP8yxHQTXICNSGfE8jxb0I+x78cAd0kJ1AT8jmBHP8m5HP8yxHQTXICNSGfE8jxb0I+x78cAd0kJ1AT8jmBHP8m5HP8yxHQTXICNSGfE8jxb0I+x78cAd0kJ1AT8jmBHP8m5HP8yxHQTXICNSGfE8jxb0I+x78cAd0kJ1AT8jmBHP8m5HP8yxHQTXICNSGfE8jxb0I+x78cAd0kJ1AT8jmBHP8m5HP8yxHQTXICNSGfE8jxb0I+x78cAd0kJ1AT8jmBHP8m5HP8yxHQTboivK7tEcp6d/h82yOU9aSFD7Q9QkmOfxPyOf7lCOimfe3mtico665/Wt32CGX95F/anqA0x78BGR3/UgQUIJKAAkQSUIBIAgoQSUABIgkoQCQBBYgkoACRBBQgkoACRBJQgEgCChBJQAEiCShAJAEFiCSgAJEEFCCSgAJEElCASAIKEElAASIJKEAkAQWIJKAAkQQUINJIBPTqMG3bPd/8T6tnt7MLz7s34lNlJRn1jovP/eSXbp7dvuscdfA8s39Uk0wa+6Deuna4eY/Z+7hVkxufHn4ncsJLQvhU5T9U8iFufdR6nri1GrGA9i29cjb7+tVm4cbqnyotwag/edlmEzt/yb/MZuf1jTpknhoe1QSTxj+ot24wXDhhTX9j2oCWfYhbHrWuJ26tRiWgi4/t+5NX7zJ+ALa6ZBb7+kjY5JNtwKdKa37UlQumT4DN/2EWO69t1GHz1PCoNj/pLB7U8SptNTHcsW98webjO/jz/sa0AS37ELc7am1P3FqNSkCfPvXh2Lf3DmHLn0fvatVWm3yyDfhUeY2PumphCPtdfOetX3lhCJt9N3rnvbpGHTZPHY9q45PO5kEdr9Iu0x//fL/xOvyilzigpR/iVket74lbq1ELaK9330tCePFYzG7GbrjoyEWh8Mk24FPVND7qm0I4YuJbrzVvDmGf2DH76hl10Dx1PaqNTzqbB3X9KvXuemIIp/YSBrTSQ9zqqPU9cWs1egHt3bZtCFE/RXnZ1HcQBU+2AZ+qpulR714QHv3byQ9/+7gQroubckItow6cp65HtelJZ/WgblCl3gkh/NdewoBWeojbHLXGJ26tRjCgvfeFcGT/16Xhdb17/+KJ4ZJeb7uw39QnLwvhjMmP7vnA0m0f/ewP3dfbOxw2sWG/TT/ZBnxqbo36wxBeP/3xa0L4StujDpynrke16Uln9aBuWKVPhLCst16V7vjQ/jsu2O5Zr/3qmulbPPz3y3ZcsPNLz3l4esMVb3vKVoufe+xPJ383UaVvvn7XLR6/7FOPTN9k9fmv3mWLxc95z/Ub3Xulh7jNUWt84tZqFAN6TQi7938dP4H+c5/xJ0/xCXTFrpNPrWdcP12lu28f95LCJ9uAT82tUb809aP/vreH8E9tjzpwnroe1aYnndWDutH/1r22t65KX9x6+oWT37198gbXPn1qw9Ovnfj9w2+bvsU7JiI0XqVPvmdqy7NumPwzNz53asOij8+890oPcZuj1vjErdUoBnRsuxB+1Zs4gf4ohK12++eiE+hn49/o7frGkw7aOjzzd6aqNOHATT/ZBnxqzoz68/PO++n0xy8I4d/bHnX4PDU8qk1POqsHdYMq3b1bCH/ZW1ulf18QwpPf8YG/eNXmIfzxxA1u3imEnf/ob96yOIQn3NP/Wg4JYYtXnfiufceb87r+T3bHq/S8EPb8k784YP743xN39//MHeM7ffTL/vKop43f5syiEco+xG2OWuMTt1ajGNDei0L4Xq9/Aj02POvrE68nbHQCjY3/r8kh949/cMvS8WPZWkCbGrXvW+PP+NlcVF7nqAPmqT+gTU065FObsH6Vrt0/hPk/6a2t0hEhHDfxDfGPtwmPnxj0lSG85cHxX38zPt/7x389Z/x/+H7W/8SlO4fw2d5ElUI4pX/b7z0uhGP7nzo8hBfc0v+azp4XtvyPghFiAtrSqH2zfeLWaiQD+uoQLur1T6Cw+52TWzY6gb49frQnf5bzH/PbDGhDo477yfYhnDdXRh0wTwMBbWjSwZ/alPUurnxh/+LKP+tvnKrS0rDlA5O3OiyE28Z/+VEIT51sxw2bhef0eqt3D4tvmrzFd+aFPXuTVZr6Xnf8a1h0x/h3xZuFLW+b3PKOEN5VMEKFgLY9aq+GJ26tRjKg44f4C72JE+h/Tm3Z6AQ6MoR/nNryujYD2tCovYdPXxTCkVGXSDUx6oB5GghoQ5PGPagbvr1nwYnrv73noi9+c+pW75h8FN4VwoqpLfst3ObhfnjeN72jA0K4daJKW039DLL34hA+1+t9LITjpzZct1l4QsEIFQLa9qh1PHFrNZIBPTiEi3sTJ9DUX3cbn0B7hs2nXxg8v82ANjPq2JefOn4GHDW774NqHHXQPA0EtJlJIx/U9ar0qOce8bPJjTOvDfrl7pOPwgtCuHP97X8bwremPz4xhK9NVOk101v+IYR39np/FMI/T2/5/RBu2XiEiIC2NGotT9xajWRA/yCEK3r9E+hR01tmnkBjm4Un9dZtaS+gjYx6bf/ilR1n+0JmfaMOnKeBgDYyaeyDuuFL21PWVem+7533vj/ce36YfBS2C9tscLvDN/h/wrByokprv/X9fyEc2uvts+7vid4b1yvUOlEvIrUxaj1P3FqNYkDHtg/hN73+CbTT9KaZJ9A9Ibxo+nPXtRjQJkZd/dGtQnj0Sf85V0YdMk8Dr8I3MGn8gzqwSpe/bOHkt8uPm3gUxuZv+DdB76ANq/T3E1X66PRnbwnhwF7vGWGLtd/xnlh4BWUtAW1+1LqeuLUaxYBeE8KT+78uXfd0WHcCfWviBLovhGdPf+6nLQa0gVEffGkI84/71WwHrW3UYfPUH9AGJp3FgzqoSn/XD9Lz3/Z3F9/1rskqLQhP2eB2rwnh21evc+dElf52+rM/n7j4fGkI909veefEVa8z1RHQ5ket7Ylbq1EM6PtCeGv/18IT6DOT38ItDI+d/txFLQa0/lFXv278Hq6Y7Zj1jTp0nvoDWv+ks3lQB1TpZ/PCgv8x+f7FySr1Hh+2WLP+7Y4K4Qcb/slLpt5m1ffVEI6ZeMXmZ9NbXr3R7ftqCGjzo9b3xK3VCAb01m1DmFgScoMT6P+b+ujEyRcRnrfuOfXh9gLawKjvD2H/er4JqmfUofPUHtAGJp3NgzqgSieFcNrUhndOzrMshOmVpE59+tOv7Z2x3tvJv/7pz6yZqNLe098G/9XEZQb/PYT/PbVhze5h87X/i7dODQFtftT6nri1Gr2A3rvv+JGY+GiDE+hpkx88tPvkCbQ8hHdPbln9O60FtIFRH3x82OXu2Q5Z46jD56k7oA1MOqsHdUCV3hzCVVMb9p98FE4J4bjJDWNPD9uu7v944dlTDbp9y/AHvcmLK6e+9b3nsWHe9b3eV0J43tRtvhDC7xeMUENAGx+1xidurUYtoGu+8awQHjX5Hof1TqC9w/yrJz74SJg8gX4xL2z9o7VbNlGluy666KIHij81V0c9P4QPznbGOkctmKf+R7XpSWf1oA6o0vvWvuf7M1Mvbd+2RVj0/Yktnw7hleO/jP9t8NeTX9h/DeGs3mSV9v51f8vDh4dw0Pivq58Ywv+auM3NTw3h/PUHn1JDQBsftcYnbq1GJaCPeWvfWw7aqX8N29Qlv+udQEeGsNcPxv9q/LOw02aT74U+Yfx2n7xh9b8eH3aYfnPvhPWfbN8NGzzzagpoo6MeF8Iz9l0nfrnmmkYtmKf+R7XpSWf1oA6o0vj/kD2l3/Wb39h/3frL/U/8bX+Zjf8Y+/UpiyYvq/zBgvG8r1rz8JWvCOFZ/Z9B9q9OD0su+NXdF48Ha+HETxQvCGHzE3/0yG1f2DmEfSYuoYx8iNsctcYnbq1GJaDr+d3pn02vdwJdt3j8E49/UgiP/sHCyRPowQP7t90ihG0uDeFt6/bVfEAbHfXlG15M8qO2Ry2Yp5GANjrprB7UAVUae1UI85/5kl3H43RiCAt+/5Ze75E39O9h4oKh903c8vz+eyq36P9nh4k1Mser9NmFU4NsPvVmqpOmvpQQ9px8KOsPaOOj1vjErdWIBXSbPf543b/KuN4J1PuX3508ua7uTZ1AvYdO2rK/5Zk//bcQ/nTdvpIFtJlR96zveVjLqAXzNBnQZiad1YM66Nqgu94+8c+oLXr3PXf1F9f75fimNR/bbuJOdj136qb//F8mC3Ts5CXo41X65Q+eMbHpOWsvRP/H35nYsODYqfcG1R/Qxket8Ylbq5EIaBlrvveZD6z4wQbvsb3nC6d89Ntjvf8bwkfamqqQURswRye9/ksf/siX+t/v3rHiQ/9n8seWD3/j4x9cuerhdbe55tOnfOLSDa6PHPvuWSd/8sfrfTFjP/jkyX/3pXuMWjsBLXbDd787fc3EJ+fQ8q1FjNqAfCalVQJabOW6q9Z+L2x+R6uzDGHUBuQzKa0S0GJ3zg+73zrx0bkhvKrlYQYzagPymZRWCegm/E0IW//5Fy/9yCtn9W+zJ2HUBuQzKW0S0E0YO3be1At+j7us7VmGMGoD8pmUNgnoJv3bkc/fYYudXvqxe9seZDijNiCfSWmPgAJEElCASAIKEElAASIJKEAkAQWIJKAAkQQUIJKAAkQSUIBIAgoQSUABIgkoQCQBBYgkoACRBBQgkoACRBJQgEgCChBJQAEiCShAJAEFiCSgAJEEFCCSgAJEElCASAIKEElAASIJKEAkAQWIJKAAkQQUIJKAAkQSUIBIAgoQSUABIgkoQCQBBYgkoACRBBQgkoACRBJQgEgCChBJQAEiCShAJAEFiCSgAJEEFCCSgAJEElCASAIKEElAASIJKEAkAQWIJKAAkQQUIJKAAkQSUIBIAgoQSUABIgkoQCQBBYgkoACRBBQgkoACRBJQgEgCChBJQAEiCShAJAEFiCSgAJEEFCCSgAJEElCASAIKEElAASIJKEAkAQWIJKAAkQQUIJKAAkQSUIBIAgoQSUABIgkoQCQBBYgkoACRBBQgkoACRBJQgEgCChBJQAEiCShAJAEFiCSgAJEEFCCSgAJEElCASAIKEElAASIJKEAkAQWIJKAAkQQUIJKAAkQSUIBIAgoQSUABIgkoQCQBBYgkoACRBBQgkoACRBJQgEgCChBJQAEiCShAJAEFiCSgAJEEFCDS/w+VBc4t30EFcwAAAABJRU5ErkJggg==" width="672" /></p>
+<p><code>spread</code> is useful if we want to see our data in the wide format</p>
+<pre class="r"><code>spread(tidyData, key = Treatment,value=Value)</code></pre>
+<pre><code>##      Subject Drug1.1 Drug1.2 Drug2.1 Drug2.2 Placebo.1 Placebo.2
+## 1   Patient1   48.42   48.37   40.80   38.28     49.84     53.79
+## 2  Patient10   44.86   50.07   39.01   36.22     46.97     44.76
+## 3   Patient2   49.65   41.62   39.14   41.89     46.75     49.77
+## 4   Patient3   40.49   49.15   40.32   35.10     48.70     48.11
+## 5   Patient4   38.27   41.10   40.74   41.15     51.68     48.14
+## 6   Patient5   43.10   39.37   43.29   34.86     48.91     48.30
+## 7   Patient6   47.50   42.88   39.48   35.60     53.54     44.71
+## 8   Patient7   49.24   46.42   37.40   38.77     53.56     46.99
+## 9   Patient8   47.31   38.32   43.99   33.75     46.15     43.23
+## 10  Patient9   43.36   48.63   41.61   34.38     50.52     56.24</code></pre>
+<p><code>separate</code> can be used to split columns that encode more than one piece of information</p>
+<pre class="r"><code>separate(tidyData, &quot;Treatment&quot;,into=c(&quot;Treatment&quot;,&quot;Replicate&quot;))</code></pre>
+<pre><code>##      Subject Treatment Replicate Value
+## 1   Patient1   Placebo         1 49.84
+## 2   Patient2   Placebo         1 46.75
+## 3   Patient3   Placebo         1 48.70
+## 4   Patient4   Placebo         1 51.68
+## 5   Patient5   Placebo         1 48.91
+## 6   Patient6   Placebo         1 53.54
+## 7   Patient7   Placebo         1 53.56
+## 8   Patient8   Placebo         1 46.15
+## 9   Patient9   Placebo         1 50.52
+## 10 Patient10   Placebo         1 46.97
+## 11  Patient1   Placebo         2 53.79
+## 12  Patient2   Placebo         2 49.77
+## 13  Patient3   Placebo         2 48.11
+## 14  Patient4   Placebo         2 48.14
+## 15  Patient5   Placebo         2 48.30
+## 16  Patient6   Placebo         2 44.71
+## 17  Patient7   Placebo         2 46.99
+## 18  Patient8   Placebo         2 43.23
+## 19  Patient9   Placebo         2 56.24
+## 20 Patient10   Placebo         2 44.76
+## 21  Patient1     Drug1         1 48.42
+## 22  Patient2     Drug1         1 49.65
+## 23  Patient3     Drug1         1 40.49
+## 24  Patient4     Drug1         1 38.27
+## 25  Patient5     Drug1         1 43.10
+## 26  Patient6     Drug1         1 47.50
+## 27  Patient7     Drug1         1 49.24
+## 28  Patient8     Drug1         1 47.31
+## 29  Patient9     Drug1         1 43.36
+## 30 Patient10     Drug1         1 44.86
+## 31  Patient1     Drug1         2 48.37
+## 32  Patient2     Drug1         2 41.62
+## 33  Patient3     Drug1         2 49.15
+## 34  Patient4     Drug1         2 41.10
+## 35  Patient5     Drug1         2 39.37
+## 36  Patient6     Drug1         2 42.88
+## 37  Patient7     Drug1         2 46.42
+## 38  Patient8     Drug1         2 38.32
+## 39  Patient9     Drug1         2 48.63
+## 40 Patient10     Drug1         2 50.07
+## 41  Patient1     Drug2         1 40.80
+## 42  Patient2     Drug2         1 39.14
+## 43  Patient3     Drug2         1 40.32
+## 44  Patient4     Drug2         1 40.74
+## 45  Patient5     Drug2         1 43.29
+## 46  Patient6     Drug2         1 39.48
+## 47  Patient7     Drug2         1 37.40
+## 48  Patient8     Drug2         1 43.99
+## 49  Patient9     Drug2         1 41.61
+## 50 Patient10     Drug2         1 39.01
+## 51  Patient1     Drug2         2 38.28
+## 52  Patient2     Drug2         2 41.89
+## 53  Patient3     Drug2         2 35.10
+## 54  Patient4     Drug2         2 41.15
+## 55  Patient5     Drug2         2 34.86
+## 56  Patient6     Drug2         2 35.60
+## 57  Patient7     Drug2         2 38.77
+## 58  Patient8     Drug2         2 33.75
+## 59  Patient9     Drug2         2 34.38
+## 60 Patient10     Drug2         2 36.22</code></pre>
+</div>
+<div id="the-patients-dataset" class="section level2">
+<h2>The patients dataset</h2>
 <pre class="r"><code>library(dplyr)</code></pre>
 <pre><code>## 
 ## Attaching package: 'dplyr'</code></pre>
@@ -266,6 +416,7 @@ patients_clean &lt;- mutate(patients_clean, Weight = as.numeric(str_replace_all(
 patients_clean &lt;- mutate(patients_clean, BMI = (Weight/(Height/100)^2), Overweight = BMI &gt; 25)
 patients_clean &lt;- mutate(patients_clean, Smokes = str_replace_all(Smokes, &quot;Yes&quot;, TRUE))
 patients_clean &lt;- mutate(patients_clean, Smokes = as.logical(str_replace_all(Smokes, &quot;No&quot;, FALSE)))</code></pre>
+</div>
 
 
 

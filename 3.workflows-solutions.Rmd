@@ -48,12 +48,6 @@ patients_clean
 ******
 Use `filter` to print the following subsets of the dataset
 
-- Choose the patients that are still alive
-  
-  
-```{r}
-filter(patients_clean, !Died)
-```
 
 - Choose the Female patients from New York or New Jersey
 
@@ -62,6 +56,13 @@ filter(patients_clean, Sex == "Female", State %in% c("New York", "New Jersey"))
 filter(patients_clean, Sex == "Female", grepl("New", State))
 filter(patients_clean, Sex == "Female", State == "New York" | State =="New Jersey")
 ```
+
+- Choose the overweight smokers that are still alive
+
+```{r}
+filter(patients_clean, Overweight, !Died)
+```
+
 
 - Choose the patients who own a Pet that is not a dog
 

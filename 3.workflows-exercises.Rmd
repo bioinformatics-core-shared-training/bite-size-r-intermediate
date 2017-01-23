@@ -38,9 +38,8 @@ patients_clean <- mutate(patients_clean, Smokes = as.logical(str_replace_all(Smo
 ## Exercise: filter
 
 Use `filter` to print the following subsets of the dataset
-
-  - Choose the patients that are still alive
   - Choose the Female patients from New York or New Jersey
+  - Choose the overweight smokers that are still alive
   - Choose the patients who own a Pet that is not a dog
     + recall that `is.na` can check for values that are `NA`
   - (OPTIONAL)
