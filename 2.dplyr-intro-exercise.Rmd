@@ -5,12 +5,31 @@ date: '`r format(Sys.time(), "Last modified: %d %b %Y")`'
 output: html_document
 ---
 
-First load
+## Tidy data
+
+Read the simulated clinical dataset and put into the tidy form. Also load the `tidyr` package that we are going to use.
+- Can you make a boxplot to visualise the effect of the different treatments?
+
+```{r}
+library(tidyr)
+messyData <- read.delim("clinicalData.txt")
+```
+
+```{r}
+## Your answer here
+
+```
+
+
+## The patients dataset
+
+First load the file using the `read.delim` function. Also load the `dplyr` library that we will need later
+
 ```{r}
 library(dplyr)
 
 patients <- read.delim("patient-data.txt")
-
+patients <- tbl_df(patients)
 ```
 
 ## Exercise: select

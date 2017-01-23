@@ -5,7 +5,37 @@ date: '`r format(Sys.time(), "Last modified: %d %b %Y")`'
 output: html_document
 ---
 
+## Tidy data
 
+Read the simulated clinical dataset and put into the tidy form. Also load the `tidyr` package that we are going to use.
+- Can you make a boxplot to visualise the effect of the different treatments?
+
+```{r}
+library(tidyr)
+messyData <- read.delim("clinicalData.txt")
+```
+
+```{r}
+## Your answer here
+tidyData <- gather(messyData, key = Treatment, value = Value,-Subject)
+tidyData
+boxplot(tidyData$Value~tidyData$Treatment)
+```
+
+`spread` is useful if we want to see our data in the wide format
+
+```{r}
+spread(tidyData, key = Treatment,value=Value)
+```
+
+`separate` can be used to split columns that encode more than one piece of information
+
+```{r}
+separate(tidyData, "Treatment",into=c("Treatment","Replicate"))
+```
+
+
+## The patients dataset
 ```{r}
 library(dplyr)
 library(stringr)

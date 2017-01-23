@@ -72,19 +72,17 @@ The [pre-course recap](https://rawgit.com/bioinformatics-core-shared-training/r-
 - However, for this course we will use a relatively new feature called *R-notebooks*.
 - An R-notebook mixes plain text with R code
     + The R code can be run from inside the document and the results are displayed directly underneath
-- Each *chunk* of R code looks something like this. 
+- On the [course website](http://bioinformatics-core-shared-training.github.io/r-intermediate/) you will see compiled HTML versions of each section
+    + each section also has a exercise markdown
+    + solutions will be revealed during the course and on the website afterwards
+    
+## Schedule
 
-```{r}
+- Introduction to dplyr
+- Introducing workflows
+- Summarising groups and combining tables
+- LUNCH
+- ggplot
 
-```
 
-- Each line of R can be executed by clicking on the line and pressing CTRL and ENTER
-- Or you can press the green triangle on the right-hand side to run everything in the chunk
-- Try this now!
 
-```{r}
-print("Hello World")
-
-```
-
-- For some of the exercises you will be given a blank markdown (.Rmd) file in order to record your solutions 

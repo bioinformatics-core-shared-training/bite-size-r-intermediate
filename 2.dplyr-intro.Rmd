@@ -114,6 +114,13 @@ John Smith    |    b       |    2
 Jane Doe      |    b       |    11
 Mary Johnson  |    b       |    1
 
+We can read these data from the file `tidyr-example.txt`
+
+```{r}
+untidy <- read.delim("tidyr-example.txt")
+```
+
+
 ## Using tidyr to tidy a dataset
 
 `gather` is a function in the `tidyr` package that can collapse multiple columns into key-value pairs. 
@@ -260,7 +267,7 @@ N.B. base R does provide a function called `subset` which allowed similar operat
 The default display of a `tbl_df` object is to print the data frame in an intelligent manner, so not to flood the R console. If we want to control what variables are printed we can use the `select` function, which allows us to print certain columns to the screen.
 
 
-In the R introduction, we saw how to extract columns from a data frame with a `$` symbol. 
+We should be familiar with how to extract columns from a data frame with a `$` symbol. 
 
   - Remember that we're not changing the data frame, just exploring it
 
@@ -339,7 +346,12 @@ see also
 
 There are several ways to solve these. Feel free to explore
 
-- Open [Rmarkdown template](2.dplyr-intro-exercise.Rmd)
+```{r}
+### Your answer here, or in 2.dplyr-intro-exercises.Rmd ## 
+
+```
+
+
 
 
 ******
@@ -354,6 +366,7 @@ We can now begin to explore the data. Imagine that we want to do a simple barplo
 barplot(table(select(patients,Sex)))
 ```
 
+But something seems to be wrong with the number of categories that are produced.
 
 So we notice that the Sex column has "whitespace"; not an uncommon problem if data have been entered manually.
 
@@ -431,12 +444,11 @@ Other useful functions from `stringr`, and the `lubridate` package, are describe
 
 ```{r}
 
+## Your answer here or 2.dplyr-intro-exercise.Rmd
 
 ```
 
-## Solution
 
-[See](dplyr-solution.html)
 
 
 # Supplementary:
@@ -477,7 +489,7 @@ str_to_upper(patients$Name)
 
 Dates are often problematic as they may be encoded in lots of different schemes
 
-If we wanted the year in which each person was born it would be tempting to *trim* the first four characters of the string. However, getting the month or day might be a bit more problematic.
+If we wanted the year in which each person was born it would be tempting to *trim* the first four characters of the string. However, getting the month or day might be a bit more problematic as we cannot always rely on the same encoding being used.
 
 ```{r}
 str_sub(patients$Birth,1,4)
@@ -491,7 +503,7 @@ year(patients$Birth)
 month(patients$Birth)
 ```
 
-It also supporting some clever manipulation, such as being able to subtract and add times.
+It also supports some clever manipulation, such as being able to subtract and add times.
 
 ```{r}
 
