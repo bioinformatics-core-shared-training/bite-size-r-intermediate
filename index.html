@@ -86,7 +86,14 @@ We have a crash course that covers these topics
 <li><a target="_blank" href="https://rawgit.com/bioinformatics-core-shared-training/r-intermediate/master/ggplot2.html">Plotting data with ggplot2</a></li>
 <li><a target="_blank" href="https://rawgit.com/bioinformatics-core-shared-training/r-intermediate/master/extra.html">Extra (optional) exercises on dplyr and ggplot2</a></li>
 <br>
-
+<h2>
+  <a id="software" class="anchor" href="#software" aria-hidden="true"><span class="octicon octicon-link"></span></a>Software</h2>
+        You will need an updated version of <a target="_blank" href="https://cran.r-project.org/">R</a> and <a target="_blank" href="https://www.rstudio.com/products/rstudio/download/">RStudio Desktop</a>. Then load RStudio and paste these lines of R code into the R console to get the packages required for the course:-
+  <code>
+  install.packages("devtools")
+  devtools:::install_github("hadley/tidyverse")
+  install.packages(c("rmarkdown","cowplot"))
+</code>
 
 <h2>
 <a id="useful-resources" class="anchor" href="#useful-resources" aria-hidden="true"><span class="octicon octicon-link"></span></a>Useful Resources</h2>
