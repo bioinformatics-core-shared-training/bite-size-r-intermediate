@@ -4,7 +4,6 @@ author: "Mark Dunning"
 date: '`r format(Sys.time(), "Last modified: %d %b %Y")`'
 output:
   html_notebook:
-    code_folding: none
     toc: yes
     toc_float: yes
   html_document:

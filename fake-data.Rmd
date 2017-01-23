@@ -249,8 +249,9 @@ clinicalData <- data.frame(Subject = paste0("Patient",1:10), Placebo.1, Placebo.
   mutate_each(funs(round(.,2)),-Subject)
 
 write.table(clinicalData, file="clinicalData.txt",row.names=FALSE,sep="\t")
+messyData <- read.delim("clinicalData.txt")
 tidyData <- gather(messyData, Treatment, Value,-Subject)
-png("images/tidy-boxplot.png")
+png("images/tidy-boxplot.png",width=800,height=600)
 boxplot(tidyData$Value ~ tidyData$Treatment)
 dev.off()
 ```
