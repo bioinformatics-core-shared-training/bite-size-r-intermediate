@@ -444,7 +444,7 @@ Other useful functions from `stringr`, and the `lubridate` package, are describe
 
 ```{r}
 
-## Your answer here or 2.dplyr-intro-exercise.Rmd
+## Your answer here or 2.dplyr-intro-exercises.Rmd
 
 ```
 
