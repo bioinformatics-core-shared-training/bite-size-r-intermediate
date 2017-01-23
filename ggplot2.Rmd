@@ -22,9 +22,9 @@ The R language has extensive graphical capabilities.
 
 Graphics in R may be created by many different methods including base graphics and more advanced plotting packages such as lattice.
 
-<div id="buildingblocks" align="center">
-  <img src="plotsinR.jpg" alt="">
-</div>  
+![](images/plotsinR.jpg)
+
+
 
 The ggplot2 package was created by Hadley Wickham and provides a intuitive plotting system to rapidly generate publication quality graphics.
 
@@ -47,16 +47,13 @@ On top of this central philosophy ggplot2 has:
 
 ## How to build a plot from its components.
 
-<div id="buildingblocks" align="center">
-  <img src="Presentation1/Slide1.jpg" alt="">
-</div>  
+![](images/Slide1.jpg)
 
 
 ## How ggplot2 builds a plot.
 
-<div id="buildingblocks" align="center">
-  <img src="Presentation1/Slide2.jpg" alt="">
-</div>  
+![](images/Slide2.jpg)
+
 
 Overview of example code for the ggplot2 scatter plot.
 
@@ -92,9 +89,7 @@ ggplot(data = <default data set>,
 
 ## What users are required to specify in ggplot2 to build a plot.
 
-<div id="buildingblocks" align="center">
-  <img src="Presentation1/Slide3.jpg" alt="">
-</div>  
+![](images/Slide3.jpg)
 
 Actual code for the ggplot2 scatter plot.
 
@@ -114,50 +109,6 @@ Earlier we have been working with the patients' dataset to create a "clean and t
 
 Now we will use a cleaned dataset to demonstrate some of the plotting capabilities of ggplot2.
 
-
-```{r load_data, echo=FALSE, eval=FALSE}
-
-# First lets load the data and perform the clean and tidy. 
-
-
-library(tidyr)
-library(ggplot2)
-library(dplyr)
-library(stringr)
-library(lubridate)
-patients <- read.delim("patient-data.txt")
-patients_clean <- mutate(patients, Sex = factor(str_trim(Sex)))
-patients_clean <- mutate(patients_clean, ID=str_pad(patients_clean$ID,pad = "0",width=3))
-patients_clean <- mutate(patients_clean, Height= as.numeric(str_replace_all(patients_clean$Height,pattern = "cm","")))
-
-grds <- patients$Grade_Level
-patients_clean <- mutate(patients_clean, Grade = ifelse(grds == 99, NA,grds))
-
-dob <- ymd(patients$Birth)
-today <- ymd("20160509")
-age <- interval(dob, today) 
-patients_clean <- mutate(patients_clean, Age = year(as.period(age)))
-
-patients_clean <- mutate(patients_clean, Weight = as.numeric(str_replace_all(patients_clean$Weight,"kg","")))
-
-patients_clean <- mutate(patients_clean, BMI = (Weight/(Height/100)^2), Overweight = BMI > 25)
-
-patients_clean <- mutate(patients_clean, Smokes = str_replace_all(Smokes, "Yes|TRUE", "Smoker"))
-patients_clean <- mutate(patients_clean, Smokes = str_replace_all(Smokes, "No|FALSE", "Non-Smoker"))
-
-patients_clean <- mutate(patients_clean, Pet = str_to_title(Pet))
-patients_clean <- mutate(patients_clean, Pet = str_replace_all(Pet, "Null","NA"))
-patients_clean <- mutate(patients_clean, Pet = str_replace_na(Pet))
-
-patients_clean <- mutate(patients_clean, Race = str_replace_na(Race))
-
-patients_clean <- mutate(patients_clean, ID = str_c("Patient-",ID))
-
-
-summary(patients_clean)
-write.table(patients_clean,"patients_clean_ggplot2.txt",sep="\t",row.names=F,quote=F)
-```
-
 ```{r load_packages, echo=FALSE, eval=TRUE,warning=F,message=F}
 suppressPackageStartupMessages(library(tidyr))
 suppressPackageStartupMessages(library(ggplot2))
@@ -175,7 +126,7 @@ library(stringr)
 library(lubridate)
 
 patients_clean <- read.delim("patient-data-cleaned.txt",sep="\t")
-knitr:::kable(head(patients_clean))
+patients_clean
 ```
 
 ## Our first ggplot2 graph
@@ -261,7 +212,7 @@ Several geoms are available in ggplot2:-
 * geom_bar() - Bar plots
 * geom_boxplot() - Boxplots
 * geom_jitter() - Jitter to plots
-* geom_hist() - Histogram plots
+* geom_histogram() - Histogram plots
 * geom_density() - Density plots
 * geom_text() - Text to plots
 * geom_errorbar() - Errorbars to plots
