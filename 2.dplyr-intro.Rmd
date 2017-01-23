@@ -477,10 +477,12 @@ str_sub(patients$ID, 4,5)
 ```
 
 Finally, we can convert entire strings to upper- or lower-case
+  - `str_to_title` is also handy as it gives a string that has the first letter in upper-case, all others in lower-case
 
 ```{r}
 str_to_lower(patients$Pet)
 str_to_upper(patients$Name)
+str_to_title(patients$Name)
 ```
 
 
