@@ -118,6 +118,7 @@ We can read these data from the file `tidyr-example.txt`
 
 ```{r}
 untidy <- read.delim("tidyr-example.txt")
+untidy
 ```
 
 
