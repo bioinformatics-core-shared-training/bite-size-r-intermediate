@@ -126,7 +126,7 @@ library(stringr)
 library(lubridate)
 
 patients_clean <- read.delim("patient-data-cleaned.txt",sep="\t")
-patients_clean
+
 ```
 
 ## Our first ggplot2 graph
