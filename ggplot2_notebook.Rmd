@@ -136,12 +136,12 @@ scatter plot of Height values on the x-axis versus Weight values on the y
 values.
 
 ```{r ggplot_only}
-pcPlot <- ggplot(data=patients_clean) #+ aes(x=Height,y=Weight) #+ geom_point()
-class(pcPlot)
-head(pcPlot$data)
-#pcPlot$mapping # inspect mappings
-#pcPlot$theme
-#pcPlot$layers
+p = ggplot(data=patients_clean) #+ aes(x=Height,y=Weight) #+ geom_point()
+class(p)
+head(p$data)
+#p$mapping # inspect mappings
+#p$theme
+#p$layers
 ```
 
 More typically, the data and aesthetics are defined within ggplot function and
@@ -363,7 +363,7 @@ name, X-axis limits, the positions of breaks (ticks/labels) and the  labels to
 place at breaks.
 
 ```{r, facet_grid_smokesBySex_scalex}
-pcPlot +
+p +
   geom_point() +
   facet_grid(Smokes~Sex)+
   scale_x_continuous(name="height ('cm')",
@@ -375,21 +375,21 @@ pcPlot +
 Similary control over discrete scales is shown below.
 
 ```{r, facet_grid_smokesBySex_scaleDisceteX}
-pcPlot <- ggplot(data=patients_clean,aes(x=Sex,y=Height))
-pcPlot +
-  geom_violin(aes(x=Sex,y=Height)) +
-  scale_x_discrete(labels=c("Girls","Guys"))
+p = ggplot(data=patients_clean,aes(x=Sex,y=Height))
+p +
+    geom_violin(aes(x=Sex,y=Height)) +
+    scale_x_discrete(labels=c("Girls","Guys"))
 
 ```
 
 Multiple X/Y scales can be combined to give full control of axis marks.
 
 ```{r, facet_grid_smokesBySex_scaleDisceteXContinuousY}
-pcPlot <- ggplot(data=patients_clean,aes(x=Sex,y=Height,fill=Smokes))
-pcPlot +
-  geom_violin(aes(x=Sex,y=Height)) +
-  scale_x_discrete(labels=c("Guys","Girls"))+
-  scale_y_continuous(breaks=c(160,180),labels=c("Petite","Tall"))
+p = ggplot(data=patients_clean,aes(x=Sex,y=Height,fill=Smokes))
+p +
+    geom_violin(aes(x=Sex,y=Height)) +
+    scale_x_discrete(labels=c("Guys","Girls"))+
+    scale_y_continuous(breaks=c(160,180),labels=c("Petite","Tall"))
 ```
 
 ## Controlling other scales.
@@ -398,10 +398,9 @@ When using fill,colour,linetype, shape, size or alpha aesthetic mappings the
 scales are automatically selected for you and the appropriate legends created.
 
 ```{r, facet_grid_height_weight}
-pcPlot <- ggplot(data=patients_clean,
-                 aes(x=Height,y=Weight,colour=Sex))
-pcPlot + geom_point(size=4)
-                  
+p = ggplot(data=patients_clean,
+           aes(x=Height, y=Weight, colour=Sex))
+p + geom_point(size=4)
 ```
 
 In the above example the discrete colours for the Sex variable was selected by
@@ -414,12 +413,10 @@ Manual control of discrete variables can be performed using
 this example an updated name for the legend is provided.
 
 ```{r, facet_grid_height_weight_manualScale}
-pcPlot <- ggplot(data=patients_clean,
-                 aes(x=Height,y=Weight,colour=Sex))
-pcPlot + geom_point(size=4) + 
-  scale_color_manual(values = c("Green","Purple"),
-                     name="Gender")
-                  
+p = ggplot(data=patients_clean, aes(x=Height, y=Weight, colour=Sex))
+
+p + geom_point(size=4) + 
+    scale_color_manual(values = c("Green","Purple"), name="Gender")
 ```
 
 ### Colorbrewer for discrete colour scale
@@ -446,7 +443,7 @@ palettes available from colorbrewer.
 
 
 ```{r, facet_grid_height_weight_brewerScale}
-pcPlot = ggplot(patients_clean, aes(x=Height,y=Weight,colour=Pet)) + geom_point(size=4)
+p = ggplot(patients_clean, aes(x=Height,y=Weight,colour=Pet)) + geom_point(size=4)
 
 p + scale_color_brewer(palette = "Set2")
 ```
@@ -464,9 +461,9 @@ So far we have looked a qualitative scales but ggplot2 offers much
 functionality for continuous scales such as for size, alpha (transparancy),
 colour and fill.
 
-- scale_alpha_continuous() - For Transparancy
+- `scale_alpha_continuous()` - For Transparancy
 
-- scale_size_continuous() - For control of size.
+- `scale_size_continuous()` - For control of size.
 
 
 Both these functions accept the range of alpha/size to be used in plotting.
@@ -483,7 +480,7 @@ p + scale_alpha_continuous(range = c(0.5,1))
 #p + scale_size_continuous(range = c(3,6), breaks=c(25,30), labels=c("Good","Good but not 25"))
 ```
 
-Control of colour/fill scales can be best achieved through the **gradient**
+Control of colour/fill scales can be best achieved through the `gradient`
 subfunctions of scale.
 
 - `scale_(colour/fill)_gradient` - 2 colour gradient (eg. low to high BMI)
@@ -493,9 +490,9 @@ subfunctions of scale.
 
 Both functions take a common set of arguments:-
 
-- low - Colour for low end of gradient scale
-- high - Colour for high end of gradient scale.
-- na.value - Colour for any NA values.
+- `low` - Colour for low end of gradient scale
+- `high` - Colour for high end of gradient scale.
+- `na.value` - Colour for any NA values.
 
 An example using `scale_colour_gradient` below sets the low and high end
 colours to White and Red respectively. Similarly we can use the
@@ -506,7 +503,7 @@ midpoint value and its associated colour.
 p = ggplot(patients_clean, aes(x=Height, y=Weight, color=BMI)) + geom_point(size=4,alpha=0.8)
 
 p + scale_colour_gradient(low="White", high="Red")
-p + scale_colour_gradient2(low = "Blue", mid="Black", high="Red", midpoint = median(patients_clean$BMI)) # include midpoint
+#p + scale_colour_gradient2(low = "Blue", mid="Black", high="Red", midpoint = median(patients_clean$BMI)) # include midpoint
 ```
 
 As with previous continous scales, limits and custom labels in scale legend can
@@ -526,11 +523,17 @@ p + scale_colour_gradient1(low = "Blue",
 Multiple scales may be combined to create high customisable plots and scales
 
 ```{r, facet_grid_smokesBySex_scaleDisceteXContinuouswY}
-pcPlot <- ggplot(data=patients_clean,
-                 aes(x=Height,y=Weight,colour=BMI,shape=Sex))
-pcPlot + geom_point(size=4,alpha=0.8)+ scale_shape_discrete(name="Gender") +scale_colour_gradient2(low = "Blue",mid="Black",high="Red",midpoint = median(patients_clean$BMI),
-                         breaks=c(25,30),labels=c("Low","High"),
-                         name="Body Mass Index")
+p = ggplot(data=patients_clean,
+           aes(x=Height,y=Weight,colour=BMI,shape=Sex))
+
+p + geom_point(size=4,alpha=0.8) +
+    scale_shape_discrete(name="Gender") +
+    scale_colour_gradient2(low = "Blue",
+                           mid="Black",
+                           high="Red",
+                           midpoint = median(patients_clean$BMI),
+                           breaks=c(25,30),labels=c("Low","High"),
+                           name="Body Mass Index")
 ```
 
 
@@ -550,7 +553,7 @@ displayed. Other methods available include lm, glm,gam,rlm.
 p = ggplot(patients_clean, aes(x=Weight,y=Height)) + geom_point()
 
 p + stat_smooth()
-p + stat_smooth(method="lm")
+#p + stat_smooth(method="lm")
 ```
 
 A useful feature of ggplot2 is that it uses previously defined grouping when
@@ -564,7 +567,7 @@ for each sex. This behaviour can be overridden by specifying an aes within the
 p = ggplot(patients_clean, aes(x=Weight,y=Height,colour=Sex)) + geom_point()
 
 p + stat_smooth(method="lm")
-p + stat_smooth(aes(x=Weight,y=Height), method="lm", inherit.aes = FALSE)
+#p + stat_smooth(aes(x=Weight,y=Height), method="lm", inherit.aes = FALSE)
 ```
 
 Another useful method is `stat_summary()` which allows for a custom statistical
@@ -599,9 +602,9 @@ In the example below the minimal theme is applied to the scatter plot seen
 earlier.
 
 ```{r, theme_minimal}
-pcPlot <- ggplot(data=patients_clean,
-        mapping=aes(x=Weight,y=Height))+geom_point()
-pcPlot+theme_minimal()
+p = ggplot(patients_clean, aes(x=Weight,y=Height)) + geom_point()
+
+p + theme_minimal()
 ```
 
 Several predifined themes are available within ggplot2 including:
@@ -649,26 +652,21 @@ functions including:
 - `element_text()`
 - `element_rect()`
 
-and additionally element_blank() to set an element to "blank"
+and additionally `element_blank()` to set an element to "blank"
 
 A detailed description of controlling elements within a theme can be seen at
 the ggplot2 vignette and by typing `?theme` into the console.
 
 - [ggplot2 themes](http://docs.ggplot2.org/dev/vignettes/themes.html)
 
-
 To demonstrate customising a theme, in the example below we alter one element
 of theme. Here we will change the text colour for the plot.
 
-
 ```{r, theme_custom}
+p = ggplot(patients_clean, aes(x=Weight, y=Height)) + geom_point()
 
-pcPlot <- ggplot(data=patients_clean,
-        mapping=aes(x=Weight,y=Height))+geom_point()
-pcPlot+theme(
-            text = element_text(colour="red"),
-            axis.text = element_text(colour="red")
-           )
+p + theme(text = element_text(colour="red"),
+          axis.text = element_text(colour="red"))
 ```
 
 - Note because we are changing a *text* element we use the `element_text()`
@@ -681,13 +679,11 @@ If we wished to set the y-axis label to be at an angle we can adjust that as
 well.
 
 ```{r, theme_custom1}
-pcPlot <- ggplot(data=patients_clean,
-        mapping=aes(x=Weight,y=Height))+geom_point()
-pcPlot+theme(
-            text = element_text(colour="red"),
-            axis.text = element_text(colour="red"),
-            axis.title.y = element_text(angle=0)
-           )
+p <- ggplot(patients_clean, aes(x=Weight, y=Height)) + geom_point()
+
+p + theme(text = element_text(colour="red"),
+          axis.text = element_text(colour="red"),
+          axis.title.y = element_text(angle=0))
 ```
 
 Finally we may wish to remove axis line, set the background of plot panels to
@@ -695,18 +691,14 @@ be white and give the strips (title above facet) a cyan background colour.
 
 ```{r, theme_custom2}
 
-pcPlot <- ggplot(data=patients_clean,
-        mapping=aes(x=Weight,y=Height))+
-  geom_point()+
-  facet_grid(Sex~Smokes)
-pcPlot+theme(
-            text = element_text(colour="red"),
-            axis.text = element_text(colour="red"),
-            axis.title.y = element_text(angle=0),
-            axis.line = element_line(linetype = 0),
-            panel.background=element_rect(fill="white"),
-            strip.background=element_rect(fill="cyan")
-           )
+p = ggplot(patients_clean, aes(x=Weight,y=Height)) + geom_point() + facet_grid(Sex~Smokes)
+
+p + theme(text = element_text(colour="red"),
+          axis.text = element_text(colour="red"),
+          axis.title.y = element_text(angle=0),
+          axis.line = element_line(linetype = 0),
+          panel.background=element_rect(fill="white"),
+          strip.background=element_rect(fill="cyan"))
 ```
 
 
@@ -736,7 +728,6 @@ pcPlot+theme(
 - [ggplot2 wiki](https://github.com/hadley/ggplot2/wiki)
 
 - [ggplot2 mailing list](http://groups.google.com/group/ggplot2)
-
 
 - [Cheatsheet](http://sape.inf.usi.ch/quick-reference/ggplot2/geom)
 
