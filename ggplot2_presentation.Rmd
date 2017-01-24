@@ -245,6 +245,7 @@ p + facet_grid(Smokes~Sex) # rows ~ columns
 #p + facet_grid(~Sex)       # ~ columns
 #p + facet_grid(Sex~.)      # split along rows in plot
 #p + facet_grid(Smokes~Sex+Pet)
+#p + facet_grid(Smokes~Sex, scales="free_x")  # free_y, free
 ```
 
 The `facet_wrap()` function offers a less grid based structure but is well
@@ -345,6 +346,7 @@ Similary control over discrete scales is shown below.
 
 ```{r}
 p = ggplot(patients_clean, aes(x=Sex,y=Height))
+
 p +
     geom_violin(aes(x=Sex,y=Height)) +
     scale_x_discrete(labels=c("Girls","Guys"))
