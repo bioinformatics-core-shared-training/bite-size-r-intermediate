@@ -39,7 +39,7 @@ To install this set of packages on your own machine, you can do:-
 
 ```{r eval=FALSE}
 install.packages("devtools")
-install_github("hadley/tidyverse")
+devtools:::install_github("hadley/tidyverse")
 ```
 
 
