@@ -442,13 +442,13 @@ pcPlot + facet_grid(Smokes~Sex+Pet)
 
 # Exercise set 1
 
-[Link_to_exercises](http://mrccsc.github.io/exercise_1_exercises.html)
+[Link_to_exercises](ggplot2-exercises1.html)
 
-[Link_to_exercises_with_images](http://mrccsc.github.io/exercise_1_exercises_images.html)
+[Link_to_exercises_with_images](ggplot2-exercises1-images.html)
 
-[Link_to_Rmarkdown template](http://mrccsc.github.io/exercise_1_empty.Rmd)
+[Link_to_Rmarkdown template](ggplot2-exercises1.Rmd)
 
-[Link_to_answers](http://mrccsc.github.io/exercise_1_answers.html)
+[Link_to_answers](ggplot2-solutions1.html)
 
 
 
@@ -972,13 +972,13 @@ ggsave(pcPlot,filename = "anExampleplot.png",width = 15,height = 15,units = "cm"
 # Exercise set 2
 
 
-[Link_to_exercises](http://mrccsc.github.io/exercise_2_exercises.html)
+[Link_to_exercises](ggplot2-exercises2.html)
 
-[Link_to_exercises_with_images](http://mrccsc.github.io/exercise_2_exercises_images.html)
+[Link_to_exercises_with_images](ggplot2-exercises2-images.html)
 
-[Link_to_Rmarkdown template](http://mrccsc.github.io/exercise_2_empty.Rmd)
+[Link_to_Rmarkdown template](ggplot2-exercises2.Rmd)
 
-[Link_to_answers](http://mrccsc.github.io/exercise_2_answers.html)
+[Link_to_answers](ggplot2-solutions2.html)
 
 # References.
 
