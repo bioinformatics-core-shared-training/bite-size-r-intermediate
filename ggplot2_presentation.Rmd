@@ -50,46 +50,6 @@ On top of this central philosophy ggplot2 has:
 
 # Grammar of Graphics
 
-## How to build a plot from its components.
-
-![](images/Slide1.jpg)
-
-## How ggplot2 builds a plot.
-
-![](images/Slide2.jpg)
-
-Overview of example code for the ggplot2 scatter plot.
-
-```{r complex,eval=F}
-ggplot(data = <default data set>, 
-       aes(x = <default x axis variable>,
-           y = <default y axis variable>,
-           ... <other default aesthetic mappings>),
-       ... <other plot defaults>) +
-
-       geom_scatter(aes(size = <size variable for this geom>, 
-                      ... <other aesthetic mappings>),
-                  data = <data for this point geom>,
-                  stat = <statistic string or function>,
-                  position = <position string or function>,
-                  color = <"fixed color specification">,
-                  <other arguments, possibly passed to the _stat_ function) +
-
-  scale_<aesthetic>_<type>(name = <"scale label">,
-                     breaks = <where to put tick marks>,
-                     labels = <labels for tick marks>,
-                     ... <other options for the scale>) +
-  
-  ggtitle("Graphics/Plot")+
-  xlab("Weight")+
-  ylab("Height")+
-
-  theme(plot.title = element_text(colour = "gray"),
-        ... <other theme elements>)
-```
-
-## What users are required to specify in ggplot2 to build a plot
-
 ![](images/Slide3.jpg)
 
 Actual code for the ggplot2 scatter plot.
@@ -213,7 +173,7 @@ allows the properties of the plot to reflect variables in the data dynamically.
 In these examples we supply additional information to the `aes()` function to
 define what information to display and how it is represented in the plot.
 
-```{r, scatter_coloured}
+```{r scatter_coloured}
 p = ggplot(patients_clean, aes(x=Height,y=Weight))
 
 p + geom_point()
@@ -230,7 +190,7 @@ Again, for a comprehensive list of parameters and aesthetic mappings used in
 `geom_*type*`  functions see the ggplot2 documentation for individual geoms by
 using `?geom_*type*`.
 
-```{r, helpforArguments}
+```{r helpforArguments}
 ?geom_point
 ```
 
@@ -268,7 +228,7 @@ columns.
 
 > facet_grid(Rows~Columns)
 
-```{r, facet_grid_SmokesBySex}
+```{r facet_grid_SmokesBySex}
 p = ggplot(patients_clean, aes(x=Height,y=Weight,colour=Sex)) + geom_point()
 
 p + facet_grid(Smokes~Sex) # rows ~ columns
@@ -282,7 +242,7 @@ suited to faceting data by one variable.
 
 For `facet_wrap()` we follow as similar syntax to `facet_grid()`
 
-```{r, facet_Wrap_BySmokes}
+```{r facet_Wrap_BySmokes}
 p = ggplot(patients_clean, aes(x=Height,y=Weight,colour=Sex)) + geom_point()
 
 p + facet_wrap(~Smokes)
@@ -361,7 +321,7 @@ In this example we control the continuous sale on the x-axis by providing a
 name, X-axis limits, the positions of breaks (ticks/labels) and the  labels to
 place at breaks.
 
-```{r, facet_grid_smokesBySex_scalex}
+```{r facet_grid_smokesBySex_scalex}
 p +
     geom_point() +
     facet_grid(Smokes~Sex)+
@@ -373,7 +333,7 @@ p +
 
 Similary control over discrete scales is shown below.
 
-```{r, facet_grid_smokesBySex_scaleDisceteX}
+```{r facet_grid_smokesBySex_scaleDisceteX}
 p = ggplot(data=patients_clean,aes(x=Sex,y=Height))
 p +
     geom_violin(aes(x=Sex,y=Height)) +
@@ -382,7 +342,7 @@ p +
 
 Multiple X/Y scales can be combined to give full control of axis marks.
 
-```{r, facet_grid_smokesBySex_scaleDisceteXContinuousY}
+```{r facet_grid_smokesBySex_scaleDisceteXContinuousY}
 p = ggplot(data=patients_clean,aes(x=Sex,y=Height,fill=Smokes))
 p +
     geom_violin(aes(x=Sex,y=Height)) +
@@ -395,7 +355,7 @@ p +
 When using fill,colour,linetype, shape, size or alpha aesthetic mappings the
 scales are automatically selected for you and the appropriate legends created.
 
-```{r, facet_grid_height_weight}
+```{r facet_grid_height_weight}
 p = ggplot(data=patients_clean,
            aes(x=Height, y=Weight, colour=Sex))
 p + geom_point(size=4)
@@ -410,7 +370,7 @@ Manual control of discrete variables can be performed using
 `scale_*aes_Of_Interest*_manual` with the `values` parameter.  Additionally in
 this example an updated name for the legend is provided.
 
-```{r, facet_grid_height_weight_manualScale}
+```{r facet_grid_height_weight_manualScale}
 p = ggplot(data=patients_clean, aes(x=Height, y=Weight, colour=Sex))
 
 p + geom_point(size=4) + 
@@ -440,7 +400,7 @@ palettes available from colorbrewer.
  Purples, RdPu, Reds, YlGn, YlGnBu, YlOrBr, YlOrRd*
 
 
-```{r, facet_grid_height_weight_brewerScale}
+```{r facet_grid_height_weight_brewerScale}
 p = ggplot(patients_clean, aes(x=Height,y=Weight,colour=Pet)) + geom_point(size=4)
 
 p + scale_color_brewer(palette = "Set2")
@@ -468,7 +428,7 @@ Both these functions accept the range of alpha/size to be used in plotting.
 
 Below the range of alpha to be used in plot is limited to between 0.5 and 1
 
-```{r, facet_grid_height_weight_BMIalpha}
+```{r facet_grid_height_weight_BMIalpha}
 p = ggplot(patients_clean, aes(x=Height, y=Weight, alpha=BMI)) + geom_point(size=4)
 p + scale_alpha_continuous(range = c(0.5,1))
 
@@ -497,7 +457,7 @@ colours to White and Red respectively. Similarly we can use the
 `scale_colour_gradient2` function which allows for the specification of a
 midpoint value and its associated colour.
 
-```{r, facet_grid_height_weight_BMIgradient}
+```{r facet_grid_height_weight_BMIgradient}
 p = ggplot(patients_clean, aes(x=Height, y=Weight, color=BMI)) + geom_point(size=4,alpha=0.8)
 
 p + scale_colour_gradient(low="White", high="Red")
@@ -507,7 +467,7 @@ p + scale_colour_gradient(low="White", high="Red")
 As with previous continous scales, limits and custom labels in scale legend can
 be added.
 
-```{r, facet_grid_height_weight_BMIgradient2plus}
+```{r facet_grid_height_weight_BMIgradient2plus}
 p = ggplot(patients_clean, aes(x=Height,y=Weight,colour=BMI)) + geom_point(size=4,alpha=0.8)
 
 p + scale_colour_gradient1(low = "Blue",
@@ -520,7 +480,7 @@ p + scale_colour_gradient1(low = "Blue",
 
 Multiple scales may be combined to create high customisable plots and scales
 
-```{r, facet_grid_smokesBySex_scaleDisceteXContinuouswY}
+```{r facet_grid_smokesBySex_scaleDisceteXContinuouswY}
 p = ggplot(data=patients_clean,
            aes(x=Height,y=Weight,colour=BMI,shape=Sex))
 
@@ -547,7 +507,7 @@ An example of statistical methods in ggplot2 which are very useful include the
 The `stat_smooth()` function can be used to fit a line to the data being
 displayed. Other methods available include lm, glm,gam,rlm.
 
-```{r, stat_smooth}
+```{r stat_smooth}
 p = ggplot(patients_clean, aes(x=Weight,y=Height)) + geom_point()
 
 p + stat_smooth()
@@ -561,7 +521,7 @@ If colour by Sex is an aesthetic mapping then two smooth lines are drawn, one
 for each sex. This behaviour can be overridden by specifying an aes within the
 `stat_smooth()` function and setting inherit.aes to FALSE.
 
-```{r, stat_smoothlmgroups}
+```{r stat_smoothlmgroups}
 p = ggplot(patients_clean, aes(x=Weight,y=Height,colour=Sex)) + geom_point()
 
 p + stat_smooth(method="lm")
@@ -577,10 +537,10 @@ value of x.
 In this example we use it to plot the quantiles of the Female and Male Height
 data
 
-```{r, stat_summary}
-p = ggplot(patients_clean, aes(x=Sex,y=Height)) + geom_jitter()
+```{r stat_summary}
+p = ggplot(patients_clean, aes(x=Sex, y=Height)) + geom_jitter()
 
-p + stat_summary(fun.y=quantile,geom="point",colour="purple",size=8)
+p + stat_summary(fun.y=quantile, geom="point", colour="purple", size=8)
 ```
 
 # Themes
@@ -599,7 +559,7 @@ functions `theme_*style*()`
 In the example below the minimal theme is applied to the scatter plot seen
 earlier.
 
-```{r, theme_minimal}
+```{r theme_minimal}
 p = ggplot(patients_clean, aes(x=Weight,y=Height)) + geom_point()
 
 p + theme_minimal()
@@ -624,7 +584,7 @@ As well as making use of predifened theme styles, ggplot2 allows for control
 over the attributes and elements within a plot through a collection of related
 functions and attributes.
 
-**`theme()`** is the global function used to set attributes for the collections
+`theme()` is the global function used to set attributes for the collections
 of elements/components making up the current plot.
 
 Within the theme functions there are 4 general graphic elements which may be
@@ -660,7 +620,7 @@ the ggplot2 vignette and by typing `?theme` into the console.
 To demonstrate customising a theme, in the example below we alter one element
 of theme. Here we will change the text colour for the plot.
 
-```{r, theme_custom}
+```{r theme_custom}
 p = ggplot(patients_clean, aes(x=Weight, y=Height)) + geom_point()
 
 p + theme(text = element_text(colour="red"),
@@ -676,8 +636,8 @@ element functions can be found by typing `?theme`.
 If we wished to set the y-axis label to be at an angle we can adjust that as
 well.
 
-```{r, theme_custom1}
-p <- ggplot(patients_clean, aes(x=Weight, y=Height)) + geom_point()
+```{r theme_custom1}
+p = ggplot(patients_clean, aes(x=Weight, y=Height)) + geom_point()
 
 p + theme(text = element_text(colour="red"),
           axis.text = element_text(colour="red"),
@@ -687,8 +647,7 @@ p + theme(text = element_text(colour="red"),
 Finally we may wish to remove axis line, set the background of plot panels to
 be white and give the strips (title above facet) a cyan background colour.
 
-```{r, theme_custom2}
-
+```{r theme_custom2}
 p = ggplot(patients_clean, aes(x=Weight,y=Height)) + geom_point() + facet_grid(Sex~Smokes)
 
 p + theme(text = element_text(colour="red"),
