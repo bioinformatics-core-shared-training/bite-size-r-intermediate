@@ -211,6 +211,17 @@ p = ggplot(patients_clean, aes(x=Height,y=Weight)) + geom_point()
 p + ggtitle("Weight vs Height") + ylab("Height (cm)")
 ```
 
+Alternatively, you can use the `labs` function.
+
+```{r}
+p = ggplot(patients_clean, aes(x=Height,y=Weight)) + geom_point()
+
+p + labs(title="Weight vs Height",
+         subtitle = "some explanation",
+         caption = "data from source xyz",
+         y="Height (cm)")
+```
+
 
 # Facets
 
