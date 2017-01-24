@@ -254,13 +254,13 @@ For more complex faceting both *facet_grid* and *facet_wrap* can accept combinat
 
 # Exercise set 1
 
-[Link_to_exercises](http://mrccsc.github.io/exercise_1_exercises.html)
+[Link_to_exercises](ggplot2-exercises1.html)
 
-[Link_to_exercises_with_images](http://mrccsc.github.io/exercise_1_exercises_images.html)
+[Link_to_exercises_with_images](ggplot2-exercises1-images.html)
 
-[Link_to_Rmarkdown template](http://mrccsc.github.io/exercise_1_empty.Rmd)
+[Link_to_Rmarkdown template](ggplot2-exercises1.Rmd)
 
-[Link_to_answers](http://mrccsc.github.io/exercise_1_answers.html)
+[Link_to_answers](ggplot2-solutions1.html)
 
 
 # Adding titles for plot and labels.
@@ -371,7 +371,7 @@ In the above example the discrete colours for the Sex variable was selected by d
 
 ### Manual discrete colour scale
 
-Manual control of discrete variables can be performed using scale_*aes_Of_Interest*_**manual** with the *values* parameter.
+Manual control of discrete variables can be performed using `scale_*aes_Of_Interest*_manual` with the `values` parameter.
 Additionally in this example an updated name for the legend is provided.
 
 ```{r, facet_grid_height_weight_manualScale}
@@ -439,9 +439,9 @@ p + scale_alpha_continuous(range = c(0.5,1))
 
 Control of colour/fill scales can be best achieved through the **gradient** subfunctions of scale.
 
-- scale_(colour/fill)_*gradient* - 2 colour gradient (eg. low to high BMI)
+- `scale_(colour/fill)_gradient` - 2 colour gradient (eg. low to high BMI)
 
-- scale_(colour/fill)_*gradient2* - Diverging colour scale with a midpoint colour (e.g. Down, No Change, Up)
+- `scale_(colour/fill)_gradient2` - Diverging colour scale with a midpoint colour (e.g. Down, No Change, Up)
 
 Both functions take a common set of arguments:-
 
@@ -449,7 +449,7 @@ Both functions take a common set of arguments:-
 - high - Colour for high end of gradient scale.
 - na.value - Colour for any NA values.
 
-An example using scale_colour_gradient below sets the low and high end colours to White and Red respectively. Similarly we can use the scale_colour_gradient2 function which allows for the specification of a midpoint value and its associated colour.
+An example using `scale_colour_gradient` below sets the low and high end colours to White and Red respectively. Similarly we can use the `scale_colour_gradient2` function which allows for the specification of a midpoint value and its associated colour.
 
 ```{r, facet_grid_height_weight_BMIgradient}
 p = ggplot(patients_clean, aes(x=Height, y=Weight, color=BMI)) + geom_point(size=4,alpha=0.8)
@@ -479,18 +479,17 @@ pcPlot <- ggplot(data=patients_clean,
 pcPlot + geom_point(size=4,alpha=0.8)+ scale_shape_discrete(name="Gender") +scale_colour_gradient2(low = "Blue",mid="Black",high="Red",midpoint = median(patients_clean$BMI),
                          breaks=c(25,30),labels=c("Low","High"),
                          name="Body Mass Index")
-                  
 ```
 
 
 # Statistical transformations.
 
-In ggplot2 many of the statistical transformations are performed without any direct specification e.g. geom_histogram() will use stat_bin() function to generate bin counts to be used in plot.
+In ggplot2 many of the statistical transformations are performed without any direct specification e.g. `geom_histogram()` will use `stat_bin()` function to generate bin counts to be used in plot.
 
-An example of statistical methods in ggplot2 which are very useful include the stat_smooth() and stat_summary() functions.
+An example of statistical methods in ggplot2 which are very useful include the `stat_smooth()` and `stat_summary()` functions.
 
 
-The stat_smooth() function can be used to fit a line to the data being displayed. Other methods available include lm, glm,gam,rlm.
+The `stat_smooth()` function can be used to fit a line to the data being displayed. Other methods available include lm, glm,gam,rlm.
 
 ```{r, stat_smooth}
 p = ggplot(patients_clean, aes(x=Weight,y=Height)) + geom_point()
@@ -501,7 +500,7 @@ p + stat_smooth(method="lm")
 
 A useful feature of ggplot2 is that it uses previously defined grouping when performing smoothing.
 
-If colour by Sex is an aesthetic mapping then two smooth lines are drawn, one for each sex. This behaviour can be overridden by specifying an aes within the stat_smooth() function and setting inherit.aes to FALSE.
+If colour by Sex is an aesthetic mapping then two smooth lines are drawn, one for each sex. This behaviour can be overridden by specifying an aes within the `stat_smooth()` function and setting inherit.aes to FALSE.
 
 ```{r, stat_smoothlmgroups}
 p = ggplot(patients_clean, aes(x=Weight,y=Height,colour=Sex)) + geom_point()
@@ -510,7 +509,7 @@ p + stat_smooth(method="lm")
 p + stat_smooth(aes(x=Weight,y=Height), method="lm", inherit.aes = FALSE)
 ```
 
-Another useful method is stat_summary() which allows for a custom statistical function to be performed and then visualised.
+Another useful method is `stat_summary()` which allows for a custom statistical function to be performed and then visualised.
 
 The fun.y parameter specifies a function to apply to the y variables for every value of x.
 
@@ -526,11 +525,11 @@ p + stat_summary(fun.y=quantile,geom="point",colour="purple",size=8)
 
 Themes specify the details of data independent elements of the plot. This includes titles, background colour, text fonts etc.
 
-The graphs created so far have all used the default themes ,theme_grey(), but ggplot2 allows for the specification of theme used.
+The graphs created so far have all used the default themes, `theme_grey()`, but ggplot2 allows for the specification of theme used.
 
 ## Predefined themes
 
-Predefined themes can be applied to a ggplot2 object using a family of functions theme_*style*()
+Predefined themes can be applied to a ggplot2 object using a family of functions `theme_*style*()`
 
 In the example below the minimal theme is applied to the scatter plot seen earlier.
 
@@ -542,47 +541,47 @@ pcPlot+theme_minimal()
 
 Several predifined themes are available within ggplot2 including:
 
-- theme_bw
-- theme_classic
-- theme_dark
-- theme_gray
-- theme_light
-- theme_linedraw
-- theme_minimal
+- `theme_bw`
+- `theme_classic`
+- `theme_dark`
+- `theme_gray`
+- `theme_light`
+- `theme_linedraw`
+- `theme_minimal`
 
-Packages such as [ggthemes](https://github.com/jrnold/ggthemes) also contain many useful collections of predined theme_*style* functions.
+Packages such as [ggthemes](https://github.com/jrnold/ggthemes) also contain many useful collections of predined `theme_*style*` functions.
 
 ## Creating your themes
 
 As well as making use of predifened theme styles, ggplot2 allows for control over the attributes and elements within a plot through a collection of related functions and attributes.
 
-**theme()** is the global function used to set attributes for the collections of elements/components making up the current plot.
+**`theme()`** is the global function used to set attributes for the collections of elements/components making up the current plot.
 
 Within the theme functions there are 4 general graphic elements which may be controlled:-
 
-- rect
-- line
-- text
-- title
+- `rect`
+- `line`
+- `text`
+- `title`
 
 and 5 groups of related elements:-
 
-- axis
-- legend
-- strip
-- panel (plot panel)
-- plot (Global plot parameters)
+- `axis`
+- `legend`
+- `strip`
+- `panel` (plot panel)
+- `plot` (Global plot parameters)
 
 
 These elements may be specified by the use of their appropriate element functions including:
 
-- element_line()
-- element_text()
-- element_rect()
+- `element_line()`
+- `element_text()`
+- `element_rect()`
 
 and additionally element_blank() to set an element to "blank"
 
-A detailed description of controlling elements within a theme can be seen at the ggplot2 vignette and by typing *?theme* into the console.
+A detailed description of controlling elements within a theme can be seen at the ggplot2 vignette and by typing `?theme` into the console.
 
 - [ggplot2 themes](http://docs.ggplot2.org/dev/vignettes/themes.html)
 
@@ -600,10 +599,10 @@ pcPlot+theme(
            )
 ```
 
-- Note because we are changing a *text* element we use the *element_text()* function.
+- Note because we are changing a *text* element we use the `element_text()` function.
 
 
-A detailed description of which elements are available and their associated element functions can be found by typing *?theme*.
+A detailed description of which elements are available and their associated element functions can be found by typing `?theme`.
 
 
 If we wished to set the y-axis label to be at an angle we can adjust that as well.
@@ -643,15 +642,16 @@ pcPlot+theme(
 * [cowplot](https://cran.r-project.org/web/packages/cowplot/vignettes/introduction.html) for assembling figure panels
 * [extension registry](http://www.ggplot2-exts.org/gallery/) for various extensions
 
+
 # Exercise set 2
 
-[Link_to_exercises](http://mrccsc.github.io/exercise_2_exercises.html)
+[Link_to_exercises](ggplot2-exercises2.html)
 
-[Link_to_exercises_with_images](http://mrccsc.github.io/exercise_2_exercises_images.html)
+[Link_to_exercises_with_images](ggplot2-exercises2-images.html)
 
-[Link_to_Rmarkdown template](http://mrccsc.github.io/exercise_2_empty.Rmd)
+[Link_to_Rmarkdown template](ggplot2-exercises2.Rmd)
 
-[Link_to_answers](http://mrccsc.github.io/exercise_2_answers.html)
+[Link_to_answers](ggplot2-solutions2.html)
 
 
 # References.
