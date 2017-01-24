@@ -138,6 +138,7 @@ The arguments to `gather` are;
         
 
 ```{r warning=FALSE}
+library(tidyr)
 gather(untidy, Treatment, Result, c(treatmenta,treatmentb))
 ```
 

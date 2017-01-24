@@ -155,7 +155,7 @@ patients_clean <- mutate(patients_clean, Smokes = as.logical(str_replace_all(Smo
 
 Now that we have cleaned the data we want to extract rows of interest from the data frame.
 
-## Restricting rows: The `filter` verb
+# Restricting rows: The `filter` verb
 
 ![](images/filter.png)
 
@@ -284,7 +284,7 @@ read.delim("patient-data.txt") %>%
 ```
 
 
-## Ordering rows: The `arrange` verb
+# Ordering rows: The `arrange` verb
 
 ![](images/arrange.png)
 
@@ -346,7 +346,7 @@ The downside with such pipelines is that they can be problematic to debug
 
 - Best to build the pipeline step-by-step and check the output at each stage
 
-## Re-usable pipelines
+# Re-usable pipelines
 
 Imagine we have a second dataset that we want to process; `cohort-data.txt`. 
 
@@ -411,7 +411,7 @@ read_tsv("cohort-data.txt") %>%
 
 
 
-## Summary
+# Summary
 
 In the past two sections we have introduced the concept of pipeline and various verbs in dplyr that will help us to manipulate our data
 
