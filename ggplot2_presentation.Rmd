@@ -61,7 +61,6 @@ On top of this central philosophy ggplot2 has:
 Overview of example code for the ggplot2 scatter plot.
 
 ```{r complex,eval=F}
-
 ggplot(data = <default data set>, 
        aes(x = <default x axis variable>,
            y = <default y axis variable>,
@@ -87,12 +86,11 @@ ggplot(data = <default data set>,
 
   theme(plot.title = element_text(colour = "gray"),
         ... <other theme elements>)
-    
 ```
 
-## What users are required to specify in ggplot2 to build a plot.
+## What users are required to specify in ggplot2 to build a plot
 
-+![](images/Slide3.jpg)
+![](images/Slide3.jpg)
 
 Actual code for the ggplot2 scatter plot.
 
@@ -172,10 +170,10 @@ Several geoms are available in ggplot2:-
 * `geom_errorbar()` - Errorbars to plots
 * `geom_violin()` - Violin plots
 
-```{r, line_simple}
-p = ggplot(data=patients_clean, mapping=aes(x=Height,y=Weight)) # x and y are numeric
-#p = ggplot(data=patients_clean, mapping=aes(x=Sex))             # factor (categorical) for x
-#p = ggplot(data=patients_clean, mapping=aes(x=Sex,y=Weight))    # factor for x and numeric for y
+```{r line_simple}
+p = ggplot(patients_clean, aes(x=Height, y=Weight)) # x and y are numeric
+#p = ggplot(patients_clean, aes(x=Sex))              # factor (categorical) for x
+#p = ggplot(patients_clean, aes(x=Sex, y=Weight))    # factor for x and numeric for y
 
 p + geom_point()
 #p + geom_line()
@@ -205,14 +203,14 @@ As we discussed earlier however, ggplot2 makes use of aesthetic mappings to
 assign variables in the data to the properties/aesthetics of the plot. This
 allows the properties of the plot to reflect variables in the data dynamically.
 
-In these examples we supply additional information to the aes() function to
+In these examples we supply additional information to the `aes()` function to
 define what information to display and how it is represented in the plot.
 
 As we discussed earlier however, ggplot2 makes use of aesthetic mappings to
 assign variables in the data to the properties/aesthetics of the plot. This
 allows the properties of the plot to reflect variables in the data dynamically.
 
-In these examples we supply additional information to the aes() function to
+In these examples we supply additional information to the `aes()` function to
 define what information to display and how it is represented in the plot.
 
 ```{r, scatter_coloured}
@@ -243,6 +241,18 @@ or visit the ggplot2 documentations pages and cheatsheet
 - [Cheatsheet](http://sape.inf.usi.ch/quick-reference/ggplot2/geom)
 
 
+# Adding titles for plot and labels.
+
+So far no plot titles have been specified. Plot titles can be specified using
+the ggtitle and xlab/ylab functions.
+
+```{r theme_ggtitle}
+p = ggplot(patients_clean, aes(x=Height,y=Weight)) + geom_point()
+
+p + ggtitle("Weight vs Height") + ylab("Height (cm)")
+```
+
+
 # Facets
 
 One very useful feature of ggplot is faceting.  This allows you to produce
@@ -267,10 +277,10 @@ p + facet_grid(Smokes~Sex) # rows ~ columns
 #p + facet_grid(Smokes~Sex+Pet)
 ```
 
-The *facet_wrap()* function offers a less grid based structure but is well
+The `facet_wrap()` function offers a less grid based structure but is well
 suited to faceting data by one variable.
 
-For *facet_wrap()* we follow as similar syntax to *facet_grid()*
+For `facet_wrap()` we follow as similar syntax to `facet_grid()`
 
 ```{r, facet_Wrap_BySmokes}
 p = ggplot(patients_clean, aes(x=Height,y=Weight,colour=Sex)) + geom_point()
@@ -279,33 +289,11 @@ p + facet_wrap(~Smokes)
 #p + facet_wrap(~Pet+Smokes+Sex)
 ```
 
-For more complex faceting both *facet_grid* and *facet_wrap* can accept
+For more complex faceting both `facet_grid` and `facet_wrap` can accept
 combinations of variables.
 
 
-# Exercise set 1
-
-[Link_to_exercises](ggplot2-exercises1.html)
-
-[Link_to_exercises_with_images](ggplot2-exercises1-images.html)
-
-[Link_to_Rmarkdown template](ggplot2-exercises1.Rmd)
-
-[Link_to_answers](ggplot2-solutions1.html)
-
-
-# Adding titles for plot and labels.
-
-So far no plot titles have been specified. Plot titles can be specified using
-the ggtitle and xlab/ylab functions.
-
-```{r, theme_ggtitle}
-p = ggplot(patients_clean, aes(x=Height,y=Weight)) + geom_point()
-
-p + ggtitle("Weight vs Height") + ylab("Height (cm)")
-```
-
-## Saving plots
+# Saving plots
 
 Plots produced by ggplot can be saved from the interactive viewer as with
 standard plots.
@@ -317,11 +305,22 @@ By default ggsave() will use the size of your current graphics window when
 saving plots so it may be important to specify width and height arguments
 desired. 
 
-```{r, ggsaving}
+```{r ggsaving}
 p = ggplot(patients_clean, aes(x=Height,y=Weight)) + geom_point()
 
 ggsave(p, filename="anExampleplot.png", width=15, height=15, units="cm")
 ```
+
+
+# Exercise set 1
+
+[Link_to_exercises](ggplot2-exercises1.html)
+
+[Link_to_exercises_with_images](ggplot2-exercises1-images.html)
+
+[Link_to_Rmarkdown template](ggplot2-exercises1.Rmd)
+
+[Link_to_answers](ggplot2-solutions1.html)
 
 
 # Scales
@@ -364,12 +363,12 @@ place at breaks.
 
 ```{r, facet_grid_smokesBySex_scalex}
 p +
-  geom_point() +
-  facet_grid(Smokes~Sex)+
-  scale_x_continuous(name="height ('cm')",
-                     limits = c(100,200),
-                     breaks=c(125,150,175),
-                     labels=c("small","justright","tall"))
+    geom_point() +
+    facet_grid(Smokes~Sex)+
+    scale_x_continuous(name="height ('cm')",
+                       limits = c(100,200),
+                       breaks=c(125,150,175),
+                       labels=c("small","justright","tall"))
 ```
 
 Similary control over discrete scales is shown below.
@@ -379,7 +378,6 @@ p = ggplot(data=patients_clean,aes(x=Sex,y=Height))
 p +
     geom_violin(aes(x=Sex,y=Height)) +
     scale_x_discrete(labels=c("Girls","Guys"))
-
 ```
 
 Multiple X/Y scales can be combined to give full control of axis marks.
