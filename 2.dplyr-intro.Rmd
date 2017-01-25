@@ -51,7 +51,7 @@ The data frame object in R allows us to work with "tabular" data, like we might 
 
 ![](https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Petal-sepal.jpg/226px-Petal-sepal.jpg)
 
-The `iris` data frame is a [classic dataset](https://en.wikipedia.org/wiki/Iris_flower_data_set) that is built into R. To load these data, we use the `data` function with the name `iris` (notice no quotation marks) in brackets. The data frame can then be printed to screen by typing it's name (`iris`). This dataset is also a good example of data in the tidy form.
+The `iris` data frame is a [classic dataset](https://en.wikipedia.org/wiki/Iris_flower_data_set) that is built into R. To load these data, we tidy the variable name `iris` (notice no quotation marks) in brackets. This dataset is also a good example of data in the tidy form.
 
 N.B. As we will see later, we tend to read datasets into R using `read.csv`, `read.delim` or similar functions.
 
@@ -201,6 +201,7 @@ messyData
 ## Other useful functions in 'tidyr'
 
 `tidyr` has a few more useful functions that we can demonstrate on the `tidyData` object you should have just created
+
 - `spread` has the opposite effect to `gather` and will translate tidy data back into human-readable form
     + arguments are the *Key* and *Value* columns in the tidy data frame
 - `separate` can be used to split column names that are comprised by two different parts with a common separating character. e.g. `Drug1.1`, `Drug1.2` etc.
@@ -236,7 +237,7 @@ Using `dplyr`, `patients` can be converted to a special kind of data frame; the 
 
 N.B. This conversion is not really necessary when run R code interactively in an R notebook
 
-```{r}
+```{r message=FALSE}
 library(dplyr)
 patients <- tbl_df(patients)
 patients
@@ -289,9 +290,10 @@ Non R users probably find these commands a bit obtuse
 - need to remember the row and column index
 - `[,...]` means display all rows
 
-However, `select` is a lot more intuitive; easier to convert to the sentence "Select the Name column from patients"
+However, `select` is a lot more intuitive; easier understand from reading the code
 
-  - Notice the lack of `""`
+- *"Select the Name column from patients"*
+    + Notice the lack of `""`
 
 ```{r}
 select(patients, Name)
@@ -305,7 +307,7 @@ select(patients, Name, Race)
 
 Excluding certain columns in base R would require us to know the *index* we wanted to exclude, or to do something complicated with the column names.
 
-***Disclaimer*** there is actually a function called `subset` in base R with a similar style to `select`
+- ***Disclaimer*** there is actually a function called `subset` in base R with a similar style to `select`
 
 ```{r eval=FALSE}
 patients[,-2]
@@ -363,17 +365,19 @@ There are several ways to solve these. Feel free to explore
 
 We can now begin to explore the data. Imagine that we want to do a simple barplot to the number of males and females. Using base graphics, we can do this with;
 
+- We will see `ggplot2` later which is a more natural way of plotting after manipulating our data with `dplyr`
+
 ```{r}
-barplot(table(select(patients,Sex)))
+barplot(table(patients$Sex))
 ```
 
-But something seems to be wrong with the number of categories that are produced.
+But something seems to be wrong with the number of categories that are produced. 
 
-So we notice that the Sex column has "whitespace"; not an uncommon problem if data have been entered manually.
+- What base functions can we use to print the variable as a character string and print the number of characters?
 
 ```{r}
-table(select(patients, Sex))
-as.character(patients$Sex)
+### Print the variable as a character string and show the number of characters in each entry ###
+
 ```
 
 The base distribution of R has many functions for dealing with strings. However, the `stringr` package (again from Hadley Wickham) aims to provide a clean modern interface to many common string operations. In a similar way, `lubridate` provides a convenient interface to deal with date information.
@@ -389,11 +393,16 @@ Once we have worked-out how to created a cleaned version of the variable, we nee
 
 ## Creating new variables: The `mutate` verb
 
-`mutate` allows us to compute and append one or more new columns to a data frame. We can specify a new column name, or overwrite an existing one. As above, we do not change the data frame so need to create a new variable if we want the changes to persist. 
+`mutate` allows us to compute and append one or more new columns to a data frame. We can specify a new column name, or overwrite an existing one. 
 
 ```{r}
 mutate(patients, Sex2 = str_trim(Sex))
 mutate(patients, Sex = str_trim(Sex))
+```
+
+As above, we do not change the data frame so need to create a new variable if we want the changes to persist. 
+
+```{r}
 patients_clean <- mutate(patients, Sex = factor(str_trim(Sex)))
 patients_clean
 ```
