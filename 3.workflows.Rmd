@@ -418,15 +418,16 @@ read_tsv("cohort-data.txt") %>%
 
 # Summary
 
-In the past two sections we have introduced the concept of pipeline and various verbs in dplyr that will help us to manipulate our data
+In the past two sections we have introduced the concept of pipelines and various verbs in dplyr that will help us to manipulate our data
 
 - select; for selecting columns
 - mutate; for adding new columns
 - filter; for restricting rows
 - arrange; for ordering rows
 
-We can use these in any order we like to create a workflow. When faced with a dataset, we should asked ourselves what steps we want to perform.
+We can use these in any order we like to create a workflow. 
 
-- The piping facility in R should allow us to express the workflow in a way that is intuitive and easy-to-ready
+- When faced with a dataset, we should asked ourselves what steps we want to perform.
+- The piping facility in R should allow us to express the workflow in a way that is intuitive and easy-to-read
 
 
