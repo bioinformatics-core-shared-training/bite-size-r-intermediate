@@ -19,7 +19,7 @@ output:
 - **arrange** verb
 
 
-We've ended up with a long chain of steps to perform on our data. It is quite common to nest commands in R into a single line;
+We've ended up with a long chain of steps to perform manipulations on our data. It is quite common to nest commands in R into a single line;
 
 ```{r}
 head(read.delim("patient-data.txt"))
@@ -78,7 +78,7 @@ In computing, this is referring to as *piping*
 
 - Use the special function ` %>% ` at the end of the line
 - Shortcut in RStudio: CTRL + SHIFT + M, CMD + SHIFT + M (Mac)
-- We don't need to add any arguments to head
+- We don't need to add any arguments to `head`
 + The first argument is the output from the previous line
 
 ```{r}
@@ -130,7 +130,7 @@ patients_clean
 ## Exercise: Re-writing a workflow using pipes
 
 ******
-- Take the steps used to clean the patients dataset and calculate BMI (see template in `workflow-exercise.Rmd` for the code)
+- Take the steps used to clean the patients dataset and calculate BMI... (see below or in `3.workflows-exercises.Rmd` for the code)
 ```{r}
 patients <- read.delim("patient-data.txt")
 patients <- tbl_df(patients)
@@ -159,7 +159,7 @@ Now that we have cleaned the data we want to extract rows of interest from the d
 
 ![](images/filter.png)
 
-The **`filter`** verb is used to choose rows from the data frame. The criteria we use to choose can use the comparisons `==`, `>`, `<`, `!=`
+The **`filter`** verb is used to choose rows from the data frame. The criteria we use to choose can use the comparison operators `==`, `>`, `<`, `!=`
 
 e.g. choose all the males
 
@@ -234,6 +234,8 @@ filter(patients_clean, Height >160 | Weight >74, Sex == "Female")
 
 Use `filter` to print the following subsets of the dataset
 
+***N.B. each is a different subset of the data; we're not looking for a subset that fulfills all the conditions!***
+
   - Choose the Female patients from New York or New Jersey
   - Choose the overweight smokers that are still alive
   - Choose the patients who own a Pet that is not a dog
@@ -264,12 +266,15 @@ Feel free to experiment with different ways to do these
 We now have all the tools in place in order to retrieve the overweight smokers from our dataset. 
 
 - An additional step might be to write the filtered data frame out to a file. 
-- Recall that functions `write.table`, `write.csv` are used to write a data frame to a tab-delimited or csv file. Because these functions accept a data frame as their first argument, they fit easily into the pipeline framework as the last step.
+- Recall that functions `write.table`, `write.csv` are used to write a data frame to a tab-delimited or csv file. 
+    + Because these functions accept a data frame as their first argument, they fit easily into the pipeline framework as the last step.
+    + as always the `.csv` will be written to your *working directory*
 + we never have to create a variable for our data
 
 N.B. we also add an extra rounding to the BMI values so they display a bit nicer
 
 ```{r}
+getwd()
 read.delim("patient-data.txt") %>% 
   tbl_df %>% 
   mutate(Sex = factor(str_trim(Sex))) %>% 
