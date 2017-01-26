@@ -45,15 +45,18 @@ plot
 4. Following from exercise 3, split the BMI vs Weight plot into a grid of plots separated by Smoking status and Sex .
 
 ```{r exercise3}
-
+plot <- ggplot(data=patients_clean,
+               mapping=aes(x=BMI,y=Weight,colour=Height))+geom_point()
+plot+facet_grid(Sex~Smokes)
 ```
 
 5. Using an additional geom, add an extra layer of a fit line to the solution from exercise 3.
 
 ```{r exercise4}
 plot <- ggplot(data=patients_clean,
-               mapping=aes(x=BMI,y=Weight,colour=Height))+geom_point()
-plot+facet_grid(Sex~Smokes)
+               mapping=aes(x=BMI,y=Weight,colour=Height))+geom_point()+
+  geom_smooth()
+plot
 
 ```
 
