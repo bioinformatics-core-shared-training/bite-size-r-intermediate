@@ -140,15 +140,15 @@ patients %&gt;% head(5)</code></pre>
 ## #   BMI &lt;dbl&gt;, Overweight &lt;lgl&gt;</code></pre>
 <p>Compute the mean age, height and weight of patients in the patients dataset</p>
 <ul>
-<li>Modify the output by adding a step to round to 2 decimal places</li>
+<li>Modify the output by adding a step to round to 1 decimal place</li>
 </ul>
 <pre class="r"><code>patients %&gt;%
   summarize_each(funs(mean), Age, Height, Weight) %&gt;%
-  mutate_each(funs(round(., digits = 2)))</code></pre>
+  mutate_each(funs(round(., digits = 1)))</code></pre>
 <pre><code>## # A tibble: 1 × 3
 ##     Age Height Weight
 ##   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
-## 1 43.09 167.93  74.89</code></pre>
+## 1  43.1  167.9   74.9</code></pre>
 <p>See what happens if you try to compute the mean of a logical (boolean) variable</p>
 <ul>
 <li>What proportion of our patient cohort has died?</li>
