@@ -16,7 +16,7 @@ patients %>% head(5)
 
 Compute the mean age, height and weight of patients in the patients dataset
 
-- Modify the output by adding a step to round to 2 decimal places
+- Modify the output by adding a step to round to 1 decimal place
 
 ```{r}
 ## YOUR CODE HERE

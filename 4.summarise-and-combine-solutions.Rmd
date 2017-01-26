@@ -16,12 +16,12 @@ patients %>% head(5)
 
 Compute the mean age, height and weight of patients in the patients dataset
 
-- Modify the output by adding a step to round to 2 decimal places
+- Modify the output by adding a step to round to 1 decimal place
 
 ```{r}
 patients %>%
   summarize_each(funs(mean), Age, Height, Weight) %>%
-  mutate_each(funs(round(., digits = 2)))
+  mutate_each(funs(round(., digits = 1)))
 ```
 
 See what happens if you try to compute the mean of a logical (boolean) variable
