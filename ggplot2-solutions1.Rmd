@@ -54,9 +54,9 @@ plot+facet_grid(Sex~Smokes)
 
 ```{r exercise4}
 plot <- ggplot(data=patients_clean,
-               mapping=aes(x=BMI,y=Weight,colour=Height))+geom_point()
-plot+facet_grid(Sex~Smokes)
-
+               mapping=aes(x=BMI,y=Weight,colour=Height))+geom_point()+
+  geom_smooth()
+plot
 ```
 
 6. Does the fit in question 5 look good? Look at the description for ?geom_smooth() and adjust the method for a better fit.
