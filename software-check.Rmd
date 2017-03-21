@@ -39,6 +39,18 @@ install.packages(c("rmarkdown","cowplot"))
 
 ## Verifying you have the correct versions
 
-Open Rstudio. 
+Open Rstudio and select Help -> About RStudio. The version of RStudio should be *1.0.136*. If not, please use the links above to install version 1.0.136 of RStudio.
 
 ![](images/rstudio-about.png)
+
+## Running a small example
+
+Right click on this link:- [RIGHT-CLICK HERE](https://raw.githubusercontent.com/bioinformatics-core-shared-training/r-intermediate/master/pre_course_check.Rmd) and save the linked file (`pre_course_check.Rmd`) somewhere on your laptop. Open the file in RStudio. and select the Run All option from the Run menu 
+
+![](images/run-all.png)
+
+Now click the Preview button
+
+![](images/rstudio-preview.png)
+
+You should get a HTML file containing a table and graph. Please compare your output to the example on [this page](https://rawgit.com/bioinformatics-core-shared-training/r-intermediate/master/example-output.html). If you do not see the graph or table, please let us know.
