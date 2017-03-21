@@ -45,7 +45,7 @@ Open Rstudio and select Help -> About RStudio. The version of RStudio should be 
 
 ## Running a small example
 
-Right click on this link:- [RIGHT-CLICK HERE](https://raw.githubusercontent.com/bioinformatics-core-shared-training/r-intermediate/master/pre_course_check.Rmd) and save the linked file (`pre_course_check.Rmd`) somewhere on your laptop. Open the file in RStudio. and select the Run All option from the Run menu 
+Right click on this link:- [RIGHT-CLICK HERE](https://raw.githubusercontent.com/bioinformatics-core-shared-training/r-intermediate/master/pre_course_check.Rmd) and save the linked file (`pre_course_check.Rmd`) somewhere on your laptop. Open the file in RStudio and select the Run All option from the Run menu 
 
 ![](images/run-all.png)
 
