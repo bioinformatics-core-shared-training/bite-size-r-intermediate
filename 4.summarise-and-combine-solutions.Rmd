@@ -6,7 +6,7 @@ output: html_document
 
 ### Summarising
 
-The first part of the exercise uses the patients dataset we've been using in previous sections of the course. After reading this into R, answer the following questions using the `summarise`, `summarise_each` and `mutate_each` functions.
+The first part of the exercise uses the patients dataset we've been using in previous sections of the course. After reading this into R, answer the following questions using the `summarise`, `summarise_at`, `summarise_if` and `mutate_all` functions.
 
 ```{r message=FALSE}
 library(dplyr)
@@ -16,12 +16,29 @@ patients %>% head(5)
 
 Compute the mean age, height and weight of patients in the patients dataset
 
+- First compute the means using `summarise` and then try to do the same using `summarise_at`
+
+```{r}
+summarise(patients, mean(Age), mean(Height), mean(Weight))
+```
+
+
+```{r}
+summarise_at(patients, vars(Age, Height, Weight), mean)
+```
+
 - Modify the output by adding a step to round to 1 decimal place
 
 ```{r}
 patients %>%
-  summarize_each(funs(mean), Age, Height, Weight) %>%
-  mutate_each(funs(round(., digits = 1)))
+  summarize_at(vars(Age, Height, Weight), funs(mean)) %>%
+  mutate_all(funs(round(., digits = 1)))
+```
+
+Compute the means of all numeric columns
+
+```{r}
+summarise_if(patients, is.numeric, mean)
 ```
 
 See what happens if you try to compute the mean of a logical (boolean) variable
