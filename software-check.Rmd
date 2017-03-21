@@ -1,0 +1,44 @@
+---
+title: "Software Requirements"
+author: "Mark Dunning"
+date: "21 March 2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Software Requirements for Data Manipulation and Visualisation in R
+
+In order to run the course effectively, you will need the latest versions of R and RStudio. At the time of writing, the latest versions can be downloaded from the following links:-
+
+## R
+
+- R 3.3.3 for Mac OS X
+    + https://cran.r-project.org/bin/macosx/R-3.3.3.pkg
+- R 3.3.3 for Windows
+    + https://cran.r-project.org/bin/windows/base/R-3.3.3-win.exe
+    
+## RStudio
+
+- RStudio 1.0.136 for Mac OS X
+    + https://download1.rstudio.org/RStudio-1.0.136.dmg
+- RStudio 1.0.136 for Windows
+    + https://download1.rstudio.org/RStudio-1.0.136.exe
+    
+## R Packages
+
+You will need to install a number of R packages. To do this, open RStudio and copy-and-paste these lines of code at the R console:-
+
+```{r eval=FALSE}
+install.packages("devtools") 
+devtools:::install_github("hadley/tidyverse") 
+install.packages(c("rmarkdown","cowplot"))
+```
+
+## Verifying you have the correct versions
+
+Open Rstudio. 
+
+![](images/rstudio-about.png)
