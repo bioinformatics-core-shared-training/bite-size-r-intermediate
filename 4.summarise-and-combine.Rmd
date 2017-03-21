@@ -78,8 +78,8 @@ summarise(iris, average = mean(Petal.Length), standard_deviation = sd(Petal.Leng
 * `sd` standard deviation
 * `median` median value
 * `IQR` the interquartile range
-* `n` the number of values
 * `n_distinct` the number of distinct values
+* `n` the number of observations (*Note: this is a special function that doesn't take a vector argument, i.e. column*)
 
 It is also possible to summarise using a function that takes more than one value, i.e. from multiple columns. For example, we could compute the correlation between petal width and length:
 
@@ -89,55 +89,85 @@ summarise(iris, correlation = cor(Petal.Width, Petal.Length))
 
 ### Summarising multiple columns
 
-We can apply the same function to each column using `summarise_each`.
+We can apply the same function to all columns using `summarise_all`.
 
 ```{r}
-summarise_each(iris, funs(mean))
+summarise_all(iris, funs(mean))
 ```
 
-We got a warning from the `mean` function complaining about being given values that are not numerical. Can you spot what caused this?
+While this seems to work, there was a warning about the inputs to the `mean` function not being numerical. Can you see why?
 
-A look at the documentation for the `summarise_each` function (type '?summarise_each' at the command prompt) shows that it can take additional arguments to specify each of the columns of interest.
+A look at the documentation for the `summarise_all` function (type '?summarise_all' at the command prompt or use the Help viewer in RStudio) shows that there are two related functions, `summarise_at` and `summarise_if`, either of which can be used to specify the columns for which we would like to calculate the average values.
+
+`summarise_at` allows us to select the columns on which to operate using an additional `vars` argument.
 
 ```{r}
-summarise_each(iris, funs(mean), Petal.Length, Petal.Width)
+summarise_at(iris, vars(Petal.Length, Petal.Width), funs(mean))
+```
+
+`summarise_if` provides another option and works well in cases where the operation should be applied to all columns that meet certain criteria. In this case, we want to calculate the averages for all columns with numeric values.
+
+```{r}
+summarise_if(iris, is.numeric, funs(mean))
+```
+
+The `vars` and `funs` helper functions provide a flexible way to specify which columns to operate on and which functions to call. They also help to delineate which arguments are columns and which are functions.
+
+If there is only function, `funs` is not strictly necessary, e.g.
+
+```{r}
+summarise_at(iris, vars(Petal.Length, Petal.Width, Sepal.Length, Sepal.Width), mean)
+```
+
+But `funs` is needed when calling more than one function
+
+```{r}
+summarise_at(iris, vars(Petal.Length, Petal.Width), funs(mean, sd))
+```
+
+of if you want some control over naming the output columns.
+
+```{r}
+summarise_at(iris, vars(length = Petal.Length, width = Petal.Width), funs(avg = mean, stdev = sd))
 ```
 
 Just like with the `select` operation, we can instead specify those columns to exclude.
 
 ```{r}
-summarise_each(iris, funs(mean), -Species)
+summarise_at(iris, vars(-Species), funs(mean))
 ```
 
 Or we can use one of the helper functions to choose which columns to operate on.
 
 ```{r eval=FALSE}
-summarise_each(iris, funs(mean), starts_with("Petal"))
-summarise_each(iris, funs(mean), ends_with("Length"))
+summarise_at(iris, vars(starts_with("Petal")), funs(mean))
+summarise_at(iris, vars(ends_with("Length")), funs(mean))
 
-summarise_each(iris, funs(mean), contains("."))
+summarise_at(iris, vars(contains(".")), funs(mean))
 
 # use regular expression to select columns on which to operate
-summarise_each(iris, funs(mean), matches("^S.*th$"))
+summarise_at(iris, vars(matches("^S.*th$")), funs(mean))
 
 # use one_of if you have a vector of column names
 columns <- c("Petal.Length", "Sepal.Width")
-summarise_each(iris, funs(mean), one_of(columns))
+summarise_at(iris, vars(one_of(columns)), funs(mean))
+# alternatively, and more concisely, just pass the vector of columns names
+summarise_at(iris, columns, funs(mean))
 ```
 
 ### Mutating multiple columns
 
-When looking at the help documentation for `summarise_each` you may have noticed a related function, `mutate_each`. This is a very useful function for applying the same operation to several columns within a table. For example, in the `iris` dataset the measurements are in centimetres but we can convert these to millimetres quite easily.
+When looking at the help documentation for `summarise_all`, `summarise_at` and `summarise_if`, you may have noticed a set of related functions, `mutate_all`, `mutate_at` and `mutate_if`. These are very useful functions for applying the same operation to several columns within a table. For example, in the `iris` dataset the measurements are in centimetres but we can convert these to millimetres quite easily.
 
 ```{r}
-mutate_each(iris, funs(. * 10), -Species)
+mutate_at(iris, vars(-Species), funs(. * 10))
 ```
 
 Here, we've had to specify the '.' character to represent the columns that we're multiplying by 10.
 
 ### Rounding
 
-`mutate_each` is particularly useful for rounding values to a specified number of decimal places or significant figures.
+`mutate_at` is particularly useful for rounding values to a specified number of decimal places or significant figures.
 
 To show rounding in action let's read in a cleaned version of the patient dataset.
 
@@ -149,12 +179,25 @@ patients
 Now let's round the patient's weight and height to 1 decimal place.
 
 ```{r}
-patients %>% mutate_each(funs(round(., digits = 1)), Height, Weight)
+mutate_at(patients, vars(Height, Weight), funs(round(., digits = 1)))
 ```
 
 # Grouping
 
 While the `summarise` function is useful on its own, it becomes really powerful when applied to groups of observations within a dataset. For example, suppose we want to compute the mean petal length for each of the species in the `iris` dataset. We could take each species in turn and `filter` the data frame to only contain rows for a given species, then apply `summarise`, but that would be somewhat cumbersome. In `dplyr`, the `group_by` function allows this to be done in one simple step.
+
+This works best in a workflow using the `%>%` pipe symbol, so as quick reminder, the following are identical ways of computing the mean of all petal length observations.
+
+```{r eval=FALSE}
+summarise(iris, mean(Petal.Length))
+iris %>% summarise(mean(Petal.Length))
+```
+
+```{r echo=FALSE}
+iris %>% summarise(mean(Petal.Length))
+```
+
+Now let's do the same thing but treating each group separately.
 
 ```{r}
 iris %>% group_by(Species) %>% summarise(mean(Petal.Length))
@@ -174,9 +217,9 @@ iris %>%
   summarise(
     N = n(),
     `Average petal length` = mean(Petal.Length),
-    `Standard deviation petal length` = sd(Petal.Length)
+    `Standard deviation` = sd(Petal.Length)
   ) %>%
-  mutate_each(funs(signif(., digits = 2)), `Average petal length`, `Standard deviation petal length`)
+  mutate_at(vars(`Average petal length`, `Standard deviation`), funs(signif(., digits = 2)))
 ```
 
 A shorthand for `summarise(n())` for counting the number of observations of each group is available in the form of the `count` function.
@@ -194,7 +237,7 @@ count(iris, Species)
 `group_by` can also be used in conjunction with other `dplyr` verbs.
 
 ```{r}
-iris %>% group_by(Species) %>% summarise_each(funs(mean))
+iris %>% group_by(Species) %>% summarise_all(funs(mean))
 ```
 
 Returning to one of the earlier examples, we can also compute the correlation between petal width and length on a per-group basis.
@@ -207,7 +250,7 @@ Hold on a minute, wasn't the correlation coefficient for the overall dataset qui
 
 ```{r}
 library(ggplot2)
-qplot(Petal.Width, Petal.Length, data = iris, colour = Species)
+ggplot(iris, aes(x = Petal.Width, y = Petal.Length, colour = Species)) + geom_point()
 ```
 
 But we're getting ahead of ourselves! Plotting with `ggplot2` is for the next part of the course.
@@ -247,10 +290,11 @@ groups(iris_ungrouped)
 
 ## Exercise: [Rmarkdown Template](4.summarise-and-combine-exercises.Rmd)
 
-Read a cleaned version of the patients dataset (patient-data-cleaned.txt) into R and use `summarise`, `summarise_each`, `mutate_each` and `group_by` to answer the following questions:
+Read a cleaned version of the patients dataset (patient-data-cleaned.txt) into R and use `summarise`, `summarise_at`, `summarise_if`, `mutate_all` and `group_by` to answer the following questions:
 
 * What is the mean age, height and weight of patients in the patients dataset?
     * Modify the output by rounding these computed means to 2 decimal places
+* What is the average value for each of the numeric columns in the patients dataset?
 * See what happens if you try to compute the mean of a logical (Boolean) variable
     * What proportion of our patient cohort has died?
 * Compare the average height of males and females in this patient cohort.
