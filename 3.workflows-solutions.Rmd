@@ -60,7 +60,7 @@ filter(patients_clean, Sex == "Female", State == "New York" | State =="New Jerse
 - Choose the overweight smokers that are still alive
 
 ```{r}
-filter(patients_clean, Overweight, !Died)
+filter(patients_clean, Overweight, Smokes, !Died)
 ```
 
 
