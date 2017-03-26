@@ -54,7 +54,7 @@ select(patients, Height:Grade_Level)
 - Print all the columns between `Height` and `Grade_Level`, but NOT `Pet`
 
 ```{r}
-select(patients, Height:Grade_Level,Pet)
+select(patients, Height:Grade_Level, -Pet)
 ```
 
 - Print the columns `Height` and `Weight`
@@ -71,7 +71,7 @@ select(patients, ends_with("eight"))
 
 ```{r}
 select(patients, order(colnames(patients)))
-select(patients, which(nchar(colnames(patients))<4))
+select(patients, which(nchar(colnames(patients)) < 4))
 ```
 
 
@@ -88,11 +88,11 @@ select(patients, which(nchar(colnames(patients))<4))
 
 ```{r}
 patients_clean <- mutate(patients, Sex = factor(str_trim(Sex)))
-patients_clean <- mutate(patients_clean, Height= as.numeric(str_replace_all(Height,pattern = "cm","")))
-patients_clean <- mutate(patients_clean, Weight = as.numeric(str_replace_all(patients_clean$Weight,"kg","")))
+patients_clean <- mutate(patients_clean, Height = as.numeric(str_replace_all(Height,pattern = "cm", "")))
+patients_clean <- mutate(patients_clean, Weight = as.numeric(str_replace_all(patients_clean$Weight,"kg", "")))
 patients_clean <- mutate(patients_clean, BMI = (Weight/(Height/100)^2), Overweight = BMI > 25)
 patients_clean <- mutate(patients_clean, Smokes = str_replace_all(Smokes, "Yes", TRUE))
 patients_clean <- mutate(patients_clean, Smokes = as.logical(str_replace_all(Smokes, "No", FALSE)))
-
+patients_clean
 ```
 
