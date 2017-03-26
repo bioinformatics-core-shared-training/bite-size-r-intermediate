@@ -192,8 +192,8 @@ messyData
   
 ```{r}
 ### Your answer here...
-
-
+tidyData <- gather(messyData, Drug, Value, -Subject)
+boxplot(tidyData$Value~tidyData$Drug)
 ```
 
 ******
@@ -210,7 +210,8 @@ messyData
 
 ```{r}
 ## Example of spread and separate
-
+spread(tidyData, key = Drug, value=Value)
+separate(tidyData,col = Drug,into=c("Drug","Replicate"))
 ```
 
 
@@ -377,7 +378,8 @@ But something seems to be wrong with the number of categories that are produced.
 
 ```{r}
 ### Print the variable as a character string and show the number of characters in each entry ###
-
+patients$Sex
+nchar(as.character(patients$Sex))
 ```
 
 The base distribution of R has many functions for dealing with strings. However, the `stringr` package (again from Hadley Wickham) aims to provide a clean modern interface to many common string operations. In a similar way, `lubridate` provides a convenient interface to deal with date information.
@@ -493,6 +495,29 @@ Finally, we can convert entire strings to upper- or lower-case
 str_to_lower(patients$Pet)
 str_to_upper(patients$Name)
 str_to_title(patients$Name)
+```
+
+## Filling in missing values
+
+If a column contains lots of consecutive entries that are repeated, it is tempted to leave the repeated entries blank and their values can be inferred from an entry higher up in the column. The `Date.Entered.Study` column is an example of such a column. As humans, we can quickly ascertain the dates that patients 2 to 9 were enrolled onto the study. However, as it stands we would not be able to perform filtering to identify the patients that enrolled on a certain date because some entries are blank.
+
+```{r}
+select(patients_clean, ID,Name,Date.Entered.Study)
+```
+
+Fortunately, the `tidyr` package has a very useful function called `fill` that will fill either up or down in a specified column. We first have to convert the column into a character and replace the blank strings with an `NA`.
+
+```{r}
+library(tidyr)
+## Currently missing values are represented as a blank string
+patients_clean$Date.Entered.Study == ""
+## Turn the column into a character
+patients_clean <- mutate(patients_clean, Date.Entered.Study = as.character(Date.Entered.Study))
+## Replace the blank strings with an NA
+patients_clean <- mutate(patients_clean, Date.Entered.Study = ifelse(Date.Entered.Study == "", NA,Date.Entered.Study))
+## Now fill will happily fill the missing values for us
+patients_clean <- fill(patients_clean,Date.Entered.Study)
+select(patients_clean, ID,Name,Date.Entered.Study)
 ```
 
 
