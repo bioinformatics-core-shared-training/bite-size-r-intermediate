@@ -4,6 +4,7 @@ author: "Mark Dunning"
 date: '`r format(Sys.time(), "Last modified: %d %b %Y")`'
 output:
   html_notebook:
+    code_folding: none
     toc: yes
     toc_float: yes
   html_document:
@@ -59,7 +60,7 @@ patients_clean <- mutate(patients_clean, Height= str_replace_all(Height,pattern 
 
 # Introducing piping
 
-The output of one operations gets used as the input of the next
+The output of one operation gets used as the input of the next
 
 In computing, this is referring to as *piping* 
 
@@ -174,10 +175,6 @@ patients_clean[patients_clean$Sex == "Male",]
 ```
 
 Again, to non R-users, this is less intuitive. However, the result is the same.
-
-```{r}
-patients_clean[patients_clean$Sex == "Male",]
-```
 
 We can also use `!` to reverse the values in a logical vector and check for values that do not equal a particular value
 
@@ -312,7 +309,7 @@ Can use multiple variables in the sorting
 e.g. `Grade_Level` and then `Count`
 
 ```{r}
-arrange(patients_clean, desc(Grade_Level), Count) %>% select(ID:Sex,Count)
+arrange(patients_clean, desc(Grade_Level), Count) %>% select(ID:Sex,Grade_Level,Count)
 ```
 
 `Grade_Level`, `Sex` and then `Count`
