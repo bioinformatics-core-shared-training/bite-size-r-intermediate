@@ -176,7 +176,7 @@ pcPlot <- ggplot(data=patients_clean)
 
 pcPlot <- pcPlot+aes(x=Height,y=Weight)
 pcPlot <- pcPlot+geom_point()
-
+pcPlot
 pcPlot$mapping
 pcPlot$theme
 pcPlot$layers
@@ -438,6 +438,33 @@ pcPlot + facet_grid(Smokes~Sex+Pet)
 ```
 
 
+# Change the plotting order in a boxplot
+
+We will shortly discuss how to change various aspects of the plot layout and appearance. However, a common-asked question is how to change the order in which R plots a categorical variable. Consider the boxplot to compare weights of males and females:-
+
+```{r}
+ggplot(patients_clean, aes(x=Sex, y=Weight)) + geom_boxplot()
+```
+
+Here, R decides the order to arrange the boxes according to the `levels` of the categorical variable. By default this is the alphabetical order. i.e. Female before Male.
+
+```{r}
+patients_clean$Sex
+```
+
+Depending on the message we want the plot to convey, we might want control over the order of boxes. The `factor` functions allows us to explictly change the order of the levels.
+
+```{r}
+factor(patients_clean$Sex,levels=c("Male","Female"))
+```
+
+With the pipe syntax we just learnt about, we can change the variable on-the-fly and generate the plot 
+
+```{r}
+patients_clean %>% 
+  mutate(Sex = factor(Sex,levels=c("Male","Female"))) %>% 
+  ggplot(aes(x=Sex, y=Weight)) + geom_boxplot()
+```
 
 
 # Exercise set 1
