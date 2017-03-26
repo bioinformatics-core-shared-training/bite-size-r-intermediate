@@ -40,6 +40,14 @@ The structured syntax and high level of abstraction used by ggplot2 should
 allow for the user to concentrate on the visualisations instead of creating the
 underlying code.
 
+![](images/xkcd-example.png)
+
+But `ggplot2` will not advise on how best to visualise your data, and we will not discuss here
+
+- See [Introduction to Scientific Figure Design](https://www.bioinformatics.babraham.ac.uk/training.html#figuredesign) by The Babraham Bioinformatics Core for more details
+- [Top Simple Rules for Better Figures](http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1003833)
+- [And what not to do](http://www.businessinsider.com/the-27-worst-charts-of-all-time-2013-6?op=1&IR=T)
+
 On top of this central philosophy ggplot2 has:
 
 - Increased flexible over many plotting systems.
