@@ -192,8 +192,7 @@ messyData
   
 ```{r}
 ### Your answer here...
-tidyData <- gather(messyData, Drug, Value, -Subject)
-boxplot(tidyData$Value~tidyData$Drug)
+
 ```
 
 ******
@@ -210,8 +209,7 @@ boxplot(tidyData$Value~tidyData$Drug)
 
 ```{r}
 ## Example of spread and separate
-spread(tidyData, key = Drug, value=Value)
-separate(tidyData,col = Drug,into=c("Drug","Replicate"))
+
 ```
 
 
