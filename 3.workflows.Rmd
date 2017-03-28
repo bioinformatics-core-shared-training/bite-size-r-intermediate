@@ -139,8 +139,8 @@ patients_clean <- mutate(patients, Sex = factor(str_trim(Sex)))
 patients_clean <- mutate(patients_clean, Height= as.numeric(str_replace_all(patients_clean$Height,pattern = "cm","")))
 patients_clean <- mutate(patients_clean, Weight = as.numeric(str_replace_all(patients_clean$Weight,"kg","")))
 patients_clean <- mutate(patients_clean, BMI = (Weight/(Height/100)^2), Overweight = BMI > 25)
-patients_clean <- mutate(patients_clean, Smokes = str_replace_all(Smokes, "Yes", TRUE))
-patients_clean <- mutate(patients_clean, Smokes = as.logical(str_replace_all(Smokes, "No", FALSE)))
+patients_clean <- mutate(patients_clean, Smokes = str_replace_all(Smokes, "Yes", "TRUE"))
+patients_clean <- mutate(patients_clean, Smokes = as.logical(str_replace_all(Smokes, "No", "FALSE")))
 ```
 
 - Re-write in the piping framework
@@ -278,8 +278,8 @@ read.delim("patient-data.txt") %>%
   mutate(Height= as.numeric(str_replace_all(Height,pattern = "cm",""))) %>% 
   mutate(Weight = as.numeric(str_replace_all(Weight,"kg",""))) %>% 
   mutate(BMI = round(Weight/(Height/100)^2,1), Overweight = BMI > 25) %>% 
-  mutate(Smokes = str_replace_all(Smokes, "Yes", TRUE)) %>% 
-  mutate(Smokes = as.logical(str_replace_all(Smokes, "No", FALSE))) %>% 
+  mutate(Smokes = str_replace_all(Smokes, "Yes", "TRUE")) %>% 
+  mutate(Smokes = as.logical(str_replace_all(Smokes, "No", "FALSE"))) %>% 
   select(ID, Birth,BMI,Smokes,Overweight,Died) %>% 
   filter(Smokes & Overweight & !Died) %>% 
   write.csv("candidates.csv")
@@ -335,8 +335,8 @@ read.delim("patient-data.txt") %>%
   mutate(Height= as.numeric(str_replace_all(Height,pattern = "cm",""))) %>% 
   mutate(Weight = as.numeric(str_replace_all(Weight,"kg",""))) %>% 
   mutate(BMI = round(Weight/(Height/100)^2,1), Overweight = BMI > 25) %>% 
-  mutate(Smokes = str_replace_all(Smokes, "Yes", TRUE)) %>% 
-  mutate(Smokes = as.logical(str_replace_all(Smokes, "No", FALSE))) %>% 
+  mutate(Smokes = str_replace_all(Smokes, "Yes", "TRUE")) %>% 
+  mutate(Smokes = as.logical(str_replace_all(Smokes, "No", "FALSE"))) %>% 
   select(ID, Birth,BMI,Smokes,Overweight,Died) %>% 
   filter(Smokes & Overweight & !Died) %>% 
   arrange(desc(BMI)) %>% 
@@ -363,8 +363,8 @@ read.delim("cohort-data.txt") %>%
   mutate(Weight = as.numeric(str_replace_all(Weight,"kg",""))) %>% 
   mutate(Height= as.numeric(str_replace_all(Height,pattern = "cm",""))) %>% 
   mutate(BMI = round(Weight/(Height/100)^2,1), Overweight = BMI > 25) %>% 
-  mutate(Smokes = as.logical(str_replace_all(Smokes, "Yes", TRUE))) %>% 
-  mutate(Smokes = as.logical(str_replace_all(Smokes, "No", FALSE))) %>%
+  mutate(Smokes = as.logical(str_replace_all(Smokes, "Yes", "TRUE"))) %>% 
+  mutate(Smokes = as.logical(str_replace_all(Smokes, "No", "FALSE"))) %>%
   filter(Smokes & Overweight) %>% 
   select(ID, Birth, BMI, Smokes,Overweight)  %>% 
   arrange(desc(BMI)) %>% 
@@ -383,8 +383,8 @@ read_tsv("cohort-data.txt") %>%
   mutate(Weight = as.numeric(str_replace_all(Weight,"kg",""))) %>% 
   mutate(Height= as.numeric(str_replace_all(Height,pattern = "cm",""))) %>% 
   mutate(BMI = round(Weight/(Height/100)^2,1), Overweight = BMI > 25) %>% 
-  mutate(Smokes = as.logical(str_replace_all(Smokes, "Yes", TRUE))) %>% 
-  mutate(Smokes = as.logical(str_replace_all(Smokes, "No", FALSE))) %>%
+  mutate(Smokes = as.logical(str_replace_all(Smokes, "Yes", "TRUE"))) %>% 
+  mutate(Smokes = as.logical(str_replace_all(Smokes, "No", "FALSE"))) %>%
   filter(Smokes & Overweight) %>% 
   select(ID, Birth, BMI, Smokes,Overweight)  %>% 
   arrange(desc(BMI)) %>% 
@@ -403,8 +403,8 @@ read_tsv("cohort-data.txt") %>%
   mutate(Weight = as.numeric(str_replace_all(Weight,"kg",""))) %>% 
   mutate(Height= as.numeric(str_replace_all(Height,pattern = "cm",""))) %>% 
   mutate(BMI = round(Weight/(Height/100)^2,1), Overweight = BMI > oWeightCutOff) %>% 
-  mutate(Smokes = as.logical(str_replace_all(Smokes, "Yes", TRUE))) %>% 
-  mutate(Smokes = as.logical(str_replace_all(Smokes, "No", FALSE))) %>%
+  mutate(Smokes = as.logical(str_replace_all(Smokes, "Yes", "TRUE"))) %>% 
+  mutate(Smokes = as.logical(str_replace_all(Smokes, "No", "FALSE"))) %>%
   filter(Smokes & Overweight) %>% 
   select(ID, Birth, BMI, Smokes,Overweight)  %>% 
   arrange(desc(BMI)) %>% 

@@ -118,7 +118,7 @@ $(document).ready(function () {
 
 <h1 class="title toc-ignore">Workflow solutions</h1>
 <h4 class="author"><em>Mark Dunning</em></h4>
-<h4 class="date"><em>Last modified: 26 Mar 2017</em></h4>
+<h4 class="date"><em>Last modified: 28 Mar 2017</em></h4>
 
 </div>
 
@@ -143,8 +143,8 @@ patients_clean &lt;- mutate(patients, Sex = factor(str_trim(Sex)))
 patients_clean &lt;- mutate(patients_clean, Height= as.numeric(str_replace_all(patients_clean$Height,pattern = &quot;cm&quot;,&quot;&quot;)))
 patients_clean &lt;- mutate(patients_clean, Weight = as.numeric(str_replace_all(patients_clean$Weight,&quot;kg&quot;,&quot;&quot;)))
 patients_clean &lt;- mutate(patients_clean, BMI = (Weight/(Height/100)^2), Overweight = BMI &gt; 25)
-patients_clean &lt;- mutate(patients_clean, Smokes = str_replace_all(Smokes, &quot;Yes&quot;, TRUE))
-patients_clean &lt;- mutate(patients_clean, Smokes = as.logical(str_replace_all(Smokes, &quot;No&quot;, FALSE)))</code></pre>
+patients_clean &lt;- mutate(patients_clean, Smokes = str_replace_all(Smokes, &quot;Yes&quot;, &quot;TRUE&quot;))
+patients_clean &lt;- mutate(patients_clean, Smokes = as.logical(str_replace_all(Smokes, &quot;No&quot;, &quot;FALSE&quot;)))</code></pre>
 <pre class="r"><code>## Re-write the above template using 'pipes'
 patients_clean &lt;- read.delim(&quot;patient-data.txt&quot;) %&gt;% 
   tbl_df %&gt;% 
@@ -152,8 +152,8 @@ patients_clean &lt;- read.delim(&quot;patient-data.txt&quot;) %&gt;%
   mutate(Height= as.numeric(str_replace_all(Height,pattern = &quot;cm&quot;,&quot;&quot;))) %&gt;% 
   mutate(Weight = as.numeric(str_replace_all(Weight,&quot;kg&quot;,&quot;&quot;))) %&gt;% 
   mutate(BMI = (Weight/(Height/100)^2), Overweight = BMI &gt; 25) %&gt;% 
-  mutate(Smokes = str_replace_all(Smokes, &quot;Yes&quot;, TRUE)) %&gt;% 
-  mutate(Smokes = as.logical(str_replace_all(Smokes, &quot;No&quot;, FALSE)))
+  mutate(Smokes = str_replace_all(Smokes, &quot;Yes&quot;, &quot;TRUE&quot;)) %&gt;% 
+  mutate(Smokes = as.logical(str_replace_all(Smokes, &quot;No&quot;, &quot;FALSE&quot;)))
 
 patients_clean</code></pre>
 <pre><code>## # A tibble: 100 × 16

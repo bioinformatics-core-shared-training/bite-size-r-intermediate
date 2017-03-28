@@ -24,8 +24,8 @@ patients_clean <- mutate(patients, Sex = factor(str_trim(Sex)))
 patients_clean <- mutate(patients_clean, Height= as.numeric(str_replace_all(patients_clean$Height,pattern = "cm","")))
 patients_clean <- mutate(patients_clean, Weight = as.numeric(str_replace_all(patients_clean$Weight,"kg","")))
 patients_clean <- mutate(patients_clean, BMI = (Weight/(Height/100)^2), Overweight = BMI > 25)
-patients_clean <- mutate(patients_clean, Smokes = str_replace_all(Smokes, "Yes", TRUE))
-patients_clean <- mutate(patients_clean, Smokes = as.logical(str_replace_all(Smokes, "No", FALSE)))
+patients_clean <- mutate(patients_clean, Smokes = str_replace_all(Smokes, "Yes", "TRUE"))
+patients_clean <- mutate(patients_clean, Smokes = as.logical(str_replace_all(Smokes, "No", "FALSE")))
 ```
 
 
@@ -37,8 +37,8 @@ patients_clean <- read.delim("patient-data.txt") %>%
   mutate(Height= as.numeric(str_replace_all(Height,pattern = "cm",""))) %>% 
   mutate(Weight = as.numeric(str_replace_all(Weight,"kg",""))) %>% 
   mutate(BMI = (Weight/(Height/100)^2), Overweight = BMI > 25) %>% 
-  mutate(Smokes = str_replace_all(Smokes, "Yes", TRUE)) %>% 
-  mutate(Smokes = as.logical(str_replace_all(Smokes, "No", FALSE)))
+  mutate(Smokes = str_replace_all(Smokes, "Yes", "TRUE")) %>% 
+  mutate(Smokes = as.logical(str_replace_all(Smokes, "No", "FALSE")))
 
 patients_clean
 
