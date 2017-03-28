@@ -194,9 +194,9 @@ filter(patients_clean, Pet %in% c("CAT", "Cat")) %>% select(ID,Name, Race,Pet)
 Partial matches can be performed using `grepl`. This is used rather than the usual `grep` as it returns a *logical* rather than an *integer*
 
 ```{r}
-grep("Jo", patients_clean$Name)
-grepl("Jo",patients_clean$Name)
-filter(patients_clean, grepl("Jo",Name))
+grep("Br", patients_clean$Name)
+grepl("Br",patients_clean$Name)
+filter(patients_clean, grepl("Br",Name))
 ```
 
 Combining conditions in `filter` can be achieved adding `,` or using the Boolean operators `|`, `&`. In fact, the `&` isn't required and we can add extra conditions by separating them with a `,`.

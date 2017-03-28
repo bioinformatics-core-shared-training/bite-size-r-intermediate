@@ -256,3 +256,48 @@ boxplot(tidyData$Value ~ tidyData$Treatment)
 dev.off()
 ```
 
+Replace with better first names
+
+```{r}
+patients <- read.delim("patient-data.txt",stringsAsFactors = FALSE)
+patients
+patients_cleaned <- read.delim("patient-data-cleaned.txt",stringsAsFactors = FALSE)
+patients_cleaned
+
+if(!require(babynames)) devtools:::install_github("hadley/babynames")
+data("babynames")
+girls <- babynames %>% filter(year == 1973, sex=="F") %>% top_n(100,prop) %>% select(name) %>% unlist %>% as.character
+boys <- babynames %>% filter(year == 1974, sex=="M") %>% top_n(100,prop) %>% select(name) %>% unlist %>% as.character
+
+nboys <- table(patients_cleaned$Sex)[2]
+ngirls <- table(patients_cleaned$Sex)[1]
+set.seed("28032017")
+newboys <- sample(boys,nboys,replace = TRUE)
+newgirls <- sample(girls ,ngirls, replace = TRUE)
+
+patients$Name[which(as.character(patients_cleaned$Sex) == "Male")] <- newboys
+patients$Name[which(patients_cleaned$Sex == "Female")] <- newgirls
+patients
+write.table(patients, file="patient-data.txt",sep="\t",row.names = FALSE)
+
+patients_cleaned$Name[which(as.character(patients_cleaned$Sex) == "Male")] <- newboys
+patients_cleaned$Name[which(patients_cleaned$Sex == "Female")] <- newgirls
+patients_cleaned
+
+
+```
+Also fill the Date Entered Study column
+
+```{r}
+library(tidyr)
+
+## Turn the column into a character
+patients_cleaned <- mutate(patients_cleaned, Date.Entered.Study = as.character(Date.Entered.Study))
+## Replace the blank strings with an NA
+patients_cleaned <- mutate(patients_cleaned, Date.Entered.Study = ifelse(Date.Entered.Study == "", NA,Date.Entered.Study))
+## Now fill will happily fill the missing values for us
+patients_cleaned <- fill(patients_cleaned,Date.Entered.Study)
+patients_cleaned
+write.table(patients_cleaned, file="patient-data-cleaned.txt",sep="\t",row.names = FALSE)
+```
+
