@@ -128,7 +128,9 @@ summarise_at(iris, vars(Petal.Length, Petal.Width), funs(mean, sd))
 of if you want some control over naming the output columns.
 
 ```{r}
-summarise_at(iris, vars(length = Petal.Length, width = Petal.Width), funs(avg = mean, stdev = sd))
+iris %>%
+  select(length = Petal.Length, width = Petal.Width) %>%
+  summarise_all(funs(avg = mean, stdev = sd))
 ```
 
 Just like with the `select` operation, we can instead specify those columns to exclude.
@@ -257,7 +259,7 @@ But we're getting ahead of ourselves! Plotting with `ggplot2` is for the next pa
 
 ### `group_by` - the technical details
 
-Some of you might be wondering what's going on _under the hood_ with this `group_by` function. The help page for `group_by` is a little on the technical side but essentially tells us that the data frame we pass it gets converted into a `grouped_df` data frame object. `dplyr` functions that operate on a `grouped_df` object know to treat this in a special way, operating on each group separately. The following sequence of R commands might help to make this a bit clearer.
+You might be wondering what's going on _under the hood_ with this `group_by` function. The help page for `group_by` is a little on the technical side but essentially tells us that the data frame we pass it gets converted into a `grouped_df` data frame object. `dplyr` functions that operate on a `grouped_df` object know to treat this in a special way, operating on each group separately. The following sequence of R commands might help to make this a bit clearer.
 
 First let's take a look at the class of the iris data frame.
 
@@ -313,32 +315,23 @@ To illustrate join operations we'll first consider the most common type, a "left
 
 ![dplyr left join](images/dplyr_left_join.png)
 
-`left_join` returns all rows from the first data frame regardless of whether there is a match in the second data frame. Rows with no match are included in the resulting data frame but have `NA` values in the additional columns coming from the second data frame. Here's an example in which data about some interesting people are contained in two tables. The name column identifies each of the people concerned and is used for matching rows from the two tables.
+`left_join` returns all rows from the first data frame regardless of whether there is a match in the second data frame. Rows with no match are included in the resulting data frame but have `NA` values in the additional columns coming from the second data frame.
 
-Let's create some data frames that we can join.
+Here's an example in which details about members of the Beatles and Rolling Stones are contained in two tables, using data frames conveniently provided by `dplyr`. The name column identifies each of the band members and is used for matching rows from the two tables.
 
 ```{r}
-df1 <- data_frame(
-  name = c("Matt", "Mark", "Tom"),
-  home = c("Harston", "Histon", "London"),
-  institute = c("CRUK-CI", "CRUK-CI", "MRC-CSC")
-)
-df2 <- data_frame(
-  name = c("Matt", "Mark", "Jane"),
-  colour = c("blue", "green", "cerise")
-)
+band_members
+band_instruments
 ```
 
 ```{r}
-df1
-df2
-left_join(df1, df2, by = "name")
+left_join(band_members, band_instruments, by = "name")
 ```
 
 `right_join` is similar but returns all rows from the second data frame that have a match with rows in the first data frame based on the specified column.
 
 ```{r}
-right_join(df1, df2, by = "name")
+right_join(band_members, band_instruments, by = "name")
 ```
 
 ### `inner_join`
@@ -348,7 +341,7 @@ It is also possible to return only those rows where matches could be made. The `
 ![dplyr inner join](images/dplyr_inner_join.png)
 
 ```{r}
-inner_join(df1, df2, by = "name")
+inner_join(band_members, band_instruments, by = "name")
 ```
 
 ### `full_join`
@@ -358,44 +351,53 @@ We've seen how missing rows from one table can be retained in the joined data fr
 ![dplyr full join](images/dplyr_full_join.png)
 
 ```{r}
-full_join(df1, df2, by = "name")
+full_join(band_members, band_instruments, by = "name")
+```
+
+### Joining on columns with different headers
+
+The columns that are used for joining two tables do not have to have the same name, e.g.
+
+```{r}
+band_instruments2
+left_join(band_members, band_instruments2, by = c("name" = "artist"))
 ```
 
 ### Multiple matches in join operations
 
-Where there are multiple rows in one or both of the two tables, these will be represented in the combined table. All combinations of the matching rows will be included.
+Where there are multiple rows in one or both of the two tables for the thing that is being joined, these will be represented in the combined table. All combinations of the matching rows will be included.
 
 ```{r}
 df1 <- data_frame(
-  name = c("Matt", "Mark", "Mark", "Tom"),
-  home = c("Harston", "Histon", "Hardwick", "London"),
-  institute = c("CRUK-CI", "CRUK-CI", "IPH", "MRC-CSC")
+  name = c("Mick",   "John",    "Paul",    "Paul"),
+  band = c("Stones", "Beatles", "Beatles", "Wings")
 )
 df2 <- data_frame(
-  name = c("Matt", "Mark", "Mark", "Jane"),
-  colour = c("blue", "yellow", "green", "cerise")
+  name =  c("John",   "Paul", "Paul",   "Keith"),
+  plays = c("guitar", "bass", "guitar", "guitar")
 )
 left_join(df1, df2, by = "name")
 ```
 
 ### Joining by matching on multiple columns
 
-We can specify multiple columns to use for matching rows. This is useful where the uniquely-identifying information for a subject is containing in more than one column. The following extends our simple example to use both name and home for matching rows.
+We can specify multiple columns to use for matching rows. This is useful where the uniquely-identifying information for a subject is containing in more than one column. In the following we add another band and musician to our two data frames such that we now can no longer uniquely identify band members from the first name, so now we use a combination of both first name and surname to join the two tables.
 
 ```{r}
 df1 <- data_frame(
-  name = c("Matt", "Mark", "Mark", "Tom"),
-  home = c("Harston", "Histon", "Hardwick", "London"),
-  institute = c("CRUK-CI", "CRUK-CI", "IPH", "MRC-CSC")
+  forename = c("Mick",   "John",    "Paul",      "John"),
+  surname =  c("Jagger", "Lennon",  "McCartney", "Squire"),
+  band =     c("Stones", "Beatles", "Beatles",   "Roses")
 )
 df2 <- data_frame(
-  name = c("Matt", "Mark", "Mark", "Jane"),
-  institute = c("CRUK-CI", "CRUK-CI", "IPH", "MRC-CSC"),
-  colour = c("blue", "yellow", "green", "cerise")
+  forename = c("John",   "Paul",      "Keith",    "John"),
+  surname =  c("Lennon", "McCartney", "Richards", "Squire"),
+  plays =    c("guitar", "bass",      "guitar",   "guitar")
 )
-left_join(df1, df2, by = c("name", "institute"))
+left_join(df1, df2, by = c("forename", "surname"))
 ```
 
+*Exercise: see what happens if you try just joining on first name.*
 
 ### Filtering joins
 
@@ -403,12 +405,12 @@ A variation on the join operations we've considered are `semi_join` and `anti_jo
 
 ```{r}
 # semi_join returns all rows from the first table where there are matches in the other table
-semi_join(df1, df2, by = "name")
+semi_join(band_members, band_instruments, by = "name")
 ```
 
 ```{r}
 # anti_join returns all rows where there is no match in the other table
-anti_join(df1, df2, by = "name")
+anti_join(band_members, band_instruments, by = "name")
 ```
 
 ## Exercise: [Rmarkdown Template](4.summarise-and-combine-exercises.Rmd)
