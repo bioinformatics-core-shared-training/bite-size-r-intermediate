@@ -20,7 +20,7 @@ output:
 - **arrange** verb
 
 
-We've ended up with a long chain of steps to perform on our data. It is quite common to nest commands in R into a single line;
+We've ended up with a long chain of steps to perform manipulations on our data. It is quite common to nest commands in R into a single line;
 
 ```{r}
 head(read.delim("patient-data.txt"))
@@ -187,7 +187,7 @@ filter(patients_clean, Sex != "Female")
 The `%in%` function can check for matches in a pre-defined vector
 
 ```{r}
-filter(patients_clean, Pet %in% c("CAT", "Cat")) %>% select(ID,Name, Race,Pet)
+filter(patients_clean, Pet %in% c("CAT", "Cat")) %>% select(ID, Name, Race, Pet)
 ```
 (*additional `select` statement added so you can see the `Pet` variable`*)
 
@@ -279,7 +279,7 @@ read.delim("patient-data.txt") %>%
   mutate(BMI = round(Weight/(Height/100)^2, 1), Overweight = BMI > 25) %>%
   mutate(Smokes = str_replace_all(Smokes, "Yes", "TRUE")) %>%
   mutate(Smokes = as.logical(str_replace_all(Smokes, "No", "FALSE"))) %>%
-  select(ID, Birth,BMI,Smokes,Overweight,Died) %>%
+  select(ID, Birth, BMI, Smokes, Overweight, Died) %>%
   filter(Smokes & Overweight & !Died) %>%
   write.csv("candidates.csv")
 ```
@@ -308,21 +308,21 @@ Can use multiple variables in the sorting
 e.g. `Grade_Level` and then `Count`
 
 ```{r}
-arrange(patients_clean, desc(Grade_Level), Count) %>% select(ID:Sex,Grade_Level,Count)
+arrange(patients_clean, desc(Grade_Level), Count) %>% select(ID:Sex,  Grade_Level,  Count)
 ```
 
 `Grade_Level`, `Sex` and then `Count`
 
 ```{r}
-arrange(patients_clean, desc(Grade_Level), Sex, Count) %>% select(ID:Sex,Grade_Level,Count)
+arrange(patients_clean, desc(Grade_Level), Sex, Count) %>% select(ID:Sex,  Grade_Level,  Count)
 ```
 
 A related function is `top_n`
 - Although it does not seem to guarentee the results will be ordered
 
 ```{r}
-top_n(patients_clean,10,Height) %>% arrange(Height)
-top_n(patients_clean,10,Weight) %>% arrange(Weight)
+top_n(patients_clean,  10,  Height) %>% arrange(Height)
+top_n(patients_clean,  10,  Weight) %>% arrange(Weight)
 ```
 
 With the workflow we have developed in the previous exercises, we can add extra steps to arrange and then select the candidates with the highest BMI prior to writing to a file.
@@ -336,7 +336,7 @@ read.delim("patient-data.txt") %>%
   mutate(BMI = round(Weight/(Height/100)^2, 1), Overweight = BMI > 25) %>%
   mutate(Smokes = str_replace_all(Smokes, "Yes", "TRUE")) %>%
   mutate(Smokes = as.logical(str_replace_all(Smokes, "No", "FALSE"))) %>%
-  select(ID, Birth,BMI,Smokes,Overweight,Died) %>%
+  select(ID, Birth,  BMI,  Smokes, Overweight,  Died) %>%
   filter(Smokes & Overweight & !Died) %>%
   arrange(desc(BMI)) %>%
   top_n(10, BMI) %>%
@@ -365,7 +365,7 @@ read.delim("cohort-data.txt") %>%
   mutate(Smokes = as.logical(str_replace_all(Smokes, "Yes", "TRUE"))) %>%
   mutate(Smokes = as.logical(str_replace_all(Smokes, "No", "FALSE"))) %>%
   filter(Smokes & Overweight) %>%
-  select(ID, Birth, BMI, Smokes,Overweight)  %>%
+  select(ID, Birth, BMI, Smokes, Overweight)  %>%
   arrange(desc(BMI)) %>%
   write.table("study-candidates.csv")
 ```
@@ -385,7 +385,7 @@ read_tsv("cohort-data.txt") %>%
   mutate(Smokes = as.logical(str_replace_all(Smokes, "Yes", "TRUE"))) %>%
   mutate(Smokes = as.logical(str_replace_all(Smokes, "No", "FALSE"))) %>%
   filter(Smokes & Overweight) %>%
-  select(ID, Birth, BMI, Smokes,Overweight)  %>%
+  select(ID, Birth, BMI, Smokes, Overweight)  %>%
   arrange(desc(BMI)) %>%
   write.table("study-candidates.csv")
 ```
@@ -405,7 +405,7 @@ read_tsv("cohort-data.txt") %>%
   mutate(Smokes = as.logical(str_replace_all(Smokes, "Yes", "TRUE"))) %>%
   mutate(Smokes = as.logical(str_replace_all(Smokes, "No", "FALSE"))) %>%
   filter(Smokes & Overweight) %>%
-  select(ID, Birth, BMI, Smokes,Overweight)  %>%
+  select(ID, Birth, BMI, Smokes, Overweight)  %>%
   arrange(desc(BMI)) %>%
   write.table("study-candidates.csv")
 ```

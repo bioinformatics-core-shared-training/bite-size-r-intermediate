@@ -133,7 +133,7 @@ patients &lt;- read.delim(&quot;patient-data.txt&quot;)
 patients &lt;- tbl_df(patients)
 patients_clean &lt;- mutate(patients, Sex = factor(str_trim(Sex)))
 patients_clean &lt;- mutate(patients_clean, Height= as.numeric(str_replace_all(patients_clean$Height, pattern = &quot;cm&quot;, &quot;&quot;)))
-patients_clean &lt;- mutate(patients_clean, Weight = as.numeric(str_replace_all(patients_clean$Weight,&quot;kg&quot;,&quot;&quot;)))
+patients_clean &lt;- mutate(patients_clean, Weight = as.numeric(str_replace_all(patients_clean$Weight, &quot;kg&quot;, &quot;&quot;)))
 patients_clean &lt;- mutate(patients_clean, BMI = (Weight/(Height/100)^2), Overweight = BMI &gt; 25)
 patients_clean &lt;- mutate(patients_clean, Smokes = str_replace_all(Smokes, &quot;Yes&quot;, &quot;TRUE&quot;))
 patients_clean &lt;- mutate(patients_clean, Smokes = as.logical(str_replace_all(Smokes, &quot;No&quot;, &quot;FALSE&quot;)))</code></pre>
@@ -169,7 +169,7 @@ patients_clean</code></pre>
 <ul>
 <li>Choose the Female patients from New York or New Jersey</li>
 </ul>
-<pre class="r"><code>filter(patients_clean, Sex == &quot;Female&quot;, State == &quot;New York&quot; | State ==&quot;New Jersey&quot;)</code></pre>
+<pre class="r"><code>filter(patients_clean, Sex == &quot;Female&quot;, State == &quot;New York&quot; | State == &quot;New Jersey&quot;)</code></pre>
 <pre><code>## # A tibble: 4 x 16
 ##          ID     Name     Race    Sex Smokes Height Weight      Birth
 ##      &lt;fctr&gt;   &lt;fctr&gt;   &lt;fctr&gt; &lt;fctr&gt;  &lt;lgl&gt;  &lt;dbl&gt;  &lt;dbl&gt;     &lt;fctr&gt;
