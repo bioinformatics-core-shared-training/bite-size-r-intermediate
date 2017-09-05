@@ -8,7 +8,7 @@ output: html_document
 
 The first part of the exercise uses the patients dataset we've been using in previous sections of the course. After reading this into R, answer the following questions using the `summarise`, `summarise_at`, `summarise_if` and `mutate_all` functions.
 
-```{r message=FALSE}
+```{r message = FALSE}
 library(dplyr)
 patients <- read.delim("patient-data-cleaned.txt", stringsAsFactors = FALSE) %>% tbl_df
 patients %>% head(5)

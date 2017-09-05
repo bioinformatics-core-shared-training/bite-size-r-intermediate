@@ -12,7 +12,7 @@ output:
     toc_float: yes
 ---
 
-```{r echo=FALSE, message=FALSE, warning=FALSE}
+```{r echo = FALSE, message = FALSE, warning = FALSE}
 knitr::opts_chunk$set(comment = NA)
 library(dplyr)
 ```
@@ -141,7 +141,7 @@ summarise_at(iris, vars(-Species), funs(mean))
 
 Or we can use one of the helper functions to choose which columns to operate on.
 
-```{r eval=FALSE}
+```{r eval = FALSE}
 summarise_at(iris, vars(starts_with("Petal")), funs(mean))
 summarise_at(iris, vars(ends_with("Length")), funs(mean))
 
@@ -190,12 +190,12 @@ While the `summarise` function is useful on its own, it becomes really powerful 
 
 This works best in a workflow using the `%>%` pipe symbol, so as quick reminder, the following are identical ways of computing the mean of all petal length observations.
 
-```{r eval=FALSE}
+```{r eval = FALSE}
 summarise(iris, mean(Petal.Length))
 iris %>% summarise(mean(Petal.Length))
 ```
 
-```{r echo=FALSE}
+```{r echo = FALSE}
 iris %>% summarise(mean(Petal.Length))
 ```
 
@@ -226,13 +226,13 @@ iris %>%
 
 A shorthand for `summarise(n())` for counting the number of observations of each group is available in the form of the `count` function.
 
-```{r eval=FALSE}
+```{r eval = FALSE}
 # these both give the same output
 iris %>% group_by(Species) %>% summarise(n = n())
 count(iris, Species)
 ```
 
-```{r echo=FALSE}
+```{r echo = FALSE}
 count(iris, Species)
 ```
 
@@ -248,9 +248,9 @@ Returning to one of the earlier examples, we can also compute the correlation be
 iris %>% group_by(Species) %>% summarise(correlation = cor(Petal.Width, Petal.Length))
 ```
 
-Hold on a minute, wasn't the correlation coefficient for the overall dataset quite a lot higher? (yes, it was 0.96). What's going on here? A plot might help to understand why. 
+Hold on a minute, wasn't the correlation coefficient for the overall dataset quite a lot higher? (yes, it was 0.96). What's going on here? A plot might help to understand why.
 
-```{r}
+```{r message = FALSE}
 library(ggplot2)
 ggplot(iris, aes(x = Petal.Width, y = Petal.Length, colour = Species)) + geom_point()
 ```
