@@ -387,7 +387,7 @@ str_trim(patients$Sex)
 
 Once we have worked-out how to created a cleaned version of the variable, we need to update the data frame. This can be done using the next of the **dplyr verbs**; `mutate`.
 
-## Creating new variables: The `mutate` verb
+## Modifying or creating variables: the `mutate` verb
 
 `mutate` allows us to compute and append one or more new columns to a data frame. We can specify a new column name, or overwrite an existing one. 
 
@@ -436,10 +436,20 @@ patients_clean <- mutate(patients_clean, Height= as.numeric(str_replace_all(Heig
 hist(patients_clean$Height)
 ```
 
+Finally, you can also modify/create more than one column within a single `mutate()`. 
+For example our two cleaning steps above (for `Sex` and `Height`), could have 
+been done as:
+
+```{r}
+patients_clean <- mutate(patients, 
+                         Sex = factor(str_trim(Sex)),
+                         Height= as.numeric(str_replace_all(Height,pattern = "cm","")))
+```
+
 Other useful functions from `stringr`, and the `lubridate` package, are described after the exercise. If time allows, we will go through these in the class. If you finish the exercise early, feel free to take a look.
 
 ## Exercise: Cleaning the patients data
-- See [Rmarkdown template](2.dplyr-intro-exercise.Rmd)
+- See [Rmarkdown template](2.dplyr-intro-exercises.Rmd)
 - For a follow-on study, we are interested in overweight smokers
     + clean the `Smokes` column to contain just `TRUE` or `FALSE` values
 - We need to calculate the Body Mass Index (BMI) for each of our patients
