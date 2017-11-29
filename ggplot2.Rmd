@@ -607,7 +607,7 @@ For more details on palette sizes and styles visit the colorbrewer website and g
 
 - [ggplot2 colour scales](http://docs.ggplot2.org/current/scale_brewer.html)
 
-### Continous colour scales
+### Continuous colour scales
 
 So far we have looked a qualitative scales but ggplot2 offers much functionality for continuous scales such as for size, alpha (transparancy), colour and fill.
 
@@ -652,8 +652,10 @@ What points of scale to be labeled and labels text  can also be controlled.
 ```{r, facet_grid_height_weight_BMIsizewithBreaks}
 pcPlot <- ggplot(data=patients_clean,
                  aes(x=Height,y=Weight,size=BMI))
-pcPlot + geom_point() + scale_size_continuous(range = c(3,6) ,breaks=c(25,30),labels=c("Good","Good but not 25"))
-                  
+pcPlot + geom_point() + 
+  scale_size_continuous(range = c(3,6), 
+                        breaks=c(25,30), 
+                        labels=c("Good","Good but not 25"))
 ```
 
 
@@ -685,7 +687,7 @@ Similarly we can use the scale_colour_gradient2 function which allows for the sp
 pcPlot <- ggplot(data=patients_clean,
                  aes(x=Height,y=Weight,colour=BMI))
 pcPlot + geom_point(size=4,alpha=0.8) + 
-  scale_colour_gradient2(low = "Blue",mid="Black",high="Red",midpoint = median(patients_clean$BMI))
+  scale_colour_gradient2(low = "Blue",mid="Black", high="Red", midpoint = median(patients_clean$BMI))
 ```
 
 As with previous continous scales, limits and custom labels in scale legend can be added.
@@ -693,7 +695,8 @@ As with previous continous scales, limits and custom labels in scale legend can 
 ```{r, facet_grid_height_weight_BMIgradient2plus}
 pcPlot <- ggplot(data=patients_clean,
                  aes(x=Height,y=Weight,colour=BMI))
-pcPlot + geom_point(size=4,alpha=0.8) + scale_colour_gradient2(low = "Blue",
+pcPlot + geom_point(size=4,alpha=0.8) + 
+  scale_colour_gradient2(low = "Blue",
                          mid="Black",
                          high="Red",
                          midpoint = median(patients_clean$BMI),
@@ -706,10 +709,12 @@ Multiple scales may be combined to create high customisable plots and scales
 ```{r, facet_grid_smokesBySex_scaleDisceteXContinuouswY}
 pcPlot <- ggplot(data=patients_clean,
                  aes(x=Height,y=Weight,colour=BMI,shape=Sex))
-pcPlot + geom_point(size=4,alpha=0.8)+ scale_shape_discrete(name="Gender") +scale_colour_gradient2(low = "Blue",mid="Black",high="Red",midpoint = median(patients_clean$BMI),
+pcPlot + geom_point(size=4,alpha=0.8)+ 
+  scale_shape_discrete(name="Gender") +
+  scale_colour_gradient2(low = "Blue",mid="Black",high="Red",
+                         midpoint = median(patients_clean$BMI),
                          breaks=c(25,30),labels=c("Low","High"),
                          name="Body Mass Index")
-                  
 ```
 
 
@@ -769,9 +774,11 @@ pcPlot+stat_summary(fun.y=quantile,geom="point",colour="purple",size=8)
 # Themes
 
 
-Themes specify the details of data independent elements of the plot. This includes titles, background colour, text fonts etc.
+Themes specify the details of data independent elements of the plot. 
+This includes titles, background colour, text fonts etc.
 
-The graphs created so far have all used the default themes ,theme_grey(), but ggplot2 allows for the specification of theme used.
+The graphs created so far have all used the default themes, `theme_grey()`, 
+but ggplot2 allows for the specification of theme used.
 
 ## Predefined themes
 
