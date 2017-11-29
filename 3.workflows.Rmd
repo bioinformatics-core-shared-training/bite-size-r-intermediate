@@ -191,12 +191,13 @@ filter(patients_clean, Pet %in% c("CAT", "Cat")) %>% select(ID, Name, Race, Pet)
 ```
 (*additional `select` statement added so you can see the `Pet` variable`*)
 
-Partial matches can be performed using `grepl`. This is used rather than the usual `grep` as it returns a *logical* rather than an *integer*
+Partial matches can be performed using `str_detect()` from the `stringr` package 
+(there is a similar function in base R called `grepl`). This returns a logical 
+(`TRUE` and `FALSE`) referring to whether the pattern was found or not
 
 ```{r}
-grep("Br", patients_clean$Name)
-grepl("Br", patients_clean$Name)
-filter(patients_clean, grepl("Br",Name))
+str_detect(patients_clean$Name, "Br")
+filter(patients_clean, str_detect(Name, "Br"))
 ```
 
 Combining conditions in `filter` can be achieved adding `,` or using the Boolean operators `|`, `&`. In fact, the `&` isn't required and we can add extra conditions by separating them with a `,`.
