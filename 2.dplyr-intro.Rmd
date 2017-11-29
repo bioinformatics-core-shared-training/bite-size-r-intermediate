@@ -139,7 +139,7 @@ The arguments to `gather` are;
 
 ```{r warning=FALSE}
 library(tidyr)
-gather(untidy, Treatment, Result, c(treatmenta,treatmentb))
+gather(untidy, Treatment, Result, treatmenta, treatmentb)
 ```
 
 (*Ideally, the `Treatment` column should just be `a` or `b`, but we'll see how to change this later-on*)
@@ -163,7 +163,7 @@ Note that after all these operations, the original data frame (`untidy`) is unal
 
 ```{r warning=FALSE}
 untidy
-tidy <- gather(untidy, Treatment, Result, c(treatmenta,treatmentb))
+tidy <- gather(untidy, Treatment, Result, treatmenta, treatmentb)
 ```
 
 ******
