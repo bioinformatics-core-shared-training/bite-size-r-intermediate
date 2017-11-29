@@ -329,7 +329,7 @@ select(patients, starts_with("Grade"))
 
 see also
 
-- contains, matches, ends_with
+- `contains()`, `matches()`, `ends_with()`
 
 ******
 ## Exercise: select
@@ -449,6 +449,15 @@ Other useful functions from `stringr`, and the `lubridate` package, are describe
 - (EXTRA) What other problems can you find in the data?
 
 ```{r}
+library(tidyr)
+library(stringr)
+library(dplyr)
+
+# Re-read and clean the data if you haven't yet
+patients <- read.delim("patient-data.txt")
+patients_clean <- mutate(patients, 
+                         Sex = factor(str_trim(Sex)),
+                         Height= as.numeric(str_replace_all(Height,pattern = "cm","")))
 
 ## Your answer here or 2.dplyr-intro-exercises.Rmd
 
