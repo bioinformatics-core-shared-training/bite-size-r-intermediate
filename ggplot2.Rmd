@@ -543,7 +543,7 @@ Multiple X/Y scales can be combined to give full control of axis marks.
 pcPlot <- ggplot(data=patients_clean,aes(x=Sex,y=Height,fill=Smokes))
 pcPlot +
   geom_violin(aes(x=Sex,y=Height)) +
-  scale_x_discrete(labels=c("Guys","Girls"))+
+  scale_x_discrete(labels=c("Girls", "Guys"))+
   scale_y_continuous(breaks=c(160,180),labels=c("Petite","Tall"))
 ```
 
