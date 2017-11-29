@@ -261,8 +261,6 @@ glimpse(patients)
 
 As we mentioned, `dplyr` introduces a series of ***verbs*** that can be used to operate on our data. The first we will introduce is *`select`*
 
-N.B. base R does provide a function called `subset` which allowed similar operations.
-
 ![](images/select.png)
 
 The default display of a `tbl_df` object is to print the data frame in an intelligent manner, so not to flood the R console. If we want to control what variables are printed we can use the `select` function, which allows us to print certain columns to the screen.
@@ -305,8 +303,6 @@ select(patients, Name, Race)
 ```
 
 Excluding certain columns in base R would require us to know the *index* we wanted to exclude, or to do something complicated with the column names.
-
-- ***Disclaimer*** there is actually a function called `subset` in base R with a similar style to `select`
 
 ```{r eval=FALSE}
 patients[,-2]
