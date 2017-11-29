@@ -116,18 +116,6 @@ Note that we didn't need to specify `patients_clean` as an argument to the `muta
 - we don't need to create temporary variables
 
 
-If you prefer, you can put the `->` at the end of the chain of commands to assign to a variable
-
-```{r}
-read.delim("patient-data.txt") %>%
-  tbl_df %>%
-  mutate(Sex = factor(str_trim(Sex))) %>%
-  mutate(Height = as.numeric(str_replace_all(Height, pattern = "cm", ""))) -> patients_clean
-
-patients_clean
-```
-
-
 ## Exercise: Re-writing a workflow using pipes
 
 ******
