@@ -259,7 +259,7 @@ We now have all the tools in place in order to retrieve the overweight smokers f
 
 N.B. we also add an extra rounding to the BMI values so they display a bit nicer
 
-```{r}
+```{r, eval = FALSE}
 read.delim("patient-data.txt") %>%
   tbl_df %>%
   mutate(Sex = factor(str_trim(Sex))) %>%
@@ -316,7 +316,7 @@ top_n(patients_clean,  10,  Weight) %>% arrange(Weight)
 
 With the workflow we have developed in the previous exercises, we can add extra steps to arrange and then select the candidates with the highest BMI prior to writing to a file.
 
-```{r}
+```{r, eval = FALSE}
 read.delim("patient-data.txt") %>%
   tbl_df %>%
   mutate(Sex = factor(str_trim(Sex))) %>%
