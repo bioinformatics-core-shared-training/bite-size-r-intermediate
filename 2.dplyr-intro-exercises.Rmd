@@ -13,6 +13,7 @@ Read the simulated clinical dataset and put into the tidy form. Also load the `t
 ```{r}
 library(tidyr)
 messyData <- read.delim("clinicalData.txt")
+messyData
 ```
 
 ```{r}
