@@ -139,7 +139,7 @@ The arguments to `gather` are;
 
 ```{r warning=FALSE}
 library(tidyr)
-gather(untidy, Treatment, Result, c(treatmenta,treatmentb))
+gather(untidy, Treatment, Result, treatmenta, treatmentb)
 ```
 
 (*Ideally, the `Treatment` column should just be `a` or `b`, but we'll see how to change this later-on*)
@@ -163,7 +163,7 @@ Note that after all these operations, the original data frame (`untidy`) is unal
 
 ```{r warning=FALSE}
 untidy
-tidy <- gather(untidy, Treatment, Result, c(treatmenta,treatmentb))
+tidy <- gather(untidy, Treatment, Result, treatmenta, treatmentb)
 ```
 
 ******
@@ -261,8 +261,6 @@ glimpse(patients)
 
 As we mentioned, `dplyr` introduces a series of ***verbs*** that can be used to operate on our data. The first we will introduce is *`select`*
 
-N.B. base R does provide a function called `subset` which allowed similar operations.
-
 ![](images/select.png)
 
 The default display of a `tbl_df` object is to print the data frame in an intelligent manner, so not to flood the R console. If we want to control what variables are printed we can use the `select` function, which allows us to print certain columns to the screen.
@@ -306,8 +304,6 @@ select(patients, Name, Race)
 
 Excluding certain columns in base R would require us to know the *index* we wanted to exclude, or to do something complicated with the column names.
 
-- ***Disclaimer*** there is actually a function called `subset` in base R with a similar style to `select`
-
 ```{r eval=FALSE}
 patients[,-2]
 patients[,setdiff(colnames(patients), "Name")]
@@ -333,7 +329,7 @@ select(patients, starts_with("Grade"))
 
 see also
 
-- contains, matches, ends_with
+- `contains()`, `matches()`, `ends_with()`
 
 ******
 ## Exercise: select
@@ -391,7 +387,7 @@ str_trim(patients$Sex)
 
 Once we have worked-out how to created a cleaned version of the variable, we need to update the data frame. This can be done using the next of the **dplyr verbs**; `mutate`.
 
-## Creating new variables: The `mutate` verb
+## Modifying or creating variables: the `mutate` verb
 
 `mutate` allows us to compute and append one or more new columns to a data frame. We can specify a new column name, or overwrite an existing one. 
 
@@ -440,10 +436,20 @@ patients_clean <- mutate(patients_clean, Height= as.numeric(str_replace_all(Heig
 hist(patients_clean$Height)
 ```
 
+Finally, you can also modify/create more than one column within a single `mutate()`. 
+For example our two cleaning steps above (for `Sex` and `Height`), could have 
+been done as:
+
+```{r}
+patients_clean <- mutate(patients, 
+                         Sex = factor(str_trim(Sex)),
+                         Height= as.numeric(str_replace_all(Height,pattern = "cm","")))
+```
+
 Other useful functions from `stringr`, and the `lubridate` package, are described after the exercise. If time allows, we will go through these in the class. If you finish the exercise early, feel free to take a look.
 
 ## Exercise: Cleaning the patients data
-- See [Rmarkdown template](2.dplyr-intro-exercise.Rmd)
+- See [Rmarkdown template](2.dplyr-intro-exercises.Rmd)
 - For a follow-on study, we are interested in overweight smokers
     + clean the `Smokes` column to contain just `TRUE` or `FALSE` values
 - We need to calculate the Body Mass Index (BMI) for each of our patients
@@ -453,6 +459,15 @@ Other useful functions from `stringr`, and the `lubridate` package, are describe
 - (EXTRA) What other problems can you find in the data?
 
 ```{r}
+library(tidyr)
+library(stringr)
+library(dplyr)
+
+# Re-read and clean the data if you haven't yet
+patients <- read.delim("patient-data.txt")
+patients_clean <- mutate(patients, 
+                         Sex = factor(str_trim(Sex)),
+                         Height= as.numeric(str_replace_all(Height,pattern = "cm","")))
 
 ## Your answer here or 2.dplyr-intro-exercises.Rmd
 
