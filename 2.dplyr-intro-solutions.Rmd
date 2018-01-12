@@ -13,11 +13,12 @@ Read the simulated clinical dataset and put into the tidy form. Also load the `t
 ```{r}
 library(tidyr)
 messyData <- read.delim("clinicalData.txt")
+messyData
 ```
 
 ```{r}
 ## Your answer here
-tidyData <- gather(messyData, key = Treatment, value = Value,-Subject)
+tidyData <- gather(messyData, key = Treatment, value = Value, -Subject)
 tidyData
 boxplot(tidyData$Value~tidyData$Treatment)
 ```
