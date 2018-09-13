@@ -1,13 +1,13 @@
 ---
 title: "Exercise Set 1 — Geoms and Aesthetics"
-author: "Name"
+author: "Mark Dunning and Matt Eldridge"
 date: '`r format(Sys.time(), "Last modified: %d %b %Y")`'
 output: html_document
 ---
 
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = T,eval=T)
+```{r include = FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, eval = TRUE)
 ```
 
 
@@ -16,10 +16,11 @@ knitr::opts_chunk$set(echo = T,eval=T)
 These first few exercises will run through some of the simple principles of creating a ggplot2 object, assigning aesthetics mappings and geoms.
 
 
-1. Read in the cleaned patients dataset as we saw in ggplot2 course earlier ("patients_clean_ggplot2.txt")
+1. Read in the cleaned patients dataset as we saw in ggplot2 course earlier.
 
-```{r exerciseReadin, echo=T}
-patients_clean <- read.delim("patient-data-cleaned.txt",sep="\t")
+```{r echo = TRUE}
+library(tidyverse)
+patients <- read_tsv("patient-data-cleaned.txt")
 ```
 
 ### Scatterplots
@@ -46,13 +47,11 @@ patients_clean <- read.delim("patient-data-cleaned.txt",sep="\t")
 
 ```{r exercise4}
 
-
 ```
 
-6. Does the fit in question 5 look good? Look at the description for ?geom_smooth() and adjust the method for a better fit.
+6. Does the fit in question 5 look good? Look at the description for ?geom_smooth() and adjust the method to fit a straight line without standard error bounds.
 
 ```{r exercise5}
-
 
 ```
 
@@ -62,7 +61,6 @@ patients_clean <- read.delim("patient-data-cleaned.txt",sep="\t")
 
 ```{r exercise6}
 
-
 ```
 
 
@@ -70,19 +68,17 @@ patients_clean <- read.delim("patient-data-cleaned.txt",sep="\t")
 
 ```{r exercise7}
 
-
 ```
 
 9. Now reproduce the boxplots in exercise 8 (grouped by smoker, coloured by sex) but now include a separate facet for people of different age (using Age column).
 
 ```{r exercise8}
 
-
 ```
 
 10. Produce a similar boxplot of BMIs but this time group data by Sex, colour by Age and facet by Smoking status.
 
-HINT - Discrete values such as in factors are used for categorical data.
+HINT - is Age currently the right type of variable for grouping in a box plot?
 
 ```{r exercise9}
 
@@ -112,7 +108,7 @@ HINT: alpha can be used to control transparancy.
 
 ```
 
-14. Generate a separate density plot of BMI coloured by sex for each Grade,
+14. Generate a separate density plot of BMI coloured by sex for each Grade.
 ```{r exercise13}
 
 
