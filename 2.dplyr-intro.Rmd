@@ -4,6 +4,7 @@ author: "Mark Dunning"
 date: '`r format(Sys.time(), "Last modified: %d %b %Y")`'
 output:
   html_notebook:
+    code_folding: none
     toc: yes
     toc_float: yes
   html_document:
@@ -144,6 +145,16 @@ gather(untidy, Treatment, Result, treatmenta, treatmentb)
 
 (*Ideally, the `Treatment` column should just be `a` or `b`, but we'll see how to change this later-on*)
 
+```{r warning=FALSE}
+untidy
+tidy <- gather(untidy, Treatment, Result, treatmenta, treatmentb)
+
+library(ggplot2)
+ggplot(tidy, aes(x=Treatment, y=Result, color=Name)) +
+  geom_point()
+```
+
+
 When specifying columns, an alternative is to ignore some column names
 
 ```{r warning=FALSE}
@@ -165,6 +176,7 @@ Note that after all these operations, the original data frame (`untidy`) is unal
 untidy
 tidy <- gather(untidy, Treatment, Result, treatmenta, treatmentb)
 ```
+
 
 ******
 
@@ -360,10 +372,11 @@ There are several ways to solve these. Feel free to explore
 
 We can now begin to explore the data. Imagine that we want to do a simple barplot to the number of males and females. Using base graphics, we can do this with;
 
-- We will see `ggplot2` later which is a more natural way of plotting after manipulating our data with `dplyr`
-
 ```{r}
-barplot(table(patients$Sex))
+
+ggplot(patients, aes(x=Sex)) +
+  geom_bar()
+
 ```
 
 But something seems to be wrong with the number of categories that are produced. 
@@ -407,7 +420,8 @@ patients_clean
 We might want to look at the distribution of heights amongst our patients. However, if we try this we are immediately hit with an error message
 
 ```{r eval=FALSE}
-hist(select(patients,Height))
+ggplot(patients, aes(x=Height)) +
+  geom_histogram()
 ```
 
 The problem is that R thinks that values are not numbers. Why might that be?
@@ -433,7 +447,10 @@ We need an extra conversion step to make sure these are represented as *numeric*
 
 ```{r}
 patients_clean <- mutate(patients_clean, Height= as.numeric(str_replace_all(Height,pattern = "cm","")))
-hist(patients_clean$Height)
+
+ggplot(patients_clean, aes(x=Height)) +
+  geom_histogram()
+
 ```
 
 Finally, you can also modify/create more than one column within a single `mutate()`. 
@@ -473,8 +490,20 @@ patients_clean <- mutate(patients,
 
 ```
 
+### Mutating multiple columns
 
+When looking at the help documentation for `mutate` you may notice that there are a set of related functions, `mutate_all`, `mutate_at` and `mutate_if`. These are very useful functions for applying the same operation to several columns within a table.
 
+The `vars` and `funs` helper functions provide a flexible way to specify which columns to operate on and which functions to call. They also help to delineate which arguments are columns and which are functions.
+
+`mutate_at` is particularly useful for rounding values to a specified number of decimal places or significant figures.
+Let's round the patient's weight and height to 1 decimal place.
+
+```{r}
+patients_clean <- read.delim("patient-data-cleaned.txt", stringsAsFactors = FALSE)
+patients_clean <- tbl_df(patients_clean)
+mutate_at(patients_clean, vars(Height, Weight), funs(round(., digits = 1)))
+```
 
 # Supplementary:
 
