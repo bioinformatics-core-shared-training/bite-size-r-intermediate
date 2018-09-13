@@ -15,6 +15,8 @@ output:
 ```{r echo = FALSE, message = FALSE, warning = FALSE}
 knitr::opts_chunk$set(comment = NA)
 library(dplyr)
+library(tidyr)
+library(ggplot2)
 ```
 
 # Overview of this section
@@ -242,6 +244,18 @@ count(iris, Species)
 iris %>% group_by(Species) %>% summarise_all(funs(mean))
 ```
 
+
+```{r}
+iris %>% 
+  group_by(Species) %>% 
+  summarise_all(funs(mean)) %>%
+  gather("Sample", "Mean", Sepal.Length:Petal.Width) %>%
+  ggplot(aes(x = Sample, y = Mean, color = Species, group = Species)) +
+  geom_point() +
+  geom_line()
+```
+
+
 Returning to one of the earlier examples, we can also compute the correlation between petal width and length on a per-group basis.
 
 ```{r}
@@ -254,8 +268,6 @@ Hold on a minute, wasn't the correlation coefficient for the overall dataset qui
 library(ggplot2)
 ggplot(iris, aes(x = Petal.Width, y = Petal.Length, colour = Species)) + geom_point()
 ```
-
-But we're getting ahead of ourselves! Plotting with `ggplot2` is for the next part of the course.
 
 ### `group_by` - the technical details
 
