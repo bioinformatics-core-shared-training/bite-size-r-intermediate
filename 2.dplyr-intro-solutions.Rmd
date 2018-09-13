@@ -22,7 +22,11 @@ messyData
 ## Your answer here
 tidyData <- gather(messyData, key = Treatment, value = Value, -Subject)
 tidyData
+
+# base R solution
 boxplot(tidyData$Value~tidyData$Treatment)
+
+# ggplot2 solution
 ggplot(tidyData, aes(x=Treatment, y=Value)) +
   geom_boxplot()
 ```
