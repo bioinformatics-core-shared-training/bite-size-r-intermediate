@@ -12,6 +12,8 @@ Read the simulated clinical dataset and put into the tidy form. Also load the `t
 
 ```{r}
 library(tidyr)
+library(dplyr)
+library(ggplot2)
 messyData <- read.delim("clinicalData.txt")
 messyData
 ```
@@ -21,6 +23,8 @@ messyData
 tidyData <- gather(messyData, key = Treatment, value = Value, -Subject)
 tidyData
 boxplot(tidyData$Value~tidyData$Treatment)
+ggplot(tidyData, aes(x=Treatment, y=Value)) +
+  geom_boxplot()
 ```
 
 `spread` is useful if we want to see our data in the wide format
