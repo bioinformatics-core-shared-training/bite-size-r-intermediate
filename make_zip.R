@@ -1,4 +1,5 @@
 files <- c(
+	"0.introduction.html",
 	"1.introduction.html",
 	"2.dplyr-intro.nb.html",
 	"3.workflows.nb.html",
