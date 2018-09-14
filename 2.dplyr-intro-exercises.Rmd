@@ -1,0 +1,74 @@
+---
+title: "Title"
+author: "Your Name"
+date: '`r format(Sys.time(), "Last modified: %d %b %Y")`'
+output: html_document
+---
+
+## Tidy data
+
+Read the simulated clinical dataset and put into the tidy form. Also load the `tidyr` package that we are going to use.
+- Can you make a boxplot to visualise the effect of the different treatments?
+
+```{r}
+library(tidyr)
+messyData <- read.delim("clinicalData.txt")
+messyData
+```
+
+```{r}
+## Your answer here
+
+```
+
+
+## The patients dataset
+
+First load the file using the `read.delim` function. Also load the `dplyr` library that we will need later
+
+```{r}
+library(dplyr)
+
+patients <- read.delim("patient-data.txt")
+patients <- tbl_df(patients)
+```
+
+## Exercise: select
+
+- Print all the columns between `Height` and `Grade_Level`
+- Print all the columns between `Height` and `Grade_Level`, but NOT `Pet`
+- Print the columns `Height` and `Weight`
+    + try to do this without specifying the full names of the columns
+- (OPTIONAL)
+- Print the columns in alphabetical order
+- Print all the columns whose name is less than 4 characters in length
+
+There are several ways to solve these. Feel free to explore
+
+```{r}
+### Your answer here
+
+```
+
+
+```{r}
+library(stringr)
+patients_clean <- mutate(patients, Sex = factor(str_trim(Sex)))
+patients_clean <- mutate(patients_clean, Height= as.numeric(str_replace_all(Height,pattern = "cm","")))
+```
+
+
+- For a follow-on study, we are interested in overweight smokers
+    + clean the `Smokes` column to contain just `TRUE` or `FALSE` values
+- We need to calculate the Body Mass Index (BMI) for each of our patients
+- $BMI = (Weight) / (Height^2)$ 
+    + where Weight is measured in Kilograms, and Height in Metres
+- A BMI of 25 is considered overweight, calculate a new variable to indicate which individuals are overweight
+- (EXTRA) What other problems can you find in the data?
+
+
+```{r}
+### Your answer here
+
+```
+

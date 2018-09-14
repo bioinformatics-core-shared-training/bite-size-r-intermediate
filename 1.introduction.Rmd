@@ -1,0 +1,88 @@
+---
+title: "Data Manipulation and Visualisation in R"
+author: "Mark Dunning"
+date: '`r format(Sys.time(), "Last modified: %d %b %Y")`'
+output: html_document
+---
+# [Course Home](http://bioinformatics-core-shared-training.github.io/r-intermediate/)
+
+## Motivation
+
+Spreadsheets are a common entry-point for many types of analyses. Whilst they are great for exploring / visualising data in an interactive and intuitive manner, they are not ideal for many production-level analyses.
+
+- Tedious and time-consuming to repeatedly process multiple files
+- Error-prone
+- Unwieldy and difficult to deal with large amounts of data
+- How can you (or someone else?) repeat what you did several months, or years down the line?
+
+![](images/spreadsheet-full.png)
+
+This course aims to translate how we think of data in spreadsheets to a series of operations that can be performed and chained together in R.
+
+
+A data analysis can be broken-down into several stages. There is, however, no such thing as a typical analysis. Most datasets we will encounter will have their own issues and problems that need fixing. We will also need to spend a lot of time visualising our data in different ways in order to gain insights. For every figure or table presented in a paper, there may be tens or hundreds of exploratory analyses that were generated along the way. We will show how such exploratory analysis can be performed in R.
+
+![](images/data-cycle.png)
+
+(from Hadley Wickham's workshop at [useR2014](http://datascience.la/hadley-wickhams-dplyr-tutorial-at-user-2014-part-1/))
+
+Unfortunately, in R there are many hundreds (thousands!) of functions for us to choose from to achieve our goals, and everyone will have their own set of favourites. The tools we will meet today help us to explore data in a consistent and "pipeline-able" manner. Collectively, these tools have been called part of the ***tidy-verse*** in R. A set of packages that you are likely to use in almost every analysis
+
+- ggplot2, for data visualisation.
+- dplyr, for data manipulation.
+- tidyr, for data tidying.
+- readr, for data import.
+- purrr, for functional programming.
+- tibble, for tibbles, a modern re-imagining of data frames.
+
+To install this set of packages on your own machine, you can do:-
+
+```{r eval=FALSE}
+install.packages("devtools")
+devtools:::install_github("hadley/tidyverse")
+```
+
+
+Hadley also has these words of advice that we should bear in mind as we proceed through the course.
+
+> Whenever you’re learning a new tool, for a long time you’re going to suck… But the good news is that is typical, that’s something that happens to everyone, and it’s only temporary.
+
+## How does this differ from "Solving Biological Problems using R?"
+
+- The [introductory course](http://cambiotraining.github.io/r-intro/) is designed to give you a taste of what R can do
+    + we start from the very beginning, assuming you know nothing about programming
+- Hopefully it gives you enough to read some data in, make a few basic plots
+- It should allow you to access the majority of add-on packages
+    + including Bioconductor ones
+- When you try and seek help, most R users will be familiar with the "classic" techniques presented
+- However, the data you try and analyse might not fit the data presented in the class....
+    + you might be itching to try out new tools you have heard of; including ggplot2
+- This course is designed to take you further with R
+    + introduce more "cutting-edge" R
+- Taking advantage of more recent innovations in the language
+- Help you write more elegant solutions and code
+- Hopefully appealing to those familiar with other languages
+
+
+The [pre-course recap](https://rawgit.com/bioinformatics-core-shared-training/r-intermediate/master/0.r-recap.html) should hopefully cover most of what you need to know. 
+
+## How do we run this course
+
+- The traditional way to enter R commands is via the Terminal, or using the console in RStudio (bottom-left)
+- However, for this course we will use a relatively new feature called *R-notebooks*.
+- An R-notebook mixes plain text with R code
+    + The R code can be run from inside the document and the results are displayed directly underneath
+- On the [course website](http://bioinformatics-core-shared-training.github.io/r-intermediate/) you will see compiled HTML versions of each section
+    + each section also has a exercise markdown
+    + solutions will be revealed during the course and on the website afterwards
+    
+## Schedule
+
+- Introduction to dplyr
+- Introducing workflows
+- Summarising groups and combining tables
+- LUNCH
+- ggplot
+
+
+

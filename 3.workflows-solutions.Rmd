@@ -1,0 +1,98 @@
+---
+title: "Workflow solutions"
+author: "Mark Dunning"
+date: '`r format(Sys.time(), "Last modified: %d %b %Y")`'
+output: html_document
+---
+
+
+******
+
+Take the steps used to clean the patients dataset and calculate BMI (see below for the code)
+- Re-write in the piping framework
+
+
+******
+
+```{r message = FALSE}
+library(dplyr)
+library(stringr)
+
+patients <- read.delim("patient-data.txt")
+patients <- tbl_df(patients)
+patients_clean <- mutate(patients, Sex = factor(str_trim(Sex)))
+patients_clean <- mutate(patients_clean, Height= as.numeric(str_replace_all(patients_clean$Height, pattern = "cm", "")))
+patients_clean <- mutate(patients_clean, Weight = as.numeric(str_replace_all(patients_clean$Weight, "kg", "")))
+patients_clean <- mutate(patients_clean, BMI = (Weight/(Height/100)^2), Overweight = BMI > 25)
+patients_clean <- mutate(patients_clean, Smokes = str_replace_all(Smokes, "Yes", "TRUE"))
+patients_clean <- mutate(patients_clean, Smokes = as.logical(str_replace_all(Smokes, "No", "FALSE")))
+```
+
+
+```{r}
+## Re-write the above template using 'pipes'
+patients_clean <- read.delim("patient-data.txt") %>%
+  tbl_df %>%
+  mutate(Sex = factor(str_trim(Sex))) %>%
+  mutate(Height= as.numeric(str_replace_all(Height, pattern = "cm", ""))) %>%
+  mutate(Weight = as.numeric(str_replace_all(Weight, "kg", ""))) %>%
+  mutate(BMI = (Weight/(Height/100)^2), Overweight = BMI > 25) %>%
+  mutate(Smokes = str_replace_all(Smokes, "Yes", "TRUE")) %>%
+  mutate(Smokes = as.logical(str_replace_all(Smokes, "No", "FALSE")))
+
+patients_clean
+
+```
+
+
+******
+Use `filter` to print the following subsets of the dataset
+
+
+- Choose the Female patients from New York or New Jersey
+
+```{r}
+filter(patients_clean, Sex == "Female", State == "New York" | State == "New Jersey")
+filter(patients_clean, Sex == "Female", State %in% c("New York", "New Jersey"))
+filter(patients_clean, Sex == "Female", grepl("New", State))
+```
+
+- Choose the overweight smokers that are still alive
+
+```{r}
+filter(patients_clean, Overweight, Smokes, !Died)
+```
+
+
+- Choose the patients who own a Pet that is not a dog
+
+```{r}
+
+filter(patients_clean, !Pet %in% c("None", "NONE", "NULL"), !is.na(Pet), !Pet %in% c("DOG", "Dog"))
+
+```
+
+- Patients born in June
+ 
+```{r message = FALSE}
+filter(patients_clean, substr(Birth, 6, 7) == "06")
+
+library(lubridate)
+filter(patients_clean, month(ymd(Birth)) == 6)
+```
+
+- Patients with a Number > 100
+
+```{r}
+filter(patients_clean, as.numeric(substr(patients$ID, 7, 9)) > 100)
+```
+
+- Patients that entered the study on 2016-05-31
+
+```{r}
+library(tidyr)
+mutate(patients_clean, Date.Entered.Study = ifelse(Date.Entered.Study == "", NA, as.character(Date.Entered.Study))) %>%
+  fill(Date.Entered.Study) %>%
+  filter(Date.Entered.Study == "2016-05-31")
+```
+

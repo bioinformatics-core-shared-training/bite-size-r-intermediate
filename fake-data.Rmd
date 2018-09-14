@@ -1,0 +1,303 @@
+---
+title: "Data Example"
+author: "Mark Dunning"
+date: "2 February 2016"
+output: html_document
+---
+
+
+```{r}
+library(wakefield)
+library(stringr)
+library(dplyr)
+set.seed(666)
+
+random_patients <- function(n) {
+  as.data.frame(r_data_frame(
+    n,
+    id,
+    name,
+    race,
+#    age,
+    sex,
+    smokes,
+    height_cm(name = "Height"),
+    normal(name="Weight"),
+    birth(random = TRUE, x = NULL, start = Sys.Date() - 365 * 45, k = 365*2,by = "1 days"),
+    state,
+    pet,
+    grade_level(x=1:3),
+    died,    
+    normal_round(name="Count",digits=2),
+    date_stamp)
+  )
+  
+  
+  
+}
+
+patients <- random_patients(100)
+patients$Height <- round(ifelse(patients$Sex == "Male",rnorm(n=100,mean=175.3,sd=6),rnorm(n=100,161.9,sd=3)),2)
+patients$Weight <- round(ifelse(patients$Sex == "Male",rnorm(n=100,mean=84,sd=6),rnorm(n=100,69,sd=3)),2)
+patients$Weight <- paste0(patients$Weight, "kg")
+```
+
+1. Change some values of `Smokes` to yes/no
+
+```{r}
+
+rand_rows <- sample(1:100,10)
+patients$Smokes[rand_rows] <- sample(c("Yes","No"),10,replace=TRUE)
+```
+
+2. Add cm to the Height column
+
+
+```{r}
+patients$Height <- as.character(patients$Height)
+patients$Height <- paste0(patients$Height,"cm")
+```
+
+
+3. Add whitespace to Male / Female columns
+
+```{r}
+rand_rows <- sample(1:100,10)
+patients$Sex <- as.character(patients$Sex)
+patients$Sex[rand_rows] <- paste0(" ", patients$Sex[rand_rows])
+rand_rows <- sample(1:100,6)
+patients$Sex[rand_rows] <- paste0(patients$Sex[rand_rows], " ")
+
+```
+
+4. upper-case convert some of the pets
+
+```{r}
+rand_rows <- sample(1:100,10)
+patients$Pet <- as.character(patients$Pet)
+patients$Pet[rand_rows] <- toupper(patients$Pet[rand_rows])
+```
+
+5. convert some of the `None` pets to NA or NULL
+
+```{r}
+patients$Race <- as.character(patients$Race)
+error_row <- sample(which(patients$Pet != "None"),1)
+patients$Race[error_row] <- patients$Pet[error_row]
+
+no_pet <- which(patients$Pet == "None")
+patients$Pet[sample(no_pet,2)] <- "NA"
+patients$Pet[sample(no_pet,3)] <- "NULL"
+  
+```
+
+
+6. Make some of the grades '99'
+
+```{r}
+rand_rows <- sample(1:100,7)
+patients$Grade_Level <- as.numeric(patients$Grade_Level)
+patients$Grade_Level[rand_rows] <- 99
+```
+
+7. Put in the IDs from the diabetes data
+
+```{r}
+diabetes <- read.delim("diabetes.txt")
+patients$ID <- unique(diabetes$ID)
+##First 57 IDs are from centre AH
+
+
+```
+
+8. Retain only the first occurence of each date
+
+```{r}
+dates <- unique(patients$Date)
+firstDate <- match(dates, patients$Date)
+patients$Date <- ""
+patients$Date[firstDate] <- as.character(dates)
+colnames(patients)[ncol(patients)] <- "Date Entered Study"
+```
+
+9. Change some names to upper case
+
+```{r}
+rand_rows <- sample(1:nrow(patients), 20)
+patients$Name <- as.character(patients$Name)
+patients$Name[rand_rows] <- str_to_upper(as.character(patients$Name[rand_rows]))
+```
+
+10. Introduce typos in 'California'
+
+```{r}
+cal <- sample(grep("California", patients$State),2)
+patients$State <- as.character(patients$State)
+patients$State[cal] <- "Californa"
+car <- sample(grep("Carolina", patients$State),2)
+patients$State[car] <- gsub("Carolina", "Caroline",patients$State[car])
+
+```
+
+
+```{r}
+head(patients)
+write.table(patients, file="patient-data.txt",sep="\t",row.names = FALSE)
+```
+
+
+Clean the data
+
+```{r}
+library(lubridate)
+grds <- patients$Grade_Level
+
+dob <- ymd(patients$Birth)
+today <- ymd("20160509")
+age <- interval(dob, today)
+
+
+read.delim("patient-data.txt") %>% 
+  tbl_df %>% 
+  mutate(Age = year(as.period(age))) %>% 
+  mutate(Sex = factor(str_trim(Sex))) %>% 
+  mutate(Height= as.numeric(str_replace_all(Height,pattern = "cm",""))) %>% 
+  mutate(Weight = as.numeric(str_replace_all(Weight,"kg",""))) %>% 
+  mutate(BMI = round((Weight/(Height/100)^2),2), Overweight = BMI > 25) %>% 
+  mutate(Smokes = str_replace_all(Smokes, "Yes|TRUE", "Smoker")) %>% 
+  mutate(Smokes = str_replace_all(Smokes, "No|FALSE", "Non-Smoker")) %>% 
+  mutate(Pet = str_to_title(Pet)) %>% 
+  mutate(Name = str_to_title(Name)) %>% 
+  mutate(Grade_Level = ifelse(Grade_Level == 99, NA,Grade_Level)) %>% 
+  rename(Grade = Grade_Level) %>% 
+  mutate(Pet = str_replace_all(Pet, "Null","NA")) %>% 
+  mutate(Race = factor(Race,levels=c("Asian","Bi-Racial","Black","Hispanic","White",NA))) -> patients_clean
+ patients_clean
+```
+
+
+```{r}
+write.table(patients_clean,file="patient-data-cleaned.txt",sep="\t",row.names = FALSE)
+```
+
+Now for a larger set
+
+```{r}
+
+random_patients <- function(n) {
+  as.data.frame(r_data_frame(
+    n,
+    id,
+#    name,
+    race,
+#    age,
+    sex,
+    smokes,
+    height_cm(name = "Height"),
+    normal(name="Weight"),
+    birth(random = TRUE, x = NULL, start = Sys.Date() - 365 * 45, k = 365*2,by = "1 days"),
+    state,
+    pet,
+    grade_level(x=1:3),
+    died,    
+    normal_round(name="Count",digits=2),
+    date_stamp)
+  )
+  
+  
+  
+}
+
+cohort <- random_patients(10023)
+cohort$Height <- round(ifelse(cohort$Sex == "Male",rnorm(n=100,mean=175.3,sd=6),rnorm(n=100,161.9,sd=3)),2)
+cohort$Weight <- round(ifelse(cohort$Sex == "Male",rnorm(n=100,mean=84,sd=6),rnorm(n=100,69,sd=3)),2)
+cohort$Weight <- paste0(cohort$Weight, "kg")
+cohort$Height <- as.character(cohort$Height)
+cohort$Height <- paste0(cohort$Height,"cm")
+rand_rows <- sample(1:1000,10)
+cohort$Sex <- as.character(cohort$Sex)
+cohort$Sex[rand_rows] <- paste0(" ", cohort$Sex[rand_rows])
+rand_rows <- sample(1:1000,6)
+cohort$Sex[rand_rows] <- paste0(cohort$Sex[rand_rows], " ")
+rand_rows <- sample(1:100,10)
+cohort$Pet <- as.character(cohort$Pet)
+cohort$Pet[rand_rows] <- toupper(cohort$Pet[rand_rows])
+no_pet <- which(patients$Pet == "None")
+cohort$Pet[sample(no_pet,2)] <- "NA"
+cohort$Pet[sample(no_pet,3)] <- "NULL"
+  
+rand_rows <- sample(1:100,7)
+cohort$Grade_Level <- as.numeric(cohort$Grade_Level)
+cohort$Grade_Level[rand_rows] <- 99
+
+write.table(cohort, file="cohort-data.txt",sep="\t",row.names = FALSE)
+
+```
+
+```{r}
+set.seed(20170120)
+Placebo.1 <- rnorm(10,mean = 50, sd=3)
+Placebo.2 <- rnorm(10, mean=48, sd=5)
+
+Drug1.1 <- rnorm(10, mean=45, sd=3)
+Drug1.2 <- rnorm(10, mean=43, sd=5)
+
+Drug2.1 <- rnorm(10, 41,sd=2)
+Drug2.2 <- rnorm(10, 37,sd=3)
+
+clinicalData <- data.frame(Subject = paste0("Patient",1:10), Placebo.1, Placebo.2, Drug1.1,Drug1.2,Drug2.1,Drug2.2) %>% 
+  mutate_each(funs(round(.,2)),-Subject)
+
+write.table(clinicalData, file="clinicalData.txt",row.names=FALSE,sep="\t")
+messyData <- read.delim("clinicalData.txt")
+tidyData <- gather(messyData, Treatment, Value,-Subject)
+png("images/tidy-boxplot.png",width=800,height=600)
+boxplot(tidyData$Value ~ tidyData$Treatment)
+dev.off()
+```
+
+Replace with better first names
+
+```{r}
+patients <- read.delim("patient-data.txt",stringsAsFactors = FALSE)
+patients
+patients_cleaned <- read.delim("patient-data-cleaned.txt",stringsAsFactors = FALSE)
+patients_cleaned
+
+if(!require(babynames)) devtools:::install_github("hadley/babynames")
+data("babynames")
+girls <- babynames %>% filter(year == 1973, sex=="F") %>% top_n(100,prop) %>% select(name) %>% unlist %>% as.character
+boys <- babynames %>% filter(year == 1974, sex=="M") %>% top_n(100,prop) %>% select(name) %>% unlist %>% as.character
+
+nboys <- table(patients_cleaned$Sex)[2]
+ngirls <- table(patients_cleaned$Sex)[1]
+set.seed("28032017")
+newboys <- sample(boys,nboys,replace = TRUE)
+newgirls <- sample(girls ,ngirls, replace = TRUE)
+
+patients$Name[which(as.character(patients_cleaned$Sex) == "Male")] <- newboys
+patients$Name[which(patients_cleaned$Sex == "Female")] <- newgirls
+patients
+write.table(patients, file="patient-data.txt",sep="\t",row.names = FALSE)
+
+patients_cleaned$Name[which(as.character(patients_cleaned$Sex) == "Male")] <- newboys
+patients_cleaned$Name[which(patients_cleaned$Sex == "Female")] <- newgirls
+patients_cleaned
+
+
+```
+Also fill the Date Entered Study column
+
+```{r}
+library(tidyr)
+
+## Turn the column into a character
+patients_cleaned <- mutate(patients_cleaned, Date.Entered.Study = as.character(Date.Entered.Study))
+## Replace the blank strings with an NA
+patients_cleaned <- mutate(patients_cleaned, Date.Entered.Study = ifelse(Date.Entered.Study == "", NA,Date.Entered.Study))
+## Now fill will happily fill the missing values for us
+patients_cleaned <- fill(patients_cleaned,Date.Entered.Study)
+patients_cleaned
+write.table(patients_cleaned, file="patient-data-cleaned.txt",sep="\t",row.names = FALSE)
+```
+

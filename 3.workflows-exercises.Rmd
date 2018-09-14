@@ -1,0 +1,62 @@
+---
+title: "Title"
+author: "Name"
+date: '`r format(Sys.time(), "Last modified: %d %b %Y")`'
+output: html_document
+---
+
+******
+
+Take the steps used to clean the patients dataset and calculate BMI (see below for the code)
+- Re-write in the piping framework
+
+
+******
+
+```{r message = FALSE}
+library(dplyr)
+library(stringr)
+
+patients <- read.delim("patient-data.txt")
+patients <- tbl_df(patients)
+patients_clean <- mutate(patients, Sex = factor(str_trim(Sex)))
+patients_clean <- mutate(patients_clean, Height= as.numeric(str_replace_all(patients_clean$Height, pattern = "cm", "")))
+patients_clean <- mutate(patients_clean, Weight = as.numeric(str_replace_all(patients_clean$Weight, "kg", "")))
+patients_clean <- mutate(patients_clean, BMI = (Weight/(Height/100)^2), Overweight = BMI > 25)
+patients_clean <- mutate(patients_clean, Smokes = str_replace_all(Smokes, "Yes", "TRUE"))
+patients_clean <- mutate(patients_clean, Smokes = as.logical(str_replace_all(Smokes, "No", "FALSE")))
+```
+
+
+```{r}
+## Re-write the above template using 'pipes'
+
+
+```
+
+
+## Exercise: filter
+
+Use `filter` to print the following subsets of the dataset
+  - Choose the Female patients from New York or New Jersey
+  - Choose the overweight smokers that are still alive
+  - Choose the patients who own a Pet that is not a dog
+    + recall that `is.na` can check for values that are `NA`
+  - (OPTIONAL)
+  - Patients born in June
+    + you could check out the notes on dealing with dates in the previous section for this
+  - Patients with a Number > 100
+    + Patient Number is the third component of the ID variable
+    + e.g. `AC/AH/001` is patient Number 1; `AC/AH/017` is patient Number 17
+  - Patients that entered the study on 2016-05-31
+    + the column containing this data is incomplete; blank entries are assumed to be the same as the last non-blank entry above
+    + the function `fill` from `tidyr` will help here
+
+Feel free to experiment with different ways to do these
+
+
+```{r}
+
+### Your answer here
+```
+

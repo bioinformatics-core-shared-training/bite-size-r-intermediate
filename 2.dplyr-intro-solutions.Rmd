@@ -1,0 +1,107 @@
+---
+title: "Solutions to dplyr introduction"
+author: "Mark Dunning"
+date: '`r format(Sys.time(), "Last modified: %d %b %Y")`'
+output: html_document
+---
+
+## Tidy data
+
+Read the simulated clinical dataset and put into the tidy form. Also load the `tidyr` package that we are going to use.
+- Can you make a boxplot to visualise the effect of the different treatments?
+
+```{r}
+library(tidyr)
+library(dplyr)
+library(ggplot2)
+messyData <- read.delim("clinicalData.txt")
+messyData
+```
+
+```{r}
+## Your answer here
+tidyData <- gather(messyData, key = Treatment, value = Value, -Subject)
+tidyData
+
+# base R solution
+boxplot(tidyData$Value~tidyData$Treatment)
+
+# ggplot2 solution
+ggplot(tidyData, aes(x=Treatment, y=Value)) +
+  geom_boxplot()
+```
+
+`spread` is useful if we want to see our data in the wide format
+
+```{r}
+spread(tidyData, key = Treatment,value=Value)
+```
+
+`separate` can be used to split columns that encode more than one piece of information
+
+```{r}
+separate(tidyData, "Treatment",into=c("Treatment","Replicate"))
+```
+
+
+## The patients dataset
+```{r}
+library(dplyr)
+library(stringr)
+
+patients <- read.delim("patient-data.txt")
+patients <- tbl_df(patients)
+```
+
+
+- Print all the columns between `Height` and `Grade_Level`
+
+```{r}
+select(patients, Height:Grade_Level)
+```
+
+- Print all the columns between `Height` and `Grade_Level`, but NOT `Pet`
+
+```{r}
+select(patients, Height:Grade_Level, -Pet)
+```
+
+- Print the columns `Height` and `Weight`
+    + try to do this without specifying the full names of the columns
+    
+```{r}
+select(patients, contains("eight"))
+select(patients, ends_with("eight"))
+```
+
+- (OPTIONAL)
+- Print the columns in alphabetical order
+- Print all the columns whose name is less than 4 characters in length
+
+```{r}
+select(patients, order(colnames(patients)))
+select(patients, which(nchar(colnames(patients)) < 4))
+```
+
+
+- We want to calculate the Body Mass Index (BMI) for each of our patients
+- $BMI = (Weight) / (Height^2)$ 
+    + where Weight is measured in Kilograms, and Height in Metres
+- Create a new BMI variable in the dataset
+- A BMI of 25 is considered overweight, calculate a new variable to indicate which individuals are overweight
+- For a follow-on study, we are interested in overweight smokers
+    + clean the `Smokes` column to contain just `TRUE` or `FALSE` values
+- How many candidates (Overweight and Smoker) do you have?
+- (EXTRA) What other problems can you find in the data?
+
+
+```{r}
+patients_clean <- mutate(patients, Sex = factor(str_trim(Sex)))
+patients_clean <- mutate(patients_clean, Height = as.numeric(str_replace_all(Height,pattern = "cm", "")))
+patients_clean <- mutate(patients_clean, Weight = as.numeric(str_replace_all(patients_clean$Weight,"kg", "")))
+patients_clean <- mutate(patients_clean, BMI = (Weight/(Height/100)^2), Overweight = BMI > 25)
+patients_clean <- mutate(patients_clean, Smokes = str_replace_all(Smokes, "Yes", "TRUE"))
+patients_clean <- mutate(patients_clean, Smokes = as.logical(str_replace_all(Smokes, "No", "FALSE")))
+patients_clean
+```
+

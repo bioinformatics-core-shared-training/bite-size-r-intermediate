@@ -1,0 +1,94 @@
+---
+title: "Summarising, Grouping and Joining Exercise"
+date: '`r format(Sys.time(), "Last modified: %d %b %Y")`'
+output: html_document
+---
+
+### Summarising
+
+The first part of the exercise uses the patients dataset we've been using in previous sections of the course. After reading this into R, answer the following questions using the `summarise`, `summarise_at` and `mutate_all` functions.
+
+```{r message = FALSE}
+library(dplyr)
+patients <- read.delim("patient-data-cleaned.txt", stringsAsFactors = FALSE)
+patients %>% head(5)
+```
+
+Compute the mean age, height and weight of patients in the patients dataset
+
+- First compute the means using `summarise` and then try to do the same using `summarise_at`
+
+```{r}
+## YOUR CODE HERE
+```
+
+- Modify the output by adding a step to round to 1 decimal place
+
+```{r}
+## YOUR CODE HERE
+```
+
+Compute the means of all numeric columns
+
+```{r}
+## YOUR CODE HERE
+```
+
+See what happens if you try to compute the mean of a logical (boolean) variable
+
+- What proportion of our patient cohort has died?
+
+```{r}
+## YOUR CODE HERE
+```
+
+
+### Grouping
+
+The following questions require grouping of patients based on one or more attributes using the `group_by` function.
+
+Compare the average height of males and females in this patient cohort.
+
+Are smokers heavier or lighter on average than non-smokers in this dataset?
+
+```{r}
+## YOUR CODE HERE
+```
+
+
+### Joining
+
+The patients are all part of a diabetes study and have had their blood glucose concentration and diastolic blood pressure measured on several dates.
+
+This part of the exercise combines grouping, summarisation and joining operations to connect the diabetes study data to the patients table we've already been working with.
+
+```{r}
+diabetes <- read.delim("diabetes.txt", stringsAsFactors = FALSE)
+diabetes %>% head(5)
+```
+
+The goal is to compare the blood pressure of smokers and non-smokers, similar to the comparison of the average weight we made in the previous part of the exercise.
+
+First, calculate the average blood pressure for each individual in the `diabetes` data frame.
+
+```{r}
+## YOUR CODE HERE
+```
+
+Now use one of the join functions to combine these average blood pressure measurements with the `patients` data frame containing information on whether the patient is a smoker.
+
+```{r}
+## YOUR CODE HERE
+```
+
+Finally, calculate the average blood pressure for smokers and non-smokers on the resulting, combined data frame.
+
+```{r}
+## YOUR CODE HERE
+```
+
+Can you write this as a single dplyr chain?
+
+```{r}
+## YOUR CODE HERE
+```
