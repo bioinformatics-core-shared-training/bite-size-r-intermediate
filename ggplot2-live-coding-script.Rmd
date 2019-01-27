@@ -8,11 +8,6 @@ output:
     toc_float: yes
 ---
 
-```{r setup, include=FALSE}
-# comment out for condensed script
-#knitr::opts_chunk$set(echo = FALSE)
-```
-
 ## Introduction
 
 In this session we will use the popular **ggplot2** package to visualize data that has already
@@ -375,7 +370,7 @@ What is geom_smooth doing? Look up the help page.
 Note that the shaded area represents the standard error bounds on the fitted model.
 
 There is some annoying duplication of code here. We can avoid this by putting the
-mappings in ggplot function instead.
+mappings in the `ggplot` function instead.
 
 ```{r}
 ggplot(data = patients, mapping = aes(x = Height, y = Weight)) +
@@ -383,7 +378,7 @@ ggplot(data = patients, mapping = aes(x = Height, y = Weight)) +
   geom_smooth()
 ```
 
-Aesthetics set in the ggplot function are treated as global mappings for the
+Aesthetics set in the `ggplot` function are treated as global mappings for the
 plot and are inherited by all geoms added to the plot.
 
 Let's say we still want to colour the points by sex.
@@ -672,7 +667,7 @@ ggplot(data = patients, mapping = aes(x = Height, y = Weight, colour = Grade)) +
   facet_wrap(~ Grade)
 ```
 
-We can tell ggplot to fit the subplots onto a single row.
+We can tell ggplot2 to fit the subplots onto a single row.
 
 ```{r}
 ggplot(data = patients, mapping = aes(x = Height, y = Weight, colour = Grade)) +
@@ -770,7 +765,7 @@ ggplot(data = patients, mapping = aes(x = Height, y = Weight)) +
 
 ### Scales
 
-Take a look at the x and y scales in the above plot. ggplot has chosen the x and y
+Take a look at the x and y scales in the above plot. ggplot2 has chosen the x and y
 scales and where to put breaks and ticks.
 
 ```{r}
@@ -820,7 +815,7 @@ ggplot(data = patients, mapping = aes(x = Height, y = Weight, colour = Sex)) +
   scale_y_continuous()
 ```
 
-First, we'll change the breaks, i.e. where ggplot puts ticks and numeric labels, on the
+First, we'll change the breaks, i.e. where ggplot2 puts ticks and numeric labels, on the
 y axis.
 
 ```{r}
@@ -892,7 +887,7 @@ ggplot(data = patients, mapping = aes(x = Height, y = Weight, colour = Sex)) +
   scale_colour_manual(values = c("green", "purple"))
 ```
 
-ggplot can provides a set of colour palettes from [ColorBrewer]( http://colorbrewer2.org).
+ggplot2 provides a set of colour palettes from [ColorBrewer]( http://colorbrewer2.org).
 
 ```{r}
 ggplot(data = patients, mapping = aes(x = Height, y = Weight, colour = Race)) +
@@ -962,8 +957,8 @@ ggplot(data = patients, mapping = aes(x = Sex, y = BMI, colour = Sex)) +
 Categorical variables are treated as special types of variables in R known as factors.
 A factor has levels, e.g. Female and Male for the Sex variable in the patients dataset.
 
-ggplot displays categories in the order given by the levels of the factor. If a character
-variable is presented to ggplot as if it were a factor, ggplot converts it into a factor
+ggplot2 displays categories in the order given by the levels of the factor. If a character
+variable is presented to ggplot2 as if it were a factor, ggplot2 converts it into a factor
 temporarily in order to create the plot, and the categories will be in alphabetical order.
 
 We can reorder the categories by explicitly creating a factor with the levels set in our
