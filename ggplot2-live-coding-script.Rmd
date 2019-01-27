@@ -1,0 +1,1064 @@
+---
+title: "ggplot2 live coding script"
+author: "Matt Eldridge"
+date: '`r format(Sys.time(), "Last modified: %d %b %Y")`'
+output:
+  html_document:
+    toc: yes
+    toc_float: yes
+---
+
+```{r setup, include=FALSE}
+# comment out for condensed script
+#knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Introduction
+
+In this session we will use the popular **ggplot2** package to visualize data that has already
+been transformed into a tidy tabular format that is suitable for use in creating plots.
+
+A tidy dataset is a data frame (or table) for which the following are true:
+
+1. Each variable has its own column
+2. Each observation has its own row
+3. Each value has its own cell
+
+### Load the tidyverse
+
+Load the core packages from the _tidyverse_, including **ggplot2**.
+
+```{r}
+library(tidyverse)
+```
+
+Note the packages that are loaded, relate these to this and other sections of the course.
+
+#### Aside: function name conflicts (optional)
+
+Note the conflicts and briefly discuss the problem with the same function names being used
+by multiple packages and what you have to do to use a function that has been masked by another
+package.
+
+For example, filter function in dplyr  has masked filter function from the stats package that
+already loaded as part of base R.
+
+```{r eval = FALSE}
+?filter
+```
+
+Navigate to each help section and show how the signatures differ and explain how using
+the one you hadn't intended will likely cause your code to fail.
+
+Use R studio's file completion to show that the filter function we get by default.
+
+To use the `filter` function from the `stats` package we need to include the `stats`
+namespace prefix as follows:
+
+```{r eval = FALSE}
+stats::filter(presidents, rep(1, 3))
+```
+
+## The patients dataset
+
+### Read in the patient data
+
+Read in the patients data frame using `read_tsv` from the `readr` package.
+
+```{r}
+patients <- read_tsv("patient-data-cleaned.txt")
+```
+
+`read_tsv` imports tab-delimited files (tsv = tab-separated values).
+
+There is an equivalent function in `readr` called `read_csv` for importing CSV files.
+
+#### Aside: `readr` vs base R equivalents
+
+Why use the `readr` functions?
+
+* They are typically much faster (~10x) for large datasets
+* They produce tibbles, which have much nicer printing and other advantages when chaining operations
+* They do not convert character vectors to factors
+* They do not change column names, e.g. where column names contain spaces or special characters
+
+### Getting to know the patients dataset
+
+Let's have a look at the patients dataset before trying to visualize it.
+
+View in RStudio by clicking on it in the Environment tab or by typing
+
+```{r eval = FALSE}
+View(patients)
+```
+
+It is a special type of data frame called a tibble.
+
+```{r}
+class(patients)
+```
+
+Printing a tibble shows each of the column types.
+
+Print the patients data frame at the console.
+
+```{r eval = FALSE}
+patients
+```
+
+This dataset required quite a bit of cleaning to get into the state where
+we can do some proper exploratory data analysis and visualization.
+
+Later we will look at issues with real-world datasets and the need for cleaning
+these in the part of the course on tidying data and some of the tools in the tidyverse
+collection of packges that help in doing so.
+
+Reminder: a "tidy" dataset in one in which
+
+* each column is a variable
+* each row is an observation
+
+_What are the variables in the patients dataset?_
+
+_What are the observations?_
+
+_What types of variables do we have?_
+
+`read_tsv` has read these in as <chr>, <fct>, <dbl>, <date> and <lgl>.
+_What do these mean?_
+
+```{r}
+class(patients$Sex)
+class(patients$Height)
+class(patients$Overweight)
+```
+
+_What types should each variable be?_
+
+* Categorical: Sex, Race, Smokes
+
+* Continuous: Height, Weight, BMI
+
+_Do any need to be changed?_
+
+_What about Grade?_
+
+* Categorial, but ordered, i.e. ordinal
+
+_What about Age?_
+
+* Certainly discrete in this dataset (only whole numbers), again we might want to treat
+these as ordinal
+
+We also have some columns read in as logical and date variables.
+Logical variables are treated by ggplot2 as categorial.
+
+Most of the time ggplot2 will treat variables in the way you'd hope,
+e.g. creating a bar plot showing the number of patients in each grade
+even though this is currently an integer.
+But sometimes it will cause problems so it's a good idea to sort this sort of
+thing out right from the outset.
+
+Let's turn some of our columns that should be categorical variables into factors.
+
+```{r}
+patients$Sex <- factor(patients$Sex)
+patients$Sex
+levels(patients$Sex)
+patients
+```
+
+Rather than repeat the above line for each of several columns we can use the `mutate_at`
+function from `dplyr` to do this in a single operation. We will cover this later in the course.
+
+```{r}
+patients <- mutate_at(patients, vars(Race, Sex, Smokes, State, Pet, Grade, Age), funs(factor))
+patients
+```
+
+## Our first ggplot - a scatter plot
+
+First we'll create a scatter plot of height vs weight.
+
+```{r}
+ggplot(data = patients) +
+  geom_point(mapping = aes(x = Height, y = Weight))
+```
+
+We specified 3 things to create this plot.
+
+1. The data -- needs to be a data frame
+2. The type of plot -- this is called a **geom** in ggplot2 terminology
+3. The mapping of variables in the data to visual properties (called **aesthetics** in ggplot2) of objects in the plot
+
+In this case the type of plot is a `geom_point`, ggplot2's function for a scatter plot,
+and the height and weight variables are mapped to the x and y coordinates, i.e. the
+positions of points on the scatter plot.
+
+Other aesthetics could include the size, shape and colour of those points.
+
+Look up the `geom_point` help in RStudio.
+
+```{r eval = FALSE}
+?geom_point
+```
+
+## Aesthetic mappings
+
+In the `geom_point` help page scroll down to the aesthetics section to see what
+aesthetics are actually required (x and y).
+
+What about those other aesthetics?
+
+Colours are usually fun -- let's try to use a colour aesthetic.
+
+We need to set a mapping of a variable to colour just like we did
+for x and y.
+
+```{r}
+ggplot(data = patients) +
+  geom_point(mapping = aes(x = Height, y = Weight, colour = Sex))
+```
+
+What about colouring based on a continuous variable?
+
+```{r}
+ggplot(data = patients) +
+  geom_point(mapping = aes(x = Height, y = Weight, colour = BMI))
+```
+
+Let's try some of the other aesthetics.
+
+```{r}
+ggplot(data = patients) +
+  geom_point(mapping = aes(x = Height, y = Weight, shape = Sex))
+```
+
+Some aesthetics can only be used with categorical variables, e.g. shape.
+
+```{r error = TRUE}
+ggplot(data = patients) +
+  geom_point(mapping = aes(x = Height, y = Weight, shape = BMI))
+```
+
+Not all aesthetics are useful, at least not for this plot.
+
+```{r}
+ggplot(data = patients) +
+  geom_point(mapping = aes(x = Height, y = Weight, size = Sex))
+```
+
+The warning hints that we should be using a continuous variable for size instead.
+
+```{r}
+ggplot(data = patients) +
+  geom_point(mapping = aes(x = Height, y = Weight, size = BMI))
+```
+
+The transparency of the points can be set to reflect a variable using the `alpha`
+aesthetic.
+
+```{r}
+ggplot(data = patients) +
+  geom_point(mapping = aes(x = Height, y = Weight, alpha = BMI))
+```
+
+Colours are more commonly used than shapes, sizes or transparency.
+
+Virtually every aspect of the plots we've created can be customized. We will learn how
+to change the colours used a bit later.
+
+## ggplot2 grammer
+
+The "gg" in ggplot2 stands for "grammar of graphics". This grammar is a coherent
+system for describing and building graphs.
+
+The basic template is:
+
+```
+ggplot(data = <DATA>) +
+  <GEOM_FUNCTION>(mapping = aes(<MAPPINGS>))
+```
+
+This template can be used to create any of the different types of graph possible
+with ggplot2.
+
+## Another plot type - bar chart
+
+Look up ggplot2 package help in RStudio to see what other geoms are available (find the ggplot2
+package in the Packages tab normally found in the bottom right hand corner).
+
+Let's create a bar chart of patient's ages.
+
+`geom_bar` is the geom we need and it requires a single aesthetic mapping of the
+categorical variable of interest to `x`.
+
+```{r}
+ggplot(data = patients) +
+  geom_bar(mapping = aes(x = Age))
+```
+
+The dark grey bars are a big ugly - what if we want each bar to be a different
+colour?
+
+```{r}
+ggplot(data = patients) +
+  geom_bar(mapping = aes(x = Age, colour = Age))
+```
+
+Colouring the edges wasn't quite what we had in mind. Look at the help for
+`geom_bar` to see what other aesthetic we should have used.
+
+```{r}
+ggplot(data = patients) +
+  geom_bar(mapping = aes(x = Age, fill = Age))
+```
+
+What happens if we fill with something other than age, e.g. sex?
+
+We get a stacked bar plot.
+
+```{r}
+ggplot(data = patients) +
+  geom_bar(mapping = aes(x = Age, fill = Sex))
+```
+
+Note the similarity in what we did here to what we did with the scatter plot - there is
+a common grammar.
+
+What if want all the bars to be the same colour but not dark grey, e.g. blue?
+
+```{r}
+ggplot(data = patients) +
+  geom_bar(mapping = aes(x = Age, fill = "blue"))
+```
+
+That doesn't look right - why not?
+
+You can set the aesthetics to a fixed value but this needs to be outside
+the mapping.
+
+```{r}
+ggplot(data = patients) +
+  geom_bar(mapping = aes(x = Age), fill = "blue")
+```
+
+Setting this inside the `aes()` mapping told ggplot2 to map the colour aesthetic to some
+variable in the data frame that actually is a constant value "blue" for all observations.
+
+## Multiple layers
+
+Consider again the ggplot2 grammar:
+
+```
+ggplot(data = <DATA>) +
+  <GEOM_FUNCTION>(mapping = aes(<MAPPINGS>))
+```
+
+Why do we have the ggplot part and geom part joined by a "+" symbol?
+
+The '+' operator has been overridden by ggplot2 to add layers and other
+components (scales, themes, etc.) to the plot.
+
+We can have multiple geoms in the same plot. Each is a different layer.
+
+Let's create a plot with two geoms.
+
+```{r}
+ggplot(data = patients) +
+  geom_point(mapping = aes(x = Height, y = Weight)) +
+  geom_smooth(mapping = aes(x = Height, y = Weight))
+```
+
+What is geom_smooth doing? Look up the help page.
+
+Note that the shaded area represents the standard error bounds on the fitted model.
+
+There is some annoying duplication of code here. We can avoid this by putting the
+mappings in ggplot function instead.
+
+```{r}
+ggplot(data = patients, mapping = aes(x = Height, y = Weight)) +
+  geom_point() +
+  geom_smooth()
+```
+
+Aesthetics set in the ggplot function are treated as global mappings for the
+plot and are inherited by all geoms added to the plot.
+
+Let's say we still want to colour the points by sex.
+
+```{r}
+ggplot(data = patients, mapping = aes(x = Height, y = Weight, colour = Sex)) +
+  geom_point() +
+  geom_smooth()
+```
+
+Well, that wasn't expected, although it's pretty neat. We only wanted to apply the
+colour aesthetic to the points.
+
+We can add to the aesthetics in the geom function to apply them just to that geom.
+
+```{r}
+ggplot(data = patients, mapping = aes(x = Height, y = Weight)) +
+  geom_point(mapping = aes(colour = Sex)) +
+  geom_smooth()
+```
+
+Or if you have got your scatter plot just right, and you'd rather not interfere with
+it while trying out adding another layer, you can use set the `inherit.aes` option to
+`FALSE`.
+
+```{r}
+ggplot(data = patients, mapping = aes(x = Height, y = Weight, colour = Sex)) +
+  geom_point() +
+  geom_smooth(mapping = aes(x = Height, y = Weight), inherit.aes = FALSE)
+```
+
+## Some other plot types (geoms)
+
+Let's explore some other types of plots.
+
+### Line plot
+
+```{r}
+ggplot(data = patients, mapping = aes(x = Height, y = Weight)) +
+  geom_line()
+```
+
+Doesn't make much sense for this dataset but good for time series data.
+
+Use multiple geoms (layering) to have both points and lines.
+
+```{r}
+ggplot(data = patients, mapping = aes(x = Birth, y = BMI)) +
+  geom_point() +
+  geom_line()
+```
+
+ggplot2 seems to be doing something clever with dates here.
+
+```{r}
+ggplot(data = patients, mapping = aes(x = Birth, y = BMI, colour = Sex)) +
+  geom_point() +
+  geom_line()
+```
+
+### Histogram
+
+```{r}
+ggplot(data = patients) +
+  geom_histogram(mapping = aes(x = Height))
+```
+
+The warning message hints at picking a more optimal number of bins.
+
+```{r}
+ggplot(data = patients) +
+  geom_histogram(mapping = aes(x = Height), binwidth = 2.5)
+```
+
+Or can set the number of bins.
+
+```{r}
+ggplot(data = patients) +
+  geom_histogram(mapping = aes(x = Height), bins = 15)
+```
+
+These histograms are not aesthetically very pleasing - how about some better aesthetics?
+
+```{r}
+ggplot(data = patients) +
+  geom_histogram(mapping = aes(x = Height, fill = Sex), bins = 15, colour = "firebrick", fill = "grey70")
+```
+
+The help page for geom_histogram talks about an alternative called geom_freqpoly.
+
+_When might this be preferred?_
+
+```{r}
+ggplot(data = patients) +
+  geom_freqpoly(mapping = aes(x = BMI, colour = Smokes), bins = 10)
+```
+
+### Box plot
+
+```{r}
+ggplot(data = patients) +
+  geom_boxplot(mapping = aes(x = Smokes, y = Weight))
+```
+
+See `geom_boxplot` help to explain how the box and whiskers are constructed.
+
+BMI is perhaps a better thing to compare because the Weight is correlated
+with Height and Sex.
+
+```{r}
+ggplot(data = patients) +
+  geom_boxplot(mapping = aes(x = Smokes, y = BMI))
+```
+
+Compare males and females separately.
+
+```{r}
+ggplot(data = patients) +
+  geom_boxplot(mapping = aes(x = Sex, y = BMI, colour = Smokes))
+```
+
+Can we see the points at the same time?
+
+```{r}
+ggplot(data = patients, mapping = aes(x = Sex, y = BMI)) +
+  geom_boxplot() +
+  geom_point()
+```
+
+The `geom_point` help points to `geom_jitter` as more suitable when one of the
+variables is categorical.
+
+```{r}
+ggplot(data = patients, mapping = aes(x = Sex, y = BMI)) +
+  geom_boxplot() +
+  geom_jitter()
+```
+
+Reduce the spread/jitter.
+
+```{r}
+ggplot(data = patients, mapping = aes(x = Sex, y = BMI)) +
+  geom_boxplot() +
+  geom_jitter(width = 0.25)
+```
+
+### Violin plot
+
+Variation on box plot in which density is shown along the sides of the "violin".
+
+```{r}
+ggplot(data = patients, mapping = aes(x = Sex, y = BMI)) +
+  geom_violin()
+```
+
+```{r}
+ggplot(data = patients, mapping = aes(x = Sex, y = BMI, fill = Smokes)) +
+  geom_violin(trim = FALSE)
+```
+
+### Density plot 
+
+Deliberately not covering this here as it is required for a couple of the exercises
+and we want you to work it out for yourself using the help pages and what you've learned
+so far about the common grammar for all ggplots.
+
+
+## The ggplot object - a peek under the hood
+
+Let's the build the plot up in stages.
+
+```{r}
+plot <- ggplot(data = patients)
+```
+
+What is the plot object we've just created?
+
+Look at the environment pane in RStudio (usually in top right corner). The plot object is
+a list of 9.
+
+```{r}
+is.list(plot)
+```
+
+It's actually a special type of list.
+
+```{r}
+class(plot)
+```
+
+What are the 9 things in the list?
+
+```{r}
+names(plot)
+```
+
+So far we've constructed ggplots from data, layers (geoms) and aesthetic mappings.
+We'll be looking at how to customize plots later, including changing the labels, 
+scales and theme.
+
+```{r}
+plot$data
+```
+
+What does our plot look like at this point?
+
+```{r}
+plot
+```
+
+No layers or mapping yet.
+
+```{r}
+plot$mapping
+plot$layers
+```
+
+Lets add an aesthetic mapping.
+
+```{r}
+plot <- ggplot(data = patients, mapping = aes(x = Height, y = Weight))
+plot
+```
+
+ggplot2 has automatically added scales for x and y based on the range
+of height and weight values. Still nothing plotted as we haven't yet specified the
+type of plot (geom) to add as a layer.
+
+```{r}
+plot$mapping
+plot$layers
+```
+
+```{r}
+plot <- plot + geom_point()
+plot
+```
+
+```{r}
+plot$layers
+```
+
+Each geom is associated with a statistical transformation, called a stat in ggplot2.
+This is an algorithm used to calculate new values for the graph. In this case, we are
+creating a scatter plot and the x and y values don't need to be transformed, just plotted
+on the x and y axes, hence `stat_identity` which leaves the data unchanged.
+
+But recall the bar charts we created earlier. How did ggplot2 know what height to make
+each bar? It counted the number of observations for each categorical value (level) using
+`stat_count`.
+
+We'll touch on statistical transformations again a bit later.
+
+## Facets
+
+A useful feature of ggplot2 is faceting. This allows you to split your plot into subplots,
+or facets, based on one or more categorical variables. Each subplot displays a subset of
+the data.
+
+There are two faceting functions, `facet_grid` and `facet_wrap`.
+
+```{r}
+ggplot(data = patients, mapping = aes(x = Height, y = Weight, colour = Smokes)) +
+  geom_point()
+```
+
+```{r}
+ggplot(data = patients, mapping = aes(x = Height, y = Weight)) +
+  geom_point() +
+  facet_wrap(~ Smokes)
+```
+
+The `~ Smokes` argument provided to `facet_wrap` is known as a formula in R. Formulae are
+used to build models in R.
+
+Faceting is perhaps more useful when there are several categories helping to distinguish
+between them by seeing the data in separate subplots.
+
+```{r}
+ggplot(data = patients, mapping = aes(x = Height, y = Weight, colour = Grade)) +
+  geom_point()
+```
+```{r}
+ggplot(data = patients, mapping = aes(x = Height, y = Weight, colour = Grade)) +
+  geom_point() +
+  facet_wrap(~ Grade)
+```
+
+We can tell ggplot to fit the subplots onto a single row.
+
+```{r}
+ggplot(data = patients, mapping = aes(x = Height, y = Weight, colour = Grade)) +
+  geom_point() +
+  facet_wrap(~ Grade, nrow = 1)
+```
+
+Or we can force it to use a specified number of columns.
+
+```{r}
+ggplot(data = patients, mapping = aes(x = Height, y = Weight, colour = Grade)) +
+  geom_point() +
+  facet_wrap(~ Grade, ncol = 3)
+```
+
+Here you can see that it 'wraps' plots across more than one row if necessary.
+
+We can facet on more than one variable.
+
+```{r}
+ggplot(data = patients, mapping = aes(x = Height, y = Weight)) +
+  geom_point() +
+  facet_wrap(~ Sex + Smokes)
+```
+
+Faceting on two variables can also be done as a grid using `facet_grid` and arguably produces
+clearer labelling of the subplots.
+
+```{r}
+ggplot(data = patients, mapping = aes(x = Height, y = Weight)) +
+  geom_point() +
+  facet_grid(Sex ~ Smokes)
+```
+
+Compare this with using a single plot and aesthetics.
+
+```{r}
+ggplot(data = patients, mapping = aes(x = Height, y = Weight, colour = Smokes, shape = Sex)) +
+  geom_point()
+```
+
+It is possible to only facet on one variable in either the rows or columns dimension
+using `facet_grid`.
+
+```{r}
+ggplot(data = patients, mapping = aes(x = Height, y = Weight)) +
+  geom_point() +
+  facet_grid(. ~ Sex)
+```
+
+This is the same as using `facet_wrap` with `nrow = 1` so not terribly useful but if you
+want the plots to be stacked in a single column with labels down the sides then you can
+do the following.
+
+```{r}
+ggplot(data = patients, mapping = aes(x = Height, y = Weight)) +
+  geom_point() +
+  facet_grid(Sex ~ .)
+```
+
+
+It is also possible to facet on more more than two variables with facet_wrap although
+usually this leads to very cluttered plots; it is probably better to stick to using one
+or two variables for faceting.
+
+```{r}
+ggplot(data = patients, mapping = aes(x = Height, y = Weight)) +
+  geom_point() +
+  facet_wrap(~ Sex + Race + Smokes)
+```
+
+We can use other aesthetic mappings for grouping data alongside faceting.
+
+```{r}
+ggplot(data = patients, mapping = aes(x = Height, y = Weight, colour = Sex)) +
+  geom_point() +
+  facet_wrap(~ Smokes)
+```
+
+## Customization
+
+### Labels
+
+```{r}
+ggplot(data = patients, mapping = aes(x = Height, y = Weight)) +
+  geom_point(mapping = aes(colour = Sex)) +
+  geom_smooth(method = "lm") +
+  labs(
+    title = "Patients from ECSA12 study",
+    subtitle = "Linear relationship between height and weight",
+    x = "Height (cm)",
+    y = "Weight (kg)"
+  )
+```
+
+### Scales
+
+Take a look at the x and y scales in the above plot. ggplot has chosen the x and y
+scales and where to put breaks and ticks.
+
+```{r}
+plot <- ggplot(data = patients, mapping = aes(x = Height, y = Weight, colour = Sex)) +
+  geom_point(mapping = aes(colour = Sex))
+names(plot)
+```
+
+One of the components of the plot is called `scales`.
+
+ggplot2 automatically adds default scales behind the scenes equivalent to the following:
+
+```{r}
+plot <- ggplot(data = patients, mapping = aes(x = Height, y = Weight, colour = Sex)) +
+  geom_point() +
+  scale_x_continuous() +
+  scale_y_continuous() +
+  scale_color_discrete()
+```
+
+Note that we have three aesthetics and ggplot2 adds a scale for each.
+
+```{r}
+plot$mapping
+```
+
+The x and y variables are continuous hence ggplot2 adds a continuous scale for each.
+Colour is a discrete variable in this case so ggplot2 adds a discrete scale for colour.
+
+Generalizing, the scales that are required follow the naming scheme:
+
+```
+scale_<NAME_OF_AESTHETIC>_<NAME_OF_SCALE>
+```
+
+Look at the help pages to see what we can change about the y axis.
+
+```{r}
+?scale_y_continuous
+```
+
+We're going to modify the scales for the following plot.
+
+```{r}
+ggplot(data = patients, mapping = aes(x = Height, y = Weight, colour = Sex)) +
+  geom_point() +
+  scale_y_continuous()
+```
+
+First, we'll change the breaks, i.e. where ggplot puts ticks and numeric labels, on the
+y axis.
+
+```{r}
+ggplot(data = patients, mapping = aes(x = Height, y = Weight, colour = Sex)) +
+  geom_point() +
+  scale_y_continuous(breaks = seq(60, 100, by = 5))
+```
+
+We can also adjust the extents of the y axis.
+
+```{r}
+ggplot(data = patients, mapping = aes(x = Height, y = Weight, colour = Sex)) +
+  geom_point() +
+  scale_y_continuous(limits = c(60, 100))
+```
+
+We can change the minor breaks, e.g. to add more lines that act as guides. These are
+shown as thin white lines when using the default theme (we'll take a look at alternative
+themes a bit later).
+
+```{r}
+ggplot(data = patients, mapping = aes(x = Height, y = Weight, colour = Sex)) +
+  geom_point() +
+  scale_y_continuous(limits = c(60, 100), minor_breaks = seq(60, 100, by = 1))
+```
+
+Or we can remove the minor breaks entirely.
+
+```{r}
+ggplot(data = patients, mapping = aes(x = Height, y = Weight, colour = Sex)) +
+  geom_point() +
+  scale_y_continuous(limits = c(60, 100), minor_breaks = NULL)
+```
+
+Maybe we don't want any breaks at all.
+
+```{r}
+ggplot(data = patients, mapping = aes(x = Height, y = Weight, colour = Sex)) +
+  geom_point() +
+  scale_y_continuous(breaks = NULL)
+```
+
+By default the scales are expanded by 5% of the range on either side. We can add
+more space round the edges.
+
+```{r}
+ggplot(data = patients, mapping = aes(x = Height, y = Weight, colour = Sex)) +
+  geom_point() +
+  scale_x_continuous(expand = expand_scale(mult = 0.1)) +
+  scale_y_continuous(expand = expand_scale(mult = 0.1))
+```
+
+We can move draw the axis on the other side of the plot -- not sure why you'd want
+to do this but with ggplot2 just about anything is possible.
+
+```{r}
+ggplot(data = patients, mapping = aes(x = Height, y = Weight, colour = Sex)) +
+  geom_point() +
+  scale_x_continuous(position = "top")
+```
+
+### Colours
+
+Use `scale_colour_manual` to manually set the colours for a categorical variable.
+
+```{r}
+ggplot(data = patients, mapping = aes(x = Height, y = Weight, colour = Sex)) +
+  geom_point() +
+  scale_colour_manual(values = c("green", "purple"))
+```
+
+ggplot can provides a set of colour palettes from [ColorBrewer]( http://colorbrewer2.org).
+
+```{r}
+ggplot(data = patients, mapping = aes(x = Height, y = Weight, colour = Race)) +
+  geom_point() +
+  scale_colour_brewer(palette = "Set1")
+```
+
+Look at the help page for `scale_colour_brewer` to see what other colour palettes are
+available, then try some.
+
+```{r eval = FALSE}
+?scale_colour_brewer
+```
+
+Interestingly you can set other attributes other than just the colours at the same time.
+
+```{r}
+ggplot(data = patients, mapping = aes(x = Height, y = Weight, colour = Sex)) +
+  geom_point() +
+  scale_colour_brewer(palette = "Set1", name = NULL, labels = c("women", "men"))
+```
+
+What you are doing here is setting your own set of mappings from levels in the data to
+aesthetic values.
+
+You can select the colours used in a gradient for a continuous variable.
+
+```{r}
+ggplot(data = patients, mapping = aes(x = Height, y = Weight, colour = BMI)) +
+  geom_point() +
+  scale_color_gradient(low = "black", high = "blue")
+```
+
+In some cases it might make sense to specify two colour gradients either side of a mid-point.
+
+```{r}
+ggplot(data = patients, mapping = aes(x = Height, y = Weight, colour = BMI)) +
+  geom_point() +
+  scale_color_gradient2(low = "red", mid = "grey60", high = "blue", midpoint = median(patients$BMI))
+```
+
+As before we can override the default labels and other aspects of the BMI scale
+within the scale function.
+
+```{r}
+ggplot(data = patients, mapping = aes(x = Height, y = Weight, colour = BMI)) +
+  geom_point() +
+  scale_color_gradient(
+    low = "lightblue", high = "darkblue",
+    name = "Body mass index",
+    breaks = seq(20, 30, by = 2.5)
+  )
+```
+
+### Order of categories
+
+Quite often we want to reorder the categories. For example, we might want males to be
+displayed on the left hand side in the following plot.
+
+```{r}
+ggplot(data = patients, mapping = aes(x = Sex, y = BMI, colour = Sex)) +
+  geom_boxplot() +
+  geom_jitter(width = 0.25, alpha = 0.4) +
+  scale_colour_brewer(palette = "Set1")
+```
+
+Categorical variables are treated as special types of variables in R known as factors.
+A factor has levels, e.g. Female and Male for the Sex variable in the patients dataset.
+
+ggplot displays categories in the order given by the levels of the factor. If a character
+variable is presented to ggplot as if it were a factor, ggplot converts it into a factor
+temporarily in order to create the plot, and the categories will be in alphabetical order.
+
+We can reorder the categories by explicitly creating a factor with the levels set in our
+preferred order.
+
+```{r}
+patients$Sex
+patients$Sex <- factor(patients$Sex, levels = c("Male", "Female"))
+```
+
+```{r}
+ggplot(data = patients, mapping = aes(x = Sex, y = BMI, colour = Sex)) +
+  geom_boxplot() +
+  geom_jitter(width = 0.25, alpha = 0.4) +
+  scale_colour_brewer(palette = "Set1")
+```
+
+The legend in this plot is not really necessary. We'll see how to remove this in the next section on themes.
+
+For plots where a legend is required, changing the order of levels in a factor will also
+change the ordering in the legend.
+
+```{r}
+ggplot(data = patients, mapping = aes(x = Height, y = Weight, colour = Sex)) +
+  geom_point() +
+  scale_colour_brewer(palette = "Set1")
+```
+
+## Themes
+
+Themes can be used to customize non-data elements of your plot.
+
+The black and white theme produces plots that are more suitable for articles that will
+be printed.
+
+```{r}
+ggplot(data = patients, mapping = aes(x = Sex, y = BMI, colour = Sex)) +
+  geom_boxplot() +
+  geom_jitter(width = 0.25, alpha = 0.4) +
+  scale_colour_brewer(palette = "Set1") +
+  theme_bw()
+```
+
+What other themes are there? Use RStudio auto-complete to see, try some of these and see
+how they look. The library `ggthemes` provides a few more.
+
+```{r}
+library(ggthemes)
+ggplot(data = patients, mapping = aes(x = Sex, y = BMI, colour = Sex)) +
+  geom_boxplot() +
+  geom_jitter(width = 0.25, alpha = 0.4) +
+  scale_colour_brewer(palette = "Set1") +
+  theme_gdocs()
+```
+
+The theme function can be used to modify individual components of a theme.
+
+For example, the following will turn off the legend.
+
+```{r}
+ggplot(data = patients, mapping = aes(x = Sex, y = BMI, colour = Sex)) +
+  geom_boxplot() +
+  geom_jitter(width = 0.25, alpha = 0.4) +
+  scale_colour_brewer(palette = "Set1") +
+  theme_minimal() +
+  theme(legend.position = "none")
+```
+
+Or we could place the legend somewhere else.
+
+```{r}
+ggplot(data = patients, mapping = aes(x = Sex, y = BMI, colour = Sex)) +
+  geom_boxplot() +
+  geom_jitter(width = 0.25, alpha = 0.4) +
+  scale_colour_brewer(palette = "Set1") +
+  theme_minimal() +
+  theme(legend.position = "bottom")
+```
+
+Use the help page for the `theme` function to see what else can be changed (quite a lot!).
+
+```{r eval = FALSE}
+?theme
+```
+
+```{r}
+ggplot(patients, mapping = aes(x = Height, y = Weight, colour = Sex)) +
+  geom_point() +
+  scale_colour_brewer(palette = "Set1") +
+  theme_bw() +
+  theme(
+    axis.title = element_text(size = 10, colour = "darkblue"),
+    axis.text = element_text(size = 8),
+    legend.title = element_blank()
+  )
+```
+
+
