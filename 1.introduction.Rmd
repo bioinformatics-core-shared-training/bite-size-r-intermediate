@@ -51,7 +51,7 @@ The course aims to translate how we think of data in spreadsheets to a series of
 
 There are **many hundreds (thousands!) of functions** for us to choose from to achieve our goals and everyone has their own set of favourites
 
-_e.g. joining data from two data frames based on a common variable or key_
+_e.g. joining data from two tables (data frames) based on a common variable or key_
 
 ```{r echo = TRUE, eval = FALSE}
 # base R
