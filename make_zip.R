@@ -4,7 +4,6 @@ files <- c(
 	"4.summarise-and-combine-exercises.Rmd",
 	"ggplot2-exercises.Rmd",
 	"ggplot2-exercises-with-images.html",
-	"ggplot2-live-coding-script.html",
 	"patient-data.txt",
 	"patient-data-cleaned.txt",
 	"clinicalData.txt",
