@@ -70,7 +70,7 @@ There is an equivalent function in `readr` called `read_csv` for importing CSV f
 
 #### Aside: `readr` vs base R equivalents
 
-Why use the `readr` functions?
+Why use the `readr` functions compared with the more familiar `read.table`, `read.delim` and `read.csv` functions from base R?
 
 * They are typically much faster (~10x) for large datasets
 * They produce tibbles, which have much nicer printing and other advantages when chaining operations
@@ -153,6 +153,11 @@ e.g. creating a bar plot showing the number of patients in each grade
 even though this is currently an integer.
 But sometimes it will cause problems so it's a good idea to sort this sort of
 thing out right from the outset.
+
+R uses a special type of variable called a factor to handle categorical values.
+Factors are variables that have a fixed and known set of possible values --
+these are referred to as the levels of a factor, e.g. Female and Male for the
+Sex variable in the patients dataset.
 
 Let's turn some of our columns that should be categorical variables into factors.
 
@@ -384,7 +389,7 @@ plot and are inherited by all geoms added to the plot.
 Let's say we still want to colour the points by sex.
 
 ```{r}
-ggplot(data = patients, mapping = aes(x = Height, y = Weight, colour = Sex)) +
+ggplot(data = patients, mapping = aes(x = Height, y = Weight, color = Sex)) +
   geom_point() +
   geom_smooth()
 ```
@@ -1056,4 +1061,122 @@ ggplot(patients, mapping = aes(x = Height, y = Weight, colour = Sex)) +
   )
 ```
 
+## Statistical transformations
+
+Many graphs, like scatterplots, plot the raw values from your dataset; other
+graphs, like bar charts, calculate new values to plot.
+
+* bar charts and histograms (`geom_bar`, `geom_histogram`, `geom_freqpoly`) bin your data and then plot bin counts
+* smoothing functions (`geom_smooth`) fit a model to your data and then plot predictions from the model
+* box plots (`geom_boxplot`) compute a robust summary of the distribution and display a specially formatted box
+
+The algorithm used to calculate new values for a graph is called a `stat`
+
+Take a look at the help page for `geom_bar`.
+
+```{r eval = FALSE}
+?geom_bar
+```
+
+Note that it uses a "count" stat.
+
+Sometimes you might want to override a stat, e.g. when you want to display a bar
+chart but already have counts.
+
+```{r}
+ethnicity_counts <- count(patients, Race)
+ethnicity_counts
+ggplot(data = ethnicity_counts, mapping = aes(x = Race, y = n)) +
+  geom_bar(stat = "identity")
+```
+
+Compare this with the following bar chart for which we have observations for each patient
+rather than a summary of the numbers of each type of pet.
+
+```{r}
+ggplot(data = patients, mapping = aes(x = Race)) +
+  geom_bar(stat = "count")
+```
+
+By default `geom_bar` applies the statistical transformation, `stat_count`, in
+much the same way as we did above to create the `ethnicity_counts` summary table.
+
+## Position adjustments
+
+Earlier we created the following stacked bar chart by setting the `fill` aesthetic
+in a `geom_bar` to a categorical variable. Let's revisit this.
+
+```{r}
+ggplot(data = patients, mapping = aes(x = Age, fill = Sex)) +
+  geom_bar()
+```
+
+We can control the way stacking is performed by specifying a position adjustment
+using the `position` argument.
+
+For example, to place the bars for the separate categories side-by-side we can use
+`position = "dodge"`.
+
+```{r}
+ggplot(data = patients, mapping = aes(x = Age, fill = Sex)) +
+  geom_bar(position = "dodge")
+```
+
+Try some of the other values for the position adjustment, e.g. `"fill"` and
+`"identity"`,
+
+Another type of position adjustment is `"jitter"`. This is much more useful for
+scatter plots than for bar charts. We already used `geom_jitter` to separate
+points added to a box plot and using `position = "jitter"` in `geom_point()`
+is similar.
+
+`position = "jitter"` adds a small amount of random noise to each point and is
+especially useful for data sets that contain multiple observations with the same
+x and y values, e.g. where these are discrete. The patients dataset isn't really
+a good example of where this would be needed so let's take a look at the `mpg`
+data frame that ggplot2 provides as a test dataset.
+
+```{r}
+ggplot(data = mpg, mapping = aes(x = displ, y = hwy)) +
+  geom_point()
+```
+
+The `mpg` data frame has 234 observations but there are clearly not 234 points
+on this scatter plot; there are more than one observation with the same value
+of `displ` and `hwy`.
+
+`position = "jitter"` separates the overlapping points.
+
+```{r}
+ggplot(data = mpg, mapping = aes(x = displ, y = hwy)) +
+  geom_point(position = "jitter")
+```
+
+## Saving plots
+
+Use `ggsave` to save the last plot you displayed.
+
+```{r eval = FALSE}
+ggsave("myplot.png")
+```
+
+Alternatively, `ggsave` can be passed an explicit plot object.
+
+```{r eval = FALSE}
+plot <- ggplot(data = patients, mapping = aes(x = Smokes, y = BMI, colour = Smokes)) +
+  geom_boxplot() +
+  geom_jitter(alpha = 0.4, width = 0.25) +
+  facet_wrap(~ Sex) +
+  scale_colour_brewer(palette = "Set1") +
+  theme(legend.position = "none")
+
+ggsave("myplot.png", plot)
+```
+
+The type of plot file, e.g. pdf, svg, png, etc., and the dimensions can
+be specified, e.g.
+
+```{r eval = FALSE}
+ggsave("myplot.pdf", width = 8, height = 6)
+```
 
