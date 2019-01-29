@@ -1,13 +1,31 @@
 files <- c(
+	"1.introduction.html",
+	"2.dplyr-intro.nb.html",
 	"2.dplyr-intro-exercises.Rmd",
+	"2.dplyr-intro-solutions.Rmd",
+	"2.dplyr-intro-solutions.html",
+	"3.workflows.nb.html",
 	"3.workflows-exercises.Rmd",
+	"3.workflows-solutions.Rmd",
+	"3.workflows-solutions.html",
+	"4.summarise-and-combine.nb.html",
+	"4.summarise-and-combine-live-coding-script.Rmd",
+	"4.summarise-and-combine-live-coding-script.html",
 	"4.summarise-and-combine-exercises.Rmd",
+	"4.summarise-and-combine-solutions.Rmd",
+	"4.summarise-and-combine-solutions.html",
+	"ggplot2-live-coding-script.html",
 	"ggplot2-exercises.Rmd",
 	"ggplot2-exercises-with-images.html",
+	"ggplot2-exercises-with-solutions.nb.html",
+	"extra.html",
 	"patient-data.txt",
 	"patient-data-cleaned.txt",
 	"clinicalData.txt",
+	"cohort-data.txt",
 	"tidyr-example.txt",
-	"diabetes.txt"
+	"diabetes.txt",
+	"gapminder.csv",
+	"LICENSE.md"
 )
 zip(files, zipfile = "Course_Data.zip")
