@@ -123,7 +123,7 @@ $(document).ready(function () {
 
 <h1 class="title toc-ignore">Exercise Set 1 — Geoms and Aesthetics</h1>
 <h4 class="author"><em>Mark Dunning and Matt Eldridge</em></h4>
-<h4 class="date"><em>Last modified: 13 Sep 2018</em></h4>
+<h4 class="date"><em>Last modified: 29 Jan 2019</em></h4>
 
 </div>
 
@@ -141,7 +141,7 @@ patients &lt;- read_tsv(&quot;patient-data-cleaned.txt&quot;)</code></pre>
 <ol start="2" style="list-style-type: decimal">
 <li><p>Using the patient dataset generate a scatter plot of BMI versus Weight.</p></li>
 <li><p>Extending the plot from exercise 2, add a colour scale to the scatterplot based on the Height variable.</p></li>
-<li><p>Following from exercise 3, split the BMI vs Weight plot into a grid of plots separated by Smoking status and Sex .</p></li>
+<li><p>Following from exercise 3, split the BMI vs Weight plot into a grid of plots separated by Smoking status and Sex.</p></li>
 <li><p>Using an additional geom, add an extra layer of a fit line to the solution from exercise 3.</p></li>
 <li><p>Does the fit in question 5 look good? Look at the description for ?geom_smooth() and adjust the method to fit a straight line without standard error bounds.</p></li>
 </ol>
@@ -154,7 +154,7 @@ patients &lt;- read_tsv(&quot;patient-data-cleaned.txt&quot;)</code></pre>
 <li><p>Now reproduce the boxplots in exercise 8 (grouped by smoker, coloured by sex) but now include a separate facet for people of different age (using Age column).</p></li>
 <li><p>Produce a similar boxplot of BMIs but this time group data by Sex, colour by Age and facet by Smoking status.</p></li>
 </ol>
-<p>HINT - is Age currently the right type of variable for grouping in a box plot?</p>
+<p><em>Hint: is Age currently the right type of variable for grouping in a box plot?</em></p>
 <ol start="11" style="list-style-type: decimal">
 <li>Regenerate the solution to exercise 10 but this time using a violin plot.</li>
 </ol>
@@ -162,13 +162,14 @@ patients &lt;- read_tsv(&quot;patient-data-cleaned.txt&quot;)</code></pre>
 <div id="histogram-and-density-plots" class="section level3">
 <h3>Histogram and Density plots</h3>
 <ol start="12" style="list-style-type: decimal">
-<li><p>Generate a histogram of BMIs with each bar coloured blue.</p></li>
+<li><p>Generate a histogram of BMIs with each bar coloured blue, choosing a suitable bin width.</p></li>
 <li><p>Generate density plots of BMIs coloured by Sex.</p></li>
 </ol>
-<p>HINT: alpha can be used to control transparancy.</p>
+<p><em>Hint: alpha can be used to control transparancy.</em></p>
 <ol start="14" style="list-style-type: decimal">
 <li>Generate a separate density plot of BMI coloured by sex for each Grade.</li>
 </ol>
+<p><br></p>
 </div>
 </div>
 

@@ -37,7 +37,7 @@ patients <- read_tsv("patient-data-cleaned.txt")
 
 ```
 
-4. Following from exercise 3, split the BMI vs Weight plot into a grid of plots separated by Smoking status and Sex .
+4. Following from exercise 3, split the BMI vs Weight plot into a grid of plots separated by Smoking status and Sex.
 
 ```{r exercise3}
 
@@ -55,7 +55,7 @@ patients <- read_tsv("patient-data-cleaned.txt")
 
 ```
 
-###Boxplots and Violin plots
+### Boxplots and Violin plots
 
 7. Generate a boxplot of BMIs comparing smokers and non-smokers.
 
@@ -78,7 +78,7 @@ patients <- read_tsv("patient-data-cleaned.txt")
 
 10. Produce a similar boxplot of BMIs but this time group data by Sex, colour by Age and facet by Smoking status.
 
-HINT - is Age currently the right type of variable for grouping in a box plot?
+_Hint: is Age currently the right type of variable for grouping in a box plot?_
 
 ```{r exercise9}
 
@@ -91,10 +91,9 @@ HINT - is Age currently the right type of variable for grouping in a box plot?
 ```
 
 
-###Histogram and Density plots
+### Histogram and Density plots
 
-12. Generate a histogram of BMIs with each bar coloured blue.
-
+12. Generate a histogram of BMIs with each bar coloured blue, choosing a suitable bin width.
 
 ```{r exercise11}
 
@@ -102,7 +101,7 @@ HINT - is Age currently the right type of variable for grouping in a box plot?
 
 13. Generate density plots of BMIs coloured by Sex.
 
-HINT: alpha can be used to control transparancy.
+_Hint: alpha can be used to control transparancy._
 
 ```{r exercise12}
 
@@ -111,7 +110,9 @@ HINT: alpha can be used to control transparancy.
 14. Generate a separate density plot of BMI coloured by sex for each Grade.
 ```{r exercise13}
 
-
 ```
+
+
+<br>
 
 

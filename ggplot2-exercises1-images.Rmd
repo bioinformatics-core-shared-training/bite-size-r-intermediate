@@ -39,7 +39,7 @@ ggplot(data = patients, mapping = aes(x = BMI, y = Weight, colour = Height)) +
   geom_point()
 ```
 
-4. Following from exercise 3, split the BMI vs Weight plot into a grid of plots separated by Smoking status and Sex .
+4. Following from exercise 3, split the BMI vs Weight plot into a grid of plots separated by Smoking status and Sex.
 
 ```{r exercise3}
 ggplot(data = patients, mapping = aes(x = BMI, y = Weight, colour = Height)) +
@@ -63,7 +63,7 @@ ggplot(data = patients, mapping = aes(x = BMI, y = Weight, colour = Height)) +
   geom_smooth(method = "lm", se = FALSE)
 ```
 
-###Boxplots and Violin plots
+### Boxplots and Violin plots
 
 7. Generate a boxplot of BMIs comparing smokers and non-smokers.
 
@@ -90,7 +90,7 @@ ggplot(data = patients, mapping = aes(x = Smokes, y = BMI, colour = Sex)) +
 
 10. Produce a similar boxplot of BMIs but this time group data by Sex, colour by Age and facet by Smoking status.
 
-HINT - is Age currently the right type of variable for grouping in a box plot?
+_Hint: is Age currently the right type of variable for grouping in a box plot?_
 
 ```{r exercise9}
 patients$Age <- factor(patients$Age)
@@ -108,7 +108,7 @@ ggplot(data = patients, mapping = aes(x = Sex, y = BMI, colour = Age)) +
 ```
 
 
-###Histogram and Density plots
+### Histogram and Density plots
 
 12. Generate a histogram of BMIs with each bar coloured blue, choosing a suitable bin width.
 
@@ -119,7 +119,7 @@ ggplot(data = patients, mapping = aes(x = BMI)) +
 
 13. Generate density plots of BMIs coloured by Sex.
 
-HINT: alpha can be used to control transparancy.
+_Hint: alpha can be used to control transparancy._
 
 ```{r exercise12}
 ggplot(data = patients, mapping = aes(x = BMI)) +
@@ -132,6 +132,7 @@ ggplot(data = patients, mapping = aes(x = BMI)) +
   geom_density(aes(fill = Sex), alpha = 0.5) +
   facet_wrap(~ Grade)
 ```
+
 
 <br>
 
