@@ -389,7 +389,7 @@ plot and are inherited by all geoms added to the plot.
 Let's say we still want to colour the points by sex.
 
 ```{r}
-ggplot(data = patients, mapping = aes(x = Height, y = Weight, color = Sex)) +
+ggplot(data = patients, mapping = aes(x = Height, y = Weight, colour = Sex)) +
   geom_point() +
   geom_smooth()
 ```
@@ -788,7 +788,7 @@ plot <- ggplot(data = patients, mapping = aes(x = Height, y = Weight, colour = S
   geom_point() +
   scale_x_continuous() +
   scale_y_continuous() +
-  scale_color_discrete()
+  scale_colour_discrete()
 ```
 
 Note that we have three aesthetics and ggplot2 adds a scale for each.
@@ -923,7 +923,7 @@ You can select the colours used in a gradient for a continuous variable.
 ```{r}
 ggplot(data = patients, mapping = aes(x = Height, y = Weight, colour = BMI)) +
   geom_point() +
-  scale_color_gradient(low = "black", high = "blue")
+  scale_colour_gradient(low = "black", high = "blue")
 ```
 
 In some cases it might make sense to specify two colour gradients either side of a mid-point.
@@ -931,7 +931,7 @@ In some cases it might make sense to specify two colour gradients either side of
 ```{r}
 ggplot(data = patients, mapping = aes(x = Height, y = Weight, colour = BMI)) +
   geom_point() +
-  scale_color_gradient2(low = "red", mid = "grey60", high = "blue", midpoint = median(patients$BMI))
+  scale_colour_gradient2(low = "red", mid = "grey60", high = "blue", midpoint = median(patients$BMI))
 ```
 
 As before we can override the default labels and other aspects of the BMI scale
@@ -940,7 +940,7 @@ within the scale function.
 ```{r}
 ggplot(data = patients, mapping = aes(x = Height, y = Weight, colour = BMI)) +
   geom_point() +
-  scale_color_gradient(
+  scale_colour_gradient(
     low = "lightblue", high = "darkblue",
     name = "Body mass index",
     breaks = seq(20, 30, by = 2.5)
