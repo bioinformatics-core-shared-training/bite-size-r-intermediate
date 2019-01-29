@@ -6,11 +6,6 @@ output: html_document
 ---
 
 
-```{r include = FALSE}
-knitr::opts_chunk$set(echo = FALSE, message = FALSE, eval = TRUE)
-```
-
-
 ## Exercise 1
 
 These first few exercises will run through some of the simple principles of creating a ggplot2 object, assigning aesthetics mappings and geoms.
@@ -18,7 +13,7 @@ These first few exercises will run through some of the simple principles of crea
 
 1. Read in the cleaned patients dataset as we saw in ggplot2 course earlier.
 
-```{r echo = TRUE}
+```{r message = FALSE}
 library(tidyverse)
 patients <- read_tsv("patient-data-cleaned.txt")
 ```

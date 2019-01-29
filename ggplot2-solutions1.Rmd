@@ -18,7 +18,7 @@ These first few exercises will run through some of the simple principles of crea
 
 1. Read in the cleaned patients dataset as we saw in ggplot2 course earlier.
 
-```{r echo = TRUE}
+```{r}
 library(tidyverse)
 patients <- read_tsv("patient-data-cleaned.txt")
 ```
