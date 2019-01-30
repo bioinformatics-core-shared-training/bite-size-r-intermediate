@@ -27,13 +27,12 @@ Load the core packages from the _tidyverse_, including **ggplot2**.
 library(tidyverse)
 ```
 
-Note the packages that are loaded, relate these to this and other sections of the course.
+_[**Instructors note:** draw attention to the packages that are loaded, relate these to this and other sections of the course.]_
 
 #### Aside: function name conflicts (optional)
 
-Note the conflicts and briefly discuss the problem with the same function names being used
-by multiple packages and what you have to do to use a function that has been masked by another
-package.
+With the many hundreds of R packages available it is inevitable that there will
+be functions with the same name being used by more than one package.
 
 For example, filter function in dplyr  has masked filter function from the stats package that
 already loaded as part of base R.
@@ -97,7 +96,7 @@ Printing a tibble shows each of the column types.
 
 Print the patients data frame at the console.
 
-```{r eval = FALSE}
+```{r}
 patients
 ```
 
@@ -119,7 +118,7 @@ _What are the observations?_
 
 _What types of variables do we have?_
 
-`read_tsv` has read these in as <chr>, <fct>, <dbl>, <date> and <lgl>.
+`read_tsv` has read these in as `<chr>`, `<fct>`, `<dbl>`, `<date>` and `<lgl>`.
 _What do these mean?_
 
 ```{r}
@@ -469,7 +468,7 @@ These histograms are not aesthetically very pleasing - how about some better aes
 
 ```{r}
 ggplot(data = patients) +
-  geom_histogram(mapping = aes(x = Height, fill = Sex), bins = 15, colour = "firebrick", fill = "grey70")
+  geom_histogram(mapping = aes(x = Height), bins = 15, colour = "firebrick", fill = "grey70")
 ```
 
 The help page for geom_histogram talks about an alternative called geom_freqpoly.
