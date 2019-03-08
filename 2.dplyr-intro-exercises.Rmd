@@ -1,74 +1,95 @@
 ---
-title: "Title"
-author: "Your Name"
+title: "Tidying and transforming data - exercises"
+author: "Mark Dunning and Matt Eldridge"
 date: '`r format(Sys.time(), "Last modified: %d %b %Y")`'
 output: html_document
 ---
 
-## Tidy data
+## Part I -- tidying data
 
-Read the simulated clinical dataset and put into the tidy form. Also load the `tidyr` package that we are going to use.
-- Can you make a boxplot to visualise the effect of the different treatments?
-
-```{r}
-library(tidyr)
-messyData <- read.delim("clinicalData.txt")
-messyData
-```
+1. Read in the simulated clinical dataset, `clinicalData.txt`.
 
 ```{r}
-## Your answer here
 
 ```
 
+Take a look at the data and answer the following questions:
 
-## The patients dataset
+* What variables and observations do we have?
+* What might a 'tidy' version of this dataset look like?
 
-First load the file using the `read.delim` function. Also load the `dplyr` library that we will need later
-
-```{r}
-library(dplyr)
-
-patients <- read.delim("patient-data.txt")
-patients <- tbl_df(patients)
-```
-
-## Exercise: select
-
-- Print all the columns between `Height` and `Grade_Level`
-- Print all the columns between `Height` and `Grade_Level`, but NOT `Pet`
-- Print the columns `Height` and `Weight`
-    + try to do this without specifying the full names of the columns
-- (OPTIONAL)
-- Print the columns in alphabetical order
-- Print all the columns whose name is less than 4 characters in length
-
-There are several ways to solve these. Feel free to explore
+2. Transform the data into a tidy form using the `gather` function from the `tidyr` package.
 
 ```{r}
-### Your answer here
 
 ```
 
+3. Display the range of values for each drug and placebo treatment as a box plot
 
 ```{r}
-library(stringr)
-patients_clean <- mutate(patients, Sex = factor(str_trim(Sex)))
-patients_clean <- mutate(patients_clean, Height= as.numeric(str_replace_all(Height,pattern = "cm","")))
-```
-
-
-- For a follow-on study, we are interested in overweight smokers
-    + clean the `Smokes` column to contain just `TRUE` or `FALSE` values
-- We need to calculate the Body Mass Index (BMI) for each of our patients
-- $BMI = (Weight) / (Height^2)$ 
-    + where Weight is measured in Kilograms, and Height in Metres
-- A BMI of 25 is considered overweight, calculate a new variable to indicate which individuals are overweight
-- (EXTRA) What other problems can you find in the data?
-
-
-```{r}
-### Your answer here
 
 ```
 
+## Part II -- selecting columns
+
+4. Read in the patients dataset
+
+```{r}
+
+```
+
+5. Select all the columns between `Height` and `Grade_Level`
+
+```{r}
+
+```
+
+6. Select all the columns between `Height` and `Grade_Level`, but not `Pet`
+
+```{r}
+
+```
+
+7. Select all columns ending in 'eight', i.e. `Height` and `Weight`
+
+```{r}
+
+```
+
+8. Select all columns except `State`, `Pet` and `Grade_Level`
+
+```{r}
+
+```
+
+## Part III - transforming the data, cleaning values and calculating new values
+
+The study that collected the patient data is interested in the relationship between body mass index (BMI) and smoking.
+
+Which the relevant variables (columns) in our patients dataset and what problems can you see with these columns as they currently stand?
+
+9. Clean the `Smokes` column so that it contains just `TRUE` and `FALSE` values.
+
+```{r}
+
+```
+
+10. Clean the `Height` and `Weight` columns to remove the 'cm' and 'kg' units respectively.
+
+```{r eval = FALSE}
+
+```
+
+11. Calculate the body mass index (BMI) for each of our patients using the formula $BMI = Weight / (Height)^2$, where the weight is measured in kilograms and the height is in metres.
+
+```{r}
+
+```
+
+12. Create a new variable to indicate which individuals are overweight, i.e. those with a BMI of above 25.
+
+```{r}
+
+```
+
+What other problems can you find in the patients dataset?

@@ -1,107 +1,121 @@
 ---
-title: "Solutions to dplyr introduction"
-author: "Mark Dunning"
+title: "Tidying and transforming data - exercises"
+author: "Mark Dunning and Matt Eldridge"
 date: '`r format(Sys.time(), "Last modified: %d %b %Y")`'
 output: html_document
 ---
 
-## Tidy data
+## Part I -- tidying data
 
-Read the simulated clinical dataset and put into the tidy form. Also load the `tidyr` package that we are going to use.
-- Can you make a boxplot to visualise the effect of the different treatments?
+1. Read in the simulated clinical dataset, `clinicalData.txt`.
 
 ```{r}
-library(tidyr)
-library(dplyr)
-library(ggplot2)
-messyData <- read.delim("clinicalData.txt")
-messyData
+library(tidyverse)
+clinicalData <- read_tsv("clinicalData.txt")
 ```
 
+What variables and observations do we have?
+
+What might a 'tidy' version of this dataset look like?
+
+2. Transform the data into a tidy form using the `gather` function from the `tidyr` package.
+
 ```{r}
-## Your answer here
-tidyData <- gather(messyData, key = Treatment, value = Value, -Subject)
-tidyData
+clinicalData <- gather(clinicalData, key = "Treatment", value = "Value", -Subject)
+```
 
-# base R solution
-boxplot(tidyData$Value~tidyData$Treatment)
+3. Display the range of values for each drug and placebo treatment as a box plot
 
-# ggplot2 solution
-ggplot(tidyData, aes(x=Treatment, y=Value)) +
+```{r}
+ggplot(clinicalData, mapping = aes(x = Treatment, y = Value)) +
   geom_boxplot()
 ```
 
-`spread` is useful if we want to see our data in the wide format
-
 ```{r}
-spread(tidyData, key = Treatment,value=Value)
+clinicalData <- separate(clinicalData, Treatment, into = c("Treatment", "Replicate"))
+ggplot(clinicalData, mapping = aes(x = Replicate, y = Value)) +
+  geom_boxplot() +
+  facet_wrap(~Treatment)
 ```
 
-`separate` can be used to split columns that encode more than one piece of information
+## Part II -- selecting columns
+
+4. Read in the patients dataset
 
 ```{r}
-separate(tidyData, "Treatment",into=c("Treatment","Replicate"))
+patients <- read_tsv("patient-data.txt")
 ```
 
-
-## The patients dataset
-```{r}
-library(dplyr)
-library(stringr)
-
-patients <- read.delim("patient-data.txt")
-patients <- tbl_df(patients)
-```
-
-
-- Print all the columns between `Height` and `Grade_Level`
+5. Select all the columns between `Height` and `Grade_Level`
 
 ```{r}
 select(patients, Height:Grade_Level)
 ```
 
-- Print all the columns between `Height` and `Grade_Level`, but NOT `Pet`
+6. Select all the columns between `Height` and `Grade_Level`, but not `Pet`
 
 ```{r}
 select(patients, Height:Grade_Level, -Pet)
 ```
 
-- Print the columns `Height` and `Weight`
-    + try to do this without specifying the full names of the columns
-    
+7. Select all columns ending in 'eight', i.e. `Height` and `Weight`
+
 ```{r}
-select(patients, contains("eight"))
 select(patients, ends_with("eight"))
 ```
 
-- (OPTIONAL)
-- Print the columns in alphabetical order
-- Print all the columns whose name is less than 4 characters in length
+8. Select all columns except `State`, `Pet` and `Grade_Level`
 
 ```{r}
-select(patients, order(colnames(patients)))
-select(patients, which(nchar(colnames(patients)) < 4))
+select(patients, -State, -Pet, -Grade_Level)
+select(patients, -c(State, Pet, Grade_Level))
+select(patients, -(State:Grade_Level))
 ```
 
+## Part III - transforming the data, cleaning values and calculating new values
 
-- We want to calculate the Body Mass Index (BMI) for each of our patients
-- $BMI = (Weight) / (Height^2)$ 
-    + where Weight is measured in Kilograms, and Height in Metres
-- Create a new BMI variable in the dataset
-- A BMI of 25 is considered overweight, calculate a new variable to indicate which individuals are overweight
-- For a follow-on study, we are interested in overweight smokers
-    + clean the `Smokes` column to contain just `TRUE` or `FALSE` values
-- How many candidates (Overweight and Smoker) do you have?
-- (EXTRA) What other problems can you find in the data?
+The study that collected the patient data is interested in the relationship between body mass index (BMI) and smoking.
 
+Which the relevant variables (columns) in our patients dataset and what problems can you see with these columns as they currently stand?
+
+9. Clean the `Smokes` column so that it contains just `TRUE` and `FALSE` values.
 
 ```{r}
-patients_clean <- mutate(patients, Sex = factor(str_trim(Sex)))
-patients_clean <- mutate(patients_clean, Height = as.numeric(str_replace_all(Height,pattern = "cm", "")))
-patients_clean <- mutate(patients_clean, Weight = as.numeric(str_replace_all(patients_clean$Weight,"kg", "")))
-patients_clean <- mutate(patients_clean, BMI = (Weight/(Height/100)^2), Overweight = BMI > 25)
-patients_clean <- mutate(patients_clean, Smokes = str_replace_all(Smokes, "Yes", "TRUE"))
-patients_clean <- mutate(patients_clean, Smokes = as.logical(str_replace_all(Smokes, "No", "FALSE")))
-patients_clean
+patients <- mutate(patients, Smokes = str_replace(Smokes, "No", "FALSE"))
+patients <- mutate(patients, Smokes = str_replace(Smokes, "Yes", "TRUE"))
+patients <- mutate(patients, Smokes = as.logical(Smokes))
+select(patients, ID, Smokes, Height, Weight)
 ```
 
+Alternatively combine all the operations into a single `mutate` command.
+
+```{r eval = FALSE}
+patients <- mutate(patients,
+                   Smokes = str_replace(Smokes, "No", "FALSE"),
+                   Smokes = str_replace(Smokes, "Yes", "TRUE"),
+                   Smokes = as.logical(Smokes))
+```
+
+10. Clean the `Height` and `Weight` columns to remove the 'cm' and 'kg' units respectively.
+
+```{r}
+patients <- mutate(patients, Height = as.numeric(str_remove(Height, pattern = "cm$")))
+patients <- mutate(patients, Weight = as.numeric(str_remove(Weight, pattern = "kg$")))
+select(patients, ID, Smokes, Height, Weight)
+```
+
+11. Calculate the body mass index (BMI) for each of our patients using the formula $BMI = Weight / (Height)^2$, where the weight is measured in kilograms and the height is in metres.
+
+```{r}
+patients <- mutate(patients, BMI = Weight / (Height / 100) ** 2)
+select(patients, ID, Smokes, Height, Height, BMI)
+```
+
+12. Create a new variable to indicate which individuals are overweight, i.e. those with a BMI of above 25.
+
+```{r}
+patients <- mutate(patients, Overweight = BMI > 25)
+select(patients, ID, Smokes, Height, Height, BMI, Overweight)
+```
+
+What other problems can you find in the patients dataset?
