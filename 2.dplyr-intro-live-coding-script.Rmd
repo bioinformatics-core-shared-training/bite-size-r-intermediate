@@ -1,0 +1,575 @@
+---
+title: "Tidying and transforming data - live coding script"
+author: "Matt Eldridge"
+date: '`r format(Sys.time(), "Last modified: %d %b %Y")`'
+output:
+  html_document:
+    toc: yes
+    toc_float: yes
+---
+
+## Introduction
+
+In this session we will look at what makes a dataset 'tidy' and why this is important. We will
+also look at how to perform some basic manipulations of a tabular dataset including:
+
+* operations that will help clean up values within columns
+* selecting a subset of columns of interest
+* creating new variables (columns) based on existing variables
+
+### Load the tidyverse
+
+In this section we will use functions from a number of packages from the _tidyverse_,
+namely **tidyr** for tidying data, **dplyr** for manipulating data frames and **stringr**
+providing common string operations.
+
+Load the core packages from the _tidyverse_.
+
+```{r}
+library(tidyverse)
+```
+
+_[**Instructors note:** draw attention to the packages that are loaded, relate these to this and other sections of the course.]_
+
+#### Aside: function name conflicts (optional)
+
+With the many hundreds of R packages available it is inevitable that there will
+be functions with the same name being used by more than one package.
+
+For example, filter function in dplyr  has masked filter function from the stats package that
+already loaded as part of base R.
+
+```{r eval = FALSE}
+?filter
+```
+
+Navigate to each help section and show how the signatures differ and explain how using
+the one you hadn't intended will likely cause your code to fail.
+
+Use R studio's file completion to show that the filter function we get by default.
+
+To use the `filter` function from the `stats` package we need to include the `stats`
+namespace prefix as follows:
+
+```{r eval = FALSE}
+stats::filter(presidents, rep(1, 3))
+```
+
+### Data frames
+
+In this course the data we will be working with will be structured within a type of R
+object called a 'data frame'.
+
+A data frame contains tabular data, like those we might be used to dealing with in spreadsheets,
+e.g. with Excel, where the data can be thought of as having rows and columns. The values in each
+column are all of the same type, e.g. all numbers (if quantitative) or all text strings (if qualitative).
+
+Let's have a look at an example data frame that was loaded as part of the `tidyr`
+package that we loaded when we called `library(tidyverse)`.
+
+This dataset contains the number of TB cases documented by the World Health Organization
+in Afghanistan, Brazil and China in 1999 and 2000.
+
+```{r eval = FALSE}
+table1
+```
+
+If we view this in the R console it is displayed as follows and described as a `tibble`.
+
+```
+# A tibble: 6 x 4
+  country      year  cases population
+  <chr>       <int>  <int>      <int>
+1 Afghanistan  1999    745   19987071
+2 Afghanistan  2000   2666   20595360
+3 Brazil       1999  37737  172006362
+4 Brazil       2000  80488  174504898
+5 China        1999 212258 1272915272
+6 China        2000 213766 1280428583
+```
+
+```{r}
+class(table1)
+```
+
+This is a special kind of data frame with the additional `tbl_df` and `tbl` types.
+
+Tibbles have some additional behaviour over plain data frames that might be useful.
+The most obvious is that these get printed to the console in a more concise and
+useful way, particularly when there are very many rows and/or columns. You can see
+how the default behaviour of tibbles differs from normal data frames by looking at
+the help page for the `tbl_df` class.
+
+```{r eval = FALSE}
+?tbl_df
+```
+
+## Tidy and untidy data
+
+The **tidyr** package also contains some different representations of the TB dataset.
+Each of these tables organizes the values in a different layout or format.
+
+Let's take a look at the different representations.
+
+`table2` contains separate rows for the number of cases and the total population.
+
+```{r}
+table2
+```
+
+`table3` has a column called `rate` which contains multiple values, i.e. the number of cases
+and the total population. If we wanted to extract just the number of cases for each country
+and year this would require some effort.
+
+Note that the rate as a percentage could easily be computed from
+`table1` and much less straightforwardly from `table2`.
+
+```{r}
+table3
+```
+
+`table4a` only contains the numbers of TB cases and `table4b` contains only the total
+populations. To compute the percentage of TB cases we would need to combine these tables,
+something we will look at later on in the course.
+
+```{r}
+table4a
+```
+
+```{r}
+table4b
+```
+
+A dataset is a collection of values, usually either numbers (if quantitative) or text
+strings (if qualitative).
+
+Every **value** belongs to a **variable** and an **observation**.
+
+A variable contains values that measure the same underlying attribute, e.g. height,
+or temperature.
+
+An observation contains values measured on the same unit, e.g. a person or a date.
+Note that there can be multiple measurements within an observation but these should be
+for multiple attributes measured on the same unit.
+
+A tidy dataset is a data frame (or table) for which the following are true:
+
+1. Each **variable** has its own column
+2. Each **observation** has its own row
+3. Each **value** has its own cell
+
+**Question** _Which of the representations we've just been looking at is tidy?_
+
+`table2` is tricky. If we consider the observational unit to be a country in a specific
+year then `table2` is not tidy because observations are split across two rows. Also the
+count variable contains counts of what are essentially different things, the number of
+cases of TB and the total population. In tricky situations like this, a tell-tale sign
+that your data is not in a tidy format is when you want to visualize your data and you
+have to perform some kind of filtering to do so. In this case if we wanted to create a
+bar plot of for the population of each country we would have to first remove the rows
+corresponding to the number of TB cases.
+
+Let's look at another untidy dataset.
+
+```{r}
+untidy_data <- read_tsv("tidyr-example.txt")
+untidy_data
+```
+
+**Questions**
+
+1. _What makes this an untidy dataset?_
+
+2. _What other problems can you see with this dataset?_
+
+Data in this format are quite familiar to us, but not easily-interpretable by the computer.
+We need to think of the dataset in terms of _variables_ and _values_.
+
+_What are the variables in this dataset?_
+
+* Person (John, Jane or Mary)
+* Treatment (A or B)
+* The effect or result of the treatment for that individual
+
+Remember the guiding principles:
+
+1. Each variable has its own column
+2. Each observation has its own row
+3. Each value has its own cell and belongs to a variable and an observation
+
+A tidy form of this data would have 3 columns: Person, Treatment and Result.
+
+This is an example of a fairly common scenario in which there are columns that are not variables
+but instead are values of a variable.
+
+The variable in question is `Treatment` and the two columns `treatmenta` and `treatmentb` are
+values that variable can take. So a tidy form of this dataset would have a column called
+`Treatment`.
+
+### Using `gather` to create a tidy data frame
+
+The `gather` function takes multiple "value" columns and collapses these into key-value
+pairs.
+
+Look at the help for the `gather` function to see what we need to give it.
+
+```{r eval = FALSE}
+?gather
+```
+
+We have to specify which columns to work on and we have to tell `gather` what to call the
+variable for which those columns will become values - this variable is the 'key'.
+
+The values within those 'key' columns are values but for another variable which we specify
+using the 'value' argument.
+
+In our example the key would be 'Treatment' and the value would be 'Result'.
+
+```{r}
+tidy_data <- gather(untidy_data, key = "Treatment", value = "Result", treatmenta, treatmentb)
+tidy_data
+```
+
+The key and value variables can be given as strings or as symbols without quotes.
+
+```{r}
+gather(untidy_data, Treatment, Result, treatmenta, treatmentb)
+```
+
+If there were lots of treatment columns it would be quite laborious to type them all in.
+Instead you can tell `gather` which columns not to include.
+
+```{r}
+gather(untidy_data, Treatment, Result, -Name)
+```
+
+You can also specify the columns as a range either using the column names
+
+```{r}
+gather(untidy_data, Treatment, Result, treatmenta:treatmentb)
+```
+
+or column indices
+
+```{r}
+gather(untidy_data, Treatment, Result, 2:3)
+```
+
+Note that `gather` is very similar to the `melt` function from the `reshape` and `reshape2` packages.
+
+### Exercise: tidying data
+
+See separate R markdown document.
+
+### Other useful `tidyr` functions
+
+There are some other useful functions within the `tidyr` package. We'll look at these using
+the dataset from the exercise.
+
+```{r}
+clinicalData <- read_tsv("clinicalData.txt")
+clinicalData <- gather(clinicalData, Treatment, Value, -Subject)
+clinicalData
+```
+
+```{r}
+ggplot(clinicalData, mapping = aes(x = Treatment, y = Value)) +
+  geom_boxplot()
+```
+
+The suffix for each of the treatments, either '.1' or '.2', indicates that each drug or placebo
+was measured twice. Ideally we would extract this into a new variable called 'Replicate'. We can
+use the `separate` function to do so.
+
+```{r}
+clinicalReplicateData <- separate(clinicalData, Treatment, into = c("Treatment", "Replicate"))
+clinicalReplicateData
+```
+
+**Question** _How did `separate` know to split the values on the '.' character?_
+
+Look at the help for the `separate` function and find how you would specify the delimiter. In this
+case the default delimiter does the trick.
+
+Now that we have a separate variable/column for the replicate we can create an improved box plot
+with faceting.
+
+```{r}
+ggplot(clinicalReplicateData, mapping = aes(x = Replicate, y = Value)) +
+  geom_boxplot() +
+  facet_wrap(~Treatment)
+```
+
+The `spread` function does the opposite to `gather` and can be used to convert a tidy dataset
+back to one in which we have values in column headings. Sometimes this really is necessary, e.g.
+gene expression matrices where there are rows for each gene and columns for each sample, because
+some analysis functions require the matrix form of the data.
+
+```{r}
+spread(clinicalData, key = Treatment, value = Value)
+```
+
+
+```{r}
+table2
+```
+
+```{r}
+spread(table2, key = type, value = count)
+```
+
+## Selecting columns
+
+We're going to look now at some of the functions provided by the `dplyr` package, another
+core component of the _tidyverse_. `dplyr` provides a set of data manipulation functions
+that have a common syntax and work together in a consistent and uniform manner. These are
+referred to as ***verbs*** in the `dplyr` documentation.
+
+The most basic operation is to select a subset of columns.
+
+First we'll load a more complex dataset with several columns (variables).
+
+```{r}
+patients <- read_tsv("patient-data.txt")
+patients
+```
+
+View the patients dataset in RStudio by selecting it in the Environment tab (usually top-right) or
+as follows.
+
+```{r eval = FALSE}
+View(patients)
+```
+
+You should be familiar with how to access a specific column of a data frame using the `$` operator.
+
+```{r}
+patients$Name
+```
+
+The `$` operator works just fine for single columns, but for multiple columns it quickly starts to get
+cumbersome as we need to resort to using `[]` and specifying the column names in quotes.
+
+```{r}
+patients[,c("Name","Race")]
+```
+
+Non R users probably find these commands a bit obtuse.
+
+- why the `[ ]`?
+- what is `c`?
+- need to remember the row and column index
+- `[,...]` means display all rows
+
+However, the `dplyr` verb `select` is a lot more intuitive.
+
+```{r}
+select(patients, Name)
+```
+
+Note that we don't need the quotation marks.
+
+```{r}
+select(patients, Name, Race)
+```
+
+We can exclude columns in the same way as we did earlier with the `gather` function.
+
+```{r}
+select(patients, -Name)
+```
+
+**Question** _how would you do this with base R?_
+
+```{r}
+patients[,-2]
+patients[,setdiff(colnames(patients), "Name")]
+```
+
+You can also select columns within a range using `:`, again as we did before with `gather`.
+
+```{r}
+select(patients, Name:Sex)
+```
+
+Looking at the help for `select` you will see that there are a number of useful functions
+that can be used when selecting columns.
+
+```{r}
+select(patients, starts_with("Grade"))
+```
+
+You can combine explicit naming of columns, ranges and functions, e.g.
+
+```{r}
+select(patients, Name, Sex:Birth, -Smokes)
+```
+
+### Exercise: selecting columns
+
+See separate R markdown document.
+
+## Transforming and cleaning the data
+
+We're now going to explore this dataset, taking a look at some of the variables and some
+potential problems that will hinder any analysis we want to carry out.
+
+We'll read the data in again but this time using the base R `read.delim` function instead
+of the `read_tsv` because the latter has in fact done some tidying of our data and for the
+purposes of what comes next it would be better if it hadn't.
+
+```{r}
+patients <- read.delim("patient-data.txt")
+patients <- as_tibble(patients)
+patients
+```
+
+We'll start by looking at the Sex column. Create a bar plot to show the numbers of male
+and female patients in our study.
+
+```{r}
+ggplot(patients, mapping = aes(x = Sex)) +
+  geom_bar()
+```
+
+There appear to be more categories than expected - why is this?
+
+Note that the `Sex` variable has been read in as a factor. We can check the factor levels.
+
+```{r}
+levels(patients$Sex)
+```
+
+OK, so there are some extraneous spaces in the Sex column in the tabular file.
+
+R has many functions for dealing with and manipulating text strings. However, the `stringr`
+package that is part of the _tidyverse_ aims to provide a clean and uniform interface to many
+common string operations.
+
+Select the 'Packages' tab in RStudio and navigate to the `stringr` package. Take a look at the
+various functions it offers and work out which one will help us remove the spaces at the beginning
+and/or end of our `Sex` values.
+
+```{r}
+str_trim(patients$Sex)
+```
+
+`str_trim` has taken a vector of strings and returns another vector in which each string value
+has had whitespace removed from the beginning and end of the string.
+
+We now need a way to use this to modify the data frame. One way to do this would be:
+
+```{r eval = FALSE}
+patients$Sex <- str_trim(patients$Sex)
+```
+
+The `dplyr` function for making changes to a data frame is `mutate`.
+
+```{r}
+mutate(patients, Sex = str_trim(Sex))
+```
+
+Notice that we didn't need to specify the Sex variable as `patients$Sex`.
+
+Usually for cleaning operations like this we would choose to overwrite the column in question
+but we could instead create a new variable, e.g.
+
+```{r}
+mutate(patients, SexTrimmed = str_trim(Sex))
+```
+
+Creating a new variable is more common where we compute a new value based on values from other columns.
+
+```{r}
+mutate(table1, percent = 100 * cases / population)
+```
+
+We may want the `Sex` column to remain as a factor.
+
+```{r}
+patients <- mutate(patients, Sex = factor(str_trim(Sex)))
+levels(patients$Sex)
+```
+
+```{r}
+ggplot(patients, mapping = aes(x = Sex)) +
+  geom_bar()
+```
+
+Let's turn our attention to another of the variables, `Height`. Create a histogram of the
+heights of our patients.
+
+```{r eval = FALSE}
+ggplot(patients, mapping = aes(x = Height)) +
+  geom_histogram()
+```
+
+The error is not terribly easy to understand but it does indicate that for a histogram
+we need a continuous variable. What type is our `Height` variable? Why might this be?
+
+```{r}
+select(patients, Height)
+```
+
+To convert these values to numbers we need to remove the 'cm' unit that is appended
+to each value.
+
+Again, take a look at the functions available in `stringr` and see which might be able
+to carry out this operation.
+
+```{r}
+str_remove(patients$Height, "cm")
+```
+
+The values are still strings though.
+
+```{r}
+as.numeric(str_remove(patients$Height, "cm"))
+```
+
+Now we can modify the dataset with `mutate`.
+
+```{r}
+patients <- mutate(patients, Height = as.numeric(str_remove(Height, "cm")))
+patients
+```
+
+```{r}
+ggplot(patients, mapping = aes(x = Height)) +
+  geom_histogram()
+```
+
+You can modify multiple columns within a single `mutate` function call.
+
+```{r}
+patients <- read.delim("patient-data.txt")
+patients <- as_tibble(patients)
+patients <- mutate(patients,
+                   Sex = as.factor(str_trim(Sex)),
+                   Height = as.numeric(str_remove(Height, "cm")))
+patients
+```
+
+### Exercise: tidying data
+
+See separate R markdown document.
+
+### Mutating multiple columns
+
+If you look at the help documentation for `mutate` you will notice that there are a
+set of related functions, `mutate_all`, `mutate_if` and `mutate_at`. These are very
+useful functions for applying the same operation to several columns within a table
+in one go.
+
+For example, let's say we want to round each patient's weight and height to 1 decimal
+place.
+
+```{r}
+patients <- read_tsv("patient-data-cleaned.txt")
+mutate_at(patients, vars(Height, Weight), round, digits = 1)
+```
+
+Two things to note here.
+Firstly, we had to specify the variables that needed to be modified in a `vars()` argument.
+Secondly, you can add any additional arguments that the function requires at the end.
+
