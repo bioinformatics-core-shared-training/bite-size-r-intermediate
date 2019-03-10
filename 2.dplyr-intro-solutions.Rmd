@@ -31,13 +31,6 @@ ggplot(clinicalData, mapping = aes(x = Treatment, y = Value)) +
   geom_boxplot()
 ```
 
-```{r}
-clinicalData <- separate(clinicalData, Treatment, into = c("Treatment", "Replicate"))
-ggplot(clinicalData, mapping = aes(x = Replicate, y = Value)) +
-  geom_boxplot() +
-  facet_wrap(~Treatment)
-```
-
 ## Part II -- selecting columns
 
 4. Read in the patients dataset
@@ -72,7 +65,7 @@ select(patients, -c(State, Pet, Grade_Level))
 select(patients, -(State:Grade_Level))
 ```
 
-## Part III - transforming the data, cleaning values and calculating new values
+## Part III - data transformations
 
 The study that collected the patient data is interested in the relationship between body mass index (BMI) and smoking.
 
