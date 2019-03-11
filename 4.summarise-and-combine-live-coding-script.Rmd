@@ -322,7 +322,7 @@ patients %>% group_by(State) %>% count()
 patients %>% group_by(State) %>% summarise_at(vars(Height, Weight), funs(mean))
 ```
 
-```{r echo=TRUE, message=FALSE, warning=FALSE}
+```{r echo=TRUE, message=FALSE, warning=FALSE, fig.width=12}
 patients %>% 
     group_by(State) %>% 
     summarise_at(vars(Height, Weight), funs(mean)) %>% 
