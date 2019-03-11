@@ -751,6 +751,10 @@ ggplot(data = patients, mapping = aes(x = Height, y = Weight, colour = Sex)) +
   facet_wrap(~ Smokes)
 ```
 
+## Exercises part I - geoms and aesthetics
+
+See separate R markdown document.
+
 ## Customization
 
 ### Labels
@@ -1179,3 +1183,6 @@ be specified, e.g.
 ggsave("myplot.pdf", width = 8, height = 6)
 ```
 
+## Exercises part II - scales, statistical transformations and themes
+
+See separate R markdown document.
