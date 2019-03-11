@@ -1,62 +1,66 @@
 ---
-title: "Title"
-author: "Name"
+title: "Exercise: workflows, filtering and sorting"
+author: "Mark Dunning and Matt Eldridge"
 date: '`r format(Sys.time(), "Last modified: %d %b %Y")`'
 output: html_document
 ---
 
-******
+## Part I -- Workflows using pipes
 
-Take the steps used to clean the patients dataset and calculate BMI (see below for the code)
-- Re-write in the piping framework
+1. Read in the patients dataset and rewrite the following cleaning steps as a workflow using the `%>%` operator.
 
-
-******
-
-```{r message = FALSE}
-library(dplyr)
-library(stringr)
-
-patients <- read.delim("patient-data.txt")
-patients <- tbl_df(patients)
-patients_clean <- mutate(patients, Sex = factor(str_trim(Sex)))
-patients_clean <- mutate(patients_clean, Height= as.numeric(str_replace_all(patients_clean$Height, pattern = "cm", "")))
-patients_clean <- mutate(patients_clean, Weight = as.numeric(str_replace_all(patients_clean$Weight, "kg", "")))
-patients_clean <- mutate(patients_clean, BMI = (Weight/(Height/100)^2), Overweight = BMI > 25)
-patients_clean <- mutate(patients_clean, Smokes = str_replace_all(Smokes, "Yes", "TRUE"))
-patients_clean <- mutate(patients_clean, Smokes = as.logical(str_replace_all(Smokes, "No", "FALSE")))
+```{r eval = FALSE}
+library(tidyverse)
+patients <- read_tsv("patient-data.txt")
+patients <- mutate(patients, Smokes = str_replace(Smokes, "No", "FALSE"))
+patients <- mutate(patients, Smokes = str_replace(Smokes, "Yes", "TRUE"))
+patients <- mutate(patients, Smokes = as.logical(Smokes))
+patients <- mutate(patients, Height = as.numeric(str_remove(Height, pattern = "cm$")))
+patients <- mutate(patients, Weight = as.numeric(str_remove(Weight, pattern = "kg$")))
+patients <- mutate(patients, BMI = Weight / (Height / 100) ** 2)
+patients <- mutate(patients, Overweight = BMI > 25)
 ```
-
 
 ```{r}
-## Re-write the above template using 'pipes'
-
-
+library(tidyverse)
+patients <- read_tsv("patient-data.txt") %>%
+  mutate(Smokes = str_replace(Smokes, "No", "FALSE")) %>%
+  mutate(Smokes = str_replace(Smokes, "Yes", "TRUE")) %>%
+  mutate(Smokes = as.logical(Smokes)) %>%
+  mutate(Height = as.numeric(str_remove(Height, pattern = "cm$"))) %>%
+  mutate(Weight = as.numeric(str_remove(Weight, pattern = "kg$"))) %>%
+  mutate(BMI = Weight / (Height / 100) ** 2) %>%
+  mutate(Overweight = BMI > 25)
+patients
 ```
 
-
-## Exercise: filter
-
-Use `filter` to print the following subsets of the dataset
-  - Choose the Female patients from New York or New Jersey
-  - Choose the overweight smokers that are still alive
-  - Choose the patients who own a Pet that is not a dog
-    + recall that `is.na` can check for values that are `NA`
-  - (OPTIONAL)
-  - Patients born in June
-    + you could check out the notes on dealing with dates in the previous section for this
-  - Patients with a Number > 100
-    + Patient Number is the third component of the ID variable
-    + e.g. `AC/AH/001` is patient Number 1; `AC/AH/017` is patient Number 17
-  - Patients that entered the study on 2016-05-31
-    + the column containing this data is incomplete; blank entries are assumed to be the same as the last non-blank entry above
-    + the function `fill` from `tidyr` will help here
-
-Feel free to experiment with different ways to do these
-
+2. Add a step to the workflow to round the Height, Weight and BMI to 1 decimal place.
 
 ```{r}
-
-### Your answer here
+patients <- read_tsv("patient-data.txt") %>%
+  mutate(Smokes = str_replace(Smokes, "No", "FALSE")) %>%
+  mutate(Smokes = str_replace(Smokes, "Yes", "TRUE")) %>%
+  mutate(Smokes = as.logical(Smokes)) %>%
+  mutate(Height = as.numeric(str_remove(Height, pattern = "cm$"))) %>%
+  mutate(Weight = as.numeric(str_remove(Weight, pattern = "kg$"))) %>%
+  mutate(BMI = Weight / (Height / 100) ** 2) %>%
+  mutate(Overweight = BMI > 25) %>%
+  mutate_at(vars(Height, Weight, BMI), round, digits = 1)
+patients
 ```
 
+## Part II - Filtering rows
+
+3. Filter for female patients from New York or New Jersey.
+
+```{r}
+filter(patients, Sex == "Female", State == "New York" | State == "New Jersey")
+filter(patients, Sex == "Female", State %in% c("New York", "New Jersey"))
+filter(patients, Sex == "Female", str_starts(State, "New "))
+```
+
+4. Filter for overweight smokers that are still alive.
+
+```{r}
+filter(patients, Overweight, Smokes, !Died)
+```
