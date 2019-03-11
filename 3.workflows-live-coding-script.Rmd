@@ -1,0 +1,222 @@
+---
+title: "Towards Analysis Workflows in R - live coding script"
+author: "Matt Eldridge and Mark Dunning"
+date: '`r format(Sys.time(), "Last modified: %d %b %Y")`'
+output:
+  html_document:
+    toc: yes
+    toc_float: yes
+---
+
+## Introduction
+
+In this session we will introduce the concept of 'piping' to help with creating workflows
+from chains of manipulations on our data. We'll also look at a couple of other useful `dplyr`
+verbs.
+
+* Introducing piping
+* **filter** verb
+* **arrange** verb
+
+### Load the tidyverse
+
+If you haven't already done so, or are working in a new session, you'll need to load
+the core packages from the _tidyverse_.
+
+```{r}
+library(tidyverse)
+```
+
+## Piping
+
+In the previous exercise we ended up making a series of manipulations to the patients
+dataset.
+
+```{r eval = FALSE}
+patients <- read_tsv("patient-data.txt")
+patients <- mutate(patients, Smokes = str_replace(Smokes, "No", "FALSE"))
+patients <- mutate(patients, Smokes = str_replace(Smokes, "Yes", "TRUE"))
+patients <- mutate(patients, Smokes = as.logical(Smokes))
+patients <- mutate(patients, Height = as.numeric(str_remove(Height, pattern = "cm$")))
+patients <- mutate(patients, Weight = as.numeric(str_remove(Weight, pattern = "kg$")))
+patients <- mutate(patients, BMI = Weight / (Height / 100) ** 2)
+patients <- mutate(patients, Overweight = BMI > 25)
+```
+
+Each statement includes an assignment to overwrite the data frame on which we are
+operating. Surely this could be written in a more succinct and elegant manner.
+
+The _tidyverse_ imports a very useful operator, `%>%` from the `magrittr` package. This
+is the 'pipe' operator and works a bit like the Unix pipe operator allowing the output
+from one operation to be "piped" in as the input to another operation.
+
+Let's look at one of those cleaning operations on the patients dataset to see how piping
+works.
+
+```{r}
+patients <- read_tsv("patient-data.txt")
+mutate(patients, Height = as.numeric(str_remove(Height, pattern = "cm$")))
+```
+
+Instead of passing the patients data frame into the `mutate` function as it's first
+argument we could use the `%>%` operator as follows.
+
+```{r}
+patients %>% mutate(Height = as.numeric(str_remove(Height, pattern = "cm$")))
+```
+
+The basic form of a piped operation is:
+
+**`x %>% f(y)` is equivalent to `f(x, y)`**
+
+Piping becomes really useful when there are a number of steps involved in transforming
+a dataset.
+
+```{r}
+patients <- read.delim("patient-data.txt") %>%
+  as_tibble %>%
+  mutate(Sex = as_factor(str_trim(Sex))) %>%
+  mutate(Height = as.numeric(str_remove(Height, pattern = "cm$")))
+```
+
+The usual way of developing a workflow is to build it up one step at a time, testing the
+output produced at each stage.
+
+### Exercise: re-writing a workflow using pipes
+
+See separate markdown document.
+
+## Filtering rows
+
+The **`filter`** verb allows you to choose rows from a data frame that match some specified
+criteria. The criteria are based on values of variables and can make use of comparison
+operators such as `==`, `>`, `<` and `!=`.
+
+For example to filter the patients dataset so it only contains males.
+
+```{r}
+patients <- read_tsv("patient-data-cleaned.txt")
+filter(patients, Sex == "Male")
+```
+
+The equivalent in base R is much less intuitive.
+
+```{r}
+patients[patients$Sex == "Male",]
+```
+
+We can also use the `!=` operator.
+
+```{r}
+filter(patients, Sex != "Female")
+```
+
+We can filter for a set of values using the `%in%` operator.
+
+```{r}
+filter(patients, State %in% c("Florida", "Georgia", "Illinois"))
+```
+
+Partial matches can be made using the `str_detect` function from the `stringr` package.
+Note this is similar to the `grepl` function in base R.
+
+For example, let's select all the patients whose name begins with a 'B'.
+
+```{r}
+filter(patients, str_detect(Name, "^B"))
+```
+
+Note that the `str_detect` function returns a logical vector - this is important since
+the criterion for filtering must evaluate to `TRUE` or `FALSE`.
+
+Also note that the second argument to `str_detect` is a regular expression. An alternative
+function from `stringr` we could have used in this case is `str_starts`; with this we no
+longer need to '^' symbol in our regular expression.
+
+```{r}
+filter(patients, str_starts(Name, "B"))
+
+```
+
+We can filter on logical variables straightforwardly.
+
+```{r}
+filter(patients, !Died)
+```
+
+Also we can add extra conditions, separating them with a `,`.
+
+```{r}
+filter(patients, Sex == "Male", Died)
+```
+
+In this example all males who have died are selected. The `,` is the equivalent of using
+the Boolean operator `&`.
+
+```{r}
+filter(patients, Sex == "Male" & Died)
+```
+
+The equivalent in regular R is more verbose and less easy to read.
+
+```{r}
+patients[patients$Sex == "Male" & patients$Died,]
+```
+
+We can use the `|` Boolean operator to select patients above a given weight or BMI.
+
+```{r}
+filter(patients, Weight > 90 | BMI > 28)
+```
+
+Mixing both Boolean operators and `,` is also possible.
+
+```{r}
+filter(patients, Weight > 90 | BMI > 28, Sex == "Female")
+```
+
+### Exercise: filtering rows
+
+See separate markdown document.
+
+## Sorting rows
+
+Another `dplyr` verb that works on rows in a table is **`arrange`**. This is used to sort
+rows in a dataset based on one or more variables.
+
+For example, let's say we want to sort our patients by height.
+
+```{r}
+arrange(patients, Height)
+```
+
+This has arranged the rows in order of ascending height. What if we wanted descending order
+of height?
+
+```{r}
+arrange(patients, desc(Height))
+```
+
+We can use sort using multiple variables, e.g. first by Grade in descending order, then by Sex and then Smokes.
+
+```{r}
+arrange(patients, desc(Grade), Sex, Smokes)
+```
+
+Sorting is commonly used in workflows usually as one of the last steps before presentation or
+writing out the resulting table to a file.
+
+The following concise and easy-to-read workflow includes steps that use all of the `dplyr` verbs we have covered so
+far.
+
+```{r}
+candidates <- patients %>%
+  filter(!Died) %>%
+  select(ID, Name, Sex, Smokes, Height, Weight) %>%
+  mutate(BMI = Weight / (Height / 100) ** 2) %>%
+  mutate(Overweight = BMI > 25) %>%
+  arrange(BMI)
+candidates
+```
+
+
