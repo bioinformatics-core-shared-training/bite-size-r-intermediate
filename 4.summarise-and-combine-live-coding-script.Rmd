@@ -1,8 +1,10 @@
 ---
-title: "summarise and combine"
+title: "Summarising and combining data -- live coding script"
+date: '`r format(Sys.time(), "Last modified: %d %b %Y")`'
 output: html_document
 ---
 
+## Introduction
 
 We will now turn our attention to some of the more advanced operations you can
 perform on data frames using **dplyr**.
@@ -26,24 +28,25 @@ Especially I will be taking you through three important dplyr fucntions.
 Before we start summarise and combine operations, let's clean the environment and start fresh.
 <p>
 
-## Load the tidyverse
+### Load the tidyverse
 
-```{r echo=TRUE, message=FALSE, warning=FALSE }
+```{r }
 library(tidyverse)
 ```
 
-## Read the patients data into R enveronment
+### Read the patients data into R enveronment
 
 Read in the patients data frame using `read_tsv` from the `readr` package.
 `read_tsv` imports tab-delimited files (tsv = tab-separated values).
 
 
-```{r echo=TRUE, message=FALSE, warning=FALSE }
+```{r }
 
 patients <- read_tsv("patient-data-cleaned.txt")
 
 ```
 
+## Summarising
 
 We can compute summary statistics for selected columns in our dataset using the
 `summarise` verb. For example, we could use `summarise` to calculate the
@@ -52,17 +55,15 @@ average height of patients in our `patients` data.
 Let's first remind ourselves what the `patients` dataset looks like.
 
 
-
-
-```{r echo=TRUE, message=FALSE, warning=FALSE}
+```{r}
 patients
 ```
 
 Now let’s compute the mean height of a patient.
 
 
-```{r echo=TRUE, message=FALSE, warning=FALSE}
-summarize(patients, mean(Height))
+```{r}
+summarise(patients, mean(Height))
 ```
 
 If you prefer Oxford spelling, in which -ize is preferred to -ise, you’re in
@@ -73,7 +74,7 @@ and a single column, unlike the more usual way of calculating the mean value
 for a vector or column, which results in a single numeric value (actually in R
 this is numeric vector of length 1).
 
-```{r echo=TRUE, message=FALSE, warning=FALSE}
+```{r}
 mean(patients$Height)
 ```
 
@@ -81,9 +82,9 @@ Returning a data frame might be quite useful, particularly if we’re summarisin
 multiple columns or using more than one function, for example computing the
 average and standard deviation.
 
-```{r echo=TRUE, message=FALSE, warning=FALSE}
+```{r}
 
-summarize(patients, average=mean(Height), standard_deviation=sd(Height))
+summarise(patients, average = mean(Height), standard_deviation = sd(Height))
 
 ```
 
@@ -111,20 +112,20 @@ It is also possible to summarise using a function that takes more than one
 value, i.e. from multiple columns. For example, we could compute the
 correlation between patient height and Weight:
 
-```{r echo=TRUE, message=FALSE, warning=FALSE}
-summarise(patients, correlation=cor(Height, Weight))
+```{r}
+summarise(patients, correlation = cor(Height, Weight))
 ```
 
-## Summarising multiple columns
+### Summarising multiple columns
 
 We can apply the same function to all columns using `summarise_all`.
 
 
-```{r echo=TRUE, message=FALSE, warning=FALSE}
-summarise_all(patients, funs(mean))
+```{r}
+summarise_all(patients, mean)
 ```
 
-While this seems to work, there was a warning about the inputs to the `mean`
+While this seems to work, there are several warnings about inputs to the `mean`
 function not being numerical. Can you see why?
 
 A look at the documentation for the `summarise_all` function (type
@@ -137,8 +138,8 @@ calculate the average values.
 additional `vars` argument.
 
 
-```{r echo=TRUE, message=FALSE, warning=FALSE}
-summarise_at(patients, vars(Height, Weight), funs(mean))
+```{r}
+summarise_at(patients, vars(Height, Weight), mean)
 
 ```
 
@@ -147,33 +148,23 @@ summarise_at(patients, vars(Height, Weight), funs(mean))
 operation should be applied to all columns that meet certain criteria. In this
 case, we want to calculate the averages for all columns with numeric values.
 
-```{r echo=TRUE, message=FALSE, warning=FALSE}
-summarise_if(patients, is.numeric, funs(mean))
+```{r}
+summarise_if(patients, is.numeric, mean)
 ```
 
-The `vars` and `funs` helper functions provide a flexible way to specify which
-columns to operate on and which functions to call. They also help to delineate
-which arguments are columns and which are functions.
+It is possible to summarise using more than one function in which case a list of
+functions needs to be provided.
 
-If there is only function, `funs` is not strictly necessary, e.g.
-
-```{r echo=TRUE, message=FALSE, warning=FALSE}
-summarise_at(patients, vars(Height, Weight), mean)
+```{r}
+summarise_at(patients, vars(Height, Weight), list(mean, sd))
 ```
-
-But `funs` is needed when calling more than one function
-
-```{r echo=TRUE, message=FALSE, warning=FALSE}
-summarise_at(patients, vars(Height, Weight), funs(mean, sd))
-```
-
 
 of if you want some control over naming the output columns.
 
-```{r echo=TRUE, message=FALSE, warning=FALSE}
+```{r}
 patients %>% 
   select(Height, Weight) %>% 
-  summarise_all(funs(ave=mean, stdev=sd))
+  summarise_all(list(average =  mean, stdev = sd))
 
 ```
 
@@ -181,9 +172,9 @@ patients %>%
 Just like with the `select` operation, we can instead specify those columns to
 exclude.
 
-```{r echo=TRUE, message=FALSE, warning=FALSE}
+```{r}
 
-summarise_at(patients, vars(-ID:-Smokes, -State:-Died), funs(mean))
+summarise_at(patients, vars(-ID:-Smokes, -State:-Died), mean)
 
 ```
 
@@ -192,62 +183,32 @@ Or we can use one of the helper functions to choose which columns to operate
 on.
 
 
-```{r echo=TRUE, message=FALSE, warning=FALSE}
+```{r}
 
-summarise_at(patients, vars(starts_with('BM')), funs(mean))
+summarise_at(patients, vars(starts_with('BM')), mean)
 
-summarise_at(patients, vars(ends_with('ight')), funs(mean))
+summarise_at(patients, vars(ends_with('ight')), mean)
 
 # use regular expression to select columns on which to operate
-summarise_at(patients, vars(matches('[HW]eight')), funs(mean))
+summarise_at(patients, vars(matches('[HW]eight')), mean)
 
 # use one_of if you have a vector of column names
 
 columns <- c('Height', 'Weight', 'Age')
 
-summarise_at(patients, vars(one_of(columns)), funs(mean))
+summarise_at(patients, vars(one_of(columns)), mean)
 
 # alternatively, and more concisely, just pass the vector of columns names
 
-summarise_at(patients, vars(columns), funs(mean))
+summarise_at(patients, vars(columns), mean)
 
 ```
 
-### Mutating multiple columns
+### Exercise - summarising
 
-When looking at the help documentation for `summarise_all`, `summarise_at` and
-`summarise_if`, you may have noticed a set of related functions, `mutate_all`,
-`mutate_at` and `mutate_if`. These are very useful functions for applying the
-same operation to several columns within a table. For example, in the
-`patients` dataset the height is measured in centimetres but we can convert
-these to meters quite easily.
+See separate R markdown document.
 
-
-```{r echo=TRUE, message=FALSE, warning=FALSE}
-
-mutate_at(patients, vars(Height), funs(./ 100))
-
-```
-
-Here, we've had to specify the '.' character to represent the columns that
-we're deviding by 100.
-
-
-### Rounding
-
-`mutate_at` is particularly useful for rounding values to a specified number of
-decimal places or significant figures.
-
-
-Now let's round the patient's weight and height to 1 decimal place.
-
-```{r echo=TRUE, message=FALSE, warning=FALSE}
-mutate_at(patients, vars(Height, Weight), funs(round(., digits = 1)))
-```
-
-
-
-# Grouping
+## Grouping
 
 While the `summarise` function is useful on its own, it becomes really powerful
 when applied to groups of observations within a dataset. For example, suppose
@@ -261,7 +222,7 @@ This works best in a workflow using the `%>%` pipe symbol, so as quick
 reminder, the following are identical ways of computing the average height of
 patients.
 
-```{r echo=TRUE, message=FALSE, warning=FALSE}
+```{r}
 
 summarise(patients, mean(Height))
 
@@ -272,7 +233,7 @@ patients %>% summarise(mean(Height))
 
 Now let’s do the same thing but treating each group separately.
 
-```{r echo=TRUE, message=FALSE, warning=FALSE}
+```{r}
 
 patients %>% group_by(State) %>% summarise(mean(Height))
 ```
@@ -281,7 +242,7 @@ patients %>% group_by(State) %>% summarise(mean(Height))
 As before, we can summarise multiple observations.
 
 
-```{r echo=TRUE, message=FALSE, warning=FALSE}
+```{r}
 
 patients %>% group_by(State) %>% summarise(n(), mean(Height), sd(Height))
 
@@ -291,25 +252,25 @@ We can make the output more presentable by renaming the columns and using the
 `round` function to round to a specified number of significant figures. Note
 the use of backticks (` ) for specifying column names that contain spaces.
 
-```{r echo=TRUE, message=FALSE, warning=FALSE}
+```{r}
 
 patients %>% 
   group_by(State) %>% 
   summarise(
-    N=n(),
-    `Average height`=mean(Height)
+    N = n(),
+    `Average height` = mean(Height),
+    `Stdev height` = sd(Height)
     
-  ) %>% 
-  mutate_at(vars(`Average height`), funs(round(., digits = 2)))
-
+  ) %>%
+  mutate_at(vars(`Average height`, `Stdev height`), round, digits = 1)
 ```
 
 
 A shorthand for summarise(n()) for counting the number of observations of each group is available in the form of the count function.
 
-```{r echo=TRUE, message=FALSE, warning=FALSE}
+```{r}
 
-patients %>% group_by(State) %>% summarise(N=n())
+patients %>% group_by(State) %>% summarise(N = n())
 
 patients %>% group_by(State) %>% count()
 
@@ -318,14 +279,14 @@ patients %>% group_by(State) %>% count()
 
 `group_by` can also be used in conjunction with other `dplyr` verbs.
 
-```{r echo=TRUE, message=FALSE, warning=FALSE}
-patients %>% group_by(State) %>% summarise_at(vars(Height, Weight), funs(mean))
+```{r}
+patients %>% group_by(State) %>% summarise_at(vars(Height, Weight), mean)
 ```
 
-```{r echo=TRUE, message=FALSE, warning=FALSE, fig.width=12}
+```{r, fig.width=12}
 patients %>% 
     group_by(State) %>% 
-    summarise_at(vars(Height, Weight), funs(mean)) %>% 
+    summarise_at(vars(Height, Weight), mean) %>% 
     gather(measure, mean, -State) %>% 
     ggplot(aes(x = State, y = mean, color = measure, group = measure)) + 
       geom_point() + 
@@ -336,26 +297,26 @@ patients %>%
 
 Returning to one of the earlier examples, we can also compute the correlation between Height  and Weight on a per-group basis.
 
-```{r echo=TRUE, message=FALSE, warning=FALSE}
+```{r}
 patients %>% group_by(State) %>% summarise(correlation = cor(Height, Weight))
 ```
 
 
 
-## `group_by` - the technical details
+### `group_by` - the technical details
 
 
 You might be wondering what's going on _under the hood_ with this `group_by` function. The help page for `group_by` is a little on the technical side but essentially tells us that the data frame we pass it gets converted into a `grouped_df` data frame object. `dplyr` functions that operate on a `grouped_df` object know to treat this in a special way, operating on each group separately. The following sequence of R commands might help to make this a bit clearer.
 
 First let's take a look at the class of the patients data frame.
 
-```{r echo=TRUE, message=FALSE, warning=FALSE}
+```{r}
 class(patients)
 ```
 
 Now we'll create a grouped version with `group_by` and look at its class.
 
-```{r echo=TRUE, message=FALSE, warning=FALSE}
+```{r}
 patients_grouped <- patients %>%  group_by(State)
 class(patients_grouped)
 ```
@@ -364,14 +325,14 @@ class(patients_grouped)
 The `groups` function lets us see the groups.
 
 
-```{r echo=TRUE, message=FALSE, warning=FALSE}
+```{r}
 groups(patients_grouped)
 ```
 
 
 The `ungroup` function removes the grouping.
 
-```{r echo=TRUE, message=FALSE, warning=FALSE}
+```{r}
 patients_ungrouped <- ungroup(patients_grouped)
 class(patients_ungrouped)
 groups(patients_ungrouped)
@@ -380,8 +341,12 @@ groups(patients_ungrouped)
 
 `ungroup` can be quite helpful in more complicated chains of `dplyr` operations where the grouping is only required for some of the steps and would have unintended consequences for subsequent operations within the chain.
 
+### Exercise - Grouping
 
-# Joining
+See separate R markdown document.
+
+
+## Joining
 
 
 In many real life situations, data are spread across multiple tables or spreadsheets. Usually this occurs because different types of information about a subject, e.g. a patient, are collected from different sources. It may be desirable for some analyses to combine data from two or more tables into a single data frame based on a common column, for example, an attribute that uniquely identifies the subject.
@@ -399,20 +364,20 @@ To illustrate join operations we'll first consider the most common type, a "left
 
 Here's an example in which details about members of the Beatles and Rolling Stones are contained in two tables, using data frames conveniently provided by `dplyr`. The name column identifies each of the band members and is used for matching rows from the two tables.
 
-```{r echo=TRUE, message=FALSE, warning=FALSE}
+```{r}
 band_members
 band_instruments
 ```
 
 
-```{r echo=TRUE, message=FALSE, warning=FALSE}
+```{r}
 left_join(band_members, band_instruments, by = "name")
 ```
 
 
 `right_join` is similar but returns all rows from the second data frame that have a match with rows in the first data frame based on the specified column.
 
-```{r echo=TRUE, message=FALSE, warning=FALSE}
+```{r}
 right_join(band_members, band_instruments, by = "name")
 ```
 
@@ -423,7 +388,7 @@ It is also possible to return only those rows where matches could be made. The `
 
 ![dplyr inner join](images/dplyr_inner_join.png)
 
-```{r echo=TRUE, message=FALSE, warning=FALSE}
+```{r}
 inner_join(band_members, band_instruments, by = "name")
 ```
 
@@ -435,7 +400,7 @@ We've seen how missing rows from one table can be retained in the joined data fr
 ![dplyr full join](images/dplyr_full_join.png)
 
 
-```{r echo=TRUE, message=FALSE, warning=FALSE}
+```{r}
 full_join(band_members, band_instruments, by = "name")
 ```
 
@@ -444,7 +409,7 @@ full_join(band_members, band_instruments, by = "name")
 
 The columns that are used for joining two tables do not have to have the same name, e.g.
 
-```{r echo=TRUE, message=FALSE, warning=FALSE}
+```{r}
 band_instruments2
 left_join(band_members, band_instruments2, by = c("name" = "artist"))
 ```
@@ -454,7 +419,7 @@ left_join(band_members, band_instruments2, by = c("name" = "artist"))
 
 Where there are multiple rows in one or both of the two tables for the thing that is being joined, these will be represented in the combined table. All combinations of the matching rows will be included.
 
-```{r echo=TRUE, message=FALSE, warning=FALSE}
+```{r}
 df1 <- data_frame(
   name = c("Mick",   "John",    "Paul",    "Paul"),
   band = c("Stones", "Beatles", "Beatles", "Wings")
@@ -473,7 +438,7 @@ left_join(df1, df2, by = "name")
 
 
 
-```{r echo=TRUE, message=FALSE, warning=FALSE}
+```{r}
 
 df1 <- data_frame(
   forename = c("Mick",   "John",    "Paul",      "John"),
@@ -495,31 +460,21 @@ left_join(df1, df2, by = c("forename", "surname"))
 
 A variation on the join operations we've considered are `semi_join` and `anti_join` that filter the rows in one table based on matches or lack of matches to rows in another table.
 
-```{r echo=TRUE, message=FALSE, warning=FALSE}
+```{r}
 # semi_join returns all rows from the first table where there are matches in the other table
 semi_join(band_members, band_instruments, by = "name")
 
 ```
 
-```{r echo=TRUE, message=FALSE, warning=FALSE}
+```{r}
 # anti_join returns all rows where there is no match in the other table
 anti_join(band_members, band_instruments, by = "name")
 ```
 
-
-## Exercise: [Rmarkdown Template](4.summarise-and-combine-exercises.Rmd)
+### Exercise - combining data
 
 The exercise uses a more realistic dataset, building on the patients data frame we've already been working with.
 
-The patients are all part of a diabetes study and have had their blood glucose concentration and diastolic blood pressure measured on several dates.
+The patients are all part of a diabetes study and have had their blood glucose concentration and diastolic blood pressure measured on several dates. The aim is to compare the average blood pressures of smokers and non-smokers.
 
-```{r echo=TRUE, message=FALSE, warning=FALSE}
-diabetes <- read.delim("diabetes.txt", stringsAsFactors = FALSE)
-diabetes
-```
-
-* Compare the average blood pressures of smokers and non-smokers
-    * First calculate the average blood pressure measurement for each patient then combine with the smoking attribute in the `patients` data frame
-
-
-
+See separate R markdown document.
