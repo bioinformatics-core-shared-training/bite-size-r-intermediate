@@ -22,31 +22,13 @@ patients <- mutate(patients, Overweight = BMI > 25)
 ```
 
 ```{r}
-library(tidyverse)
-patients <- read_tsv("patient-data.txt") %>%
-  mutate(Smokes = str_replace(Smokes, "No", "FALSE")) %>%
-  mutate(Smokes = str_replace(Smokes, "Yes", "TRUE")) %>%
-  mutate(Smokes = as.logical(Smokes)) %>%
-  mutate(Height = as.numeric(str_remove(Height, pattern = "cm$"))) %>%
-  mutate(Weight = as.numeric(str_remove(Weight, pattern = "kg$"))) %>%
-  mutate(BMI = Weight / (Height / 100) ** 2) %>%
-  mutate(Overweight = BMI > 25)
-patients
+
 ```
 
 2. Add a step to the workflow to round the Height, Weight and BMI to 1 decimal place.
 
 ```{r}
-patients <- read_tsv("patient-data.txt") %>%
-  mutate(Smokes = str_replace(Smokes, "No", "FALSE")) %>%
-  mutate(Smokes = str_replace(Smokes, "Yes", "TRUE")) %>%
-  mutate(Smokes = as.logical(Smokes)) %>%
-  mutate(Height = as.numeric(str_remove(Height, pattern = "cm$"))) %>%
-  mutate(Weight = as.numeric(str_remove(Weight, pattern = "kg$"))) %>%
-  mutate(BMI = Weight / (Height / 100) ** 2) %>%
-  mutate(Overweight = BMI > 25) %>%
-  mutate_at(vars(Height, Weight, BMI), round, digits = 1)
-patients
+
 ```
 
 ## Part II - Filtering rows
@@ -54,13 +36,11 @@ patients
 3. Filter for female patients from New York or New Jersey.
 
 ```{r}
-filter(patients, Sex == "Female", State == "New York" | State == "New Jersey")
-filter(patients, Sex == "Female", State %in% c("New York", "New Jersey"))
-filter(patients, Sex == "Female", str_starts(State, "New "))
+
 ```
 
 4. Filter for overweight smokers that are still alive.
 
 ```{r}
-filter(patients, Overweight, Smokes, !Died)
+
 ```

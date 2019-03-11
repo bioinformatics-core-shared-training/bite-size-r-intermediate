@@ -205,16 +205,196 @@ patients &lt;- mutate(patients, Height = as.numeric(str_remove(Height, pattern =
 patients &lt;- mutate(patients, Weight = as.numeric(str_remove(Weight, pattern = &quot;kg$&quot;)))
 patients &lt;- mutate(patients, BMI = Weight / (Height / 100) ** 2)
 patients &lt;- mutate(patients, Overweight = BMI &gt; 25)</code></pre>
+<pre class="r"><code>library(tidyverse)</code></pre>
+<pre><code>## ── Attaching packages ──────────────────────────────────────────────────────────────────────────── tidyverse 1.2.1 ──</code></pre>
+<pre><code>## ✔ ggplot2 3.1.0       ✔ purrr   0.3.1  
+## ✔ tibble  2.0.1       ✔ dplyr   0.8.0.1
+## ✔ tidyr   0.8.3       ✔ stringr 1.4.0  
+## ✔ readr   1.3.1       ✔ forcats 0.4.0</code></pre>
+<pre><code>## ── Conflicts ─────────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
+## ✖ dplyr::filter() masks stats::filter()
+## ✖ dplyr::lag()    masks stats::lag()</code></pre>
+<pre class="r"><code>patients &lt;- read_tsv(&quot;patient-data.txt&quot;) %&gt;%
+  mutate(Smokes = str_replace(Smokes, &quot;No&quot;, &quot;FALSE&quot;)) %&gt;%
+  mutate(Smokes = str_replace(Smokes, &quot;Yes&quot;, &quot;TRUE&quot;)) %&gt;%
+  mutate(Smokes = as.logical(Smokes)) %&gt;%
+  mutate(Height = as.numeric(str_remove(Height, pattern = &quot;cm$&quot;))) %&gt;%
+  mutate(Weight = as.numeric(str_remove(Weight, pattern = &quot;kg$&quot;))) %&gt;%
+  mutate(BMI = Weight / (Height / 100) ** 2) %&gt;%
+  mutate(Overweight = BMI &gt; 25)</code></pre>
+<pre><code>## Parsed with column specification:
+## cols(
+##   ID = col_character(),
+##   Name = col_character(),
+##   Sex = col_character(),
+##   Smokes = col_character(),
+##   Height = col_character(),
+##   Weight = col_character(),
+##   Birth = col_date(format = &quot;&quot;),
+##   State = col_character(),
+##   Grade_Level = col_double(),
+##   Died = col_logical(),
+##   Count = col_double(),
+##   Date.Entered.Study = col_date(format = &quot;&quot;)
+## )</code></pre>
+<pre class="r"><code>patients</code></pre>
+<pre><code>## # A tibble: 100 x 14
+##    ID    Name  Sex   Smokes Height Weight Birth      State Grade_Level
+##    &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;lgl&gt;   &lt;dbl&gt;  &lt;dbl&gt; &lt;date&gt;     &lt;chr&gt;       &lt;dbl&gt;
+##  1 AC/A… Mich… Male  FALSE    183.   76.6 1972-02-06 Geor…           2
+##  2 AC/A… Derek Male  FALSE    179.   80.4 1972-06-15 Colo…           2
+##  3 AC/A… Todd  Male  FALSE    169.   75.5 1972-07-09 New …           2
+##  4 AC/A… Rona… Male  FALSE    176.   94.5 1972-08-17 Colo…           1
+##  5 AC/A… Chri… Fema… FALSE    164.   71.8 1973-06-12 Geor…           2
+##  6 AC/A… Dana  Fema… TRUE     158.   69.9 1973-07-01 Indi…           2
+##  7 AC/A… Erin  Fema… FALSE    162.   68.8 1972-03-26 New …           1
+##  8 AC/A… Rach… Fema… FALSE    166.   70.4 1973-05-11 Colo…           1
+##  9 AC/A… Rona… Male  FALSE    181.   76.9 1971-12-31 Geor…           1
+## 10 AC/A… Bryan Male  FALSE    167.   79.1 1973-07-19 New …           2
+## # … with 90 more rows, and 5 more variables: Died &lt;lgl&gt;, Count &lt;dbl&gt;,
+## #   Date.Entered.Study &lt;date&gt;, BMI &lt;dbl&gt;, Overweight &lt;lgl&gt;</code></pre>
 <ol start="2" style="list-style-type: decimal">
 <li>Add a step to the workflow to round the Height, Weight and BMI to 1 decimal place.</li>
 </ol>
+<pre class="r"><code>patients &lt;- read_tsv(&quot;patient-data.txt&quot;) %&gt;%
+  mutate(Smokes = str_replace(Smokes, &quot;No&quot;, &quot;FALSE&quot;)) %&gt;%
+  mutate(Smokes = str_replace(Smokes, &quot;Yes&quot;, &quot;TRUE&quot;)) %&gt;%
+  mutate(Smokes = as.logical(Smokes)) %&gt;%
+  mutate(Height = as.numeric(str_remove(Height, pattern = &quot;cm$&quot;))) %&gt;%
+  mutate(Weight = as.numeric(str_remove(Weight, pattern = &quot;kg$&quot;))) %&gt;%
+  mutate(BMI = Weight / (Height / 100) ** 2) %&gt;%
+  mutate(Overweight = BMI &gt; 25) %&gt;%
+  mutate_at(vars(Height, Weight, BMI), round, digits = 1)</code></pre>
+<pre><code>## Parsed with column specification:
+## cols(
+##   ID = col_character(),
+##   Name = col_character(),
+##   Sex = col_character(),
+##   Smokes = col_character(),
+##   Height = col_character(),
+##   Weight = col_character(),
+##   Birth = col_date(format = &quot;&quot;),
+##   State = col_character(),
+##   Grade_Level = col_double(),
+##   Died = col_logical(),
+##   Count = col_double(),
+##   Date.Entered.Study = col_date(format = &quot;&quot;)
+## )</code></pre>
+<pre class="r"><code>patients</code></pre>
+<pre><code>## # A tibble: 100 x 14
+##    ID    Name  Sex   Smokes Height Weight Birth      State Grade_Level
+##    &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;lgl&gt;   &lt;dbl&gt;  &lt;dbl&gt; &lt;date&gt;     &lt;chr&gt;       &lt;dbl&gt;
+##  1 AC/A… Mich… Male  FALSE    183.   76.6 1972-02-06 Geor…           2
+##  2 AC/A… Derek Male  FALSE    179.   80.4 1972-06-15 Colo…           2
+##  3 AC/A… Todd  Male  FALSE    169.   75.5 1972-07-09 New …           2
+##  4 AC/A… Rona… Male  FALSE    176.   94.5 1972-08-17 Colo…           1
+##  5 AC/A… Chri… Fema… FALSE    164.   71.8 1973-06-12 Geor…           2
+##  6 AC/A… Dana  Fema… TRUE     158.   69.9 1973-07-01 Indi…           2
+##  7 AC/A… Erin  Fema… FALSE    162.   68.8 1972-03-26 New …           1
+##  8 AC/A… Rach… Fema… FALSE    166.   70.4 1973-05-11 Colo…           1
+##  9 AC/A… Rona… Male  FALSE    181.   76.9 1971-12-31 Geor…           1
+## 10 AC/A… Bryan Male  FALSE    167.   79.1 1973-07-19 New …           2
+## # … with 90 more rows, and 5 more variables: Died &lt;lgl&gt;, Count &lt;dbl&gt;,
+## #   Date.Entered.Study &lt;date&gt;, BMI &lt;dbl&gt;, Overweight &lt;lgl&gt;</code></pre>
 </div>
 <div id="part-ii---filtering-rows" class="section level2">
 <h2>Part II - Filtering rows</h2>
 <ol start="3" style="list-style-type: decimal">
-<li><p>Filter for female patients from New York or New Jersey.</p></li>
-<li><p>Filter for overweight smokers that are still alive.</p></li>
+<li>Filter for female patients from New York or New Jersey.</li>
 </ol>
+<pre class="r"><code>filter(patients, Sex == &quot;Female&quot;, State == &quot;New York&quot; | State == &quot;New Jersey&quot;)</code></pre>
+<pre><code>## # A tibble: 20 x 14
+##    ID    Name  Sex   Smokes Height Weight Birth      State Grade_Level
+##    &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;lgl&gt;   &lt;dbl&gt;  &lt;dbl&gt; &lt;date&gt;     &lt;chr&gt;       &lt;dbl&gt;
+##  1 AC/A… Erin  Fema… FALSE    162.   68.8 1972-03-26 New …           1
+##  2 AC/A… Pame… Fema… FALSE    166.   67.3 1971-11-14 New …           1
+##  3 AC/A… Eliz… Fema… TRUE     164.   65.8 1972-01-12 New …           3
+##  4 AC/A… Paula Fema… FALSE    161.   63.5 1973-07-02 New …          99
+##  5 AC/A… Julie Fema… FALSE    160    64.3 1973-09-05 New …           1
+##  6 AC/A… Kris… Fema… FALSE    160.   71.9 1973-09-28 New …           2
+##  7 AC/A… Tiff… Fema… FALSE    161.   64.8 1973-02-24 New …           1
+##  8 AC/A… Bran… Fema… FALSE    160.   68   1972-12-08 New …           2
+##  9 AC/A… Alic… Fema… TRUE     170    66.7 1972-09-03 New …          99
+## 10 AC/A… Tanya Fema… TRUE     165.   73   1972-01-31 New …           1
+## 11 AC/A… Wendy Fema… FALSE    164    66.7 1971-12-29 New …           3
+## 12 AC/A… Barb… Fema… FALSE    160.   65.9 1973-01-31 New …          99
+## 13 AC/A… Holly Fema… TRUE     160.   68.3 1972-04-29 New …           2
+## 14 AC/S… Barb… Fema… TRUE     162.   66.5 1972-02-21 New …           3
+## 15 AC/S… Carr… Fema… FALSE    164.   71.5 1973-03-18 New …           3
+## 16 AC/S… Laura Fema… FALSE    158.   69.7 1972-06-08 New …           3
+## 17 AC/S… Holly Fema… FALSE    159.   70.7 1973-06-27 New …           3
+## 18 AC/S… Jill  Fema… FALSE    159.   66.2 1972-11-14 New …           1
+## 19 AC/S… Rhon… Fema… FALSE    164.   70.7 1972-06-23 New …           3
+## 20 AC/S… Shar… Fema… FALSE    161.   71.5 1972-11-17 New …           1
+## # … with 5 more variables: Died &lt;lgl&gt;, Count &lt;dbl&gt;,
+## #   Date.Entered.Study &lt;date&gt;, BMI &lt;dbl&gt;, Overweight &lt;lgl&gt;</code></pre>
+<pre class="r"><code>filter(patients, Sex == &quot;Female&quot;, State %in% c(&quot;New York&quot;, &quot;New Jersey&quot;))</code></pre>
+<pre><code>## # A tibble: 20 x 14
+##    ID    Name  Sex   Smokes Height Weight Birth      State Grade_Level
+##    &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;lgl&gt;   &lt;dbl&gt;  &lt;dbl&gt; &lt;date&gt;     &lt;chr&gt;       &lt;dbl&gt;
+##  1 AC/A… Erin  Fema… FALSE    162.   68.8 1972-03-26 New …           1
+##  2 AC/A… Pame… Fema… FALSE    166.   67.3 1971-11-14 New …           1
+##  3 AC/A… Eliz… Fema… TRUE     164.   65.8 1972-01-12 New …           3
+##  4 AC/A… Paula Fema… FALSE    161.   63.5 1973-07-02 New …          99
+##  5 AC/A… Julie Fema… FALSE    160    64.3 1973-09-05 New …           1
+##  6 AC/A… Kris… Fema… FALSE    160.   71.9 1973-09-28 New …           2
+##  7 AC/A… Tiff… Fema… FALSE    161.   64.8 1973-02-24 New …           1
+##  8 AC/A… Bran… Fema… FALSE    160.   68   1972-12-08 New …           2
+##  9 AC/A… Alic… Fema… TRUE     170    66.7 1972-09-03 New …          99
+## 10 AC/A… Tanya Fema… TRUE     165.   73   1972-01-31 New …           1
+## 11 AC/A… Wendy Fema… FALSE    164    66.7 1971-12-29 New …           3
+## 12 AC/A… Barb… Fema… FALSE    160.   65.9 1973-01-31 New …          99
+## 13 AC/A… Holly Fema… TRUE     160.   68.3 1972-04-29 New …           2
+## 14 AC/S… Barb… Fema… TRUE     162.   66.5 1972-02-21 New …           3
+## 15 AC/S… Carr… Fema… FALSE    164.   71.5 1973-03-18 New …           3
+## 16 AC/S… Laura Fema… FALSE    158.   69.7 1972-06-08 New …           3
+## 17 AC/S… Holly Fema… FALSE    159.   70.7 1973-06-27 New …           3
+## 18 AC/S… Jill  Fema… FALSE    159.   66.2 1972-11-14 New …           1
+## 19 AC/S… Rhon… Fema… FALSE    164.   70.7 1972-06-23 New …           3
+## 20 AC/S… Shar… Fema… FALSE    161.   71.5 1972-11-17 New …           1
+## # … with 5 more variables: Died &lt;lgl&gt;, Count &lt;dbl&gt;,
+## #   Date.Entered.Study &lt;date&gt;, BMI &lt;dbl&gt;, Overweight &lt;lgl&gt;</code></pre>
+<pre class="r"><code>filter(patients, Sex == &quot;Female&quot;, str_starts(State, &quot;New &quot;))</code></pre>
+<pre><code>## # A tibble: 20 x 14
+##    ID    Name  Sex   Smokes Height Weight Birth      State Grade_Level
+##    &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;lgl&gt;   &lt;dbl&gt;  &lt;dbl&gt; &lt;date&gt;     &lt;chr&gt;       &lt;dbl&gt;
+##  1 AC/A… Erin  Fema… FALSE    162.   68.8 1972-03-26 New …           1
+##  2 AC/A… Pame… Fema… FALSE    166.   67.3 1971-11-14 New …           1
+##  3 AC/A… Eliz… Fema… TRUE     164.   65.8 1972-01-12 New …           3
+##  4 AC/A… Paula Fema… FALSE    161.   63.5 1973-07-02 New …          99
+##  5 AC/A… Julie Fema… FALSE    160    64.3 1973-09-05 New …           1
+##  6 AC/A… Kris… Fema… FALSE    160.   71.9 1973-09-28 New …           2
+##  7 AC/A… Tiff… Fema… FALSE    161.   64.8 1973-02-24 New …           1
+##  8 AC/A… Bran… Fema… FALSE    160.   68   1972-12-08 New …           2
+##  9 AC/A… Alic… Fema… TRUE     170    66.7 1972-09-03 New …          99
+## 10 AC/A… Tanya Fema… TRUE     165.   73   1972-01-31 New …           1
+## 11 AC/A… Wendy Fema… FALSE    164    66.7 1971-12-29 New …           3
+## 12 AC/A… Barb… Fema… FALSE    160.   65.9 1973-01-31 New …          99
+## 13 AC/A… Holly Fema… TRUE     160.   68.3 1972-04-29 New …           2
+## 14 AC/S… Barb… Fema… TRUE     162.   66.5 1972-02-21 New …           3
+## 15 AC/S… Carr… Fema… FALSE    164.   71.5 1973-03-18 New …           3
+## 16 AC/S… Laura Fema… FALSE    158.   69.7 1972-06-08 New …           3
+## 17 AC/S… Holly Fema… FALSE    159.   70.7 1973-06-27 New …           3
+## 18 AC/S… Jill  Fema… FALSE    159.   66.2 1972-11-14 New …           1
+## 19 AC/S… Rhon… Fema… FALSE    164.   70.7 1972-06-23 New …           3
+## 20 AC/S… Shar… Fema… FALSE    161.   71.5 1972-11-17 New …           1
+## # … with 5 more variables: Died &lt;lgl&gt;, Count &lt;dbl&gt;,
+## #   Date.Entered.Study &lt;date&gt;, BMI &lt;dbl&gt;, Overweight &lt;lgl&gt;</code></pre>
+<ol start="4" style="list-style-type: decimal">
+<li>Filter for overweight smokers that are still alive.</li>
+</ol>
+<pre class="r"><code>filter(patients, Overweight, Smokes, !Died)</code></pre>
+<pre><code>## # A tibble: 6 x 14
+##   ID    Name  Sex   Smokes Height Weight Birth      State Grade_Level Died 
+##   &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;lgl&gt;   &lt;dbl&gt;  &lt;dbl&gt; &lt;date&gt;     &lt;chr&gt;       &lt;dbl&gt; &lt;lgl&gt;
+## 1 AC/A… Dana  Fema… TRUE     158.   69.9 1973-07-01 Indi…           2 FALSE
+## 2 AC/A… Kenn… Male  TRUE     175.   92.2 1972-03-22 Colo…           3 FALSE
+## 3 AC/A… Stacy Fema… TRUE     165.   75.7 1971-11-22 Colo…           1 FALSE
+## 4 AC/A… Tanya Fema… TRUE     165.   73   1972-01-31 New …           1 FALSE
+## 5 AC/S… Stacy Fema… TRUE     162.   67.9 1973-07-09 indi…           3 FALSE
+## 6 AC/S… Barb… Fema… TRUE     162.   66.5 1972-02-21 New …           3 FALSE
+## # … with 4 more variables: Count &lt;dbl&gt;, Date.Entered.Study &lt;date&gt;,
+## #   BMI &lt;dbl&gt;, Overweight &lt;lgl&gt;</code></pre>
 </div>
 
 
