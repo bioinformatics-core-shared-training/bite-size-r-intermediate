@@ -740,7 +740,7 @@ or two variables for faceting.
 ```{r}
 ggplot(data = patients, mapping = aes(x = Height, y = Weight)) +
   geom_point() +
-  facet_wrap(~ Sex + Smokes + Overweight)
+  facet_wrap(~ Sex + Smokes + Age)
 ```
 
 We can use other aesthetic mappings for grouping data alongside faceting.
