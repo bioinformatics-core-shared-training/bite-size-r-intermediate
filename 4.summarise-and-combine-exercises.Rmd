@@ -19,19 +19,19 @@ Compute the mean age, height and weight of patients in the patients dataset
 - First compute the means using `summarise` and then try to do the same using `summarise_at`
 
 ```{r}
-## YOUR CODE HERE
+
 ```
 
 - Modify the output by adding a step to round to 1 decimal place
 
 ```{r}
-## YOUR CODE HERE
+
 ```
 
 Compute the means of all numeric columns
 
 ```{r}
-## YOUR CODE HERE
+
 ```
 
 See what happens if you try to compute the mean of a logical (boolean) variable
@@ -39,7 +39,7 @@ See what happens if you try to compute the mean of a logical (boolean) variable
 - What proportion of our patient cohort has died?
 
 ```{r}
-## YOUR CODE HERE
+
 ```
 
 
@@ -52,7 +52,7 @@ Compare the average height of males and females in this patient cohort.
 Are smokers heavier or lighter on average than non-smokers in this dataset?
 
 ```{r}
-## YOUR CODE HERE
+
 ```
 
 
@@ -72,23 +72,24 @@ The goal is to compare the blood pressure of smokers and non-smokers, similar to
 First, calculate the average blood pressure for each individual in the `diabetes` data frame.
 
 ```{r}
-## YOUR CODE HERE
+
 ```
 
 Now use one of the join functions to combine these average blood pressure measurements with the `patients` data frame containing information on whether the patient is a smoker.
 
 ```{r}
-## YOUR CODE HERE
+
 ```
 
 Finally, calculate the average blood pressure for smokers and non-smokers on the resulting, combined data frame.
 
 ```{r}
-## YOUR CODE HERE
+
 ```
 
 Can you write this as a single dplyr chain?
 
 ```{r}
-## YOUR CODE HERE
+
 ```
+
