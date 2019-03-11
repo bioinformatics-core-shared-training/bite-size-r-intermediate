@@ -129,7 +129,7 @@ class(patients$Overweight)
 
 _What types should each variable be?_
 
-* Categorical: Sex, Race, Smokes
+* Categorical: Sex, Smokes, State
 
 * Continuous: Height, Weight, BMI
 
@@ -171,7 +171,7 @@ Rather than repeat the above line for each of several columns we can use the `mu
 function from `dplyr` to do this in a single operation. We will cover this later in the course.
 
 ```{r}
-patients <- mutate_at(patients, vars(Race, Sex, Smokes, State, Pet, Grade, Age), funs(factor))
+patients <- mutate_at(patients, vars(Sex, Smokes, State, Pet, Grade, Age), funs(factor))
 patients
 ```
 
@@ -740,7 +740,7 @@ or two variables for faceting.
 ```{r}
 ggplot(data = patients, mapping = aes(x = Height, y = Weight)) +
   geom_point() +
-  facet_wrap(~ Sex + Race + Smokes)
+  facet_wrap(~ Sex + Smokes + Overweight)
 ```
 
 We can use other aesthetic mappings for grouping data alongside faceting.
@@ -898,7 +898,7 @@ ggplot(data = patients, mapping = aes(x = Height, y = Weight, colour = Sex)) +
 ggplot2 provides a set of colour palettes from [ColorBrewer]( http://colorbrewer2.org).
 
 ```{r}
-ggplot(data = patients, mapping = aes(x = Height, y = Weight, colour = Race)) +
+ggplot(data = patients, mapping = aes(x = Height, y = Weight, colour = Pet)) +
   geom_point() +
   scale_colour_brewer(palette = "Set1")
 ```
@@ -1087,9 +1087,9 @@ Sometimes you might want to override a stat, e.g. when you want to display a bar
 chart but already have counts.
 
 ```{r}
-ethnicity_counts <- count(patients, Race)
-ethnicity_counts
-ggplot(data = ethnicity_counts, mapping = aes(x = Race, y = n)) +
+pet_counts <- count(patients, Pet)
+pet_counts
+ggplot(data = pet_counts, mapping = aes(x = Pet, y = n)) +
   geom_bar(stat = "identity")
 ```
 
@@ -1097,12 +1097,12 @@ Compare this with the following bar chart for which we have observations for eac
 rather than a summary of the numbers of each type of pet.
 
 ```{r}
-ggplot(data = patients, mapping = aes(x = Race)) +
+ggplot(data = patients, mapping = aes(x = Pet)) +
   geom_bar(stat = "count")
 ```
 
 By default `geom_bar` applies the statistical transformation, `stat_count`, in
-much the same way as we did above to create the `ethnicity_counts` summary table.
+much the same way as we did above to create the `pet_counts` summary table.
 
 ## Position adjustments
 
