@@ -19,14 +19,11 @@ files <- c(
 	"ggplot2-exercises.Rmd",
 	"ggplot2-exercises-with-images.html",
 	"ggplot2-exercises-with-solutions.nb.html",
-	"extra.html",
 	"patient-data.txt",
 	"patient-data-cleaned.txt",
 	"clinical-data.txt",
-	"cohort-data.txt",
 	"tidyr-example.txt",
 	"diabetes.txt",
-	"gapminder.csv",
 	"LICENSE.md"
 )
 zip(files, zipfile = "Course_Data.zip")
