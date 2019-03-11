@@ -1,7 +1,11 @@
 ---
 title: "Summarising and combining data -- live coding script"
+author: "Chandra Chilamakuri, Matt Eldridge and Ashley Sawle"
 date: '`r format(Sys.time(), "Last modified: %d %b %Y")`'
-output: html_document
+output:
+  html_document:
+    toc: yes
+    toc_float: yes
 ---
 
 ## Introduction
