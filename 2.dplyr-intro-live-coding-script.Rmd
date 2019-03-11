@@ -158,7 +158,7 @@ A tidy dataset is a data frame (or table) for which the following are true:
 2. Each **observation** has its own row
 3. Each **value** has its own cell
 
-**Question** _Which of the representations we've just been looking at is tidy?_
+**Question:** _which of the representations we've just been looking at is tidy?_
 
 `table2` is tricky. If we consider the observational unit to be a country in a specific
 year then `table2` is not tidy because observations are split across two rows. Also the
@@ -182,7 +182,7 @@ untidy_data
 
 2. _What other problems can you see with this dataset?_
 
-Data in this format are quite familiar to us, but not easily-interpretable by the computer.
+Data in this format are quite familiar to us, but not easily interpretable by the computer.
 We need to think of the dataset in terms of _variables_ and _values_.
 
 _What are the variables in this dataset?_
@@ -267,13 +267,13 @@ There are some other useful functions within the `tidyr` package. We'll look at 
 the dataset from the exercise.
 
 ```{r}
-clinicalData <- read_tsv("clinicalData.txt")
-clinicalData <- gather(clinicalData, Treatment, Value, -Subject)
-clinicalData
+clinical_data <- read_tsv("clinical-data.txt")
+clinical_data <- gather(clinical_data, Treatment, Value, -Subject)
+clinical_data
 ```
 
 ```{r}
-ggplot(clinicalData, mapping = aes(x = Treatment, y = Value)) +
+ggplot(clinical_data, mapping = aes(x = Treatment, y = Value)) +
   geom_boxplot()
 ```
 
@@ -282,11 +282,11 @@ was measured twice. Ideally we would extract this into a new variable called 'Re
 use the `separate` function to do so.
 
 ```{r}
-clinicalReplicateData <- separate(clinicalData, Treatment, into = c("Treatment", "Replicate"))
-clinicalReplicateData
+clinical_replicate_data <- separate(clinical_data, Treatment, into = c("Treatment", "Replicate"))
+clinical_replicate_data
 ```
 
-**Question** _How did `separate` know to split the values on the '.' character?_
+**Question:** _how did `separate` know to split the values on the '.' character?_
 
 Look at the help for the `separate` function and find how you would specify the delimiter. In this
 case the default delimiter does the trick.
@@ -295,7 +295,7 @@ Now that we have a separate variable/column for the replicate we can create an i
 with faceting.
 
 ```{r}
-ggplot(clinicalReplicateData, mapping = aes(x = Replicate, y = Value)) +
+ggplot(clinical_replicate_data, mapping = aes(x = Replicate, y = Value)) +
   geom_boxplot() +
   facet_wrap(~Treatment)
 ```
@@ -306,7 +306,7 @@ gene expression matrices where there are rows for each gene and columns for each
 some analysis functions require the matrix form of the data.
 
 ```{r}
-spread(clinicalData, key = Treatment, value = Value)
+spread(clinical_data, key = Treatment, value = Value)
 ```
 
 
@@ -379,7 +379,7 @@ We can exclude columns in the same way as we did earlier with the `gather` funct
 select(patients, -Name)
 ```
 
-**Question** _how would you do this with base R?_
+**Question:** _how would you do this with base R?_
 
 ```{r}
 patients[,-2]
@@ -572,4 +572,13 @@ mutate_at(patients, vars(Height, Weight), round, digits = 1)
 Two things to note here.
 Firstly, we had to specify the variables that needed to be modified in a `vars()` argument.
 Secondly, you can add any additional arguments that the function requires at the end.
+
+`mutate_if` allows us to run the same operation on all columns satisfying a specified criterion.
+For example we could choose to round all numeric columns to 1 decimal place.
+
+```{r}
+patients <- read_tsv("patient-data-cleaned.txt")
+patients <- mutate_if(patients, is.numeric, round, digits = 1)
+patients
+```
 

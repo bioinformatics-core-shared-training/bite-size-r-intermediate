@@ -7,7 +7,7 @@ output: html_document
 
 ## Part I -- tidying data
 
-1. Read in the simulated clinical dataset, `clinicalData.txt`.
+1. Read in the simulated clinical dataset, `clinical-data.txt`.
 
 ```{r}
 

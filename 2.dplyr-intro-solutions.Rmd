@@ -7,11 +7,11 @@ output: html_document
 
 ## Part I -- tidying data
 
-1. Read in the simulated clinical dataset, `clinicalData.txt`.
+1. Read in the simulated clinical dataset, `clinical-data.txt`.
 
 ```{r}
 library(tidyverse)
-clinicalData <- read_tsv("clinicalData.txt")
+clinical_data <- read_tsv("clinical-data.txt")
 ```
 
 What variables and observations do we have?
@@ -21,13 +21,13 @@ What might a 'tidy' version of this dataset look like?
 2. Transform the data into a tidy form using the `gather` function from the `tidyr` package.
 
 ```{r}
-clinicalData <- gather(clinicalData, key = "Treatment", value = "Value", -Subject)
+clinical_data <- gather(clinical_data, key = "Treatment", value = "Value", -Subject)
 ```
 
 3. Display the range of values for each drug and placebo treatment as a box plot
 
 ```{r}
-ggplot(clinicalData, mapping = aes(x = Treatment, y = Value)) +
+ggplot(clinical_data, mapping = aes(x = Treatment, y = Value)) +
   geom_boxplot()
 ```
 
