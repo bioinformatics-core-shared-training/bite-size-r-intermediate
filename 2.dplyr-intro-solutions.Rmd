@@ -1,5 +1,5 @@
 ---
-title: "Tidying and transforming data - exercises"
+title: "Solutions to exercise - tidying and transforming data"
 author: "Mark Dunning and Matt Eldridge"
 date: '`r format(Sys.time(), "Last modified: %d %b %Y")`'
 output: html_document
