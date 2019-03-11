@@ -12,3 +12,5 @@ The following topics are covered:
 - Producing summary statistics from a dataset
 - Joining datasets using dplyr
 
+See the introduction R markdown for further details and the outline schedule for the course.
+
