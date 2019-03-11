@@ -327,7 +327,10 @@ patients %>%
     group_by(State) %>% 
     summarise_at(vars(Height, Weight), funs(mean)) %>% 
     gather(measure, mean, -State) %>% 
-    ggplot(aes(x =State, y = mean, color = measure, group=measure)) + geom_point() + geom_line()
+    ggplot(aes(x = State, y = mean, color = measure, group = measure)) + 
+      geom_point() + 
+      geom_line() +
+      facet_wrap(~measure, scales = "free_y")
 ```
 
 
