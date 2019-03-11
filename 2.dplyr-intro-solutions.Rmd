@@ -1,5 +1,5 @@
 ---
-title: "Solutions to exercise - tidying and transforming data"
+title: "Solutions to exercise: tidying and transforming data"
 author: "Mark Dunning and Matt Eldridge"
 date: '`r format(Sys.time(), "Last modified: %d %b %Y")`'
 output: html_document
@@ -14,9 +14,10 @@ library(tidyverse)
 clinical_data <- read_tsv("clinical-data.txt")
 ```
 
-What variables and observations do we have?
+Take a look at the data and answer the following questions:
 
-What might a 'tidy' version of this dataset look like?
+* What variables and observations do we have?
+* What might a 'tidy' version of this dataset look like?
 
 2. Transform the data into a tidy form using the `gather` function from the `tidyr` package.
 
@@ -45,10 +46,10 @@ patients <- read_tsv("patient-data.txt")
 select(patients, Height:Grade_Level)
 ```
 
-6. Select all the columns between `Height` and `Grade_Level`, but not `Pet`
+6. Select all the columns between `Height` and `Grade_Level`, but not `State`
 
 ```{r}
-select(patients, Height:Grade_Level, -Pet)
+select(patients, Height:Grade_Level, -State)
 ```
 
 7. Select all columns ending in 'eight', i.e. `Height` and `Weight`
@@ -57,12 +58,12 @@ select(patients, Height:Grade_Level, -Pet)
 select(patients, ends_with("eight"))
 ```
 
-8. Select all columns except `State`, `Pet` and `Grade_Level`
+8. Select all columns except `Birth`, `State` and `Grade_Level`
 
 ```{r}
-select(patients, -State, -Pet, -Grade_Level)
-select(patients, -c(State, Pet, Grade_Level))
-select(patients, -(State:Grade_Level))
+select(patients, -Birth, -State, -Grade_Level)
+select(patients, -c(Birth, State, Grade_Level))
+select(patients, -(Birth:Grade_Level))
 ```
 
 ## Part III - data transformations
@@ -112,3 +113,5 @@ select(patients, ID, Smokes, Height, Height, BMI, Overweight)
 ```
 
 What other problems can you find in the patients dataset?
+
+

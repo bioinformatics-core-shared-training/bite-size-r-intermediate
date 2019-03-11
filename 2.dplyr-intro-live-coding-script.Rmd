@@ -486,7 +486,8 @@ Creating a new variable is more common where we compute a new value based on val
 mutate(table1, percent = 100 * cases / population)
 ```
 
-We may want the `Sex` column to remain as a factor.
+We may want the `Sex` column to remain as a factor. Note that in the following we assign
+the result of the `mutate` operation to the `patients` object, i.e. overwriting it.
 
 ```{r}
 patients <- mutate(patients, Sex = factor(str_trim(Sex)))

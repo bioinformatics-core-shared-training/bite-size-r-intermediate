@@ -1,5 +1,5 @@
 ---
-title: "Exercise - tidying and transforming data"
+title: "Exercise: tidying and transforming data"
 author: "Mark Dunning and Matt Eldridge"
 date: '`r format(Sys.time(), "Last modified: %d %b %Y")`'
 output: html_document
@@ -44,7 +44,7 @@ Take a look at the data and answer the following questions:
 
 ```
 
-6. Select all the columns between `Height` and `Grade_Level`, but not `Pet`
+6. Select all the columns between `Height` and `Grade_Level`, but not `State`
 
 ```{r}
 
@@ -56,13 +56,13 @@ Take a look at the data and answer the following questions:
 
 ```
 
-8. Select all columns except `State`, `Pet` and `Grade_Level`
+8. Select all columns except `Birth`, `State` and `Grade_Level`
 
 ```{r}
 
 ```
 
-## Part III - transforming the data, cleaning values and calculating new values
+## Part III - data transformations
 
 The study that collected the patient data is interested in the relationship between body mass index (BMI) and smoking.
 
@@ -76,7 +76,7 @@ Which the relevant variables (columns) in our patients dataset and what problems
 
 10. Clean the `Height` and `Weight` columns to remove the 'cm' and 'kg' units respectively.
 
-```{r eval = FALSE}
+```{r}
 
 ```
 
@@ -93,3 +93,5 @@ Which the relevant variables (columns) in our patients dataset and what problems
 ```
 
 What other problems can you find in the patients dataset?
+
+

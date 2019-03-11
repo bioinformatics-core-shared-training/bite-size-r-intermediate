@@ -622,35 +622,33 @@ clinical_replicate_data</code></pre>
 ## cols(
 ##   ID = col_character(),
 ##   Name = col_character(),
-##   Race = col_character(),
 ##   Sex = col_character(),
 ##   Smokes = col_character(),
 ##   Height = col_character(),
 ##   Weight = col_character(),
 ##   Birth = col_date(format = &quot;&quot;),
 ##   State = col_character(),
-##   Pet = col_character(),
 ##   Grade_Level = col_double(),
 ##   Died = col_logical(),
 ##   Count = col_double(),
 ##   Date.Entered.Study = col_date(format = &quot;&quot;)
 ## )</code></pre>
 <pre class="r"><code>patients</code></pre>
-<pre><code>## # A tibble: 100 x 14
-##    ID    Name  Race  Sex   Smokes Height Weight Birth      State Pet  
-##    &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;  &lt;date&gt;     &lt;chr&gt; &lt;chr&gt;
-##  1 AC/A… Mich… White Male  FALSE  182.8… 76.57… 1972-02-06 Geor… Dog  
-##  2 AC/A… Derek White Male  FALSE  179.1… 80.43… 1972-06-15 Miss… Dog  
-##  3 AC/A… Todd  Black Male  FALSE  169.1… 75.48… 1972-07-09 Penn… None 
-##  4 AC/A… Rona… White Male  FALSE  175.6… 94.54… 1972-08-17 Flor… Cat  
-##  5 AC/A… Chri… White Fema… FALSE  164.4… 71.78… 1973-06-12 Iowa  NULL 
-##  6 AC/A… Dana  Dog   Fema… TRUE   158.2… 69.9kg 1973-07-01 Mary… Dog  
-##  7 AC/A… Erin  White Fema… FALSE  161.6… 68.85… 1972-03-26 Penn… None 
-##  8 AC/A… Rach… White Fema… No     165.8… 70.44… 1973-05-11 Nort… None 
-##  9 AC/A… Rona… White Male  FALSE  181.3… 76.9kg 1971-12-31 Loui… Dog  
-## 10 AC/A… Bryan Hisp… Male  FALSE  167.3… 79.06… 1973-07-19 Nort… None 
-## # … with 90 more rows, and 4 more variables: Grade_Level &lt;dbl&gt;,
-## #   Died &lt;lgl&gt;, Count &lt;dbl&gt;, Date.Entered.Study &lt;date&gt;</code></pre>
+<pre><code>## # A tibble: 100 x 12
+##    ID    Name  Sex   Smokes Height Weight Birth      State Grade_Level
+##    &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;  &lt;date&gt;     &lt;chr&gt;       &lt;dbl&gt;
+##  1 AC/A… Mich… Male  FALSE  182.8… 76.57… 1972-02-06 Geor…           2
+##  2 AC/A… Derek Male  FALSE  179.1… 80.43… 1972-06-15 Colo…           2
+##  3 AC/A… Todd  Male  FALSE  169.1… 75.48… 1972-07-09 New …           2
+##  4 AC/A… Rona… Male  FALSE  175.6… 94.54… 1972-08-17 Colo…           1
+##  5 AC/A… Chri… Fema… FALSE  164.4… 71.78… 1973-06-12 Geor…           2
+##  6 AC/A… Dana  Fema… TRUE   158.2… 69.9kg 1973-07-01 Indi…           2
+##  7 AC/A… Erin  Fema… FALSE  161.6… 68.85… 1972-03-26 New …           1
+##  8 AC/A… Rach… Fema… No     165.8… 70.44… 1973-05-11 Colo…           1
+##  9 AC/A… Rona… Male  FALSE  181.3… 76.9kg 1971-12-31 Geor…           1
+## 10 AC/A… Bryan Male  FALSE  167.3… 79.06… 1973-07-19 New …           2
+## # … with 90 more rows, and 3 more variables: Died &lt;lgl&gt;, Count &lt;dbl&gt;,
+## #   Date.Entered.Study &lt;date&gt;</code></pre>
 <p>View the patients dataset in RStudio by selecting it in the Environment tab (usually top-right) or as follows.</p>
 <pre class="r"><code>View(patients)</code></pre>
 <p>You should be familiar with how to access a specific column of a data frame using the <code>$</code> operator.</p>
@@ -732,39 +730,39 @@ clinical_replicate_data</code></pre>
 ## # … with 90 more rows</code></pre>
 <p>We can exclude columns in the same way as we did earlier with the <code>gather</code> function.</p>
 <pre class="r"><code>select(patients, -Name)</code></pre>
-<pre><code>## # A tibble: 100 x 13
-##    ID    Race  Sex   Smokes Height Weight Birth      State Pet  
-##    &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;  &lt;date&gt;     &lt;chr&gt; &lt;chr&gt;
-##  1 AC/A… White Male  FALSE  182.8… 76.57… 1972-02-06 Geor… Dog  
-##  2 AC/A… White Male  FALSE  179.1… 80.43… 1972-06-15 Miss… Dog  
-##  3 AC/A… Black Male  FALSE  169.1… 75.48… 1972-07-09 Penn… None 
-##  4 AC/A… White Male  FALSE  175.6… 94.54… 1972-08-17 Flor… Cat  
-##  5 AC/A… White Fema… FALSE  164.4… 71.78… 1973-06-12 Iowa  NULL 
-##  6 AC/A… Dog   Fema… TRUE   158.2… 69.9kg 1973-07-01 Mary… Dog  
-##  7 AC/A… White Fema… FALSE  161.6… 68.85… 1972-03-26 Penn… None 
-##  8 AC/A… White Fema… No     165.8… 70.44… 1973-05-11 Nort… None 
-##  9 AC/A… White Male  FALSE  181.3… 76.9kg 1971-12-31 Loui… Dog  
-## 10 AC/A… Hisp… Male  FALSE  167.3… 79.06… 1973-07-19 Nort… None 
-## # … with 90 more rows, and 4 more variables: Grade_Level &lt;dbl&gt;,
-## #   Died &lt;lgl&gt;, Count &lt;dbl&gt;, Date.Entered.Study &lt;date&gt;</code></pre>
+<pre><code>## # A tibble: 100 x 11
+##    ID    Sex   Smokes Height Weight Birth      State Grade_Level Died 
+##    &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;  &lt;date&gt;     &lt;chr&gt;       &lt;dbl&gt; &lt;lgl&gt;
+##  1 AC/A… Male  FALSE  182.8… 76.57… 1972-02-06 Geor…           2 FALSE
+##  2 AC/A… Male  FALSE  179.1… 80.43… 1972-06-15 Colo…           2 FALSE
+##  3 AC/A… Male  FALSE  169.1… 75.48… 1972-07-09 New …           2 FALSE
+##  4 AC/A… Male  FALSE  175.6… 94.54… 1972-08-17 Colo…           1 FALSE
+##  5 AC/A… Fema… FALSE  164.4… 71.78… 1973-06-12 Geor…           2 TRUE 
+##  6 AC/A… Fema… TRUE   158.2… 69.9kg 1973-07-01 Indi…           2 FALSE
+##  7 AC/A… Fema… FALSE  161.6… 68.85… 1972-03-26 New …           1 FALSE
+##  8 AC/A… Fema… No     165.8… 70.44… 1973-05-11 Colo…           1 FALSE
+##  9 AC/A… Male  FALSE  181.3… 76.9kg 1971-12-31 Geor…           1 FALSE
+## 10 AC/A… Male  FALSE  167.3… 79.06… 1973-07-19 New …           2 FALSE
+## # … with 90 more rows, and 2 more variables: Count &lt;dbl&gt;,
+## #   Date.Entered.Study &lt;date&gt;</code></pre>
 <p><strong>Question:</strong> <em>how would you do this with base R?</em></p>
 <pre class="r"><code>patients[,-2]
 patients[,setdiff(colnames(patients), &quot;Name&quot;)]</code></pre>
 <p>You can also select columns within a range using <code>:</code>, again as we did before with <code>gather</code>.</p>
 <pre class="r"><code>select(patients, Name:Sex)</code></pre>
-<pre><code>## # A tibble: 100 x 3
-##    Name      Race     Sex   
-##    &lt;chr&gt;     &lt;chr&gt;    &lt;chr&gt; 
-##  1 Michael   White    Male  
-##  2 Derek     White    Male  
-##  3 Todd      Black    Male  
-##  4 Ronald    White    Male  
-##  5 Christine White    Female
-##  6 Dana      Dog      Female
-##  7 Erin      White    Female
-##  8 Rachel    White    Female
-##  9 Ronald    White    Male  
-## 10 Bryan     Hispanic Male  
+<pre><code>## # A tibble: 100 x 2
+##    Name      Sex   
+##    &lt;chr&gt;     &lt;chr&gt; 
+##  1 Michael   Male  
+##  2 Derek     Male  
+##  3 Todd      Male  
+##  4 Ronald    Male  
+##  5 Christine Female
+##  6 Dana      Female
+##  7 Erin      Female
+##  8 Rachel    Female
+##  9 Ronald    Male  
+## 10 Bryan     Male  
 ## # … with 90 more rows</code></pre>
 <p>Looking at the help for <code>select</code> you will see that there are a number of useful functions that can be used when selecting columns.</p>
 <pre class="r"><code>select(patients, starts_with(&quot;Grade&quot;))</code></pre>
@@ -810,21 +808,21 @@ patients[,setdiff(colnames(patients), &quot;Name&quot;)]</code></pre>
 <pre class="r"><code>patients &lt;- read.delim(&quot;patient-data.txt&quot;)
 patients &lt;- as_tibble(patients)
 patients</code></pre>
-<pre><code>## # A tibble: 100 x 14
-##    ID    Name  Race  Sex   Smokes Height Weight Birth State Pet  
-##    &lt;fct&gt; &lt;fct&gt; &lt;fct&gt; &lt;fct&gt; &lt;fct&gt;  &lt;fct&gt;  &lt;fct&gt;  &lt;fct&gt; &lt;fct&gt; &lt;fct&gt;
-##  1 AC/A… Mich… White Male  FALSE  182.8… 76.57… 1972… Geor… Dog  
-##  2 AC/A… Derek White Male  FALSE  179.1… 80.43… 1972… Miss… Dog  
-##  3 AC/A… Todd  Black &quot; Ma… FALSE  169.1… 75.48… 1972… Penn… None 
-##  4 AC/A… Rona… White Male  FALSE  175.6… 94.54… 1972… Flor… Cat  
-##  5 AC/A… Chri… White Fema… FALSE  164.4… 71.78… 1973… Iowa  NULL 
-##  6 AC/A… Dana  Dog   Fema… TRUE   158.2… 69.9kg 1973… Mary… Dog  
-##  7 AC/A… Erin  White Fema… FALSE  161.6… 68.85… 1972… Penn… None 
-##  8 AC/A… Rach… White Fema… No     165.8… 70.44… 1973… Nort… None 
-##  9 AC/A… Rona… White Male  FALSE  181.3… 76.9kg 1971… Loui… Dog  
-## 10 AC/A… Bryan Hisp… &quot; Ma… FALSE  167.3… 79.06… 1973… Nort… None 
-## # … with 90 more rows, and 4 more variables: Grade_Level &lt;int&gt;,
-## #   Died &lt;lgl&gt;, Count &lt;dbl&gt;, Date.Entered.Study &lt;fct&gt;</code></pre>
+<pre><code>## # A tibble: 100 x 12
+##    ID    Name  Sex   Smokes Height Weight Birth State Grade_Level Died 
+##    &lt;fct&gt; &lt;fct&gt; &lt;fct&gt; &lt;fct&gt;  &lt;fct&gt;  &lt;fct&gt;  &lt;fct&gt; &lt;fct&gt;       &lt;int&gt; &lt;lgl&gt;
+##  1 AC/A… Mich… Male  FALSE  182.8… 76.57… 1972… Geor…           2 FALSE
+##  2 AC/A… Derek Male  FALSE  179.1… 80.43… 1972… &quot;Col…           2 FALSE
+##  3 AC/A… Todd  &quot; Ma… FALSE  169.1… 75.48… 1972… New …           2 FALSE
+##  4 AC/A… Rona… Male  FALSE  175.6… 94.54… 1972… Colo…           1 FALSE
+##  5 AC/A… Chri… Fema… FALSE  164.4… 71.78… 1973… Geor…           2 TRUE 
+##  6 AC/A… Dana  Fema… TRUE   158.2… 69.9kg 1973… Indi…           2 FALSE
+##  7 AC/A… Erin  Fema… FALSE  161.6… 68.85… 1972… New …           1 FALSE
+##  8 AC/A… Rach… Fema… No     165.8… 70.44… 1973… &quot;Col…           1 FALSE
+##  9 AC/A… Rona… Male  FALSE  181.3… 76.9kg 1971… Geor…           1 FALSE
+## 10 AC/A… Bryan &quot; Ma… FALSE  167.3… 79.06… 1973… New …           2 FALSE
+## # … with 90 more rows, and 2 more variables: Count &lt;dbl&gt;,
+## #   Date.Entered.Study &lt;fct&gt;</code></pre>
 <p>We’ll start by looking at the Sex column. Create a bar plot to show the numbers of male and female patients in our study.</p>
 <pre class="r"><code>ggplot(patients, mapping = aes(x = Sex)) +
   geom_bar()</code></pre>
@@ -857,39 +855,39 @@ patients</code></pre>
 <pre class="r"><code>patients$Sex &lt;- str_trim(patients$Sex)</code></pre>
 <p>The <code>dplyr</code> function for making changes to a data frame is <code>mutate</code>.</p>
 <pre class="r"><code>mutate(patients, Sex = str_trim(Sex))</code></pre>
-<pre><code>## # A tibble: 100 x 14
-##    ID    Name  Race  Sex   Smokes Height Weight Birth State Pet  
-##    &lt;fct&gt; &lt;fct&gt; &lt;fct&gt; &lt;chr&gt; &lt;fct&gt;  &lt;fct&gt;  &lt;fct&gt;  &lt;fct&gt; &lt;fct&gt; &lt;fct&gt;
-##  1 AC/A… Mich… White Male  FALSE  182.8… 76.57… 1972… Geor… Dog  
-##  2 AC/A… Derek White Male  FALSE  179.1… 80.43… 1972… Miss… Dog  
-##  3 AC/A… Todd  Black Male  FALSE  169.1… 75.48… 1972… Penn… None 
-##  4 AC/A… Rona… White Male  FALSE  175.6… 94.54… 1972… Flor… Cat  
-##  5 AC/A… Chri… White Fema… FALSE  164.4… 71.78… 1973… Iowa  NULL 
-##  6 AC/A… Dana  Dog   Fema… TRUE   158.2… 69.9kg 1973… Mary… Dog  
-##  7 AC/A… Erin  White Fema… FALSE  161.6… 68.85… 1972… Penn… None 
-##  8 AC/A… Rach… White Fema… No     165.8… 70.44… 1973… Nort… None 
-##  9 AC/A… Rona… White Male  FALSE  181.3… 76.9kg 1971… Loui… Dog  
-## 10 AC/A… Bryan Hisp… Male  FALSE  167.3… 79.06… 1973… Nort… None 
-## # … with 90 more rows, and 4 more variables: Grade_Level &lt;int&gt;,
-## #   Died &lt;lgl&gt;, Count &lt;dbl&gt;, Date.Entered.Study &lt;fct&gt;</code></pre>
+<pre><code>## # A tibble: 100 x 12
+##    ID    Name  Sex   Smokes Height Weight Birth State Grade_Level Died 
+##    &lt;fct&gt; &lt;fct&gt; &lt;chr&gt; &lt;fct&gt;  &lt;fct&gt;  &lt;fct&gt;  &lt;fct&gt; &lt;fct&gt;       &lt;int&gt; &lt;lgl&gt;
+##  1 AC/A… Mich… Male  FALSE  182.8… 76.57… 1972… Geor…           2 FALSE
+##  2 AC/A… Derek Male  FALSE  179.1… 80.43… 1972… &quot;Col…           2 FALSE
+##  3 AC/A… Todd  Male  FALSE  169.1… 75.48… 1972… New …           2 FALSE
+##  4 AC/A… Rona… Male  FALSE  175.6… 94.54… 1972… Colo…           1 FALSE
+##  5 AC/A… Chri… Fema… FALSE  164.4… 71.78… 1973… Geor…           2 TRUE 
+##  6 AC/A… Dana  Fema… TRUE   158.2… 69.9kg 1973… Indi…           2 FALSE
+##  7 AC/A… Erin  Fema… FALSE  161.6… 68.85… 1972… New …           1 FALSE
+##  8 AC/A… Rach… Fema… No     165.8… 70.44… 1973… &quot;Col…           1 FALSE
+##  9 AC/A… Rona… Male  FALSE  181.3… 76.9kg 1971… Geor…           1 FALSE
+## 10 AC/A… Bryan Male  FALSE  167.3… 79.06… 1973… New …           2 FALSE
+## # … with 90 more rows, and 2 more variables: Count &lt;dbl&gt;,
+## #   Date.Entered.Study &lt;fct&gt;</code></pre>
 <p>Notice that we didn’t need to specify the Sex variable as <code>patients$Sex</code>.</p>
 <p>Usually for cleaning operations like this we would choose to overwrite the column in question but we could instead create a new variable, e.g.</p>
 <pre class="r"><code>mutate(patients, SexTrimmed = str_trim(Sex))</code></pre>
-<pre><code>## # A tibble: 100 x 15
-##    ID    Name  Race  Sex   Smokes Height Weight Birth State Pet  
-##    &lt;fct&gt; &lt;fct&gt; &lt;fct&gt; &lt;fct&gt; &lt;fct&gt;  &lt;fct&gt;  &lt;fct&gt;  &lt;fct&gt; &lt;fct&gt; &lt;fct&gt;
-##  1 AC/A… Mich… White Male  FALSE  182.8… 76.57… 1972… Geor… Dog  
-##  2 AC/A… Derek White Male  FALSE  179.1… 80.43… 1972… Miss… Dog  
-##  3 AC/A… Todd  Black &quot; Ma… FALSE  169.1… 75.48… 1972… Penn… None 
-##  4 AC/A… Rona… White Male  FALSE  175.6… 94.54… 1972… Flor… Cat  
-##  5 AC/A… Chri… White Fema… FALSE  164.4… 71.78… 1973… Iowa  NULL 
-##  6 AC/A… Dana  Dog   Fema… TRUE   158.2… 69.9kg 1973… Mary… Dog  
-##  7 AC/A… Erin  White Fema… FALSE  161.6… 68.85… 1972… Penn… None 
-##  8 AC/A… Rach… White Fema… No     165.8… 70.44… 1973… Nort… None 
-##  9 AC/A… Rona… White Male  FALSE  181.3… 76.9kg 1971… Loui… Dog  
-## 10 AC/A… Bryan Hisp… &quot; Ma… FALSE  167.3… 79.06… 1973… Nort… None 
-## # … with 90 more rows, and 5 more variables: Grade_Level &lt;int&gt;,
-## #   Died &lt;lgl&gt;, Count &lt;dbl&gt;, Date.Entered.Study &lt;fct&gt;, SexTrimmed &lt;chr&gt;</code></pre>
+<pre><code>## # A tibble: 100 x 13
+##    ID    Name  Sex   Smokes Height Weight Birth State Grade_Level Died 
+##    &lt;fct&gt; &lt;fct&gt; &lt;fct&gt; &lt;fct&gt;  &lt;fct&gt;  &lt;fct&gt;  &lt;fct&gt; &lt;fct&gt;       &lt;int&gt; &lt;lgl&gt;
+##  1 AC/A… Mich… Male  FALSE  182.8… 76.57… 1972… Geor…           2 FALSE
+##  2 AC/A… Derek Male  FALSE  179.1… 80.43… 1972… &quot;Col…           2 FALSE
+##  3 AC/A… Todd  &quot; Ma… FALSE  169.1… 75.48… 1972… New …           2 FALSE
+##  4 AC/A… Rona… Male  FALSE  175.6… 94.54… 1972… Colo…           1 FALSE
+##  5 AC/A… Chri… Fema… FALSE  164.4… 71.78… 1973… Geor…           2 TRUE 
+##  6 AC/A… Dana  Fema… TRUE   158.2… 69.9kg 1973… Indi…           2 FALSE
+##  7 AC/A… Erin  Fema… FALSE  161.6… 68.85… 1972… New …           1 FALSE
+##  8 AC/A… Rach… Fema… No     165.8… 70.44… 1973… &quot;Col…           1 FALSE
+##  9 AC/A… Rona… Male  FALSE  181.3… 76.9kg 1971… Geor…           1 FALSE
+## 10 AC/A… Bryan &quot; Ma… FALSE  167.3… 79.06… 1973… New …           2 FALSE
+## # … with 90 more rows, and 3 more variables: Count &lt;dbl&gt;,
+## #   Date.Entered.Study &lt;fct&gt;, SexTrimmed &lt;chr&gt;</code></pre>
 <p>Creating a new variable is more common where we compute a new value based on values from other columns.</p>
 <pre class="r"><code>mutate(table1, percent = 100 * cases / population)</code></pre>
 <pre><code>## # A tibble: 6 x 5
@@ -901,7 +899,7 @@ patients</code></pre>
 ## 4 Brazil       2000  80488  174504898 0.0461 
 ## 5 China        1999 212258 1272915272 0.0167 
 ## 6 China        2000 213766 1280428583 0.0167</code></pre>
-<p>We may want the <code>Sex</code> column to remain as a factor.</p>
+<p>We may want the <code>Sex</code> column to remain as a factor. Note that in the following we assign the result of the <code>mutate</code> operation to the <code>patients</code> object, i.e. overwriting it.</p>
 <pre class="r"><code>patients &lt;- mutate(patients, Sex = factor(str_trim(Sex)))
 levels(patients$Sex)</code></pre>
 <pre><code>## [1] &quot;Female&quot; &quot;Male&quot;</code></pre>
@@ -961,21 +959,21 @@ levels(patients$Sex)</code></pre>
 <p>Now we can modify the dataset with <code>mutate</code>.</p>
 <pre class="r"><code>patients &lt;- mutate(patients, Height = as.numeric(str_remove(Height, &quot;cm&quot;)))
 patients</code></pre>
-<pre><code>## # A tibble: 100 x 14
-##    ID    Name  Race  Sex   Smokes Height Weight Birth State Pet  
-##    &lt;fct&gt; &lt;fct&gt; &lt;fct&gt; &lt;fct&gt; &lt;fct&gt;   &lt;dbl&gt; &lt;fct&gt;  &lt;fct&gt; &lt;fct&gt; &lt;fct&gt;
-##  1 AC/A… Mich… White Male  FALSE    183. 76.57… 1972… Geor… Dog  
-##  2 AC/A… Derek White Male  FALSE    179. 80.43… 1972… Miss… Dog  
-##  3 AC/A… Todd  Black Male  FALSE    169. 75.48… 1972… Penn… None 
-##  4 AC/A… Rona… White Male  FALSE    176. 94.54… 1972… Flor… Cat  
-##  5 AC/A… Chri… White Fema… FALSE    164. 71.78… 1973… Iowa  NULL 
-##  6 AC/A… Dana  Dog   Fema… TRUE     158. 69.9kg 1973… Mary… Dog  
-##  7 AC/A… Erin  White Fema… FALSE    162. 68.85… 1972… Penn… None 
-##  8 AC/A… Rach… White Fema… No       166. 70.44… 1973… Nort… None 
-##  9 AC/A… Rona… White Male  FALSE    181. 76.9kg 1971… Loui… Dog  
-## 10 AC/A… Bryan Hisp… Male  FALSE    167. 79.06… 1973… Nort… None 
-## # … with 90 more rows, and 4 more variables: Grade_Level &lt;int&gt;,
-## #   Died &lt;lgl&gt;, Count &lt;dbl&gt;, Date.Entered.Study &lt;fct&gt;</code></pre>
+<pre><code>## # A tibble: 100 x 12
+##    ID    Name  Sex   Smokes Height Weight Birth State Grade_Level Died 
+##    &lt;fct&gt; &lt;fct&gt; &lt;fct&gt; &lt;fct&gt;   &lt;dbl&gt; &lt;fct&gt;  &lt;fct&gt; &lt;fct&gt;       &lt;int&gt; &lt;lgl&gt;
+##  1 AC/A… Mich… Male  FALSE    183. 76.57… 1972… Geor…           2 FALSE
+##  2 AC/A… Derek Male  FALSE    179. 80.43… 1972… &quot;Col…           2 FALSE
+##  3 AC/A… Todd  Male  FALSE    169. 75.48… 1972… New …           2 FALSE
+##  4 AC/A… Rona… Male  FALSE    176. 94.54… 1972… Colo…           1 FALSE
+##  5 AC/A… Chri… Fema… FALSE    164. 71.78… 1973… Geor…           2 TRUE 
+##  6 AC/A… Dana  Fema… TRUE     158. 69.9kg 1973… Indi…           2 FALSE
+##  7 AC/A… Erin  Fema… FALSE    162. 68.85… 1972… New …           1 FALSE
+##  8 AC/A… Rach… Fema… No       166. 70.44… 1973… &quot;Col…           1 FALSE
+##  9 AC/A… Rona… Male  FALSE    181. 76.9kg 1971… Geor…           1 FALSE
+## 10 AC/A… Bryan Male  FALSE    167. 79.06… 1973… New …           2 FALSE
+## # … with 90 more rows, and 2 more variables: Count &lt;dbl&gt;,
+## #   Date.Entered.Study &lt;fct&gt;</code></pre>
 <pre class="r"><code>ggplot(patients, mapping = aes(x = Height)) +
   geom_histogram()</code></pre>
 <pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
@@ -987,21 +985,21 @@ patients &lt;- mutate(patients,
                    Sex = as.factor(str_trim(Sex)),
                    Height = as.numeric(str_remove(Height, &quot;cm&quot;)))
 patients</code></pre>
-<pre><code>## # A tibble: 100 x 14
-##    ID    Name  Race  Sex   Smokes Height Weight Birth State Pet  
-##    &lt;fct&gt; &lt;fct&gt; &lt;fct&gt; &lt;fct&gt; &lt;fct&gt;   &lt;dbl&gt; &lt;fct&gt;  &lt;fct&gt; &lt;fct&gt; &lt;fct&gt;
-##  1 AC/A… Mich… White Male  FALSE    183. 76.57… 1972… Geor… Dog  
-##  2 AC/A… Derek White Male  FALSE    179. 80.43… 1972… Miss… Dog  
-##  3 AC/A… Todd  Black Male  FALSE    169. 75.48… 1972… Penn… None 
-##  4 AC/A… Rona… White Male  FALSE    176. 94.54… 1972… Flor… Cat  
-##  5 AC/A… Chri… White Fema… FALSE    164. 71.78… 1973… Iowa  NULL 
-##  6 AC/A… Dana  Dog   Fema… TRUE     158. 69.9kg 1973… Mary… Dog  
-##  7 AC/A… Erin  White Fema… FALSE    162. 68.85… 1972… Penn… None 
-##  8 AC/A… Rach… White Fema… No       166. 70.44… 1973… Nort… None 
-##  9 AC/A… Rona… White Male  FALSE    181. 76.9kg 1971… Loui… Dog  
-## 10 AC/A… Bryan Hisp… Male  FALSE    167. 79.06… 1973… Nort… None 
-## # … with 90 more rows, and 4 more variables: Grade_Level &lt;int&gt;,
-## #   Died &lt;lgl&gt;, Count &lt;dbl&gt;, Date.Entered.Study &lt;fct&gt;</code></pre>
+<pre><code>## # A tibble: 100 x 12
+##    ID    Name  Sex   Smokes Height Weight Birth State Grade_Level Died 
+##    &lt;fct&gt; &lt;fct&gt; &lt;fct&gt; &lt;fct&gt;   &lt;dbl&gt; &lt;fct&gt;  &lt;fct&gt; &lt;fct&gt;       &lt;int&gt; &lt;lgl&gt;
+##  1 AC/A… Mich… Male  FALSE    183. 76.57… 1972… Geor…           2 FALSE
+##  2 AC/A… Derek Male  FALSE    179. 80.43… 1972… &quot;Col…           2 FALSE
+##  3 AC/A… Todd  Male  FALSE    169. 75.48… 1972… New …           2 FALSE
+##  4 AC/A… Rona… Male  FALSE    176. 94.54… 1972… Colo…           1 FALSE
+##  5 AC/A… Chri… Fema… FALSE    164. 71.78… 1973… Geor…           2 TRUE 
+##  6 AC/A… Dana  Fema… TRUE     158. 69.9kg 1973… Indi…           2 FALSE
+##  7 AC/A… Erin  Fema… FALSE    162. 68.85… 1972… New …           1 FALSE
+##  8 AC/A… Rach… Fema… No       166. 70.44… 1973… &quot;Col…           1 FALSE
+##  9 AC/A… Rona… Male  FALSE    181. 76.9kg 1971… Geor…           1 FALSE
+## 10 AC/A… Bryan Male  FALSE    167. 79.06… 1973… New …           2 FALSE
+## # … with 90 more rows, and 2 more variables: Count &lt;dbl&gt;,
+## #   Date.Entered.Study &lt;fct&gt;</code></pre>
 <div id="exercise-tidying-data-1" class="section level3">
 <h3>Exercise: tidying data</h3>
 <p>See separate R markdown document.</p>
@@ -1015,14 +1013,12 @@ patients</code></pre>
 ## cols(
 ##   ID = col_character(),
 ##   Name = col_character(),
-##   Race = col_character(),
 ##   Sex = col_character(),
 ##   Smokes = col_character(),
 ##   Height = col_double(),
 ##   Weight = col_double(),
 ##   Birth = col_date(format = &quot;&quot;),
 ##   State = col_character(),
-##   Pet = col_character(),
 ##   Grade = col_double(),
 ##   Died = col_logical(),
 ##   Count = col_double(),
@@ -1032,22 +1028,21 @@ patients</code></pre>
 ##   Overweight = col_logical()
 ## )</code></pre>
 <pre class="r"><code>mutate_at(patients, vars(Height, Weight), round, digits = 1)</code></pre>
-<pre><code>## # A tibble: 100 x 17
-##    ID    Name  Race  Sex   Smokes Height Weight Birth      State Pet  
-##    &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;   &lt;dbl&gt;  &lt;dbl&gt; &lt;date&gt;     &lt;chr&gt; &lt;chr&gt;
-##  1 AC/A… Mich… White Male  Non-S…   183.   76.6 1972-02-06 Geor… Dog  
-##  2 AC/A… Derek White Male  Non-S…   179.   80.4 1972-06-15 Miss… Dog  
-##  3 AC/A… Todd  Black Male  Non-S…   169.   75.5 1972-07-09 Penn… None 
-##  4 AC/A… Rona… White Male  Non-S…   176.   94.5 1972-08-17 Flor… Cat  
-##  5 AC/A… Chri… White Fema… Non-S…   164.   71.8 1973-06-12 Iowa  &lt;NA&gt; 
-##  6 AC/A… Dana  &lt;NA&gt;  Fema… Smoker   158.   69.9 1973-07-01 Mary… Dog  
-##  7 AC/A… Erin  White Fema… Non-S…   162.   68.8 1972-03-26 Penn… None 
-##  8 AC/A… Rach… White Fema… Non-S…   166.   70.4 1973-05-11 Nort… None 
-##  9 AC/A… Rona… White Male  Non-S…   181.   76.9 1971-12-31 Loui… Dog  
-## 10 AC/A… Bryan Hisp… Male  Non-S…   167.   79.1 1973-07-19 Nort… None 
-## # … with 90 more rows, and 7 more variables: Grade &lt;dbl&gt;, Died &lt;lgl&gt;,
-## #   Count &lt;dbl&gt;, Date.Entered.Study &lt;date&gt;, Age &lt;dbl&gt;, BMI &lt;dbl&gt;,
-## #   Overweight &lt;lgl&gt;</code></pre>
+<pre><code>## # A tibble: 100 x 15
+##    ID    Name  Sex   Smokes Height Weight Birth      State Grade Died 
+##    &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;   &lt;dbl&gt;  &lt;dbl&gt; &lt;date&gt;     &lt;chr&gt; &lt;dbl&gt; &lt;lgl&gt;
+##  1 AC/A… Mich… Male  Non-S…   183.   76.6 1972-02-06 Geor…     2 FALSE
+##  2 AC/A… Derek Male  Non-S…   179.   80.4 1972-06-15 Colo…     2 FALSE
+##  3 AC/A… Todd  Male  Non-S…   169.   75.5 1972-07-09 New …     2 FALSE
+##  4 AC/A… Rona… Male  Non-S…   176.   94.5 1972-08-17 Colo…     1 FALSE
+##  5 AC/A… Chri… Fema… Non-S…   164.   71.8 1973-06-12 Geor…     2 TRUE 
+##  6 AC/A… Dana  Fema… Smoker   158.   69.9 1973-07-01 Indi…     2 FALSE
+##  7 AC/A… Erin  Fema… Non-S…   162.   68.8 1972-03-26 New …     1 FALSE
+##  8 AC/A… Rach… Fema… Non-S…   166.   70.4 1973-05-11 Colo…     1 FALSE
+##  9 AC/A… Rona… Male  Non-S…   181.   76.9 1971-12-31 Geor…     1 FALSE
+## 10 AC/A… Bryan Male  Non-S…   167.   79.1 1973-07-19 New …     2 FALSE
+## # … with 90 more rows, and 5 more variables: Count &lt;dbl&gt;,
+## #   Date.Entered.Study &lt;date&gt;, Age &lt;dbl&gt;, BMI &lt;dbl&gt;, Overweight &lt;lgl&gt;</code></pre>
 <p>Two things to note here. Firstly, we had to specify the variables that needed to be modified in a <code>vars()</code> argument. Secondly, you can add any additional arguments that the function requires at the end.</p>
 <p><code>mutate_if</code> allows us to run the same operation on all columns satisfying a specified criterion. For example we could choose to round all numeric columns to 1 decimal place.</p>
 <pre class="r"><code>patients &lt;- read_tsv(&quot;patient-data-cleaned.txt&quot;)</code></pre>
@@ -1055,14 +1050,12 @@ patients</code></pre>
 ## cols(
 ##   ID = col_character(),
 ##   Name = col_character(),
-##   Race = col_character(),
 ##   Sex = col_character(),
 ##   Smokes = col_character(),
 ##   Height = col_double(),
 ##   Weight = col_double(),
 ##   Birth = col_date(format = &quot;&quot;),
 ##   State = col_character(),
-##   Pet = col_character(),
 ##   Grade = col_double(),
 ##   Died = col_logical(),
 ##   Count = col_double(),
@@ -1073,22 +1066,21 @@ patients</code></pre>
 ## )</code></pre>
 <pre class="r"><code>patients &lt;- mutate_if(patients, is.numeric, round, digits = 1)
 patients</code></pre>
-<pre><code>## # A tibble: 100 x 17
-##    ID    Name  Race  Sex   Smokes Height Weight Birth      State Pet  
-##    &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;   &lt;dbl&gt;  &lt;dbl&gt; &lt;date&gt;     &lt;chr&gt; &lt;chr&gt;
-##  1 AC/A… Mich… White Male  Non-S…   183.   76.6 1972-02-06 Geor… Dog  
-##  2 AC/A… Derek White Male  Non-S…   179.   80.4 1972-06-15 Miss… Dog  
-##  3 AC/A… Todd  Black Male  Non-S…   169.   75.5 1972-07-09 Penn… None 
-##  4 AC/A… Rona… White Male  Non-S…   176.   94.5 1972-08-17 Flor… Cat  
-##  5 AC/A… Chri… White Fema… Non-S…   164.   71.8 1973-06-12 Iowa  &lt;NA&gt; 
-##  6 AC/A… Dana  &lt;NA&gt;  Fema… Smoker   158.   69.9 1973-07-01 Mary… Dog  
-##  7 AC/A… Erin  White Fema… Non-S…   162.   68.8 1972-03-26 Penn… None 
-##  8 AC/A… Rach… White Fema… Non-S…   166.   70.4 1973-05-11 Nort… None 
-##  9 AC/A… Rona… White Male  Non-S…   181.   76.9 1971-12-31 Loui… Dog  
-## 10 AC/A… Bryan Hisp… Male  Non-S…   167.   79.1 1973-07-19 Nort… None 
-## # … with 90 more rows, and 7 more variables: Grade &lt;dbl&gt;, Died &lt;lgl&gt;,
-## #   Count &lt;dbl&gt;, Date.Entered.Study &lt;date&gt;, Age &lt;dbl&gt;, BMI &lt;dbl&gt;,
-## #   Overweight &lt;lgl&gt;</code></pre>
+<pre><code>## # A tibble: 100 x 15
+##    ID    Name  Sex   Smokes Height Weight Birth      State Grade Died 
+##    &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;   &lt;dbl&gt;  &lt;dbl&gt; &lt;date&gt;     &lt;chr&gt; &lt;dbl&gt; &lt;lgl&gt;
+##  1 AC/A… Mich… Male  Non-S…   183.   76.6 1972-02-06 Geor…     2 FALSE
+##  2 AC/A… Derek Male  Non-S…   179.   80.4 1972-06-15 Colo…     2 FALSE
+##  3 AC/A… Todd  Male  Non-S…   169.   75.5 1972-07-09 New …     2 FALSE
+##  4 AC/A… Rona… Male  Non-S…   176.   94.5 1972-08-17 Colo…     1 FALSE
+##  5 AC/A… Chri… Fema… Non-S…   164.   71.8 1973-06-12 Geor…     2 TRUE 
+##  6 AC/A… Dana  Fema… Smoker   158.   69.9 1973-07-01 Indi…     2 FALSE
+##  7 AC/A… Erin  Fema… Non-S…   162.   68.8 1972-03-26 New …     1 FALSE
+##  8 AC/A… Rach… Fema… Non-S…   166.   70.4 1973-05-11 Colo…     1 FALSE
+##  9 AC/A… Rona… Male  Non-S…   181.   76.9 1971-12-31 Geor…     1 FALSE
+## 10 AC/A… Bryan Male  Non-S…   167.   79.1 1973-07-19 New …     2 FALSE
+## # … with 90 more rows, and 5 more variables: Count &lt;dbl&gt;,
+## #   Date.Entered.Study &lt;date&gt;, Age &lt;dbl&gt;, BMI &lt;dbl&gt;, Overweight &lt;lgl&gt;</code></pre>
 </div>
 </div>
 
