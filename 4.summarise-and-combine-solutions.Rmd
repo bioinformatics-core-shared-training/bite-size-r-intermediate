@@ -1,5 +1,6 @@
 ---
 title: "Summarising, Grouping and Joining Exercise"
+author: "Matt Eldridge"
 date: '`r format(Sys.time(), "Last modified: %d %b %Y")`'
 output: html_document
 ---
