@@ -17,7 +17,6 @@ random_patients <- function(n) {
     n,
     id,
     name,
-    race,
 #    age,
     sex,
     smokes,
@@ -81,10 +80,6 @@ patients$Pet[rand_rows] <- toupper(patients$Pet[rand_rows])
 5. convert some of the `None` pets to NA or NULL
 
 ```{r}
-patients$Race <- as.character(patients$Race)
-error_row <- sample(which(patients$Pet != "None"),1)
-patients$Race[error_row] <- patients$Pet[error_row]
-
 no_pet <- which(patients$Pet == "None")
 patients$Pet[sample(no_pet,2)] <- "NA"
 patients$Pet[sample(no_pet,3)] <- "NULL"
@@ -157,7 +152,7 @@ today <- ymd("20160509")
 age <- interval(dob, today)
 
 
-read.delim("patient-data.txt") %>% 
+patients_clean <- read.delim("patient-data.txt") %>% 
   tbl_df %>% 
   mutate(Age = year(as.period(age))) %>% 
   mutate(Sex = factor(str_trim(Sex))) %>% 
@@ -170,8 +165,7 @@ read.delim("patient-data.txt") %>%
   mutate(Name = str_to_title(Name)) %>% 
   mutate(Grade_Level = ifelse(Grade_Level == 99, NA,Grade_Level)) %>% 
   rename(Grade = Grade_Level) %>% 
-  mutate(Pet = str_replace_all(Pet, "Null","NA")) %>% 
-  mutate(Race = factor(Race,levels=c("Asian","Bi-Racial","Black","Hispanic","White",NA))) -> patients_clean
+  mutate(Pet = str_replace_all(Pet, "Null","NA"))
  patients_clean
 ```
 
@@ -189,7 +183,6 @@ random_patients <- function(n) {
     n,
     id,
 #    name,
-    race,
 #    age,
     sex,
     smokes,
