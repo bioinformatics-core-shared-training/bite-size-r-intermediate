@@ -1,6 +1,6 @@
 ---
 title: "Tidying and transforming data - live coding script"
-author: "Matt Eldridge"
+author: "Matt Eldridge and Mark Dunning"
 date: '`r format(Sys.time(), "Last modified: %d %b %Y")`'
 output:
   html_document:
