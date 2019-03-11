@@ -309,6 +309,7 @@ some analysis functions require the matrix form of the data.
 spread(clinical_data, key = Treatment, value = Value)
 ```
 
+It can also help fix `table2` that we considered earlier.
 
 ```{r}
 table2
@@ -347,8 +348,9 @@ You should be familiar with how to access a specific column of a data frame usin
 patients$Name
 ```
 
-The `$` operator works just fine for single columns, but for multiple columns it quickly starts to get
-cumbersome as we need to resort to using `[]` and specifying the column names in quotes.
+The `$` operator works well for single columns, but for multiple columns it quickly starts to get
+cumbersome as we need to use the `[]` operator for accessing specific rows of columns and
+`c()` for combining the required columns. The column names also need quotation marks.
 
 ```{r}
 patients[,c("Name","Race")]
@@ -361,7 +363,7 @@ Non R users probably find these commands a bit obtuse.
 - need to remember the row and column index
 - `[,...]` means display all rows
 
-However, the `dplyr` verb `select` is a lot more intuitive.
+The `dplyr` verb `select` is a lot more intuitive.
 
 ```{r}
 select(patients, Name)
@@ -381,7 +383,7 @@ select(patients, -Name)
 
 **Question:** _how would you do this with base R?_
 
-```{r}
+```{r eval = FALSE}
 patients[,-2]
 patients[,setdiff(colnames(patients), "Name")]
 ```
@@ -440,7 +442,7 @@ Note that the `Sex` variable has been read in as a factor. We can check the fact
 levels(patients$Sex)
 ```
 
-OK, so there are some extraneous spaces in the Sex column in the tabular file.
+There are some extraneous spaces in the Sex column in the tabular file.
 
 R has many functions for dealing with and manipulating text strings. However, the `stringr`
 package that is part of the _tidyverse_ aims to provide a clean and uniform interface to many
@@ -454,8 +456,8 @@ and/or end of our `Sex` values.
 str_trim(patients$Sex)
 ```
 
-`str_trim` has taken a vector of strings and returns another vector in which each string value
-has had whitespace removed from the beginning and end of the string.
+`str_trim` takes a vector of strings and returns another vector in which each string value
+has whitespace removed from the beginning and end of the string.
 
 We now need a way to use this to modify the data frame. One way to do this would be:
 
@@ -504,7 +506,11 @@ ggplot(patients, mapping = aes(x = Height)) +
   geom_histogram()
 ```
 
-The error is not terribly easy to understand but it does indicate that for a histogram
+```
+Error: StatBin requires a continuous x variable: the x variable is discrete. Perhaps you want stat="count"?
+```
+
+The error is not very easy to understand but it does indicate that for a histogram
 we need a continuous variable. What type is our `Height` variable? Why might this be?
 
 ```{r}
