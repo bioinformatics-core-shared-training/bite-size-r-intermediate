@@ -676,20 +676,20 @@ clinical_replicate_data</code></pre>
 ##  [91] &quot;Philip&quot;    &quot;Stephen&quot;   &quot;Holly&quot;     &quot;Douglas&quot;   &quot;Christy&quot;  
 ##  [96] &quot;Jill&quot;      &quot;Rhonda&quot;    &quot;Wendy&quot;     &quot;Sharon&quot;    &quot;Cheryl&quot;</code></pre>
 <p>The <code>$</code> operator works well for single columns, but for multiple columns it quickly starts to get cumbersome as we need to use the <code>[]</code> operator for accessing specific rows of columns and <code>c()</code> for combining the required columns. The column names also need quotation marks.</p>
-<pre class="r"><code>patients[,c(&quot;Name&quot;,&quot;Race&quot;)]</code></pre>
+<pre class="r"><code>patients[,c(&quot;Name&quot;,&quot;Sex&quot;)]</code></pre>
 <pre><code>## # A tibble: 100 x 2
-##    Name      Race    
-##    &lt;chr&gt;     &lt;chr&gt;   
-##  1 Michael   White   
-##  2 Derek     White   
-##  3 Todd      Black   
-##  4 Ronald    White   
-##  5 Christine White   
-##  6 Dana      Dog     
-##  7 Erin      White   
-##  8 Rachel    White   
-##  9 Ronald    White   
-## 10 Bryan     Hispanic
+##    Name      Sex   
+##    &lt;chr&gt;     &lt;chr&gt; 
+##  1 Michael   Male  
+##  2 Derek     Male  
+##  3 Todd      Male  
+##  4 Ronald    Male  
+##  5 Christine Female
+##  6 Dana      Female
+##  7 Erin      Female
+##  8 Rachel    Female
+##  9 Ronald    Male  
+## 10 Bryan     Male  
 ## # … with 90 more rows</code></pre>
 <p>Non R users probably find these commands a bit obtuse.</p>
 <ul>
@@ -715,20 +715,20 @@ clinical_replicate_data</code></pre>
 ## 10 Bryan    
 ## # … with 90 more rows</code></pre>
 <p>Note that we don’t need the quotation marks.</p>
-<pre class="r"><code>select(patients, Name, Race)</code></pre>
+<pre class="r"><code>select(patients, Name, Sex)</code></pre>
 <pre><code>## # A tibble: 100 x 2
-##    Name      Race    
-##    &lt;chr&gt;     &lt;chr&gt;   
-##  1 Michael   White   
-##  2 Derek     White   
-##  3 Todd      Black   
-##  4 Ronald    White   
-##  5 Christine White   
-##  6 Dana      Dog     
-##  7 Erin      White   
-##  8 Rachel    White   
-##  9 Ronald    White   
-## 10 Bryan     Hispanic
+##    Name      Sex   
+##    &lt;chr&gt;     &lt;chr&gt; 
+##  1 Michael   Male  
+##  2 Derek     Male  
+##  3 Todd      Male  
+##  4 Ronald    Male  
+##  5 Christine Female
+##  6 Dana      Female
+##  7 Erin      Female
+##  8 Rachel    Female
+##  9 Ronald    Male  
+## 10 Bryan     Male  
 ## # … with 90 more rows</code></pre>
 <p>We can exclude columns in the same way as we did earlier with the <code>gather</code> function.</p>
 <pre class="r"><code>select(patients, -Name)</code></pre>

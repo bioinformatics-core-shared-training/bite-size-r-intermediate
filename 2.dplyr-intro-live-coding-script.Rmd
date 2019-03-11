@@ -353,7 +353,7 @@ cumbersome as we need to use the `[]` operator for accessing specific rows of co
 `c()` for combining the required columns. The column names also need quotation marks.
 
 ```{r}
-patients[,c("Name","Race")]
+patients[,c("Name","Sex")]
 ```
 
 Non R users probably find these commands a bit obtuse.
@@ -372,7 +372,7 @@ select(patients, Name)
 Note that we don't need the quotation marks.
 
 ```{r}
-select(patients, Name, Race)
+select(patients, Name, Sex)
 ```
 
 We can exclude columns in the same way as we did earlier with the `gather` function.
