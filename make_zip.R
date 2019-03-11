@@ -1,6 +1,7 @@
 files <- c(
 	"1.introduction.html",
-	"2.dplyr-intro.nb.html",
+	"2.dplyr-intro-live-coding-script.Rmd",
+	"2.dplyr-intro-live-coding-script.html",
 	"2.dplyr-intro-exercises.Rmd",
 	"2.dplyr-intro-solutions.Rmd",
 	"2.dplyr-intro-solutions.html",
@@ -21,7 +22,7 @@ files <- c(
 	"extra.html",
 	"patient-data.txt",
 	"patient-data-cleaned.txt",
-	"clinicalData.txt",
+	"clinical-data.txt",
 	"cohort-data.txt",
 	"tidyr-example.txt",
 	"diabetes.txt",
