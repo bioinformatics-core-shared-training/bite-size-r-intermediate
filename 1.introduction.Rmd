@@ -58,7 +58,7 @@ _e.g. joining data from two tables (data frames) based on a common variable or k
 merge(x = df1, y = df2, by = "CustomerId", all.x = TRUE)
 
 # data.table package
-dt1 <- data.table(df1, key = "CustomerId") 
+dt1 <- data.table(df1, key = "CustomerId")
 dt2 <- data.table(df2, key = "CustomerId")
 dt1[dt2]
 
