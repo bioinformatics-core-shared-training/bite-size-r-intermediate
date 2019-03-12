@@ -20,10 +20,10 @@ Especially I will be taking you through three important dplyr fucntions.
 
 - **summarise**
     - Summarising data by applying a function to specified column(s)
-    
+
 - **group_by**
     - Grouping rows with shared or common values prior to summarising for each group
-    
+
 - **join**
     - Joining matching rows from two data frames based on matching values for specified columns
 
@@ -166,8 +166,8 @@ summarise_at(patients, vars(Height, Weight), list(mean, sd))
 of if you want some control over naming the output columns.
 
 ```{r}
-patients %>% 
-  select(Height, Weight) %>% 
+patients %>%
+  select(Height, Weight) %>%
   summarise_all(list(average =  mean, stdev = sd))
 
 ```
@@ -258,13 +258,12 @@ the use of backticks (` ) for specifying column names that contain spaces.
 
 ```{r}
 
-patients %>% 
-  group_by(State) %>% 
+patients %>%
+  group_by(State) %>%
   summarise(
     N = n(),
     `Average height` = mean(Height),
     `Stdev height` = sd(Height)
-    
   ) %>%
   mutate_at(vars(`Average height`, `Stdev height`), round, digits = 1)
 ```
@@ -288,12 +287,12 @@ patients %>% group_by(State) %>% summarise_at(vars(Height, Weight), mean)
 ```
 
 ```{r, fig.width=12}
-patients %>% 
-    group_by(State) %>% 
-    summarise_at(vars(Height, Weight), mean) %>% 
-    gather(measure, mean, -State) %>% 
-    ggplot(aes(x = State, y = mean, color = measure, group = measure)) + 
-      geom_point() + 
+patients %>%
+    group_by(State) %>%
+    summarise_at(vars(Height, Weight), mean) %>%
+    gather(measure, mean, -State) %>%
+    ggplot(aes(x = State, y = mean, color = measure, group = measure)) +
+      geom_point() +
       geom_line() +
       facet_wrap(~measure, scales = "free_y")
 ```
