@@ -363,6 +363,7 @@ $(document).ready(function () {
 <ol start="9" style="list-style-type: decimal">
 <li>Clean the <code>Smokes</code> column so that it contains just <code>TRUE</code> and <code>FALSE</code> values.</li>
 </ol>
+<p><em>Hint: use the <code>%in%</code> operator, e.g. <code>c(&quot;Matt&quot;, &quot;George&quot;) %in% c(&quot;John&quot;, &quot;Paul&quot;, &quot;George&quot;, &quot;Ringo&quot;)</code></em></p>
 <pre class="r"><code>unique(patients$Smokes)</code></pre>
 <pre><code>## [1] &quot;FALSE&quot; &quot;TRUE&quot;  &quot;No&quot;    &quot;Yes&quot;</code></pre>
 <pre class="r"><code>patients &lt;- mutate(patients, Smokes = Smokes %in% c(&quot;TRUE&quot;, &quot;Yes&quot;))

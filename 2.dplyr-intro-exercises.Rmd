@@ -70,6 +70,8 @@ Which the relevant variables (columns) in our patients dataset and what problems
 
 9. Clean the `Smokes` column so that it contains just `TRUE` and `FALSE` values.
 
+_Hint: use the `%in%` operator, e.g. `c("Matt", "George") %in% c("John", "Paul", "George", "Ringo")`_
+
 ```{r}
 
 ```
