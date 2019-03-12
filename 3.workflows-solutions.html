@@ -186,7 +186,7 @@ $(document).ready(function () {
 
 <h1 class="title toc-ignore">Solutions to exercise: workflows, filtering and sorting</h1>
 <h4 class="author"><em>Mark Dunning and Matt Eldridge</em></h4>
-<h4 class="date"><em>Last modified: 11 Mar 2019</em></h4>
+<h4 class="date"><em>Last modified: 12 Mar 2019</em></h4>
 
 </div>
 
@@ -198,9 +198,7 @@ $(document).ready(function () {
 </ol>
 <pre class="r"><code>library(tidyverse)
 patients &lt;- read_tsv(&quot;patient-data.txt&quot;)
-patients &lt;- mutate(patients, Smokes = str_replace(Smokes, &quot;No&quot;, &quot;FALSE&quot;))
-patients &lt;- mutate(patients, Smokes = str_replace(Smokes, &quot;Yes&quot;, &quot;TRUE&quot;))
-patients &lt;- mutate(patients, Smokes = as.logical(Smokes))
+patients &lt;- mutate(patients, Smokes = Smokes %in% c(&quot;TRUE&quot;, &quot;Yes&quot;))
 patients &lt;- mutate(patients, Height = as.numeric(str_remove(Height, pattern = &quot;cm$&quot;)))
 patients &lt;- mutate(patients, Weight = as.numeric(str_remove(Weight, pattern = &quot;kg$&quot;)))
 patients &lt;- mutate(patients, BMI = Weight / (Height / 100) ** 2)
@@ -215,9 +213,7 @@ patients &lt;- mutate(patients, Overweight = BMI &gt; 25)</code></pre>
 ## ✖ dplyr::filter() masks stats::filter()
 ## ✖ dplyr::lag()    masks stats::lag()</code></pre>
 <pre class="r"><code>patients &lt;- read_tsv(&quot;patient-data.txt&quot;) %&gt;%
-  mutate(Smokes = str_replace(Smokes, &quot;No&quot;, &quot;FALSE&quot;)) %&gt;%
-  mutate(Smokes = str_replace(Smokes, &quot;Yes&quot;, &quot;TRUE&quot;)) %&gt;%
-  mutate(Smokes = as.logical(Smokes)) %&gt;%
+  mutate(Smokes = Smokes %in% c(&quot;TRUE&quot;, &quot;Yes&quot;)) %&gt;%
   mutate(Height = as.numeric(str_remove(Height, pattern = &quot;cm$&quot;))) %&gt;%
   mutate(Weight = as.numeric(str_remove(Weight, pattern = &quot;kg$&quot;))) %&gt;%
   mutate(BMI = Weight / (Height / 100) ** 2) %&gt;%
@@ -257,9 +253,7 @@ patients &lt;- mutate(patients, Overweight = BMI &gt; 25)</code></pre>
 <li>Add a step to the workflow to round the Height, Weight and BMI to 1 decimal place.</li>
 </ol>
 <pre class="r"><code>patients &lt;- read_tsv(&quot;patient-data.txt&quot;) %&gt;%
-  mutate(Smokes = str_replace(Smokes, &quot;No&quot;, &quot;FALSE&quot;)) %&gt;%
-  mutate(Smokes = str_replace(Smokes, &quot;Yes&quot;, &quot;TRUE&quot;)) %&gt;%
-  mutate(Smokes = as.logical(Smokes)) %&gt;%
+  mutate(Smokes = Smokes %in% c(&quot;TRUE&quot;, &quot;Yes&quot;)) %&gt;%
   mutate(Height = as.numeric(str_remove(Height, pattern = &quot;cm$&quot;))) %&gt;%
   mutate(Weight = as.numeric(str_remove(Weight, pattern = &quot;kg$&quot;))) %&gt;%
   mutate(BMI = Weight / (Height / 100) ** 2) %&gt;%

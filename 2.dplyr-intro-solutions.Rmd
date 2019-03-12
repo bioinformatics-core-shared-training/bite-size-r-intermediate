@@ -75,19 +75,9 @@ Which the relevant variables (columns) in our patients dataset and what problems
 9. Clean the `Smokes` column so that it contains just `TRUE` and `FALSE` values.
 
 ```{r}
-patients <- mutate(patients, Smokes = str_replace(Smokes, "No", "FALSE"))
-patients <- mutate(patients, Smokes = str_replace(Smokes, "Yes", "TRUE"))
-patients <- mutate(patients, Smokes = as.logical(Smokes))
-select(patients, ID, Smokes, Height, Weight)
-```
-
-Alternatively combine all the operations into a single `mutate` command.
-
-```{r eval = FALSE}
-patients <- mutate(patients,
-                   Smokes = str_replace(Smokes, "No", "FALSE"),
-                   Smokes = str_replace(Smokes, "Yes", "TRUE"),
-                   Smokes = as.logical(Smokes))
+unique(patients$Smokes)
+patients <- mutate(patients, Smokes = Smokes %in% c("TRUE", "Yes"))
+patients
 ```
 
 10. Clean the `Height` and `Weight` columns to remove the 'cm' and 'kg' units respectively.
@@ -95,21 +85,21 @@ patients <- mutate(patients,
 ```{r}
 patients <- mutate(patients, Height = as.numeric(str_remove(Height, pattern = "cm$")))
 patients <- mutate(patients, Weight = as.numeric(str_remove(Weight, pattern = "kg$")))
-select(patients, ID, Smokes, Height, Weight)
+patients
 ```
 
 11. Calculate the body mass index (BMI) for each of our patients using the formula $BMI = Weight / (Height)^2$, where the weight is measured in kilograms and the height is in metres.
 
 ```{r}
 patients <- mutate(patients, BMI = Weight / (Height / 100) ** 2)
-select(patients, ID, Smokes, Height, Height, BMI)
+select(patients, ID, Smokes, Height, Weight, BMI)
 ```
 
 12. Create a new variable to indicate which individuals are overweight, i.e. those with a BMI of above 25.
 
 ```{r}
 patients <- mutate(patients, Overweight = BMI > 25)
-select(patients, ID, Smokes, Height, Height, BMI, Overweight)
+select(patients, ID, Smokes, Height, Weight, BMI, Overweight)
 ```
 
 What other problems can you find in the patients dataset?

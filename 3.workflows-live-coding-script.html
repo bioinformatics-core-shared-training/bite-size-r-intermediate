@@ -284,7 +284,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">Towards Analysis Workflows in R - live coding script</h1>
 <h4 class="author"><em>Matt Eldridge and Mark Dunning</em></h4>
-<h4 class="date"><em>Last modified: 11 Mar 2019</em></h4>
+<h4 class="date"><em>Last modified: 12 Mar 2019</em></h4>
 
 </div>
 
@@ -315,9 +315,7 @@ div.tocify {
 <h2>Piping</h2>
 <p>In the previous exercise we ended up making a series of manipulations to the patients dataset.</p>
 <pre class="r"><code>patients &lt;- read_tsv(&quot;patient-data.txt&quot;)
-patients &lt;- mutate(patients, Smokes = str_replace(Smokes, &quot;No&quot;, &quot;FALSE&quot;))
-patients &lt;- mutate(patients, Smokes = str_replace(Smokes, &quot;Yes&quot;, &quot;TRUE&quot;))
-patients &lt;- mutate(patients, Smokes = as.logical(Smokes))
+patients &lt;- mutate(patients, Smokes = Smokes %in% c(&quot;TRUE&quot;, &quot;Yes&quot;))
 patients &lt;- mutate(patients, Height = as.numeric(str_remove(Height, pattern = &quot;cm$&quot;)))
 patients &lt;- mutate(patients, Weight = as.numeric(str_remove(Weight, pattern = &quot;kg$&quot;)))
 patients &lt;- mutate(patients, BMI = Weight / (Height / 100) ** 2)

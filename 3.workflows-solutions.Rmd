@@ -12,9 +12,7 @@ output: html_document
 ```{r eval = FALSE}
 library(tidyverse)
 patients <- read_tsv("patient-data.txt")
-patients <- mutate(patients, Smokes = str_replace(Smokes, "No", "FALSE"))
-patients <- mutate(patients, Smokes = str_replace(Smokes, "Yes", "TRUE"))
-patients <- mutate(patients, Smokes = as.logical(Smokes))
+patients <- mutate(patients, Smokes = Smokes %in% c("TRUE", "Yes"))
 patients <- mutate(patients, Height = as.numeric(str_remove(Height, pattern = "cm$")))
 patients <- mutate(patients, Weight = as.numeric(str_remove(Weight, pattern = "kg$")))
 patients <- mutate(patients, BMI = Weight / (Height / 100) ** 2)
@@ -24,9 +22,7 @@ patients <- mutate(patients, Overweight = BMI > 25)
 ```{r}
 library(tidyverse)
 patients <- read_tsv("patient-data.txt") %>%
-  mutate(Smokes = str_replace(Smokes, "No", "FALSE")) %>%
-  mutate(Smokes = str_replace(Smokes, "Yes", "TRUE")) %>%
-  mutate(Smokes = as.logical(Smokes)) %>%
+  mutate(Smokes = Smokes %in% c("TRUE", "Yes")) %>%
   mutate(Height = as.numeric(str_remove(Height, pattern = "cm$"))) %>%
   mutate(Weight = as.numeric(str_remove(Weight, pattern = "kg$"))) %>%
   mutate(BMI = Weight / (Height / 100) ** 2) %>%
@@ -38,9 +34,7 @@ patients
 
 ```{r}
 patients <- read_tsv("patient-data.txt") %>%
-  mutate(Smokes = str_replace(Smokes, "No", "FALSE")) %>%
-  mutate(Smokes = str_replace(Smokes, "Yes", "TRUE")) %>%
-  mutate(Smokes = as.logical(Smokes)) %>%
+  mutate(Smokes = Smokes %in% c("TRUE", "Yes")) %>%
   mutate(Height = as.numeric(str_remove(Height, pattern = "cm$"))) %>%
   mutate(Weight = as.numeric(str_remove(Weight, pattern = "kg$"))) %>%
   mutate(BMI = Weight / (Height / 100) ** 2) %>%

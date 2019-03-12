@@ -186,7 +186,7 @@ $(document).ready(function () {
 
 <h1 class="title toc-ignore">Solutions to exercise: tidying and transforming data</h1>
 <h4 class="author"><em>Mark Dunning and Matt Eldridge</em></h4>
-<h4 class="date"><em>Last modified: 11 Mar 2019</em></h4>
+<h4 class="date"><em>Last modified: 12 Mar 2019</em></h4>
 
 </div>
 
@@ -363,86 +363,83 @@ $(document).ready(function () {
 <ol start="9" style="list-style-type: decimal">
 <li>Clean the <code>Smokes</code> column so that it contains just <code>TRUE</code> and <code>FALSE</code> values.</li>
 </ol>
-<pre class="r"><code>patients &lt;- mutate(patients, Smokes = str_replace(Smokes, &quot;No&quot;, &quot;FALSE&quot;))
-patients &lt;- mutate(patients, Smokes = str_replace(Smokes, &quot;Yes&quot;, &quot;TRUE&quot;))
-patients &lt;- mutate(patients, Smokes = as.logical(Smokes))
-select(patients, ID, Smokes, Height, Weight)</code></pre>
-<pre><code>## # A tibble: 100 x 4
-##    ID        Smokes Height   Weight 
-##    &lt;chr&gt;     &lt;lgl&gt;  &lt;chr&gt;    &lt;chr&gt;  
-##  1 AC/AH/001 FALSE  182.87cm 76.57kg
-##  2 AC/AH/017 FALSE  179.12cm 80.43kg
-##  3 AC/AH/020 FALSE  169.15cm 75.48kg
-##  4 AC/AH/022 FALSE  175.66cm 94.54kg
-##  5 AC/AH/029 FALSE  164.47cm 71.78kg
-##  6 AC/AH/033 TRUE   158.27cm 69.9kg 
-##  7 AC/AH/037 FALSE  161.69cm 68.85kg
-##  8 AC/AH/044 FALSE  165.84cm 70.44kg
-##  9 AC/AH/045 FALSE  181.32cm 76.9kg 
-## 10 AC/AH/048 FALSE  167.37cm 79.06kg
-## # … with 90 more rows</code></pre>
-<p>Alternatively combine all the operations into a single <code>mutate</code> command.</p>
-<pre class="r"><code>patients &lt;- mutate(patients,
-                   Smokes = str_replace(Smokes, &quot;No&quot;, &quot;FALSE&quot;),
-                   Smokes = str_replace(Smokes, &quot;Yes&quot;, &quot;TRUE&quot;),
-                   Smokes = as.logical(Smokes))</code></pre>
+<pre class="r"><code>unique(patients$Smokes)</code></pre>
+<pre><code>## [1] &quot;FALSE&quot; &quot;TRUE&quot;  &quot;No&quot;    &quot;Yes&quot;</code></pre>
+<pre class="r"><code>patients &lt;- mutate(patients, Smokes = Smokes %in% c(&quot;TRUE&quot;, &quot;Yes&quot;))
+patients</code></pre>
+<pre><code>## # A tibble: 100 x 12
+##    ID    Name  Sex   Smokes Height Weight Birth      State Grade_Level
+##    &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;lgl&gt;  &lt;chr&gt;  &lt;chr&gt;  &lt;date&gt;     &lt;chr&gt;       &lt;dbl&gt;
+##  1 AC/A… Mich… Male  FALSE  182.8… 76.57… 1972-02-06 Geor…           2
+##  2 AC/A… Derek Male  FALSE  179.1… 80.43… 1972-06-15 Colo…           2
+##  3 AC/A… Todd  Male  FALSE  169.1… 75.48… 1972-07-09 New …           2
+##  4 AC/A… Rona… Male  FALSE  175.6… 94.54… 1972-08-17 Colo…           1
+##  5 AC/A… Chri… Fema… FALSE  164.4… 71.78… 1973-06-12 Geor…           2
+##  6 AC/A… Dana  Fema… TRUE   158.2… 69.9kg 1973-07-01 Indi…           2
+##  7 AC/A… Erin  Fema… FALSE  161.6… 68.85… 1972-03-26 New …           1
+##  8 AC/A… Rach… Fema… FALSE  165.8… 70.44… 1973-05-11 Colo…           1
+##  9 AC/A… Rona… Male  FALSE  181.3… 76.9kg 1971-12-31 Geor…           1
+## 10 AC/A… Bryan Male  FALSE  167.3… 79.06… 1973-07-19 New …           2
+## # … with 90 more rows, and 3 more variables: Died &lt;lgl&gt;, Count &lt;dbl&gt;,
+## #   Date.Entered.Study &lt;date&gt;</code></pre>
 <ol start="10" style="list-style-type: decimal">
 <li>Clean the <code>Height</code> and <code>Weight</code> columns to remove the ‘cm’ and ‘kg’ units respectively.</li>
 </ol>
 <pre class="r"><code>patients &lt;- mutate(patients, Height = as.numeric(str_remove(Height, pattern = &quot;cm$&quot;)))
 patients &lt;- mutate(patients, Weight = as.numeric(str_remove(Weight, pattern = &quot;kg$&quot;)))
-select(patients, ID, Smokes, Height, Weight)</code></pre>
-<pre><code>## # A tibble: 100 x 4
-##    ID        Smokes Height Weight
-##    &lt;chr&gt;     &lt;lgl&gt;   &lt;dbl&gt;  &lt;dbl&gt;
-##  1 AC/AH/001 FALSE    183.   76.6
-##  2 AC/AH/017 FALSE    179.   80.4
-##  3 AC/AH/020 FALSE    169.   75.5
-##  4 AC/AH/022 FALSE    176.   94.5
-##  5 AC/AH/029 FALSE    164.   71.8
-##  6 AC/AH/033 TRUE     158.   69.9
-##  7 AC/AH/037 FALSE    162.   68.8
-##  8 AC/AH/044 FALSE    166.   70.4
-##  9 AC/AH/045 FALSE    181.   76.9
-## 10 AC/AH/048 FALSE    167.   79.1
-## # … with 90 more rows</code></pre>
+patients</code></pre>
+<pre><code>## # A tibble: 100 x 12
+##    ID    Name  Sex   Smokes Height Weight Birth      State Grade_Level
+##    &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;lgl&gt;   &lt;dbl&gt;  &lt;dbl&gt; &lt;date&gt;     &lt;chr&gt;       &lt;dbl&gt;
+##  1 AC/A… Mich… Male  FALSE    183.   76.6 1972-02-06 Geor…           2
+##  2 AC/A… Derek Male  FALSE    179.   80.4 1972-06-15 Colo…           2
+##  3 AC/A… Todd  Male  FALSE    169.   75.5 1972-07-09 New …           2
+##  4 AC/A… Rona… Male  FALSE    176.   94.5 1972-08-17 Colo…           1
+##  5 AC/A… Chri… Fema… FALSE    164.   71.8 1973-06-12 Geor…           2
+##  6 AC/A… Dana  Fema… TRUE     158.   69.9 1973-07-01 Indi…           2
+##  7 AC/A… Erin  Fema… FALSE    162.   68.8 1972-03-26 New …           1
+##  8 AC/A… Rach… Fema… FALSE    166.   70.4 1973-05-11 Colo…           1
+##  9 AC/A… Rona… Male  FALSE    181.   76.9 1971-12-31 Geor…           1
+## 10 AC/A… Bryan Male  FALSE    167.   79.1 1973-07-19 New …           2
+## # … with 90 more rows, and 3 more variables: Died &lt;lgl&gt;, Count &lt;dbl&gt;,
+## #   Date.Entered.Study &lt;date&gt;</code></pre>
 <ol start="11" style="list-style-type: decimal">
 <li>Calculate the body mass index (BMI) for each of our patients using the formula <span class="math inline">\(BMI = Weight / (Height)^2\)</span>, where the weight is measured in kilograms and the height is in metres.</li>
 </ol>
 <pre class="r"><code>patients &lt;- mutate(patients, BMI = Weight / (Height / 100) ** 2)
-select(patients, ID, Smokes, Height, Height, BMI)</code></pre>
-<pre><code>## # A tibble: 100 x 4
-##    ID        Smokes Height   BMI
-##    &lt;chr&gt;     &lt;lgl&gt;   &lt;dbl&gt; &lt;dbl&gt;
-##  1 AC/AH/001 FALSE    183.  22.9
-##  2 AC/AH/017 FALSE    179.  25.1
-##  3 AC/AH/020 FALSE    169.  26.4
-##  4 AC/AH/022 FALSE    176.  30.6
-##  5 AC/AH/029 FALSE    164.  26.5
-##  6 AC/AH/033 TRUE     158.  27.9
-##  7 AC/AH/037 FALSE    162.  26.3
-##  8 AC/AH/044 FALSE    166.  25.6
-##  9 AC/AH/045 FALSE    181.  23.4
-## 10 AC/AH/048 FALSE    167.  28.2
+select(patients, ID, Smokes, Height, Weight, BMI)</code></pre>
+<pre><code>## # A tibble: 100 x 5
+##    ID        Smokes Height Weight   BMI
+##    &lt;chr&gt;     &lt;lgl&gt;   &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;
+##  1 AC/AH/001 FALSE    183.   76.6  22.9
+##  2 AC/AH/017 FALSE    179.   80.4  25.1
+##  3 AC/AH/020 FALSE    169.   75.5  26.4
+##  4 AC/AH/022 FALSE    176.   94.5  30.6
+##  5 AC/AH/029 FALSE    164.   71.8  26.5
+##  6 AC/AH/033 TRUE     158.   69.9  27.9
+##  7 AC/AH/037 FALSE    162.   68.8  26.3
+##  8 AC/AH/044 FALSE    166.   70.4  25.6
+##  9 AC/AH/045 FALSE    181.   76.9  23.4
+## 10 AC/AH/048 FALSE    167.   79.1  28.2
 ## # … with 90 more rows</code></pre>
 <ol start="12" style="list-style-type: decimal">
 <li>Create a new variable to indicate which individuals are overweight, i.e. those with a BMI of above 25.</li>
 </ol>
 <pre class="r"><code>patients &lt;- mutate(patients, Overweight = BMI &gt; 25)
-select(patients, ID, Smokes, Height, Height, BMI, Overweight)</code></pre>
-<pre><code>## # A tibble: 100 x 5
-##    ID        Smokes Height   BMI Overweight
-##    &lt;chr&gt;     &lt;lgl&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;lgl&gt;     
-##  1 AC/AH/001 FALSE    183.  22.9 FALSE     
-##  2 AC/AH/017 FALSE    179.  25.1 TRUE      
-##  3 AC/AH/020 FALSE    169.  26.4 TRUE      
-##  4 AC/AH/022 FALSE    176.  30.6 TRUE      
-##  5 AC/AH/029 FALSE    164.  26.5 TRUE      
-##  6 AC/AH/033 TRUE     158.  27.9 TRUE      
-##  7 AC/AH/037 FALSE    162.  26.3 TRUE      
-##  8 AC/AH/044 FALSE    166.  25.6 TRUE      
-##  9 AC/AH/045 FALSE    181.  23.4 FALSE     
-## 10 AC/AH/048 FALSE    167.  28.2 TRUE      
+select(patients, ID, Smokes, Height, Weight, BMI, Overweight)</code></pre>
+<pre><code>## # A tibble: 100 x 6
+##    ID        Smokes Height Weight   BMI Overweight
+##    &lt;chr&gt;     &lt;lgl&gt;   &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;lgl&gt;     
+##  1 AC/AH/001 FALSE    183.   76.6  22.9 FALSE     
+##  2 AC/AH/017 FALSE    179.   80.4  25.1 TRUE      
+##  3 AC/AH/020 FALSE    169.   75.5  26.4 TRUE      
+##  4 AC/AH/022 FALSE    176.   94.5  30.6 TRUE      
+##  5 AC/AH/029 FALSE    164.   71.8  26.5 TRUE      
+##  6 AC/AH/033 TRUE     158.   69.9  27.9 TRUE      
+##  7 AC/AH/037 FALSE    162.   68.8  26.3 TRUE      
+##  8 AC/AH/044 FALSE    166.   70.4  25.6 TRUE      
+##  9 AC/AH/045 FALSE    181.   76.9  23.4 FALSE     
+## 10 AC/AH/048 FALSE    167.   79.1  28.2 TRUE      
 ## # … with 90 more rows</code></pre>
 <p>What other problems can you find in the patients dataset?</p>
 </div>
