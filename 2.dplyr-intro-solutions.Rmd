@@ -72,21 +72,21 @@ The study that collected the patient data is interested in the relationship betw
 
 Which the relevant variables (columns) in our patients dataset and what problems can you see with these columns as they currently stand?
 
-9. Clean the `Smokes` column so that it contains just `TRUE` and `FALSE` values.
+9. Clean the `Height` and `Weight` columns to remove the 'cm' and 'kg' units respectively.
+
+```{r}
+patients <- mutate(patients, Height = as.numeric(str_remove(Height, pattern = "cm$")))
+patients <- mutate(patients, Weight = as.numeric(str_remove(Weight, pattern = "kg$")))
+patients
+```
+
+10. Clean the `Smokes` column so that it contains just `TRUE` and `FALSE` values.
 
 _Hint: use the `%in%` operator, e.g. `c("Matt", "George") %in% c("John", "Paul", "George", "Ringo")`_
 
 ```{r}
 unique(patients$Smokes)
 patients <- mutate(patients, Smokes = Smokes %in% c("TRUE", "Yes"))
-patients
-```
-
-10. Clean the `Height` and `Weight` columns to remove the 'cm' and 'kg' units respectively.
-
-```{r}
-patients <- mutate(patients, Height = as.numeric(str_remove(Height, pattern = "cm$")))
-patients <- mutate(patients, Weight = as.numeric(str_remove(Weight, pattern = "kg$")))
 patients
 ```
 
