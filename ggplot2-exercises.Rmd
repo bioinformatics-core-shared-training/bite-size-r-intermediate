@@ -132,7 +132,7 @@ the Age variable to a factor.
 
 ```{r}
 
-```            
+```
 
 19. Create a scatterplot of BMI versus Weight and add a continuous colour scale for the height. Make the colour scale  with a midpoint (set to mean point) colour of grey and extremes of green (low) and red (high).
 
@@ -142,7 +142,7 @@ the Age variable to a factor.
 
 ### Statistics
 
-20. Recreate the scatterplot of BMI by weight this time colouring by age group and add a straight line fit (but no standard error/confidence intervals) for each age group. 
+20. Recreate the scatterplot of BMI by weight this time colouring by age group and add a straight line fit (but no standard error/confidence intervals) for each age group.
 
 ```{r}
 

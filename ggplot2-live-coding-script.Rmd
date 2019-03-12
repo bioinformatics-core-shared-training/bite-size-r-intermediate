@@ -543,7 +543,7 @@ ggplot(data = patients, mapping = aes(x = Sex, y = BMI, fill = Smokes)) +
   geom_violin(trim = FALSE)
 ```
 
-### Density plot 
+### Density plot
 
 Deliberately not covering this here as it is required for a couple of the exercises
 and we want you to work it out for yourself using the help pages and what you've learned
@@ -580,7 +580,7 @@ names(plot)
 ```
 
 So far we've constructed ggplots from data, layers (geoms) and aesthetic mappings.
-We'll be looking at how to customize plots later, including changing the labels, 
+We'll be looking at how to customize plots later, including changing the labels,
 scales and theme.
 
 ```{r}

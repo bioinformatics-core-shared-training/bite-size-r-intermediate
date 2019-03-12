@@ -169,7 +169,7 @@ ggplot(data = patients, mapping = aes(x = BMI, y = Weight)) +
 ggplot(data = patients, mapping = aes(x = Age, y = BMI, fill = Age)) +
   geom_violin() +
   scale_fill_brewer(palette = "Blues")
-```            
+```
 
 19. Create a scatterplot of BMI versus Weight and add a continuous colour scale for the height. Make the colour scale  with a midpoint (set to mean point) colour of grey and extremes of green (low) and red (high).
 
@@ -181,7 +181,7 @@ ggplot(data = patients, mapping = aes(x = BMI, y = Weight, colour = Height)) +
 
 ### Statistics
 
-20. Recreate the scatterplot of BMI by weight this time colouring by age group and add a straight line fit (but no standard error/confidence intervals) for each age group. 
+20. Recreate the scatterplot of BMI by weight this time colouring by age group and add a straight line fit (but no standard error/confidence intervals) for each age group.
 
 ```{r}
 ggplot(data = patients, mapping = aes(x = BMI, y = Weight, colour = Age)) +
