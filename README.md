@@ -1,7 +1,7 @@
-# Data manipulation and visualization with R
+# Bite-sized Data manipulation and visualization with R course
 
-This is a one-day training course run at the University of Cambridge Bioinformatics Training Facility.
-It introduces some of the core packages from the _tidyverse_ including ggplot2, tidyr, dplyr and stringr.
+This is a six-sessioned (each of 1.5 hours) training course run at the CRUK-CI by the Bioinformatics Core.
+It moves beyond basic R and it introduces some of the core packages from the _tidyverse_ including ggplot2, tidyr, dplyr and stringr.
 
 The following topics are covered:
 
