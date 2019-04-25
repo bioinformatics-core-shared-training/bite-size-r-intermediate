@@ -85,3 +85,8 @@ Six             | [**Customizing plots**](2.ggplot2-live-coding-script.html)
 [Session 5]()  
 - [Solutions]()
 
+[Session 4]()  
+    [Solutions]()
+
+[Session 5]()  
+    [Solutions]()
