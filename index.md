@@ -4,9 +4,10 @@
 
 It has been said that 80% of data analysis is spent on the process of cleaning
 and preparing the data. In this course we introduce a suite or R packages
-collectively known as the **tidyverse**; this includes the packages tidyr,
-dplyr, ggplot2 and stringr. In combination these provide a powerful toolkit to
-make the process of manipulating and visualising data easy and intuitive.  
+collectively known as the **tidyverse**; this includes the packages *tidyr*,
+*dplyr*, *ggplot2* and *stringr*. In combination these provide a powerful
+toolkit to make the process of manipulating and visualising data easy and
+intuitive.  
 
 This material is normally taught in an intensive 1 day course, however, in this
 series it is presented as six 1.5 hour sessions (with homework!).  
@@ -57,16 +58,16 @@ Ashley Sawle  (CRUK-CI Bioinformatics Core).
 
 ## Course outline
 
-Session         | Topic
-----------------|---------------------------
-One             | [**Course Introduction**](1.introduction.html)
-                | [**Visualization with ggplot2 (pt1) - Grammar of Graphics, basic plots**](2.ggplot2-live-coding-script.html)
-Two             | [**Visualization with ggplot2 (pt2) - Facetting**](2.ggplot2-live-coding-script.html)
-                | [**Introduction & Tidying and transforming data (pt1) - Tidy Data: tidyr intro and dplyr select**](3.dplyr-intro-live-coding-script.html)
-Three           | [**Tidying and transforming data (pt2) - Cleaning Data: stringr and dplyr mutate**](3.dplyr-intro-live-coding-script.html)
-Four            | [**Workflows - piping and dplyr arrange, filter**](4.workflows-live-coding-script.html)
-Five            | [**Summarizing, grouping and combining data**](5.summarise-and-combine-live-coding-script.html)
-Six             | [**Customizing plots**](2.ggplot2-live-coding-script.html)
+|Session  | Topic|
+|:-------:|---------------------------|
+|One      | [**Course Introduction**](1.introduction.html)|
+|         | [**Visualization with ggplot2 (pt1) - Grammar of Graphics, basic plots**](2.ggplot2-live-coding-script.html)|
+|Two      | [**Visualization with ggplot2 (pt2) - Facetting**](2.ggplot2-live-coding-script.html)|
+|         | [**Introduction & Tidying and transforming data (pt1) - Tidy Data: tidyr intro and dplyr select**](3.dplyr-intro-live-coding-script.html)|
+|Three    | [**Tidying and transforming data (pt2) - Cleaning Data: stringr and dplyr mutate**](3.dplyr-intro-live-coding-script.html)|
+|Four     | [**Workflows - piping and dplyr arrange, filter**](4.workflows-live-coding-script.html)|
+|Five     | [**Summarizing, grouping and combining data**](5.summarise-and-combine-live-coding-script.html)|
+|Six      | [**Customizing plots**](2.ggplot2-live-coding-script.html)|
 
 ## Homework Exercises
 
