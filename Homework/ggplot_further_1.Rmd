@@ -1,0 +1,53 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+## ggplot2 further practice
+We will be using a Breast cancer biopsy data-set from the Wisconsin Hospitals.
+This is available from a package called MASS so you will need to install & load it along with the tidyverse package.
+```{r}
+install.packages("tidyverse")
+install.packages("MASS")
+library(tidyverse)
+library(MASS)
+```
+The MASS package loads functions and dataframes. The dataframe of interest is called biopsy.
+Use the R help function to find out more about this data frame and then you should examine a few rows of the data and observe the data types for each column.
+```{r}
+?biopsy
+
+biopsy
+```
+There are 699 rows of data. We can start by visualising the relative numbers of benign & malignant tumours using a bar-plot (try colouring the bars).
+```{r}
+ggplot(data=biopsy) + geom_bar(mapping = aes(x = class, fill = class))
+```
+Let's now produce some histograms to explore the distribution of some of our datasets variables.
+Try clump thickness & then normal nuclei. Explore effects of various bin numbers and binwidths
+(use ?ggplot to get some hints)
+```{r}
+ggplot(data=biopsy) + geom_histogram(mapping=aes(x=V1))
+ggplot(data=biopsy) + geom_histogram(mapping=aes(x=V8))
+```
+How might we split (or facet - hint,hint) our data into two plots one for benign and one for malignant? (You may need to use the R help function).
+```{r}
+ggplot(data=biopsy) + geom_histogram(mapping=aes(x=V1)) + facet_grid(cols=vars(class))
+```
+Let's now explore the data variability of clump thickness in benign and malignant cases using a box-plot. Feel free to plot the other variables e.g. uniformity.
+
+```{r}
+ggplot(data=biopsy, mapping= aes(x=class, y=V1)) + geom_boxplot() + geom_point()
+```
+Try and improve this plot using jitter to see how much overlapping is present.
+```{r}
+ggplot(data=biopsy, mapping= aes(x=class, y=V1)) + geom_boxplot() + geom_jitter() 
+```
+OK - so that's a bit messy maybe we'd be better off with a violin plot?
+```{r}
+ggplot(data=biopsy, mapping= aes(x=class, y=V1)) + geom_violin() + geom_jitter()
+```
+
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Cmd+Shift+K* to preview the HTML file). 
+
