@@ -30,12 +30,12 @@ Six             | [**Customizing plots**](2.ggplot2-live-coding-script.html)
 [Session 2]()  
     [Solutions]()  
 
-[Session 3]()
+[Session 3]()  
     [Solutions]()
 
-[Session 4]()
+[Session 4]()  
     [Solutions]()
 
-[Session 5]()
+[Session 5]()  
     [Solutions]()
 
