@@ -1,5 +1,5 @@
 ---
-title: "ggplot2 exercises"
+title: "Session1: Data Visualisation with ggplot2 - Exercises"
 author: "Mark Dunning Matt Eldridge, and Ashley Sawle"
 date: '`r format(Sys.time(), "Last modified: %d %b %Y")`'
 output:
