@@ -24,7 +24,7 @@ creating a ggplot2 object, assigning aesthetics mappings and geoms.
 
 ```{r echo=FALSE,  message = FALSE, warning = FALSE}
 library(tidyverse)
-patients <- read_tsv("patient-data-cleaned.txt")
+patients <- read_tsv("data/patient-data-cleaned.txt")
 patients
 ```
 
@@ -137,7 +137,7 @@ a few of them - subset the table to only keep patients with ID's **AC/AH/001**,
 
 
 ```{r echo=FALSE,  message = FALSE, warning = FALSE}
-diabetes <- read_tsv("diabetes.txt")
+diabetes <- read_tsv("data/diabetes.txt")
 diabetes <- diabetes[diabetes$ID%in%c("AC/AH/001", "AC/AH/017", "AC/AH/020"),]
 diabetes
 ```
