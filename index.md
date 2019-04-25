@@ -24,14 +24,18 @@ Six             | [**Customizing plots**](2.ggplot2-live-coding-script.html)
 
 ## Homework Exercises
 
-[Session 1](2.ggplot2-exercises-with-images_session_1.nb.html)
-    [Solutions]()
-[Session 2]()
-    [Solutions]()
+[Session 1](2.ggplot2-exercises-with-images_session_1.nb.html)  
+    [Solutions]()  
+
+[Session 2]()  
+    [Solutions]()  
+
 [Session 3]()
     [Solutions]()
+
 [Session 4]()
     [Solutions]()
+
 [Session 5]()
     [Solutions]()
 
