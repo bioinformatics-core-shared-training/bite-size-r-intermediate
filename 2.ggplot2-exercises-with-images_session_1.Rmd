@@ -1,0 +1,161 @@
+---
+title: "ggplot2 exercises"
+author: "Mark Dunning, Matt Eldridge, and Ashley Sawle"
+date: '`r format(Sys.time(), "Last modified: %d %b %Y")`'
+output:
+  html_notebook:
+    code_folding: hide
+---
+
+These exercises require you to generate plots of various kinds. This document
+shows both the plots that you should obtain.
+
+Not everything was necessarily covered during the teaching session, you may need
+to use R help pages, the Cheat Sheets, or search the web to figure out the 
+answers.
+
+## Part I -- geoms and aesthetics
+
+These first few exercises will run through some of the simple principles of
+creating a ggplot2 object, assigning aesthetics mappings and geoms.
+
+1. Read in the cleaned patients dataset, `patient-data-cleaned.txt`, into a
+   new object called `patients`.
+
+```{r echo=FALSE,  message = FALSE, warning = FALSE}
+library(tidyverse)
+patients <- read_tsv("patient-data-cleaned.txt")
+patients
+```
+
+### Scatterplots
+
+2. Generate a scatter plot of BMI versus Weight using the patient dataset .
+
+```{r echo=FALSE}
+ggplot(data = patients, mapping = aes(x = BMI, y = Weight)) +
+  geom_point()
+```
+
+3. Extending the plot from exercise 2, add a colour scale to the scatterplot
+   based on the Height variable.
+
+```{r echo=FALSE}
+ggplot(data = patients, mapping = aes(x = BMI, y = Weight, colour = Height)) +
+  geom_point()
+```
+
+4. Using an additional geom, add an extra layer of a fit line to the solution
+   from exercise 3.
+
+```{r echo=FALSE,  message = FALSE}
+ggplot(data = patients, mapping = aes(x = BMI, y = Weight, colour = Height)) +
+  geom_point() +
+  geom_smooth()
+```
+
+5. Does the fit in question 5 look good? Look at the help page for
+   `geom_smooth` and adjust the method to fit a straight line without standard
+   error bounds.
+
+```{r echo=FALSE}
+ggplot(data = patients, mapping = aes(x = BMI, y = Weight, colour = Height)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE)
+```
+
+### Boxplots and Violin plots
+
+6. Generate a boxplot of BMIs comparing smokers and non-smokers.
+
+```{r echo=FALSE}
+ggplot(data = patients, mapping = aes(x = Smokes, y = BMI)) +
+  geom_boxplot()
+```
+
+7. Following from the boxplot comparing smokers and non-smokers in exercise 6,
+   colour boxplot edges by Sex.
+
+```{r echo=FALSE}
+ggplot(data = patients, mapping = aes(x = Smokes, y = BMI, colour = Sex)) +
+  geom_boxplot()
+```
+
+8. Produce a similar boxplot of BMIs but this time group data by Sex and colour
+   the interior of the box (not the outline) by Age.
+
+_Hint: is Age currently the right type of variable for grouping in a box plot?_
+
+```{r echo=FALSE}
+patients$Age <- factor(patients$Age)
+ggplot(data = patients, mapping = aes(x = Sex, y = BMI, fill = Age)) +
+  geom_boxplot()
+```
+
+9. Regenerate the solution to exercise 8 but this time using a violin plot.
+
+```{r echo=FALSE}
+ggplot(data = patients, mapping = aes(x = Sex, y = BMI, fill = Age)) +
+  geom_violin()
+```
+
+### Histogram and Density plots
+
+10. Generate a histogram of BMIs with each bar coloured blue, choosing a
+    suitable bin width.
+
+```{r echo=FALSE}
+ggplot(data = patients, mapping = aes(x = BMI)) +
+  geom_histogram(fill = "blue", binwidth = 0.5)
+```
+
+11. Instead of a histogram, generate a density plot of BMI
+
+```{r echo=FALSE}
+ggplot(data = patients, mapping = aes(x = BMI)) +
+  geom_density()
+```
+
+12. Generate density plots of BMIs coloured by Sex.
+
+_Hint: alpha can be used to control transparency._
+
+```{r echo=FALSE}
+ggplot(data = patients, mapping = aes(x = BMI)) +
+  geom_density(aes(fill = Sex), alpha = 0.5)
+```
+
+### Line plots - time series data
+
+Time series data is often represented using line graphs. Here we will look at 
+the data in the `diabetes.txt` file.
+
+13. Read in the cleaned patients dataset, `diabetes.txt`, into a new object 
+called `diabetes`. There are lots of patients in this study, let's just look at 
+a few of them - subset the table to only keep patients with ID's **AC/AH/001**, 
+**AC/AH/017**, and **AC/AH/020**.
+
+
+```{r echo=FALSE,  message = FALSE, warning = FALSE}
+diabetes <- read_tsv("diabetes.txt")
+diabetes <- diabetes[diabetes$ID%in%c("AC/AH/001", "AC/AH/017", "AC/AH/020"),]
+diabetes
+```
+
+14. Create a line plot that allows us to examine the change in Glucose levels
+for each patient by Date.
+
+```{r echo=FALSE}
+ggplot(diabetes, aes(x=Date, y=Glucose, group=ID)) +
+  geom_line(aes(colour=ID))
+```
+
+15. Add points to the plot from 14 to make the measurement time-points clearer.
+Instead of a dot change the *shape* to a hollow circle and colour the 
+interior of the point.
+
+```{r echo=FALSE}
+ggplot(diabetes, aes(x=Date, y=Glucose, group=ID)) +
+  geom_line(aes(colour=ID)) +
+  geom_point(aes(fill=ID), shape=21)
+```
