@@ -71,23 +71,28 @@ Ashley Sawle  (CRUK-CI Bioinformatics Core).
 
 ## Homework Exercises
 
-[Session 1](2.ggplot2-exercises-with-images_session_1.nb.html)  
-- [Solutions]()  
+### Session 1
+- [Exercises](2.ggplot2-exercises-with-images_session_1.nb.html)
+- [Answer Template](2.ggplot2-exercises-template_session_1.Rmd)
+- Solutions  
 
-[Session 2]()  
-- [Solutions]()  
+### Session 2  
+- Exercises
+- Answer Template
+- Solutions
 
-[Session 3]()  
-- [Solutions]()
+### Session 3  
+- Exercises
+- Answer Template
+- Solutions
 
-[Session 4]()  
-- [Solutions]()
+### Session 4  
+- Exercises
+- Answer Template
+- Solutions
 
-[Session 5]()  
-- [Solutions]()
+### Session 5  
+- Exercises
+- Answer Template
+- Solutions
 
-[Session 4]()  
-    [Solutions]()
-
-[Session 5]()  
-    [Solutions]()
