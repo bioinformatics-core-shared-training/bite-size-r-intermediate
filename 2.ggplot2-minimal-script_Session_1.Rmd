@@ -16,7 +16,7 @@ output:
 
 ### Load the tidyverse
 
-```{r echo=FALSE}
+```{r include=FALSE, echo=FALSE}
 library(tidyverse)
 library(gridExtra)
 ```

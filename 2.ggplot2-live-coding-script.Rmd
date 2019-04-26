@@ -60,7 +60,7 @@ stats::filter(presidents, rep(1, 3))
 Read in the patients data frame using `read_tsv` from the `readr` package.
 
 ```{r}
-patients <- read_tsv("patient-data-cleaned.txt")
+patients <- read_tsv("data/patient-data-cleaned.txt")
 ```
 
 `read_tsv` imports tab-delimited files (tsv = tab-separated values).
@@ -267,7 +267,7 @@ Colours are more commonly used than shapes, sizes or transparency.
 Virtually every aspect of the plots we've created can be customized. We will learn how
 to change the colours used a bit later.
 
-## ggplot2 grammer
+## ggplot2 grammar
 
 The "gg" in ggplot2 stands for "grammar of graphics". This grammar is a coherent
 system for describing and building graphs.
