@@ -1,5 +1,7 @@
 # Data Analysis and Visualisation in R - Bite-size edition
 
+#TinyURL https://tinyurl.com/bs-intR
+
 ## Description: 
 
 It has been said that 80% of data analysis is spent on the process of cleaning
