@@ -1,0 +1,472 @@
+---
+title: "ggplot2 minimal script"
+author: "Ashley Sawle"
+date: '`r format(Sys.time(), "Last modified: %d %b %Y")`'
+output:
+  html_document
+---
+
+## Introduction
+
+**Tidy Data**
+
+1. variable - column
+2. observation - row
+3. value - cell
+
+### Load the tidyverse
+
+```{r echo=FALSE}
+library(tidyverse)
+library(gridExtra)
+```
+
+**conflicts - e.g `filter`**
+
+### Read in the patient data
+
+**tsv**
+
+```{r include=FALSE}
+ patients <- read_tsv("data/patient-data-cleaned.txt")
+```
+
+* `readr` vs base R equivalents - **faster;  tibbles; character not factors; column names**
+
+### View the patients dataset
+
+```{r eval=FALSE}
+class(patients)
+```
+
+Printing tibble
+
+```{r eval=FALSE}
+patients
+```
+
+**This dataset required cleaning**
+
+_What are the variables in the patients dataset? What are the observations?_
+
+_What types of variables do we have?_
+
+```{r eval=FALSE}
+class(patients$Sex)
+```
+
+_What types should each variable be?_
+
+* **Categorical: Sex, Smokes, State** or **Continuous: Height, Weight, BMI**
+
+* _Do any need to be changed?_
+
+* _What about Grade or Age?_ - **Categorial or ordinal**
+
+* **Factors for Ccategorical** - fixed set of possible values **levels**
+
+### e.g Sex to Factor
+
+```{r eval=FALSE}
+patients$Sex <- factor(patients$Sex)
+patients$Sex
+levels(patients$Sex)
+patients
+```
+
+### do for mulitple - **`mutate_at`**
+
+```{r}
+patients <- mutate_at(patients, vars(Sex, Smokes, State, Grade, Age), factor)
+```
+
+## Our first ggplot - a scatter plot Height v Weight
+
+```{r echo=FALSE, fig.height=3, fig.width=4, fig.align="center"}
+ggplot(data = patients) +
+  geom_point(mapping = aes(x = Height, y = Weight))
+```
+
+**3** things:
+
+1. The data (**data frame**)
+2. The type of plot (**geom** - geom_point)
+3. The mapping (**aesthetics** - x and y) others ....
+
+```{r eval = FALSE, fig.height=3, fig.width=4, fig.align="center"}
+?geom_point
+```
+
+## Other Aesthetic mappings
+
+What about those other aesthetics? **Look in help**
+
+### Colour 
+
+```{r echo=FALSE, fig.height=3, fig.width=10}
+plot1 <- ggplot(data = patients) +
+  geom_point(mapping = aes(x = Height, y = Weight, colour = Sex)) +
+  labs(title="SEX - CATEGORICAL")
+
+plot2 <- ggplot(data = patients) +
+  geom_point(mapping = aes(x = Height, y = Weight, colour = BMI)) +
+  labs(title="BMI - Continuous")
+
+grid.arrange(plot1, plot2, ncol=2)
+```
+
+### Shape by sex
+
+```{r echo=FALSE, fig.height=3, fig.width=4, fig.align="center"}
+ggplot(data = patients) +
+  geom_point(mapping = aes(x = Height, y = Weight, shape = Sex))
+```
+
+#### **can only be categorical - TRY BMI**
+
+`
+Error: A continuous variable can not be mapped to shape
+`
+
+### Size 
+
+```{r echo=FALSE, fig.height=3, fig.width=10}
+plot1 <- ggplot(data = patients) +
+  geom_point(mapping = aes(x = Height, y = Weight, size = Sex))+
+  labs(title="Size by Sex - useful??")
+
+plot2 <- ggplot(data = patients) +
+  geom_point(mapping = aes(x = Height, y = Weight, size = BMI)) +
+  labs(title="Size by BMI - better??")
+
+plot3 <- ggplot(data = patients) +
+  geom_point(mapping = aes(x = Height, y = Weight, alpha = BMI)) +
+  labs(title="Transparency by BMI")
+
+grid.arrange(plot1, plot2, plot3, nrow=1)
+```
+
+## Customization
+**ggplot chooses the colours etc automically but we can customize**
+
+## ggplot2 grammar
+
+The "gg" in ggplot2 stands for "grammar of graphics". This grammar is a coherent
+system for describing and building graphs.
+
+The basic template is:
+
+```
+ggplot(data = <DATA>) +
+  <GEOM_FUNCTION>(mapping = aes(<MAPPINGS>))
+```
+
+This template can be used to create any of the different types of graph possible
+with ggplot2.
+
+## What Other plots
+
+* **Package tab**
+* **Cheat Sheet**
+* **Web**
+
+## bar chart of patient's ages.
+
+```{r echo=FALSE, fig.height=7, fig.width=10}
+plot1 <- ggplot(data = patients) +
+  geom_bar(mapping = aes(x = Age))
+  labs(title="single categorical variable mapped to `x`")
+
+plot2 <- ggplot(data = patients) +
+  geom_bar(mapping = aes(x = Age, colour = Age)) +
+  labs(title="colour bars by age")
+
+plot3  <- ggplot(data = patients) +
+  geom_bar(mapping = aes(x = Age, fill = Age)) +
+  labs(title="fill instead")
+
+plot4 <- ggplot(data = patients) +
+  geom_bar(mapping = aes(x = Age, fill = Sex)) +
+  labs(title="Fill by sex")
+
+grid.arrange(plot1, plot2, plot3, plot4, nrow=2)
+```
+_`position="dodge"`_
+
+### All bars blue
+
+```{r echo=FALSE, fig.height=3, fig.width=10}
+plot1 <- ggplot(data = patients) +
+  geom_bar(mapping = aes(x = Age, fill = "blue")) +
+  labs(title="aes(fill=\"blue\") !!!!")
+
+
+plot2 <- ggplot(data = patients) +
+  geom_bar(mapping = aes(x = Age), fill = "blue") +
+  labs(title="Correct outside the mapping")
+
+grid.arrange(plot1, plot2, nrow=1)
+```
+
+## Multiple layers
+
+```
+ggplot(data = <DATA>) +
+  <GEOM_FUNCTION>(mapping = aes(<MAPPINGS>))
+```
+
+Why do we have the ggplot part and geom part joined by a "+" symbol?
+
+**multiple geoms - different layers**
+
+### points and smooth Height v Weight
+
+```{r echo=FALSE, fig.height=3, fig.width=4, fig.align="center", message=FALSE, warning=FALSE}
+ggplot(data = patients) +
+  geom_point(mapping = aes(x = Height, y = Weight)) +
+  geom_smooth(mapping = aes(x = Height, y = Weight))
+```
+
+**`geom_smooth` help page** - is not very simple!!!
+
+**shaded area = standard error**
+
+## Global mappings...
+**mappings in the `ggplot` function**
+
+```{r fig.height=3, fig.width=4, fig.align="center", message=FALSE, warning=FALSE}
+ggplot(data = patients, mapping = aes(x = Height, y = Weight)) +
+  geom_point() +
+  geom_smooth()
+```
+
+### Try to colour the points by sex.
+
+```{r echo=FALSE, fig.height=3, fig.width=10, message=FALSE, warning=FALSE}
+plot1 <- ggplot(data = patients, mapping = aes(x = Height, y = Weight, colour = Sex)) +
+  geom_point() +
+  geom_smooth() +
+  labs(title="global colour - oops!")
+
+plot2 <- ggplot(data = patients, mapping = aes(x = Height, y = Weight)) +
+  geom_point(mapping = aes(colour = Sex)) +
+  geom_smooth() +
+  labs(title="colour mapping in points - Yay!")
+
+grid.arrange(plot1, plot2, nrow=1)
+```
+
+
+#### **`inherit.aes = FALSE`**
+
+```{r eval=FALSE, fig.height=3, fig.width=10}
+ggplot(data = patients, mapping = aes(x = Height, y = Weight, colour = Sex)) +
+  geom_point() +
+  geom_smooth(mapping = aes(x = Height, y = Weight), inherit.aes = FALSE)
+```
+
+
+## Line plot 
+
+```{r echo=FALSE, fig.height=3, fig.width=10}
+plot1 <- ggplot(data = patients, mapping = aes(x = Height, y = Weight)) +
+  geom_line() +
+  labs(title="Height by Weight")
+
+plot2 <- ggplot(data = patients, mapping = aes(x = Birth, y = BMI)) +
+  geom_point() +
+  geom_line() +
+  labs(title="Birth by BMI with points")
+
+plot3 <- ggplot(data = patients, mapping = aes(x = Birth, y = BMI, colour = Sex)) +
+  geom_point() +
+  geom_line() +
+  labs(title="Colour by Sex") +
+  guides(colour=FALSE)
+
+grid.arrange(plot1, plot2, plot3, nrow=1)
+```
+
+**clever with dates - `lubridate`**
+
+## Histogram
+
+```{r echo=FALSE, fig.height=6, fig.width=10}
+plot1 <- ggplot(data = patients) +
+  geom_histogram(mapping = aes(x = Height))  +
+  labs(title="Height")
+
+plot2 <- ggplot(data = patients) +
+  geom_histogram(mapping = aes(x = Height), bins = 15) +
+  labs(title="NUMBER - `bins = 15`") 
+
+plot3 <- ggplot(data = patients) +
+  geom_histogram(mapping = aes(x = Height), binwidth = 2.5) +
+  labs(title="WIDTH - `binwdidth = 2.5`") 
+
+plot4 <- ggplot(data = patients) +
+  geom_histogram(mapping = aes(x = Height), bins = 15, colour = "firebrick", fill = "grey70") +
+  labs(title="\"firebrick\" and \"grey70\"")
+
+grid.arrange(plot1, plot2, plot3, plot4, nrow=2)
+```
+
+### alternative **geom_freqpoly**
+
+_When might this be preferred?_
+
+```{r fig.height=3, fig.width=4, fig.align="center"}
+ggplot(data = patients) +
+  geom_freqpoly(mapping = aes(x = BMI, colour = Smokes), bins = 10)
+```
+
+## Box plot
+
+**EXPLAIN box and whiskers**
+
+```{r echo=FALSE, fig.height=3, fig.width=10}
+plot1  <- ggplot(data = patients) +
+  geom_boxplot(mapping = aes(x = Smokes, y = Weight)) +
+  labs(title="Weight by Smokes") 
+
+plot2 <- ggplot(data = patients) +
+  geom_boxplot(mapping = aes(x = Smokes, y = BMI)) +
+  labs(title="BMI better") 
+
+plot3 <- ggplot(data = patients) +
+  geom_boxplot(mapping = aes(x = Sex, y = BMI, colour = Smokes)) +
+  labs(title="males and females separately")  +
+  guides(colour=FALSE)
+
+grid.arrange(plot1, plot2, plot3, nrow=1)
+```
+
+### Add points
+
+```{r echo=FALSE, fig.height=3, fig.width=10}
+plot1 <- ggplot(data = patients, mapping = aes(x = Sex, y = BMI)) +
+  geom_boxplot() +
+  geom_point() +
+  labs(title="In line...") 
+
+plot2 <- ggplot(data = patients, mapping = aes(x = Sex, y = BMI)) +
+  geom_boxplot() +
+  geom_jitter() +
+  labs(title="`geom_jitter`")
+
+
+plot3 <- ggplot(data = patients, mapping = aes(x = Sex, y = BMI)) +
+  geom_boxplot() +
+  geom_jitter(width = 0.25) +
+  labs(title="Reduce spread - `width = 2.5`")
+
+grid.arrange(plot1, plot2, plot3, nrow=1)
+```
+
+### Violin plot
+
+```{r echo=FALSE, fig.height=3, fig.width=10}
+plot1 <- ggplot(data = patients, mapping = aes(x = Sex, y = BMI)) +
+  geom_violin() +
+  labs(title="BMI v SEX")
+
+plot2 <- ggplot(data = patients, mapping = aes(x = Sex, y = BMI, fill = Smokes)) +
+  geom_violin(trim = FALSE)  + 
+  labs(title="Fill by smokes")
+
+grid.arrange(plot1, plot2, nrow=1)
+```
+
+### Density plot
+
+Deliberately not covering this here as it is required for a couple of the exercises
+and we want you to work it out for yourself using the help pages and what you've learned
+so far about the common grammar for all ggplots.
+
+
+## The ggplot object - a peek under the hood
+
+Let's the build the plot up in stages.
+
+```{r echo=FALSE, fig.height=3, fig.width=10}
+plot <- ggplot(data = patients)
+```
+
+What is the plot object we've just created?
+
+Look at the environment pane in RStudio (usually in top right corner). The plot object is
+a list of 9.
+
+```{r echo=FALSE, fig.height=3, fig.width=10}
+is.list(plot)
+```
+
+It's actually a special type of list.
+
+```{r echo=FALSE, fig.height=3, fig.width=10}
+class(plot)
+```
+
+What are the 9 things in the list?
+
+```{r echo=FALSE, fig.height=3, fig.width=10}
+names(plot)
+```
+
+So far we've constructed ggplots from data, layers (geoms) and aesthetic mappings.
+We'll be looking at how to customize plots later, including changing the labels,
+scales and theme.
+
+```{r echo=FALSE, fig.height=3, fig.width=10}
+plot$data
+```
+
+What does our plot look like at this point?
+
+```{r echo=FALSE, fig.height=3, fig.width=10}
+plot
+```
+
+No layers or mapping yet.
+
+```{r echo=FALSE, fig.height=3, fig.width=10}
+plot$mapping
+plot$layers
+```
+
+Lets add an aesthetic mapping.
+
+```{r echo=FALSE, fig.height=3, fig.width=10}
+plot <- ggplot(data = patients, mapping = aes(x = Height, y = Weight))
+plot
+```
+
+ggplot2 has automatically added scales for x and y based on the range
+of height and weight values. Still nothing plotted as we haven't yet specified the
+type of plot (geom) to add as a layer.
+
+```{r echo=FALSE, fig.height=3, fig.width=10}
+plot$mapping
+plot$layers
+```
+
+```{r echo=FALSE, fig.height=3, fig.width=10}
+plot <- plot + geom_point()
+plot
+```
+
+```{r echo=FALSE, fig.height=3, fig.width=10}
+plot$layers
+```
+
+Each geom is associated with a statistical transformation, called a stat in ggplot2.
+This is an algorithm used to calculate new values for the graph. In this case, we are
+creating a scatter plot and the x and y values don't need to be transformed, just plotted
+on the x and y axes, hence `stat_identity` which leaves the data unchanged.
+
+But recall the bar charts we created earlier. How did ggplot2 know what height to make
+each bar? It counted the number of observations for each categorical value (level) using
+`stat_count`.
+
+We'll touch on statistical transformations again a bit later.
+
