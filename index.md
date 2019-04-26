@@ -1,5 +1,7 @@
 # Data Analysis and Visualisation in R - Bite-size edition
 
+#TinyURL https://tinyurl.com/bs-intR
+
 ## Description: 
 
 It has been said that 80% of data analysis is spent on the process of cleaning
@@ -62,6 +64,7 @@ Ashley Sawle  (CRUK-CI Bioinformatics Core).
 |:-------:|---------------------------|
 |One      | [**Course Introduction**](1.introduction.html)|
 |         | [**Visualization with ggplot2 (pt1) - Grammar of Graphics, basic plots**](2.ggplot2-live-coding-script.html)|
+|         | [Homework/Further exercises](Homework/ggplot_further_1.nb.html)|
 |Two      | [**Visualization with ggplot2 (pt2) - Facetting**](2.ggplot2-live-coding-script.html)|
 |         | [**Introduction & Tidying and transforming data (pt1) - Tidy Data: tidyr intro and dplyr select**](3.dplyr-intro-live-coding-script.html)|
 |Three    | [**Tidying and transforming data (pt2) - Cleaning Data: stringr and dplyr mutate**](3.dplyr-intro-live-coding-script.html)|
