@@ -1,0 +1,94 @@
+---
+title: "Further dplyr practice"
+output:
+  html_document:
+    df_print: paged
+  code_folding: hide
+  html_notebook: null
+---
+
+This is a set of extra exercises to further assess if you are getting familiar with **dplyr**.   
+Please try and do the tasks without looking at the provided code and note that there may be    
+other ways to achieve the task than the one provided. Use the code button to the left and    select 'hide all code'.    
+
+## Setting up
+
+We will be using an Ovarian Cancer dataset that is included in the **vcd** package. You will need to install this (along with **tidyverse** if you have not already done so) and then load (using **library**) both packages.
+
+```{r}
+options(repos = c("CRAN" = "http://cran.ma.imperial.ac.uk"))
+install.packages("vcd")
+library(vcd)
+library(tidyverse)
+```
+
+Now we need to load the dataset as an R dataframe using the **data()** command.
+Take a look at the dataframes data. Use **as_tibble()** to view it as a tibble and
+note the difference. Finally, use the **as_tibble()** to store the dataframe as a tibble
+in a new variable for later usage.
+```{r}
+data("OvaryCancer")
+
+?OvaryCancer
+
+OvaryCancer
+
+as_tibble(OvaryCancer)
+
+ovdata <- as_tibble(OvaryCancer)
+```
+## Putting dplyr to work on the OvaryCancer dataset   
+It might be useful to have a % of the total number of patients for our categories.  
+We can use **mutate()** after using **select()** & **sum()** to determine the total number of   
+patients in the study.    
+Devise the code needed.    
+```{r}
+pat_total <- sum(select(ovdata, Freq))
+pat_total
+ovdata %>%
+  mutate(pc_surv = (Freq/pat_total) * 100)
+ovdata
+```
+
+Let us now display data for Frequency, stage, xray and operation (in that order) using **select()**
+```{r}
+select(ovdata, Freq, stage, xray, operation)
+```
+Lets use **filter()** now to just display the patients who survived. Then combine this code with a **pipe(%>%)** and a **select()** statement to display just the frequency and stage of those who survived.
+```{r}
+filter(ovdata, survival == "yes")
+
+filter(ovdata, survival == "yes") %>%
+  select(Freq,stage)
+```
+Now lets use **group_by()** and **summarise()** to produce a tibble like this (grouped by stage and xray and total number of patients in each combination).    
+A tibble: 4 x 3   
+   
+Groups:   stage [2]    
+stage    xray  total    
+<fct>    <fct> <dbl>    
+  1 early    no       65    
+2 early    yes      93    
+3 advanced no       48    
+4 advanced yes      93    
+```{r}
+ovdata %>%
+  group_by(stage, xray) %>%
+  summarise(total = sum(Freq))
+```
+Let's now use **spread()** to reshape our data to display stage,operation,xray and survival-no, survival-yes as columns with the appropriate frequency in the last two columns like this:    
+ tibble: 8 x 5    
+  stage    operation xray     no   yes    
+  <fct>    <fct>     <fct> <dbl> <dbl>    
+1 early    radical   no       10    41    
+2 early    radical   yes      17    64    
+3 early    limited   no        1    13    
+4 early    limited   yes       3     9    
+5 advanced radical   no       38     6    
+6 advanced radical   yes      64    11    
+7 advanced limited   no        3     1    
+8 advanced limited   yes      13     5    
+```{r}
+ovdata %>% spread(key=survival, value=Freq)
+```
+
