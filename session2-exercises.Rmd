@@ -1,23 +1,20 @@
 ---
-title: "Session 3 exercises"
-author: "Mark Dunning and Matt Eldridge"
+title: "Session 2 exercises"
 date: '`r format(Sys.time(), "Last modified: %d %b %Y")`'
-output:
-  html_notebook:
-    code_folding: hide
+output: html_document
 ---
 
-Click on the 'Code' button on the right hand side to reveal the solution for 
-each plot.
+```{r include = FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
+```
 
 ## Part I -- ggplot - Facets
 
-These exercises require you to generate plots of various kinds. This document 
-contains both the plots that you should obtain and the solutions (R code).
+The first part requires you to create plots with faceting. Each of the plots you are asked to create is shown below so that you can compare the end result with your own.
 
 1. Read in the cleaned patients dataset, `patient-data-cleaned.txt`.
 
-```{r message = FALSE, warning = FALSE}
+```{r}
 library(tidyverse)
 patients <- read_tsv("data/patient-data-cleaned.txt")
 patients
@@ -65,4 +62,29 @@ ggplot(data = patients, mapping = aes(x = Sex, y = BMI, fill = Age)) +
 ggplot(data = patients, mapping = aes(x = BMI)) +
   geom_density(aes(fill = Sex), alpha = 0.5) +
   facet_wrap(~ Grade)
+```
+
+## Part II -- tidyr - Tidying a dataset
+
+1. Read in the simulated clinical dataset, `clinical-data.txt`.
+
+```{r}
+library(tidyverse)
+clinical_data <- read_tsv("data/clinical-data.txt")
+clinical_data
+```
+
+2. What are the variables in this data set?
+
+3. Transform the data into a tidy form using the `gather` function from the `tidyr` package.
+
+```{r}
+clinical_data <- gather(clinical_data, key = "Treatment", value = "Value", -Subject)
+```
+
+4. Display the range of values for each drug and placebo treatment as a box plot
+
+```{r}
+ggplot(clinical_data, mapping = aes(x = Treatment, y = Value)) +
+  geom_boxplot()
 ```
