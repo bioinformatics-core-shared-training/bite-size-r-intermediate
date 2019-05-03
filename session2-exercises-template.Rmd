@@ -1,0 +1,74 @@
+---
+title: "Session 2 exercises"
+date: '`r format(Sys.time(), "Last modified: %d %b %Y")`'
+output: html_document
+---
+
+## Part I -- ggplot - Facets
+
+The first part requires you to create plots with faceting.
+
+1. Read in the cleaned patients dataset, `patient-data-cleaned.txt`.
+
+```{r}
+
+```
+
+1. Using the patient dataset generate a scatter plot of BMI versus Weight, add a
+colour scale to the scatterplot based on the Height variable, and split the plot 
+into a grid of plots separated by Smoking status and Sex.
+
+```{r}
+
+```
+
+2. Generate a boxplot of BMIs comparing smokers and non-smokers, colour boxplot
+by Sex, and include a separate facet for people of different age.
+
+```{r}
+
+```
+
+3. Produce a similar boxplot of BMIs but this time group data by Sex, colour by Age and facet by Smoking status.
+
+```{r}
+
+```
+
+4. Regenerate the solution to exercise 3 but this time using a violin plot.
+
+```{r}
+
+```
+
+5. Generate density plots of BMIs coloured by Sex, and split the plot by Grade.
+
+```{r}
+
+```
+
+## Part II -- tidyr - Tidying a dataset
+
+1. Read in the simulated clinical dataset, `clinical-data.txt`.
+
+```{r}
+
+```
+
+2. What are the variables in this data set?
+
+```
+Type your answer here
+```
+
+3. Transform the data into a tidy form using the `gather` function from the `tidyr` package.
+
+```{r}
+
+```
+
+4. Display the range of values for each drug and placebo treatment as a box plot
+
+```{r}
+
+```
