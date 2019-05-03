@@ -1,0 +1,68 @@
+---
+title: "Session 3 exercises"
+author: "Mark Dunning and Matt Eldridge"
+date: '`r format(Sys.time(), "Last modified: %d %b %Y")`'
+output:
+  html_notebook:
+    code_folding: hide
+---
+
+Click on the 'Code' button on the right hand side to reveal the solution for 
+each plot.
+
+## Part I -- ggplot - Facets
+
+These exercises require you to generate plots of various kinds. This document 
+contains both the plots that you should obtain and the solutions (R code).
+
+1. Read in the cleaned patients dataset, `patient-data-cleaned.txt`.
+
+```{r message = FALSE, warning = FALSE}
+library(tidyverse)
+patients <- read_tsv("data/patient-data-cleaned.txt")
+patients
+```
+
+1. Using the patient dataset generate a scatter plot of BMI versus Weight, add a
+colour scale to the scatterplot based on the Height variable, and split the plot 
+into a grid of plots separated by Smoking status and Sex.
+
+```{r}
+ggplot(data = patients, mapping = aes(x = BMI, y = Weight, colour = Height)) +
+  geom_point() +
+  facet_grid(Sex ~ Smokes)
+```
+
+2. Generate a boxplot of BMIs comparing smokers and non-smokers, colour boxplot
+by Sex, and include a separate facet for people of different age.
+
+```{r}
+ggplot(data = patients, mapping = aes(x = Smokes, y = BMI, fill = Sex)) +
+  geom_boxplot() +
+  facet_wrap(~ Age)
+```
+
+3. Produce a similar boxplot of BMIs but this time group data by Sex, colour by Age and facet by Smoking status.
+
+```{r}
+patients$Age <- factor(patients$Age)
+ggplot(data = patients, mapping = aes(x = Sex, y = BMI, fill = Age)) +
+  geom_boxplot() +
+  facet_wrap(~ Smokes)
+```
+
+4. Regenerate the solution to exercise 3 but this time using a violin plot.
+
+```{r}
+ggplot(data = patients, mapping = aes(x = Sex, y = BMI, fill = Age)) +
+  geom_violin() +
+  facet_wrap(~ Smokes)
+```
+
+5. Generate density plots of BMIs coloured by Sex, and split the plot by Grade.
+
+```{r}
+ggplot(data = patients, mapping = aes(x = BMI)) +
+  geom_density(aes(fill = Sex), alpha = 0.5) +
+  facet_wrap(~ Grade)
+```

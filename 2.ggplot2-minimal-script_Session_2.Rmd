@@ -1,0 +1,100 @@
+---
+title: "ggplot2 minimal script"
+author: "Ashley Sawle"
+date: '`r format(Sys.time(), "Last modified: %d %b %Y")`'
+output:
+  html_document
+---
+
+## Introduction
+
+**Tidy Data**
+
+1. variable - column
+2. observation - row
+3. value - cell
+
+### Load the tidyverse
+
+```{r echo=FALSE}
+library(tidyverse)
+library(gridExtra)
+```
+
+```{r include=FALSE}
+ patients <- read_tsv("data/patient-data-cleaned.txt")
+```
+
+## Facets
+
+`facet_grid` and `facet_wrap`.
+
+```{r echo=FALSE, fig.height=3, fig.width=10}
+plot1 <- ggplot(data = patients, mapping = aes(x = Height, y = Weight, colour = Smokes)) +
+  geom_point()
+plot2 <- ggplot(data = patients, mapping = aes(x = Height, y = Weight)) +
+  geom_point() +
+  facet_wrap(~ Smokes)
+grid.arrange(plot1, plot2, nrow=1)
+```
+
+```{r echo=FALSE, fig.height=6, fig.width=10}
+plot1 <- ggplot(data = patients, mapping = aes(x = Height, y = Weight, colour = Grade)) +
+  geom_point() + 
+    ggtitle("Colour by Grade")
+plot2 <- ggplot(data = patients, mapping = aes(x = Height, y = Weight, colour = Grade)) +
+  geom_point() +
+  facet_wrap(~ Grade) + 
+    ggtitle("Facet by Grade")
+plot3 <- ggplot(data = patients, mapping = aes(x = Height, y = Weight, colour = Grade)) +
+  geom_point() +
+  facet_wrap(~ Grade, nrow = 1) + 
+    ggtitle("Specify nrow")
+plot4 <- ggplot(data = patients, mapping = aes(x = Height, y = Weight, colour = Grade)) +
+  geom_point() +
+  facet_wrap(~ Grade, ncol = 3) + 
+    ggtitle("Specify ncol")
+grid.arrange(plot1, plot2, plot3, plot4, nrow=2)
+```
+
+```{r echo=FALSE, fig.height=3, fig.width=10}
+plot1 <- ggplot(data = patients, mapping = aes(x = Height, y = Weight)) +
+  geom_point() +
+  facet_wrap(~ Sex + Smokes) + 
+    ggtitle("~ Sex + Smokes")
+plot2 <- ggplot(data = patients, mapping = aes(x = Height, y = Weight)) +
+  geom_point() +
+  facet_grid(Sex ~ Smokes) + 
+    ggtitle("facet_grid(Sex ~ Smokes)")
+grid.arrange(plot1, plot2, nrow=1)
+```
+
+
+```{r echo=FALSE, fig.height=3, fig.width=10}
+plot1 <- ggplot(data = patients, mapping = aes(x = Height, y = Weight)) +
+  geom_point() +
+  facet_grid(. ~ Sex) + 
+    ggtitle(". ~ Sex")
+plot2 <- ggplot(data = patients, mapping = aes(x = Height, y = Weight)) +
+  geom_point() +
+  facet_grid(Sex ~ .) + 
+    ggtitle("Sex ~ .")
+grid.arrange(plot1, plot2, nrow=1)
+```
+
+It is also possible to facet on more more than two variables with facet_wrap although
+usually this leads to very cluttered plots; it is probably better to stick to using one
+or two variables for faceting.
+
+```{r echo=FALSE}
+ggplot(data = patients, mapping = aes(x = Height, y = Weight)) +
+  geom_point() +
+  facet_wrap(~ Sex + Smokes + Age) +
+    ggtitle("~ Sex + Smokes + Age")
+```
+
+```{r echo = FALSE}
+ggplot(data = patients, mapping = aes(x = Height, y = Weight, colour = Sex)) +
+  geom_point() +
+  facet_wrap(~ Smokes)
+```
