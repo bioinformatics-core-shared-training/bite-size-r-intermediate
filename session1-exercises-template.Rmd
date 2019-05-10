@@ -1,10 +1,7 @@
 ---
-title: "Session1: Data Visualisation with ggplot2 - Exercises"
-author: "Mark Dunning, Matt Eldridge, and Ashley Sawle"
+title: "Session 1 exercises"
 date: '`r format(Sys.time(), "Last modified: %d %b %Y")`'
-output:
-  html_notebook:
-    code_folding: hide
+output: html_document
 ---
 
 These exercises require you to generate plots of various kinds. This document
