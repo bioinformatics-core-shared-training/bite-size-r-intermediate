@@ -1,0 +1,157 @@
+---
+title: "Tidying and transforming data - minimal live coding script"
+date: '`r format(Sys.time(), "Last modified: %d %b %Y")`'
+output: html_document
+---
+
+```{r echo=FALSE}
+options(tibble.print_max = 2, tibble.print_min = 2, max.print=10)
+```
+
+## Transforming and cleaning the data
+
+```{r setup}
+library(tidyverse)
+```
+
+### Read in **untidy** data
+
+```{r}
+patients <- read.delim("data/patient-data.txt")
+patients <- as_tibble(patients)
+patients
+```
+
+## `Sex` column
+
+```{r echo=FALSE, fig.height=3}
+ggplot(patients, mapping = aes(x = Sex)) +
+  geom_bar()
+```
+
+```{r}
+levels(patients$Sex)
+```
+
+### `stringr` in the 'Packages' tab
+
+**Which function to remove spaces???**
+
+```{r}
+str_trim(patients$Sex)
+```
+
+
+### Modify the data frame
+
+**base R**
+
+```{r eval = FALSE}
+patients$Sex <- str_trim(patients$Sex)
+```
+
+**dplyr**
+
+```{r}
+mutate(patients, Sex = str_trim(Sex))
+```
+
+
+## Creating a new variable
+
+```{r}
+mutate(patients, SexTrimmed = str_trim(Sex))
+```
+
+```{r}
+mutate(table1, percent = 100 * cases / population)
+```
+
+### keep `Sex` column as a factor
+
+```{r}
+patients <- mutate(patients, Sex = factor(str_trim(Sex)))
+levels(patients$Sex)
+```
+
+```{r echo=FALSE, fig.height=3}
+ggplot(patients, mapping = aes(x = Sex)) +
+  geom_bar()
+```
+
+## `Height`
+
+```{r eval = FALSE}
+ggplot(patients, mapping = aes(x = Height)) +
+  geom_histogram()
+```
+
+```
+Error: StatBin requires a continuous x variable: the x variable is discrete. Perhaps you want stat="count"?
+```
+
+### Problem is????
+
+```{r echo=FALSE}
+select(patients, Height)
+```
+
+### Which `str_`?? - **`str_remove`**
+
+```{r}
+str_remove(patients$Height, "cm")
+```
+
+### ... and to `numeric`
+
+```{r}
+as.numeric(str_remove(patients$Height, "cm"))
+```
+
+### fix the data frame
+
+```{r}
+patients <- mutate(patients, Height = as.numeric(str_remove(Height, "cm")))
+patients
+```
+
+```{r echo=FALSE, fig.height=3}
+ggplot(patients, mapping = aes(x = Height)) +
+  geom_histogram()
+```
+
+### modify multiple columns within a single `mutate` function call.
+
+```{r message=FALSE, warning=FALSE}
+patients <- read.delim("data/patient-data.txt")
+patients <- as_tibble(patients)
+patients <- mutate(patients,
+                   Sex = as.factor(str_trim(Sex)),
+                   Height = as.numeric(str_remove(Height, "cm")))
+patients
+```
+
+## Mutating multiple columns - `mutate_at` and `mutate_if`
+
+### `mutate_at` - Round weight and height to 1 digit
+
+```{r message=FALSE, warning=FALSE}
+patients <- read_tsv("data/patient-data-cleaned.txt")
+mutate_at(patients, vars(Height, Weight), round, digits = 1)
+```
+
+**or**
+
+```{r message=FALSE, warning=FALSE}
+mutate_at(patients, vars(ends_with("eight")), round, digits = 1)
+```
+
+### `mutate_if` - round all numeric columns to 1 decimal place.
+
+```{r message=FALSE, warning=FALSE}
+patients <- read_tsv("data/patient-data-cleaned.txt")
+patients <- mutate_if(patients, is.numeric, round, digits = 1)
+patients
+```
+
+### Also there is `mutate_all`
