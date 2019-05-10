@@ -266,7 +266,7 @@ patients</code></pre>
 <ol start="8" style="list-style-type: decimal">
 <li>Produce a similar boxplot of BMIs but this time group data by Sex and colour the interior of the box (not the outline) by Age.</li>
 </ol>
-<p><em>Hint: is Age currently the right type of variable for grouping in a box plot?</em></p>
+<p><strong>Note</strong>: Having loaded the data using <code>read_tsv</code>, the <code>Age</code> column has been set to <code>dbl</code> (short for <code>double</code>, a <code>numeric</code> vector type) as it only contains numbers. This makes it a <strong>continuous</strong> variable. In order to split the boxplot by age and colour each one according to Age, it is necessary to change age to be a <strong>categorical</strong> variable. We can do this by changing the <code>Age</code> column into a different vector type: a <code>factor</code>.</p>
 <pre class="r"><code>patients$Age &lt;- factor(patients$Age)
 ggplot(data = patients, mapping = aes(x = Sex, y = BMI, fill = Age)) +
   geom_boxplot()</code></pre>
