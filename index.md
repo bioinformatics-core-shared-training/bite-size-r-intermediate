@@ -84,8 +84,7 @@ Ashley Sawle  (CRUK-CI Bioinformatics Core).
 - Solutions
 
 ### Session 3  
-- Exercises
-- Answer Template
+- [Exercise and Answer Template](session3-exercises-template.Rmd)
 - Solutions
 
 ### Session 4  
