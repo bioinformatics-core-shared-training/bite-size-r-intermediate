@@ -1,0 +1,20 @@
+---
+title: "Session 3 exercise"
+date: '`r format(Sys.time(), "Last modified: %d %b %Y")`'
+output: html_document
+---
+
+# Messy data - clean up with mutate and stringr
+
+This week we would like you to clean up the data set in the `patient-data.txt`
+file that we looked at during session 3. As we saw whoever has entered the data
+has made a number of mistakes, such as including "cm" in the `Height` column.
+
+First load the data from the file. Then inspect each column to see if there are
+errors you need to correct. Use `mutate` and functions from the `stringr`
+package, e.g. `str_remove`, to clean up the data.
+
+```{r}
+
+```
+
