@@ -1,0 +1,61 @@
+---
+title: "Session 4 exercise"
+date: '`r format(Sys.time(), "Last modified: %d %b %Y")`'
+output: html_document
+---
+
+# 1. Messy data - clean up using a work flow
+
+Last week you cleaned up the `patient-data.txt` file using `mutate` and various
+`stringr` functions. This week we would like you to do the same again, but this
+time use the "pipe" (`%>%`) to do the clean up as a single workflow.
+
+Assign the final cleaned data frame to a new object.
+
+```{r}
+
+```
+
+# 2. Write a table to a file as part of a work flow
+
+For this exercise use the clean data table `patients-data-cleaned.txt`. 
+
+We would like to output a subset of the data to a new file. To write to a file
+you will need to use a function we haven't shown you, so you'll have to check
+the `readr` package help pages to find the tidyverse write functions.
+
+Use pipes to do this as a workflow.
+
+The table should:
+
+a) Have the columns the following columns **in this order**:
+        ID, Name, Sex, Smokes, BMI, Grade, Height, Weight
+b) The Height column should be titled "Height (cm)" 
+c) The Weight should be in grams (it is currently in kg) and with an appropriate header
+d) Only contain data for people from New York or New Jersey who are non-smokers
+e) Be in tab separated value (tsv) format
+
+```{r}
+
+```
+
+# 3. Draw a plot as part of a work flow
+
+For this exercise use the clean data table `patients-data-cleaned.txt`. 
+
+We would like you to modify the table and generate a scatter plot. Use pipes to
+do this as a workflow, including the ggplot as part of the workflow.
+
+Create an xy scatter plot with Height on the x and  Weight on the y where:
+
+a) Height is in metres not centimetres
+b) The plot only shows the data for people who are overweight and live in
+Colorado or Georgia
+c) The x axis is labelled "Height (m)" - you can do this without using `labs`
+in the ggplot?
+d) split the plot into two plots by state
+e) colour the points by Sex
+
+```{r}
+
+```
