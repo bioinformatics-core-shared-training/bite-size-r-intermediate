@@ -1,0 +1,302 @@
+---
+title: "Summarizing and Grouping - minimal live coding script"
+date: '`r format(Sys.time(), "Last modified: %d %b %Y")`'
+output: html_document
+---
+
+```{r echo=FALSE}
+options(tibble.print_max = 2, tibble.print_min = 2, max.print=10)
+```
+
+## Recap
+
+### Tidy data
+
+A tidy dataset is a data frame (or table) for which the following are true:
+
+1. Each **variable** has its own column
+2. Each **observation** has its own row
+3. Each **value** has its own cell
+
+### dplyr basics
+
+There are 5 key dplyr functions with which the vast majority of data manipulations can be achieved.
+
+* `select` -- select variables (columns) of interest
+* `filter` -- pick observations (rows) based on their values
+* `arrange` -- reorder the observations based on one or more variables
+* `mutate` -- modify existing or create new variables by applying functions to existing variables
+* `summarize` -- collapse many values to a single summary
+
+We've covered the first four and will focus now on summarizing.
+
+## Summarizing
+
+```{r}
+library(tidyverse)
+```
+
+```{r}
+patients <- read_tsv("data/patient-data-cleaned.txt")
+patients
+```
+
+How do you compute the mean height of patients in the dataset?
+
+```{r}
+mean(patients$Height)
+```
+
+This has collapsed a vector of height values to a summary, i.e. the average value.
+The `dplyr` function or 'verb' for doing this is `summarize` (or `summarise`).
+
+```{r}
+summarize(patients, mean(Height))
+```
+
+This is not particularly useful on it's own but you can compute multiple summarized values at the same time.
+
+```{r}
+summarize(patients, mean(Height), sd(Height))
+```
+
+We can rename the column headings.
+
+```{r}
+summarize(patients, mean = mean(Height), standard_deviation = sd(Height))
+```
+
+We might also want to compute summaries on multiple columns. Here we can use the `summarize_at`
+or `summarize_if` functions that work in a very similar way to `mutate_at` and `mutate_if` that
+we've come across earlier
+
+```{r}
+summarize_at(patients, vars(Height, Weight), mean)
+```
+
+We can also use the same helper functions we've used before with `select`.
+
+```{r}
+summarise_at(patients, vars(matches('[HW]eight')), mean)
+```
+
+```{r}
+summarize_if(patients, is.numeric, mean)
+```
+
+
+
+
+
+Why does the Grade column give a result of `NA`?
+
+What do we need to do to fix this?
+
+```{r}
+summarize_if(patients, is.numeric, mean, na.rm = TRUE)
+```
+
+We can compute multiple summarized values on multiple columns.
+
+```{r}
+summarize_at(patients, vars(Height, Weight), list(mean, sd))
+```
+
+And again but with more ascetically pleasing column headings.
+
+```{r}
+summarize_at(patients, vars(Height, Weight), list(mean = mean, sd = sd))
+```
+
+## Grouping
+
+`summarize` only really becomes useful when working with subsets of the data, or groups.
+Here we use the `group_by` function and it really helps if we do so in the context of a
+workflow using the pipe mechanism (`%>%`).
+
+
+For example, let's compute the average height of males and females separately.
+
+```{r}
+patients %>%
+  summarize(mean(Height))
+```
+
+
+```{r}
+patients %>%
+  group_by(Sex) %>%
+  summarize(mean(Height))
+```
+
+```{r}
+patients %>%
+  group_by(Sex) %>%
+  summarize(`Average height` = mean(Height))
+```
+
+
+```{r}
+patients %>%
+  group_by(Sex) %>%
+  summarize_at(vars(Height, Weight), mean)
+```
+
+```{r}
+patients %>%
+  group_by(Sex) %>%
+  summarize_at(vars(Height, Weight), list(mean = mean, stddev = sd))
+```
+
+### Grouping by multiple variables
+
+```{r}
+patients %>%
+  group_by(Sex, State) %>%
+  summarize(
+    Mean_height = mean(Height),
+    Stddev_height = sd(Height)
+  )
+```
+
+It would also be helpful to know how many observations of each group there are.
+
+```{r}
+patients %>%
+  group_by(Sex, State) %>%
+  summarize(
+    Mean_height = mean(Height),
+    Stddev_height = sd(Height),
+    N = n()
+  )
+```
+
+And finally we don't really need all those decimal places.
+
+```{r}
+patients %>%
+  group_by(Sex, State) %>%
+  summarize(
+    Mean_height = mean(Height),
+    Stddev_height = sd(Height),
+    N = n()
+  ) %>%
+  mutate_at(vars(Mean_height, Stddev_height), round, digits = 1)
+```
+
+### Exercise
+
+Compute the median weight and BMI and the interquartile ranges for smokers and non-smokers.
+
+```{r}
+patients %>%
+  group_by(Smokes) %>%
+  summarize_at(vars(Weight, BMI), list(median = median, IQR = IQR))
+```
+
+Compute the numbers of patients with a given Grade separately for each State.
+
+```{r}
+patients %>%
+  group_by(State, Grade) %>%
+  summarize(N = n())
+```
+
+There is a more concise way of doing this using the `count` function.
+
+```{r}
+count(patients, State, Grade)
+```
+
+### Ungrouping
+
+It is sometimes necessary to use `ungroup` when summarizing based on grouping by multiple variables
+particularly when the results are going to be further manipulated.
+
+```{r}
+summary <- patients %>%
+  group_by(Sex, State) %>%
+  summarize(Height = mean(Height), Weight = mean(Weight))
+summary
+```
+
+```{r}
+summary %>%
+  summarize_if(is.numeric, median)
+```
+
+What happened here?
+
+It seems that the `summary` object is still grouped in some way.
+
+```{r}
+groups(summary)
+```
+
+```{r}
+class(summary)
+```
+
+Let's repeat the original operation but this time explicitly remove the grouping after
+sumarizing.
+
+```{r}
+summary <- patients %>%
+  group_by(Sex, State) %>%
+  summarize(Height = mean(Height), Weight = mean(Weight)) %>%
+  ungroup()
+summary
+```
+
+```{r}
+groups(summary)
+```
+
+```{r}
+class(summary)
+```
+
+```{r}
+summary %>%
+  summarize_if(is.numeric, median)
+```
+
+Why do `group_by` and `summarize` behave like this? There are some scenarios where this is helpful.
+
+```{r}
+diabetes <- read_tsv("data/diabetes.txt")
+diabetes
+```
+
+```{r}
+diabetes <- diabetes %>%
+  separate(Date, into = c("year", "month", "day"), sep = "-")
+diabetes
+```
+
+```{r}
+daily <- group_by(diabetes, year, month, day)
+groups(daily)
+```
+
+```{r}
+per_day <- summarize(daily, measurements = n())
+groups(per_day)
+per_day
+```
+
+```{r}
+per_month <- summarize(per_day, measurements = sum(measurements))
+groups(per_month)
+per_month
+```
+
+```{r}
+per_year <- summarize(per_month, measurements = sum(measurements))
+groups(per_year)
+per_year
+```
+
+Each time we peel away one layer of grouping.
+
+**Tip**: always use `ungroup` after grouping on multiple variables
