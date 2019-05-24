@@ -68,7 +68,7 @@ Ashley Sawle  (CRUK-CI Bioinformatics Core).
 |         | [**Introduction & Tidying and transforming data (pt1) - Tidy Data: tidyr intro and dplyr select**](3.dplyr-intro-live-coding-script.html)|
 |Three    | [**Tidying and transforming data (pt2) - Cleaning Data: stringr and dplyr mutate**](3.dplyr-intro-live-coding-script.html)|
 |Four     | [**Workflows - piping and dplyr arrange, filter**](4.workflows-live-coding-script.html)|
-|Five     | [**Summarizing, grouping and combining data**](5.summarise-and-combine-live-coding-script.html)|
+|Five     | [**Summarizing, grouping and combining data**](5.summarise-and-combine-live-coding-script.html) ([minimal live coding script](5.summarise-and-combine-minimal-script.html))|
 |Six      | [**Customizing plots**](2.ggplot2-live-coding-script.html)|
 
 ## Homework Exercises
