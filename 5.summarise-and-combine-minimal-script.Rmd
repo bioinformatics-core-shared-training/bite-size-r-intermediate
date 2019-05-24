@@ -336,4 +336,18 @@ ranked_by_height <- patients %>%
 ranked_by_height
 ```
 
+Note that because we haven't carried out a `summarize` operation the grouping is still intact.
+
+```{r}
+class(ranked_by_height)
+groups(ranked_by_height)
+```
+
+We should probably remove that if we plan to do some further operations on this data frame.
+
+```{r}
+ranked_by_height <- ungroup(ranked_by_height)
+class(ranked_by_height)
+groups(ranked_by_height)
+```
 

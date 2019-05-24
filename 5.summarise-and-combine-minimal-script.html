@@ -714,6 +714,18 @@ ranked_by_height</code></pre>
 ## # … with 90 more rows, and 6 more variables: Count &lt;dbl&gt;,
 ## #   Date.Entered.Study &lt;date&gt;, Age &lt;dbl&gt;, BMI &lt;dbl&gt;, Overweight &lt;lgl&gt;,
 ## #   rank &lt;int&gt;</code></pre>
+<p>Note that because we haven’t carried out a <code>summarize</code> operation the grouping is still intact.</p>
+<pre class="r"><code>class(ranked_by_height)</code></pre>
+<pre><code>## [1] &quot;grouped_df&quot; &quot;tbl_df&quot;     &quot;tbl&quot;        &quot;data.frame&quot;</code></pre>
+<pre class="r"><code>groups(ranked_by_height)</code></pre>
+<pre><code>## [[1]]
+## State</code></pre>
+<p>We should probably remove that if we plan to do some further operations on this data frame.</p>
+<pre class="r"><code>ranked_by_height &lt;- ungroup(ranked_by_height)
+class(ranked_by_height)</code></pre>
+<pre><code>## [1] &quot;tbl_df&quot;     &quot;tbl&quot;        &quot;data.frame&quot;</code></pre>
+<pre class="r"><code>groups(ranked_by_height)</code></pre>
+<pre><code>## NULL</code></pre>
 </div>
 </div>
 
