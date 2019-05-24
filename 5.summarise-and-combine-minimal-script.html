@@ -229,12 +229,12 @@ $(document).ready(function () {
 <pre><code>## Registered S3 method overwritten by 'rvest':
 ##   method            from
 ##   read_xml.response xml2</code></pre>
-<pre><code>## ── Attaching packages ────────────────────────────────────────────────────────────────────────── tidyverse 1.2.1 ──</code></pre>
+<pre><code>## ── Attaching packages ─────────────────────────────────────────────────────────────────────────────────── tidyverse 1.2.1 ──</code></pre>
 <pre><code>## ✔ ggplot2 3.1.1       ✔ purrr   0.3.2  
 ## ✔ tibble  2.1.1       ✔ dplyr   0.8.0.1
 ## ✔ tidyr   0.8.3       ✔ stringr 1.4.0  
 ## ✔ readr   1.3.1       ✔ forcats 0.4.0</code></pre>
-<pre><code>## ── Conflicts ───────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
+<pre><code>## ── Conflicts ────────────────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
 ## ✖ dplyr::filter() masks stats::filter()
 ## ✖ dplyr::lag()    masks stats::lag()</code></pre>
 <pre class="r"><code>patients &lt;- read_tsv(&quot;data/patient-data-cleaned.txt&quot;)</code></pre>
@@ -258,12 +258,20 @@ $(document).ready(function () {
 ## )</code></pre>
 <pre class="r"><code>patients</code></pre>
 <pre><code>## # A tibble: 100 x 15
-##   ID    Name  Sex   Smokes Height Weight Birth      State Grade Died  Count
-##   &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;   &lt;dbl&gt;  &lt;dbl&gt; &lt;date&gt;     &lt;chr&gt; &lt;dbl&gt; &lt;lgl&gt; &lt;dbl&gt;
-## 1 AC/A… Mich… Male  Non-S…   183.   76.6 1972-02-06 Geor…     2 FALSE  0.01
-## 2 AC/A… Derek Male  Non-S…   179.   80.4 1972-06-15 Colo…     2 FALSE -1.31
-## # … with 98 more rows, and 4 more variables: Date.Entered.Study &lt;date&gt;,
-## #   Age &lt;dbl&gt;, BMI &lt;dbl&gt;, Overweight &lt;lgl&gt;</code></pre>
+##    ID    Name  Sex   Smokes Height Weight Birth      State Grade Died 
+##    &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;   &lt;dbl&gt;  &lt;dbl&gt; &lt;date&gt;     &lt;chr&gt; &lt;dbl&gt; &lt;lgl&gt;
+##  1 AC/A… Mich… Male  Non-S…   183.   76.6 1972-02-06 Geor…     2 FALSE
+##  2 AC/A… Derek Male  Non-S…   179.   80.4 1972-06-15 Colo…     2 FALSE
+##  3 AC/A… Todd  Male  Non-S…   169.   75.5 1972-07-09 New …     2 FALSE
+##  4 AC/A… Rona… Male  Non-S…   176.   94.5 1972-08-17 Colo…     1 FALSE
+##  5 AC/A… Chri… Fema… Non-S…   164.   71.8 1973-06-12 Geor…     2 TRUE 
+##  6 AC/A… Dana  Fema… Smoker   158.   69.9 1973-07-01 Indi…     2 FALSE
+##  7 AC/A… Erin  Fema… Non-S…   162.   68.8 1972-03-26 New …     1 FALSE
+##  8 AC/A… Rach… Fema… Non-S…   166.   70.4 1973-05-11 Colo…     1 FALSE
+##  9 AC/A… Rona… Male  Non-S…   181.   76.9 1971-12-31 Geor…     1 FALSE
+## 10 AC/A… Bryan Male  Non-S…   167.   79.1 1973-07-19 New …     2 FALSE
+## # … with 90 more rows, and 5 more variables: Count &lt;dbl&gt;,
+## #   Date.Entered.Study &lt;date&gt;, Age &lt;dbl&gt;, BMI &lt;dbl&gt;, Overweight &lt;lgl&gt;</code></pre>
 <p>How do you compute the mean height of patients in the dataset?</p>
 <pre class="r"><code>mean(patients$Height)</code></pre>
 <pre><code>## [1] 167.9267</code></pre>
@@ -292,11 +300,13 @@ $(document).ready(function () {
 ##    &lt;dbl&gt;  &lt;dbl&gt;
 ## 1   168.   74.9</code></pre>
 <p>We can also use the same helper functions we’ve used before with <code>select</code>.</p>
-<pre class="r"><code>summarise_at(patients, vars(matches('[HW]eight')), mean)</code></pre>
+<pre class="r"><code>summarise_at(patients, vars(ends_with('eight')), mean)</code></pre>
 <pre><code>## # A tibble: 1 x 3
 ##   Height Weight Overweight
 ##    &lt;dbl&gt;  &lt;dbl&gt;      &lt;dbl&gt;
 ## 1   168.   74.9       0.77</code></pre>
+<p>Something interesting and quite useful just happened with the Overweight variable. It is a logical yet still a mean value was computed. What does the resulting value represent? (answer: the proportion of patients that are overweight).</p>
+<p>If we want to compute the mean of all columns containing numeric values we could use <code>summarize_if</code>.</p>
 <pre class="r"><code>summarize_if(patients, is.numeric, mean)</code></pre>
 <pre><code>## # A tibble: 1 x 6
 ##   Height Weight Grade  Count   Age   BMI
@@ -374,29 +384,70 @@ $(document).ready(function () {
   )</code></pre>
 <pre><code>## # A tibble: 12 x 4
 ## # Groups:   Sex [2]
-##   Sex    State      Mean_height Stddev_height
-##   &lt;chr&gt;  &lt;chr&gt;            &lt;dbl&gt;         &lt;dbl&gt;
-## 1 Female California        162.          4.41
-## 2 Female Colorado          162.          3.28
-## # … with 10 more rows</code></pre>
+##    Sex    State      Mean_height Stddev_height
+##    &lt;chr&gt;  &lt;chr&gt;            &lt;dbl&gt;         &lt;dbl&gt;
+##  1 Female California        162.          4.41
+##  2 Female Colorado          162.          3.28
+##  3 Female Georgia           161.          2.61
+##  4 Female Indiana           162.          1.53
+##  5 Female New Jersey        162.          3.67
+##  6 Female New York          161.          2.01
+##  7 Male   California        180.          5.19
+##  8 Male   Colorado          174.          5.34
+##  9 Male   Georgia           176.          6.42
+## 10 Male   Indiana           175.          4.24
+## 11 Male   New Jersey        173.          5.49
+## 12 Male   New York          177.          6.93</code></pre>
+<p>Change the order of the grouping variables if it makes more sense to group first by State and then by Sex.</p>
+<pre class="r"><code>patients %&gt;%
+  group_by(State, Sex) %&gt;%
+  summarize(
+    Mean_height = mean(Height),
+    Stddev_height = sd(Height)
+  )</code></pre>
+<pre><code>## # A tibble: 12 x 4
+## # Groups:   State [6]
+##    State      Sex    Mean_height Stddev_height
+##    &lt;chr&gt;      &lt;chr&gt;        &lt;dbl&gt;         &lt;dbl&gt;
+##  1 California Female        162.          4.41
+##  2 California Male          180.          5.19
+##  3 Colorado   Female        162.          3.28
+##  4 Colorado   Male          174.          5.34
+##  5 Georgia    Female        161.          2.61
+##  6 Georgia    Male          176.          6.42
+##  7 Indiana    Female        162.          1.53
+##  8 Indiana    Male          175.          4.24
+##  9 New Jersey Female        162.          3.67
+## 10 New Jersey Male          173.          5.49
+## 11 New York   Female        161.          2.01
+## 12 New York   Male          177.          6.93</code></pre>
 <p>It would also be helpful to know how many observations of each group there are.</p>
 <pre class="r"><code>patients %&gt;%
-  group_by(Sex, State) %&gt;%
+  group_by(State, Sex) %&gt;%
   summarize(
     Mean_height = mean(Height),
     Stddev_height = sd(Height),
     N = n()
   )</code></pre>
 <pre><code>## # A tibble: 12 x 5
-## # Groups:   Sex [2]
-##   Sex    State      Mean_height Stddev_height     N
-##   &lt;chr&gt;  &lt;chr&gt;            &lt;dbl&gt;         &lt;dbl&gt; &lt;int&gt;
-## 1 Female California        162.          4.41     7
-## 2 Female Colorado          162.          3.28     7
-## # … with 10 more rows</code></pre>
+## # Groups:   State [6]
+##    State      Sex    Mean_height Stddev_height     N
+##    &lt;chr&gt;      &lt;chr&gt;        &lt;dbl&gt;         &lt;dbl&gt; &lt;int&gt;
+##  1 California Female        162.          4.41     7
+##  2 California Male          180.          5.19     3
+##  3 Colorado   Female        162.          3.28     7
+##  4 Colorado   Male          174.          5.34     8
+##  5 Georgia    Female        161.          2.61     9
+##  6 Georgia    Male          176.          6.42     7
+##  7 Indiana    Female        162.          1.53    12
+##  8 Indiana    Male          175.          4.24     6
+##  9 New Jersey Female        162.          3.67    10
+## 10 New Jersey Male          173.          5.49    10
+## 11 New York   Female        161.          2.01    10
+## 12 New York   Male          177.          6.93    11</code></pre>
 <p>And finally we don’t really need all those decimal places.</p>
 <pre class="r"><code>patients %&gt;%
-  group_by(Sex, State) %&gt;%
+  group_by(State, Sex) %&gt;%
   summarize(
     Mean_height = mean(Height),
     Stddev_height = sd(Height),
@@ -404,15 +455,23 @@ $(document).ready(function () {
   ) %&gt;%
   mutate_at(vars(Mean_height, Stddev_height), round, digits = 1)</code></pre>
 <pre><code>## # A tibble: 12 x 5
-## # Groups:   Sex [2]
-##   Sex    State      Mean_height Stddev_height     N
-##   &lt;chr&gt;  &lt;chr&gt;            &lt;dbl&gt;         &lt;dbl&gt; &lt;int&gt;
-## 1 Female California        162.           4.4     7
-## 2 Female Colorado          162.           3.3     7
-## # … with 10 more rows</code></pre>
-</div>
-<div id="exercise" class="section level3">
-<h3>Exercise</h3>
+## # Groups:   State [6]
+##    State      Sex    Mean_height Stddev_height     N
+##    &lt;chr&gt;      &lt;chr&gt;        &lt;dbl&gt;         &lt;dbl&gt; &lt;int&gt;
+##  1 California Female        162.           4.4     7
+##  2 California Male          180.           5.2     3
+##  3 Colorado   Female        162.           3.3     7
+##  4 Colorado   Male          174.           5.3     8
+##  5 Georgia    Female        161            2.6     9
+##  6 Georgia    Male          176.           6.4     7
+##  7 Indiana    Female        162.           1.5    12
+##  8 Indiana    Male          175.           4.2     6
+##  9 New Jersey Female        162.           3.7    10
+## 10 New Jersey Male          173.           5.5    10
+## 11 New York   Female        161.           2      10
+## 12 New York   Male          177.           6.9    11</code></pre>
+<div id="exercise" class="section level4">
+<h4>Exercise</h4>
 <p>Compute the median weight and BMI and the interquartile ranges for smokers and non-smokers.</p>
 <pre class="r"><code>patients %&gt;%
   group_by(Smokes) %&gt;%
@@ -428,19 +487,36 @@ $(document).ready(function () {
   summarize(N = n())</code></pre>
 <pre><code>## # A tibble: 21 x 3
 ## # Groups:   State [6]
-##   State      Grade     N
-##   &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt;
-## 1 California     1     1
-## 2 California     2     3
-## # … with 19 more rows</code></pre>
+##    State      Grade     N
+##    &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt;
+##  1 California     1     1
+##  2 California     2     3
+##  3 California     3     6
+##  4 Colorado       1     5
+##  5 Colorado       2     5
+##  6 Colorado       3     5
+##  7 Georgia        1     5
+##  8 Georgia        2     7
+##  9 Georgia        3     3
+## 10 Georgia       NA     1
+## # … with 11 more rows</code></pre>
 <p>There is a more concise way of doing this using the <code>count</code> function.</p>
 <pre class="r"><code>count(patients, State, Grade)</code></pre>
 <pre><code>## # A tibble: 21 x 3
-##   State      Grade     n
-##   &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt;
-## 1 California     1     1
-## 2 California     2     3
-## # … with 19 more rows</code></pre>
+##    State      Grade     n
+##    &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt;
+##  1 California     1     1
+##  2 California     2     3
+##  3 California     3     6
+##  4 Colorado       1     5
+##  5 Colorado       2     5
+##  6 Colorado       3     5
+##  7 Georgia        1     5
+##  8 Georgia        2     7
+##  9 Georgia        3     3
+## 10 Georgia       NA     1
+## # … with 11 more rows</code></pre>
+</div>
 </div>
 <div id="ungrouping" class="section level3">
 <h3>Ungrouping</h3>
@@ -451,11 +527,20 @@ $(document).ready(function () {
 summary</code></pre>
 <pre><code>## # A tibble: 12 x 4
 ## # Groups:   Sex [2]
-##   Sex    State      Height Weight
-##   &lt;chr&gt;  &lt;chr&gt;       &lt;dbl&gt;  &lt;dbl&gt;
-## 1 Female California   162.   69.7
-## 2 Female Colorado     162.   70.0
-## # … with 10 more rows</code></pre>
+##    Sex    State      Height Weight
+##    &lt;chr&gt;  &lt;chr&gt;       &lt;dbl&gt;  &lt;dbl&gt;
+##  1 Female California   162.   69.7
+##  2 Female Colorado     162.   70.0
+##  3 Female Georgia      161.   68.7
+##  4 Female Indiana      162.   69.4
+##  5 Female New Jersey   162.   68.1
+##  6 Female New York     161.   68.0
+##  7 Male   California   180.   82.1
+##  8 Male   Colorado     174.   87.1
+##  9 Male   Georgia      176.   78.2
+## 10 Male   Indiana      175.   84.0
+## 11 Male   New Jersey   173.   80.6
+## 12 Male   New York     177.   81.7</code></pre>
 <pre class="r"><code>summary %&gt;%
   summarize_if(is.numeric, median)</code></pre>
 <pre><code>## # A tibble: 2 x 3
@@ -477,11 +562,20 @@ summary</code></pre>
   ungroup()
 summary</code></pre>
 <pre><code>## # A tibble: 12 x 4
-##   Sex    State      Height Weight
-##   &lt;chr&gt;  &lt;chr&gt;       &lt;dbl&gt;  &lt;dbl&gt;
-## 1 Female California   162.   69.7
-## 2 Female Colorado     162.   70.0
-## # … with 10 more rows</code></pre>
+##    Sex    State      Height Weight
+##    &lt;chr&gt;  &lt;chr&gt;       &lt;dbl&gt;  &lt;dbl&gt;
+##  1 Female California   162.   69.7
+##  2 Female Colorado     162.   70.0
+##  3 Female Georgia      161.   68.7
+##  4 Female Indiana      162.   69.4
+##  5 Female New Jersey   162.   68.1
+##  6 Female New York     161.   68.0
+##  7 Male   California   180.   82.1
+##  8 Male   Colorado     174.   87.1
+##  9 Male   Georgia      176.   78.2
+## 10 Male   Indiana      175.   84.0
+## 11 Male   New Jersey   173.   80.6
+## 12 Male   New York     177.   81.7</code></pre>
 <pre class="r"><code>groups(summary)</code></pre>
 <pre><code>## NULL</code></pre>
 <pre class="r"><code>class(summary)</code></pre>
@@ -492,7 +586,7 @@ summary</code></pre>
 ##   Height Weight
 ##    &lt;dbl&gt;  &lt;dbl&gt;
 ## 1   168.   74.1</code></pre>
-<p>Why do <code>group_by</code> and <code>summarize</code> behave like this? There are some scenarios where this is helpful.</p>
+<p>Why do <code>group_by</code> and <code>summarize</code> behave like this, i.e. retaining all but the last grouping variable? There are some scenarios where this can helpful.</p>
 <pre class="r"><code>diabetes &lt;- read_tsv(&quot;data/diabetes.txt&quot;)</code></pre>
 <pre><code>## Parsed with column specification:
 ## cols(
@@ -503,20 +597,36 @@ summary</code></pre>
 ## )</code></pre>
 <pre class="r"><code>diabetes</code></pre>
 <pre><code>## # A tibble: 1,316 x 4
-##   ID        Date       Glucose    BP
-##   &lt;chr&gt;     &lt;date&gt;       &lt;dbl&gt; &lt;dbl&gt;
-## 1 AC/AH/001 2011-03-07     100    98
-## 2 AC/AH/001 2011-03-14     110    89
-## # … with 1,314 more rows</code></pre>
+##    ID        Date       Glucose    BP
+##    &lt;chr&gt;     &lt;date&gt;       &lt;dbl&gt; &lt;dbl&gt;
+##  1 AC/AH/001 2011-03-07     100    98
+##  2 AC/AH/001 2011-03-14     110    89
+##  3 AC/AH/001 2011-03-24      94    88
+##  4 AC/AH/001 2011-03-31     111    92
+##  5 AC/AH/001 2011-04-03      94    83
+##  6 AC/AH/001 2011-05-21     110    93
+##  7 AC/AH/001 2011-06-24     105    79
+##  8 AC/AH/001 2011-07-11      88    86
+##  9 AC/AH/001 2011-07-11     101    92
+## 10 AC/AH/001 2011-07-13     112    88
+## # … with 1,306 more rows</code></pre>
 <pre class="r"><code>diabetes &lt;- diabetes %&gt;%
   separate(Date, into = c(&quot;year&quot;, &quot;month&quot;, &quot;day&quot;), sep = &quot;-&quot;)
 diabetes</code></pre>
 <pre><code>## # A tibble: 1,316 x 6
-##   ID        year  month day   Glucose    BP
-##   &lt;chr&gt;     &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;   &lt;dbl&gt; &lt;dbl&gt;
-## 1 AC/AH/001 2011  03    07        100    98
-## 2 AC/AH/001 2011  03    14        110    89
-## # … with 1,314 more rows</code></pre>
+##    ID        year  month day   Glucose    BP
+##    &lt;chr&gt;     &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;   &lt;dbl&gt; &lt;dbl&gt;
+##  1 AC/AH/001 2011  03    07        100    98
+##  2 AC/AH/001 2011  03    14        110    89
+##  3 AC/AH/001 2011  03    24         94    88
+##  4 AC/AH/001 2011  03    31        111    92
+##  5 AC/AH/001 2011  04    03         94    83
+##  6 AC/AH/001 2011  05    21        110    93
+##  7 AC/AH/001 2011  06    24        105    79
+##  8 AC/AH/001 2011  07    11         88    86
+##  9 AC/AH/001 2011  07    11        101    92
+## 10 AC/AH/001 2011  07    13        112    88
+## # … with 1,306 more rows</code></pre>
 <pre class="r"><code>daily &lt;- group_by(diabetes, year, month, day)
 groups(daily)</code></pre>
 <pre><code>## [[1]]
@@ -537,11 +647,19 @@ groups(per_day)</code></pre>
 <pre class="r"><code>per_day</code></pre>
 <pre><code>## # A tibble: 200 x 4
 ## # Groups:   year, month [8]
-##   year  month day   measurements
-##   &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;        &lt;int&gt;
-## 1 2011  02    16               5
-## 2 2011  02    17              10
-## # … with 198 more rows</code></pre>
+##    year  month day   measurements
+##    &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;        &lt;int&gt;
+##  1 2011  02    16               5
+##  2 2011  02    17              10
+##  3 2011  02    18               7
+##  4 2011  02    19               1
+##  5 2011  02    20               4
+##  6 2011  02    21               2
+##  7 2011  02    22               6
+##  8 2011  02    23               4
+##  9 2011  02    24               4
+## 10 2011  02    25               8
+## # … with 190 more rows</code></pre>
 <pre class="r"><code>per_month &lt;- summarize(per_day, measurements = sum(measurements))
 groups(per_month)</code></pre>
 <pre><code>## [[1]]
@@ -553,7 +671,12 @@ groups(per_month)</code></pre>
 ##   &lt;chr&gt; &lt;chr&gt;        &lt;int&gt;
 ## 1 2011  02              71
 ## 2 2011  03             211
-## # … with 6 more rows</code></pre>
+## 3 2011  04             205
+## 4 2011  05             195
+## 5 2011  06             208
+## 6 2011  07             204
+## 7 2011  08             206
+## 8 2011  09              16</code></pre>
 <pre class="r"><code>per_year &lt;- summarize(per_month, measurements = sum(measurements))
 groups(per_year)</code></pre>
 <pre><code>## NULL</code></pre>
@@ -563,7 +686,34 @@ groups(per_year)</code></pre>
 ##   &lt;chr&gt;        &lt;int&gt;
 ## 1 2011          1316</code></pre>
 <p>Each time we peel away one layer of grouping.</p>
-<p><strong>Tip</strong>: always use <code>ungroup</code> after grouping on multiple variables</p>
+<p><strong>Tip</strong>: always use <code>ungroup</code> after grouping on multiple variables to avoid potential problems further down the line.</p>
+</div>
+<div id="grouping-with-mutate" class="section level3">
+<h3>Grouping with <code>mutate</code></h3>
+<p><code>group_by</code> is most commonly used with <code>summarize</code> but other functions such as <code>mutate</code> can be applied separately to subsets of the data in the same way.</p>
+<p>As an example, we assign the rank of the individuals by height (tallest = 1, second tallest = 2, etc.) within each state. We need to group by State then sort into descending height order and then assign the rank. For the last part we use another helpful function, <code>row_number</code>.</p>
+<pre class="r"><code>ranked_by_height &lt;- patients %&gt;%
+  group_by(State) %&gt;%
+  arrange(desc(Height)) %&gt;%
+  mutate(rank = row_number())
+ranked_by_height</code></pre>
+<pre><code>## # A tibble: 100 x 16
+## # Groups:   State [6]
+##    ID    Name  Sex   Smokes Height Weight Birth      State Grade Died 
+##    &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;   &lt;dbl&gt;  &lt;dbl&gt; &lt;date&gt;     &lt;chr&gt; &lt;dbl&gt; &lt;lgl&gt;
+##  1 AC/A… Char… Male  Non-S…   185.   87.2 1973-07-19 New …     1 FALSE
+##  2 AC/S… Doug… Male  Smoker   185.   73.6 1973-06-11 New …     3 FALSE
+##  3 AC/S… Joel  Male  Non-S…   184.   90.4 1972-06-11 Cali…     3 TRUE 
+##  4 AC/A… Stev… Male  Smoker   183.   83.4 1973-10-05 New …     2 FALSE
+##  5 AC/S… Russ… Male  Non-S…   183.   82.5 1972-10-30 New …     3 TRUE 
+##  6 AC/A… Mich… Male  Non-S…   183.   76.6 1972-02-06 Geor…     2 FALSE
+##  7 AC/A… Jeff… Male  Non-S…   182.   96.9 1972-12-10 Colo…     2 FALSE
+##  8 AC/A… Bran… Male  Smoker   182.   79.5 1972-05-09 Geor…     1 TRUE 
+##  9 AC/A… Rona… Male  Non-S…   181.   76.9 1971-12-31 Geor…     1 FALSE
+## 10 AC/A… Stev… Male  Non-S…   181.   83.9 1973-10-19 New …     3 TRUE 
+## # … with 90 more rows, and 6 more variables: Count &lt;dbl&gt;,
+## #   Date.Entered.Study &lt;date&gt;, Age &lt;dbl&gt;, BMI &lt;dbl&gt;, Overweight &lt;lgl&gt;,
+## #   rank &lt;int&gt;</code></pre>
 </div>
 </div>
 

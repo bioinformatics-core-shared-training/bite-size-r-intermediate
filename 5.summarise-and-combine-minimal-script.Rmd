@@ -4,10 +4,6 @@ date: '`r format(Sys.time(), "Last modified: %d %b %Y")`'
 output: html_document
 ---
 
-```{r echo=FALSE}
-options(tibble.print_max = 2, tibble.print_min = 2, max.print=10)
-```
-
 ## Recap
 
 ### Tidy data
@@ -77,8 +73,15 @@ summarize_at(patients, vars(Height, Weight), mean)
 We can also use the same helper functions we've used before with `select`.
 
 ```{r}
-summarise_at(patients, vars(matches('[HW]eight')), mean)
+summarise_at(patients, vars(ends_with('eight')), mean)
 ```
+
+Something interesting and quite useful just happened with the Overweight variable.
+It is a logical yet still a mean value was computed. What does the resulting value represent?
+(answer: the proportion of patients that are overweight).
+
+If we want to compute the mean of all columns containing numeric values we could use
+`summarize_if`.
 
 ```{r}
 summarize_if(patients, is.numeric, mean)
@@ -159,11 +162,23 @@ patients %>%
   )
 ```
 
+Change the order of the grouping variables if it makes more sense to group first
+by State and then by Sex.
+
+```{r}
+patients %>%
+  group_by(State, Sex) %>%
+  summarize(
+    Mean_height = mean(Height),
+    Stddev_height = sd(Height)
+  )
+```
+
 It would also be helpful to know how many observations of each group there are.
 
 ```{r}
 patients %>%
-  group_by(Sex, State) %>%
+  group_by(State, Sex) %>%
   summarize(
     Mean_height = mean(Height),
     Stddev_height = sd(Height),
@@ -175,7 +190,7 @@ And finally we don't really need all those decimal places.
 
 ```{r}
 patients %>%
-  group_by(Sex, State) %>%
+  group_by(State, Sex) %>%
   summarize(
     Mean_height = mean(Height),
     Stddev_height = sd(Height),
@@ -184,7 +199,7 @@ patients %>%
   mutate_at(vars(Mean_height, Stddev_height), round, digits = 1)
 ```
 
-### Exercise
+#### Exercise
 
 Compute the median weight and BMI and the interquartile ranges for smokers and non-smokers.
 
@@ -261,7 +276,8 @@ summary %>%
   summarize_if(is.numeric, median)
 ```
 
-Why do `group_by` and `summarize` behave like this? There are some scenarios where this is helpful.
+Why do `group_by` and `summarize` behave like this, i.e. retaining all but the last grouping variable?
+There are some scenarios where this can helpful.
 
 ```{r}
 diabetes <- read_tsv("data/diabetes.txt")
@@ -299,4 +315,25 @@ per_year
 
 Each time we peel away one layer of grouping.
 
-**Tip**: always use `ungroup` after grouping on multiple variables
+**Tip**: always use `ungroup` after grouping on multiple variables to avoid
+potential problems further down the line.
+
+### Grouping with `mutate`
+
+`group_by` is most commonly used with `summarize` but other functions such as `mutate`
+can be applied separately to subsets of the data in the same way.
+
+As an example, we assign the rank of the individuals by height (tallest = 1,
+second tallest = 2, etc.) within each state. We need to group by State then
+sort into descending height order and then assign the rank. For the last part
+we use another helpful function, `row_number`.
+
+```{r}
+ranked_by_height <- patients %>%
+  group_by(State) %>%
+  arrange(desc(Height)) %>%
+  mutate(rank = row_number())
+ranked_by_height
+```
+
+
