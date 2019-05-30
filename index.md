@@ -81,15 +81,15 @@ Ashley Sawle  (CRUK-CI Bioinformatics Core).
 ### Session 2  
 - [Exercises](session2-exercises-with-images.html)
 - [Answer Template](session2-exercises-template.Rmd)
-- Solutions
+- [Solutions](session2-exercises-with-solutions.html)  
 
 ### Session 3  
 - [Exercise and Answer Template](session3-exercises-template.Rmd)
-- Solutions
+- Solutions - see Exercise 1 in Session 4
 
 ### Session 4  
 - [Exercise and Answer Template](session4-exercises-template.Rmd)
-- Solutions
+- [Solutions](session4-exercises-with-solutions.html)  
 
 ### Session 5  
 - Exercises

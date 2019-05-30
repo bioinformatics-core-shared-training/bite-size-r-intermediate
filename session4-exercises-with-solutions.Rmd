@@ -1,0 +1,103 @@
+---
+title: "Session 4 exercise - Solutions"
+date: '`r format(Sys.time(), "Last modified: %d %b %Y")`'
+output: html_document
+---
+
+# 1. Messy data - clean up using a work flow
+
+Last week you cleaned up the `patient-data.txt` file using `mutate` and various
+`stringr` functions. This week we would like you to do the same again, but this
+time use the "pipe" (`%>%`) to do the clean up as a single workflow.
+
+Assign the final cleaned data frame to a new object.
+
+**There are various ways that this can be achieved the solution below is an 
+example.**
+
+
+```{r}
+library(tidyverse)
+
+cleaned_patients <- read.delim("data/patient-data.txt", stringsAsFactors = FALSE) %>%  
+  as_tibble() %>% 
+  mutate_all(str_trim) %>% # we can remove the leading/trailing spaces from all columns at once 
+  mutate(Sex = as.factor(Sex)) %>%
+  mutate(Smokes = Smokes %in% c("TRUE", "Yes")) %>%
+  mutate_at(vars(Height, Weight), str_remove, pattern = "kg|cm") %>% # the `|` in the pattern means OR
+  mutate_at(vars(Height, Weight), as.numeric) %>%  
+  mutate(Birth = as.Date(Birth)) %>% # The `date` vector type works nicely now thanks to the package lubridate
+  mutate(State = str_replace(State, "Californa", "California")) %>% 
+  mutate(State = str_to_title(State)) %>%  # fix "New york", "New jersey" and "indiana"
+  mutate(State = as.factor(State)) %>%  
+  mutate(Grade_Level = na_if(Grade_Level, "99")) %>% # We'll assume the `99`s are supposed to be missing data
+  mutate(Grade_Level = as.factor(Grade_Level)) %>% # although these are numbers, Grade is really a category
+  mutate(Died = as.logical(Died)) %>%  
+  mutate(Date.Entered.Study = as.Date(Date.Entered.Study))
+
+cleaned_patients
+```
+
+# 2. Write a table to a file as part of a work flow
+
+For this exercise use the clean data table `patient-data-cleaned.txt`. 
+
+We would like to output a subset of the data to a new file. To write to a file
+you will need to use a function we haven't shown you, so you'll have to check
+the `readr` package help pages to find the tidyverse write functions.
+
+Use pipes to do this as a workflow.
+
+The table should:
+
+a) Have the columns the following columns **in this order**:  
+        ID, Name, Sex, Smokes, BMI, Grade, Height, Weight  
+**The order of the columns in the resulting table is as specified in the `select` command**  
+**As we need the `State` column for step (d), it is best to leave the `select`
+until the end**
+b) The Height column should be titled "Height (cm)"   
+**We could use `rename` but renaming can also be done during the `select` command**
+c) The Weight should be in grams (it is currently in kg) and with an
+appropriate header
+d) Only contain data for people from New York or New Jersey who are non-smokers
+e) Be in tab separated value (tsv) format  
+**Because we are going to write this modified table to a file and then have no
+further use for it, there is no need to assign (`<-`) it to an object.**
+
+```{r eval=FALSE}
+read_tsv("data/patient-data-cleaned.txt") %>%  
+    mutate(`Weight (g)` = Weight * 1000) %>%  
+    filter(str_detect(State, "New") & Smokes == "Non-Smoker") %>%  
+    select(ID, Name, Sex, Smokes, BMI, Grade, `Height (cm)` = Height, `Weight (g)`) %>%  
+    write_tsv("results/East_Coast_NonSmokers.txt")
+```
+
+# 3. Draw a plot as part of a work flow
+
+For this exercise use the clean data table `patients-data-cleaned.txt`. 
+
+We would like you to modify the table and generate a scatter plot. Use pipes to
+do this as a workflow, including the ggplot as part of the workflow.
+
+Create an xy scatter plot with Height on the x and  Weight on the y where:
+
+a) Height is in metres not centimetres
+b) The plot only shows the data for people who are overweight and live in
+Colorado or Georgia  
+**`Overweight` is already a logical vector, so we can filter directly, there
+is no need to use `== TRUE`**
+c) The x axis is labelled "Height (m)" - you can do this without using `labs`
+in the ggplot?
+d) split the plot into two plots by state
+e) colour the points by Sex
+
+```{r message=FALSE, warning=FALSE}
+read_tsv("data/patient-data-cleaned.txt") %>% 
+  mutate(`Height (m)` = Height * 0.01) %>% 
+  filter(State %in% c("Colorado", "Georgia")) %>% 
+  filter(Overweight) %>% 
+  mutate(Sex = as.factor(Sex)) %>% 
+  ggplot(aes(x = `Height (m)`, y = Weight)) + 
+      geom_point(aes(colour = Sex)) + 
+      facet_wrap(~ State) 
+```
