@@ -1,0 +1,86 @@
+---
+title: "Session 6 exercises"
+date: '`r format(Sys.time(), "Last modified: %d %b %Y")`'
+output: html_document
+---
+
+# 1. Combining data tables
+
+The exercise uses a more realistic dataset, building on the patients data frame
+we’ve already been working with.
+
+The patients are all part of a diabetes study and have had their blood glucose
+concentration and diastolic blood pressure measured on several dates.
+
+This part of the exercise combines grouping, summarisation and joining
+operations to connect the diabetes study data to the patients table we've
+already been working with.
+
+Read the data from the file `diabetes.txt` into a new object.
+
+```{r}
+
+```
+
+The goal is to compare the blood pressure of smokers and non-smokers.
+
+First, calculate the average blood pressure for each individual in the
+`diabetes` data frame.
+
+```{r}
+ 
+```
+
+Now use one of the join functions to combine these average blood pressure measurements with the `patients` data frame containing information on whether the patient is a smoker.
+
+```{r}
+
+```
+
+Finally, calculate the average blood pressure for smokers and non-smokers on the resulting, combined data frame.
+
+```{r}
+
+```
+
+Can you write this whole operation as a single dplyr chain?
+
+```{r}
+
+```
+
+# 2. Customising Scales
+
+
+In these exercises we look at adjusting the scales.
+
+Using the patient dataset from earlier, generate a scatter plot of BMI versus Weight
+
+```{r}
+
+```
+
+2. With the plot above, from exercise 1, adjust the BMI axis to show only labels for 20, 30, 40 and the weight axis to show breaks for 60 to 100 in steps of 5 as well as to specify units in y axis label. 
+
+
+```{r}
+
+```
+
+3. Create a violin plot of BMI by Age where violins are filled with three colours of your choosing.
+   There is pdf with all of the named colours in R here:
+   http://www.stat.columbia.edu/~tzheng/files/Rcolor.pdf
+
+```{r}
+
+```            
+
+4. Create a scatterplot of BMI versus Weight. Colour the points according to
+   height. Adjust the colour *gradient*:   
+    * Set the midpoint to the mean Height
+    * Set the midpoint colour to grey 
+    * Set the extremes to blue (low) and yellow (high).
+
+```{r}
+
+```
