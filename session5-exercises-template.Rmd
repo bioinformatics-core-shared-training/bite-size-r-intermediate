@@ -91,7 +91,7 @@ order or precedence.
 
 ```
 
-8. Assign a priority to the mapping for each gene symbol based on the order of precedence
+8. Assign a ranking to the mapping for each gene symbol based on the order of precedence
 
 Each gene symbol needs to be treated separately, i.e. as a group. Within each group
 the rows need to be sorted by the order of precedence of the type of symbol and then
@@ -104,9 +104,9 @@ etc.
 
 ```
 
-Check if you need to remove grouping in your data frame after adding the priority.
+Check if you need to remove grouping in your data frame after adding the ranking.
 
-8. Use the gene symbol lookup table
+9. Use the gene symbol lookup table
 
 We now have our gene symbol lookup table and can use it. See which genes the following
 symbols map to.
@@ -121,7 +121,7 @@ symbols map to.
 
 ```
 
-9. Using just the preferred mappings, compute the number of symbols in each class and the percentage of those that map to a HGNC gene with an Ensembl cross-reference
+10. Using just the preferred mappings, compute the number of symbols in each class and the percentage of those that map to a HGNC gene with an Ensembl cross-reference
 
 ```{r}
 
