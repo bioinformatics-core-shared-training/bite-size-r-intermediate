@@ -46,7 +46,9 @@ diabetes <- diabetes  %>%
     summarize(MeanBP=mean(BP))
 ```
 
-Now use one of the join functions to combine these average blood pressure measurements with the `patients` data frame containing information on whether the patient is a smoker.
+Now use one of the join functions to combine these average blood pressure
+measurements with the `patients` data frame containing information on whether
+the patient is a smoker.
 
 ```{r}
 patients <- read_tsv("data/patient-data-cleaned.txt") %>%  
@@ -54,7 +56,8 @@ patients <- read_tsv("data/patient-data-cleaned.txt") %>%
 
 ```
 
-Finally, calculate the average blood pressure for smokers and non-smokers on the resulting, combined data frame.
+Finally, calculate the average blood pressure for smokers and non-smokers on
+the resulting, combined data frame.
 
 ```{r}
 patients  %>%  
@@ -80,7 +83,8 @@ results <- read_tsv("data/patient-data-cleaned.txt") %>%
 
 In these exercises we look at adjusting the scales.
 
-Using the patient dataset from earlier, generate a scatter plot of BMI versus Weight
+Using the patient dataset from earlier, generate a scatter plot of BMI versus
+Weight
 
 ```{r exerciseReading}
 patients <- read_tsv("data/patient-data-cleaned.txt")
@@ -91,7 +95,9 @@ scPlot <- patients %>%
 scPlot
 ```
 
-2. With the plot above, from exercise 1, adjust the BMI axis to show only labels for 20, 30, 40 and the weight axis to show breaks for 60 to 100 in steps of 5 as well as to specify units in y axis label. 
+2. With the plot above, from exercise 1, adjust the BMI axis to show only
+   labels for 20, 30, 40 and the weight axis to show breaks for 60 to 100 in
+   steps of 5 as well as to specify units in y axis label. 
 
 
 ```{r exercise1}
@@ -100,8 +106,9 @@ scPlot +
     scale_y_continuous(breaks = seq(60, 100, by = 5))
 ```
 
-3. Create a violin plot of BMI by Age where violins are filled with three colours of your choosing.
-   There is pdf with all of the named colours in R here:
+3. Create a violin plot of BMI by Age where violins are filled with three
+   colours of your choosing.  There is pdf with all of the named colours in R
+   here:
    http://www.stat.columbia.edu/~tzheng/files/Rcolor.pdf
 
 ```{r exercise2}
