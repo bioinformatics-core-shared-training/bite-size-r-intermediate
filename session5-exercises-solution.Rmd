@@ -1,0 +1,178 @@
+---
+title: "Session 5 exercise: building a gene symbol lookup"
+date: '`r format(Sys.time(), "Last modified: %d %b %Y")`'
+output: html_document
+---
+
+We commonly work with gene symbols but these are not a very precise way of referring
+to specific genes, with the same symbol used in some cases as an alias for more than
+one gene.
+
+There are lots of ways of mapping gene symbols to gene entries in popular databases
+or resouces, such as Ensembl or RefSeq, but in this exercise we will use a resource
+provided by the HUGO Gene Nomenclature Committee.
+
+The aim is to create a lookup that gives Ensembl and RefSeq accession ids for
+gene symbols.
+
+1. Download the HGNC complete gene set
+
+In a web browser, search for and navigate to the HGNC website. Go to the 'Statistics and
+download files' page from the 'Downloads' drop-down menu. Towards the bottom of the page
+is a section called 'Complete dataset download links'. Download the Complete HGNC dataset
+as a tab-separated text file ('TXT' button). You may need to right click and choose
+'Save link as' depending on what brower you're using. The file is called `hgnc_complete_set.txt`.
+
+2. Load the `hgnc_complete_set.txt` file into a data frame
+
+```{r}
+library(tidyverse)
+genes <- read_tsv("hgnc_complete_set.txt")
+```
+
+3. Select the columns of interest
+
+These are the HGNC id, the RefSeq and Ensembl accession numbers, and 3 columns containing
+gene symbols - one for the primary symbol recognized by HGNC, another for symbols that were used
+as the primary symbol in previous releases of the resource, and one final column containing
+aliases.
+
+It will be useful at this point to rename the 3 gene symbol columns to 'primary', 'previous'
+and 'alias'
+
+```{r}
+genes <- genes %>%
+  select(
+    hgnc_id,
+    refseq_accession,
+    ensembl_gene_id,
+    primary = symbol,
+    previous = prev_symbol,
+    alias = alias_symbol
+  )
+```
+
+4. Gather the 3 gene symbol columns into a single column
+
+Use the `gather` function to create 'symbol' and 'class' columns.
+
+It would be very helpful here to retain the primary HGNC gene symbol column
+so apply a `mutate` to copy this column to a new column called 'hgnc_symbol'
+before calling `gather`.
+
+```{r}
+genes <- genes %>%
+  mutate(hgnc_symbol = primary) %>%
+  gather(key = class, value = symbol, primary, previous, alias, na.rm = TRUE)
+```
+
+5. Filter for missing values.
+
+Genes with no previously used symbol or aliases will have rows with `NA`
+values in the symbol column. Remove these.
+
+```{r}
+genes <- genes %>%
+  filter(!is.na(symbol))
+```
+
+Note that this step is not necessary if `na.rm = TRUE` used in `gather` previously.
+
+6. Split multiple gene symbols into separate rows.
+
+Some genes have multiple gene symbol aliases that are separated by the '|' character.
+These need to be split into separate rows. Look up the list of functions provided by
+the tidyr package using the Help tab in RStudio and find the function you need to do
+this.
+
+The separator you will need to provide is a regular expression and because the '|'
+character means something special within regular expression you will need to tell it
+that you really mean the '|' character by prefixing it with "\\", i.e. `sep = "\\|"`).
+
+```{r}
+genes <- genes %>%
+  separate_rows(symbol, sep = "\\|")
+```
+
+7. Assign an order of precedence base on the class of the symbol
+
+Some gene symbols map to multiple genes. A primary gene symbol should take
+precedence over a previously used symbol and an alias should be lower priority
+still. To enable us to prioritize gene symbol mappings based on this ordering
+we need to turn our 'class' column into a factor with the levels defining the
+order or precedence.
+
+```{r}
+genes <- genes %>%
+  mutate(class = factor(class, levels = c("primary", "previous", "alias")))
+```
+
+8. Assign a ranking to the mapping for each gene symbol based on the order of precedence
+
+Each gene symbol needs to be treated separately, i.e. as a group. Within each group
+the rows need to be sorted by the order of precedence of the type of symbol and then
+a rank or priority assigned where 1 would be our favoured mapping, 2 our next preferred,
+etc.
+
+**Hint:** use the `row_number` function
+
+```{r}
+lookup <- genes %>%
+  group_by(symbol) %>%
+  arrange(class) %>%
+  mutate(ranking = row_number()) %>%
+  ungroup() %>%
+  select(symbol, ranking, class, everything()) %>%
+  arrange(symbol, ranking)
+```
+
+Check if you need to remove grouping in your data frame after adding the ranking.
+
+9. Use the gene symbol lookup table
+
+We now have our gene symbol lookup table and can use it. See which genes the following
+symbols map to.
+
+* KRAS
+* MTCP1
+* CASP
+* HSR1
+* your favourite gene
+
+```{r}
+lookup %>%
+  filter(symbol %in% c("KRAS", "MTCP1", "CASP", "HSR1", "TP53"))
+```
+
+Note that using the `row_number` function means that matches for symbols with the same class
+are still given different rankings.
+
+```{r}
+lookup %>%
+  filter(symbol == "CYP2A")
+```
+
+We may instead want to have ties for those matches with
+the same class and can use the `min_rank` function for this.
+
+```{r}
+lookup <- genes %>%
+  group_by(symbol) %>%
+  mutate(ranking = min_rank(class)) %>%
+  ungroup() %>%
+  select(symbol, ranking, class, everything()) %>%
+  arrange(symbol, ranking)
+
+lookup %>%
+  filter(symbol == "CYP2A")
+```
+
+10. Using just the preferred mappings, compute the number of symbols in each class and the percentage of those that map to a HGNC gene with an Ensembl cross-reference
+
+```{r}
+lookup %>%
+  filter(ranking == 1) %>%
+  group_by(class) %>%
+  summarize(n = n(), percent = 100 * mean(!is.na(ensembl_gene_id)))
+```
+
