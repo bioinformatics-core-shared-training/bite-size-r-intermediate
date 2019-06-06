@@ -1,0 +1,379 @@
+---
+title: "Programming: functions and loops -- live coding script"
+author: "Ashley Sawle"
+date: '`r format(Sys.time(), "Last modified: %d %b %Y")`'
+output:
+  html_document:
+    toc: yes
+    toc_float: yes
+---
+
+```{r include = FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+```
+
+**This document is work in progress**
+
+## Introduction
+
+### Load the tidyverse
+
+```{r setup}
+library(tidyverse)
+```
+
+### Read the patients data into R environment
+
+Read in the patients data frame using `read_tsv` from the `readr` package.
+`read_tsv` imports tab-delimited files (tsv = tab-separated values).
+
+```{r loadData}
+patients <- read_tsv("data/patient-data-cleaned.txt") %>%  
+    select(-BMI)
+```
+
+## Writing our own functions
+
+### Basic syntax to generate a function
+
+Lets look at a tidyverse function definition
+
+```{r addColumn}
+top_n
+```
+
+* The command to create a function is `function`
+* This is followed by the arguments of the function in brackets
+* Finally the code that the function will execute is between curly brackets
+
+So the general syntax is:
+
+```
+Function_Name <- function(arg1, arg2, arg3, ...){
+    Code_Line_1
+    Code_Line_2
+    ...
+}
+```
+
+Let's create a simple function. This one has no arguments.
+
+```{r firstFunc, message=TRUE}
+my_first_function  <- function(){
+    message("Hello World!")
+}
+
+my_first_function()
+```
+
+Let's make it a bit more useful by adding an argument
+
+```{r firstFunc2, message=TRUE}
+sayHello <- function(name){
+    message("Hello ", name, "!")
+}
+
+sayHello("Ash")
+sayHello("Matt")
+```
+
+### Functions with output
+
+So far our function just printed a message to the console, but most functions return
+a value.
+
+In R a function can only return a single object, this can be of any data type,
+e.g. data.frame or a vector or even a plot, but only one can be returned (there
+is a way around this using lists, but we won't discuss them here).
+
+Let's create a function to calculate BMI.
+
+BMI is defined as weight (kg) / square of height (m) --> kg/m^2^
+
+```{r BMIfunc}
+bmi <- function(height, weight){
+    weight / (height ^ 2)
+}
+bmi(1.75, 78)
+```
+
+Let's try that with our patients table.
+```{r testBMI}
+patients <- patients  %>%  
+    mutate(BMI=bmi(Height, Weight))
+select(patients, Height, Weight, BMI)
+```
+
+This isn't right because the height should be in metres. Let's add some
+additional arguments to define the units and then some extra code to adjust the
+values depending on the units provided.
+
+### Defaults
+
+When specifying the arguments we can set default values. This makes these 
+arguments optional. 
+
+In this case we will create arguments for the units for the height and weight.
+We might like to the set the defaults to "m" and "kg". Then the user only needs
+to specify these if they are providing measurements in different units.
+
+```{r BMIfunc2}
+bmi <- function(height, weight, height_units="m", weight_units="kg"){
+    if(height_units == "cm"){ height <- height / 100 }
+    if(weight_units == "g"){ weight <- weight / 1000 }
+    weight / (height ^ 2)
+}
+
+bmi(1.75, 78)
+patients <- patients  %>%  
+    mutate(BMI=bmi(Height, Weight, height_units = "cm"))
+select(patients, Height, Weight, BMI)
+```
+
+### Returned object
+
+You'll notice that we didn't explicitly tell the function what object we wanted
+it to return.  There is a function `return` to do this, however, it is not
+usually necessary to use it as in R the function will just return by default
+the output of the final line of code.
+
+```{r}
+bmi <- function(height, weight, height_units="m", weight_units="kg"){
+    if(height_units == "cm"){ height <- height / 100 }
+    if(weight_units == "g"){ weight <- weight / 1000 }
+    bmi <- weight / (height ^ 2)
+    return(bmi)
+}
+bmi(165, 67)
+```
+
+### Generating a plot with a function
+
+
+```{r}
+diabetes <- read_tsv("data/diabetes.txt")
+```
+
+```{r single_patient_plot}
+diabetes %>%  
+    filter(ID == "AC/AH/001") %>%  
+    ggplot(aes(x = Date, y = Glucose)) +
+        geom_line(colour = "blue") +
+        labs(title = "Patient: AC/AH/001")
+```
+
+```{r single_patient_plot2}
+patientID <- "AC/AH/001"
+plotTitle <- str_c("Patient: ", patientID)
+
+diabetes %>%  
+    filter(ID == patientID) %>%  
+    ggplot(aes(x = Date, y = Glucose)) +
+        geom_line(colour = "blue") +
+        labs(title = plotTitle)
+```
+
+```{r plotAsAFunction}
+plotGlucose <- function(patientID, dat=diabetes, myColour="blue"){
+    plotTitle <- str_c("Patient: ", patientID)
+    dat %>%  
+        filter(ID == patientID) %>%  
+        ggplot(aes(x = Date, y = Glucose)) +
+            geom_line(colour = myColour) +
+            labs(title = plotTitle)
+}
+
+plotGlucose("AC/AH/104")
+plot1 <- plotGlucose("AC/AH/017", myColour="purple")
+plot1
+```
+
+## Doing repetitive tasks with loops
+
+R works nicely with vectors
+```{r}
+x <- c(1, 2, 3, 4, 5)
+log2(x)
+```
+
+but not always the behaviour we want
+
+```{r}
+sum(x, 5)
+```
+
+so we could do...
+
+```{r}
+sum(1, 5)
+sum(2, 5)
+sum(3, 5)
+sum(4, 5)
+sum(5, 5)
+```
+
+If you are repeating code like this, you should use a `for` loop instead. A
+`for` loop allows us to run the same piece of code multiple times, each time
+changing the value of one of the input variables.
+
+### Basic syntax
+
+The basic syntax of a `for` loop is:
+
+```
+for(a_variable in a_vector){
+    some code operating on a_variable
+}
+```
+
+The loop will repeatedly run the code inside the curly brackets, each time
+replacing `a_variable` with a value from `a_vector`.
+
+Let's look at a simple concrete example:
+
+```{r}
+for(a_number in c(11, 21, 16, 4, 500)){
+    sum(a_number, 5)
+}
+```
+
+In this case the code between the curly brackets has been run 5 times. The
+first time `a_number` was replaced with `11` - the first value in the vector,
+the next time `a_number` was replaced with `21` - the second value in the
+vector, and so on.
+
+More commonly we would define the vector first:
+
+```{r}
+some_data <- c(11, 21, 16, 4, 500)
+for(a_number in some_data){
+    sum(a_number, 5)
+}
+```
+
+Very often we will use a sequence and extract the relevant value from the vector.
+
+```{r message=TRUE}
+some_data <- c(11, 21, 16, 4, 500)
+for(a_number in seq(1, 5)){
+    new_number <- sum(some_data[a_number], 5)
+    message("Result number ", a_number, " is ", new_number)
+}
+```
+
+A better way is to use `seq_along`
+
+```{r message=TRUE}
+some_data <- c(11, 21, 16, 4, 500)
+for(a_number in seq_along(some_data)){
+    new_number <- sum(some_data[a_number], 5)
+    message("Result number ", a_number, " is ", new_number)
+}
+```
+
+### A more realistic example
+
+Let's say that with our patients data we want to export a separate table for
+each state, containing just the men, with ID, Name, Smokes, BMI and their their
+average BP from the diabetes table.
+
+```{r eval=FALSE}
+states <- unique(patients$State)
+
+avg_bp  <- diabetes %>%  
+    group_by(ID) %>%  
+    summarise(AvgBP=mean(BP)) %>%  
+    ungroup()
+
+for(state in states){
+    outputFile <- str_c("data/", state, "_male_patient_data.tsv") %>%  
+        str_replace(" ", "_")
+    patients  %>%  
+        filter(State == state & Sex == "Male") %>%  
+        left_join(avg_bp, by = "ID") %>%  
+        select(ID, Name, Smokes, BMI, AvgBP) %>%  
+        write_tsv(outputFile)
+}
+```
+
+### Emma's problem - A loop with plotting
+
+In the diabetes data set we have 100 patients. Lets say we want to plot a time line
+of glucose levels for each patients separately and output the plots in 4x4 grids to
+a pdf. We can generate a 4x4 grid of plots easily enough using `facet_wrap` in ggplot2,
+but we'll need to do this repeatedly on subsets of 16 patients.
+
+There are many ways to solve this problem; this is just one of them.
+
+```{r eval=FALSE}
+all_patients <- unique(diabetes$ID)
+len <- length(all_patients)
+start_index <- seq(1, len, by = 16)
+
+plotGlucose <- function(dat){
+    ggplot(dat, aes(x = Date, y = Glucose)) +
+        geom_line(colour = "red") +
+        geom_point(shape = 21, fill = "red") +
+        facet_wrap(~ID, ncol=4)
+}
+
+pdf("data/My_plots.pdf")
+for(stt in start_index){
+    end <- min(stt + 15, 100)
+    these_patients <- all_patients[seq(stt, end)]
+    diabetes %>%  
+        filter(ID %in% these_patients) %>%  
+        plotGlucose() %>%  
+        print()
+}
+dev.off()
+```
+
+The last page isn't ideal perhaps. We could solve this with some more advanced
+plotting using `gridExtra` to create the grid of plots from a `list` of
+individual plots. We will also need a nested loop - a loop within a loop.
+
+```{r eval=FALSE}
+library(gridExtra)
+
+pdf("data/My_plots.pdf")
+for(stt in start_index){
+    end <- min(stt + 15, 100)
+    these_patients <- all_patients[seq(stt, end)]
+    plotList <- list() 
+    for(i in seq_along(these_patients)){
+        glPlot <- diabetes %>%  
+            filter(ID %in% these_patients[i]) %>%  
+            plotGlucose()
+        plotList[[i]] <- glPlot
+    }
+    grid.arrange(grobs = plotList, ncol = 4, nrow = 4)
+}
+dev.off()
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
