@@ -1,19 +1,12 @@
 ---
-title: "Session 6 exercises"
+title: "Session 6 exercises - Solutions"
 date: '`r format(Sys.time(), "Last modified: %d %b %Y")`'
 output: html_document
 ---
 
 ```{r include = FALSE}
-knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
 ```
-
-Some of these exercises require you to generate plots of various kinds. This document
-shows the plots that you should obtain.
-
-Not everything was necessarily covered during the teaching session, you may need
-to use R help pages, the Cheat Sheets, or search the web to figure out the 
-answers.
 
 # 1. Combining data tables
 
@@ -68,11 +61,10 @@ patients  %>%
 Can you write this whole operation as a single dplyr chain?
 
 ```{r}
-diabetes <- read_tsv("data/diabetes.txt") %>%  
+read_tsv("data/diabetes.txt") %>%  
     group_by(ID) %>%  
-    summarize(MeanBP=mean(BP))
-
-results <- read_tsv("data/patient-data-cleaned.txt") %>%  
+    summarize(MeanBP=mean(BP)) %>%  
+    left_join(read_tsv("data/patient-data-cleaned.txt")) %>%  
     left_join(diabetes) %>%  
     group_by(Smokes) %>%  
     summarize(MeanBP=mean(MeanBP))
