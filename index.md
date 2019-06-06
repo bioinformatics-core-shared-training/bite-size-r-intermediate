@@ -70,6 +70,7 @@ Ashley Sawle  (CRUK-CI Bioinformatics Core).
 |Four     | [**Workflows - piping and dplyr arrange, filter**](4.workflows-live-coding-script.html)|
 |Five     | [**Summarizing, grouping and combining data**](5.summarise-and-combine-live-coding-script.html) ([minimal live coding script](5.summarise-and-combine-minimal-script.html))|
 |Six      | [**Customizing plots**](2.ggplot2-live-coding-script.html)|
+|Seven    | **Functions and loops**[.](6.functions-and-loops-live-coding-script.html)|
 
 ## Homework Exercises
 
