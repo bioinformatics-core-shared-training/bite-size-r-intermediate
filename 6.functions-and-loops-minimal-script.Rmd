@@ -1,33 +1,22 @@
 ---
-title: "Programming: functions and loops -- live coding script"
+title: "Programming: functions and loops -- minimalscript"
 author: "Ashley Sawle"
 date: '`r format(Sys.time(), "Last modified: %d %b %Y")`'
 output:
   html_document:
     toc: yes
-    toc_float: yes
 ---
 
 ```{r include = FALSE}
-knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
-```
-
-**This document is work in progress**
-
-## Introduction
-
-### Load the tidyverse
-
-```{r setup}
 library(tidyverse)
+options(tibble.print_max = 3, tibble.print_min = 3)
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
 ```
 
 ### Read the patients data into R environment
 
-Read in the patients data frame using `read_tsv` from the `readr` package.
-`read_tsv` imports tab-delimited files (tsv = tab-separated values).
+```{r setup}
 
-```{r loadData}
 patients <- read_tsv("data/patient-data-cleaned.txt") %>%  
     select(Height, Weight, -BMI)
 ```
@@ -38,7 +27,7 @@ patients <- read_tsv("data/patient-data-cleaned.txt") %>%
 
 Lets look at a tidyverse function definition
 
-```{r addColumn}
+```{r topn, eval=FALSE}
 top_n
 ```
 
@@ -82,13 +71,9 @@ sayHello("Matt")
 So far our function just printed a message to the console, but most functions return
 a value.
 
-In R a function can only return a single object, this can be of any data type,
-e.g. data.frame or a vector or even a plot, but only one can be returned (there
-is a way around this using lists, but we won't discuss them here).
+In R a function can only return a single object
 
-Let's create a function to calculate BMI.
-
-BMI is defined as weight (kg) / square of height (m) --> kg/m^2^
+Let's create a function to calculate BMI: weight (kg) / height^2^ (m) --> kg/m^2^
 
 ```{r BMIfunc}
 bmi <- function(height, weight){
@@ -99,7 +84,7 @@ bmi(1.75, 78)
 
 Let's try that with our patients table.
 ```{r testBMI}
-patients <- patients  %>%  
+patients  %>%  
     mutate(BMI=bmi(Height, Weight))
 ```
 
@@ -108,13 +93,6 @@ additional arguments to define the units and then some extra code to adjust the
 values depending on the units provided.
 
 ### Defaults
-
-When specifying the arguments we can set default values. This makes these 
-arguments optional. 
-
-In this case we will create arguments for the units for the height and weight.
-We might like to the set the defaults to "m" and "kg". Then the user only needs
-to specify these if they are providing measurements in different units.
 
 ```{r BMIfunc2}
 bmi <- function(height, weight, height_units="m", weight_units="kg"){
@@ -130,10 +108,7 @@ patients  %>%
 
 ### Returned object
 
-You'll notice that we didn't explicitly tell the function what object we wanted
-it to return.  There is a function `return` to do this, however, it is not
-usually necessary to use it as in R the function will just return by default
-the output of the final line of code.
+There is a function `return` but we don't usually need it.
 
 ```{r}
 bmi <- function(height, weight, height_units="m", weight_units="kg"){
@@ -152,7 +127,7 @@ bmi(165, 67)
 diabetes <- read_tsv("data/diabetes.txt")
 ```
 
-```{r single_patient_plot}
+```{r single_patient_plot, fig.height=2}
 diabetes %>%  
     filter(ID == "AC/AH/001") %>%  
     ggplot(aes(x = Date, y = Glucose)) +
@@ -160,7 +135,9 @@ diabetes %>%
         labs(title = "Patient: AC/AH/001")
 ```
 
-```{r single_patient_plot2}
+How can we turn this into a function? Step by step...
+
+```{r single_patient_plot2, fig.height=2}
 patientID <- "AC/AH/001"
 plotTitle <- str_c("Patient: ", patientID)
 
@@ -171,7 +148,7 @@ diabetes %>%
         labs(title = plotTitle)
 ```
 
-```{r plotAsAFunction}
+```{r plotAsAFunction, fig.height=2}
 plotGlucose <- function(patientID, dat=diabetes, myColour="blue"){
     plotTitle <- str_c("Patient: ", patientID)
     dat %>%  
@@ -202,7 +179,7 @@ sum(x, 5)
 
 so we could do...
 
-```{r}
+```{r eval=FALSE}
 sum(1, 5)
 sum(2, 5)
 sum(3, 5)
@@ -210,9 +187,7 @@ sum(4, 5)
 sum(5, 5)
 ```
 
-If you are repeating code like this, you should use a `for` loop instead. A
-`for` loop allows us to run the same piece of code multiple times, each time
-changing the value of one of the input variables.
+If you are repeating code like this, you should use loop.
 
 ### Basic syntax
 
@@ -224,10 +199,7 @@ for(a_variable in a_vector){
 }
 ```
 
-The loop will repeatedly run the code inside the curly brackets, each time
-replacing `a_variable` with a value from `a_vector`.
-
-Let's look at a simple concrete example:
+Let's look at a simple example:
 
 ```{r}
 for(a_number in c(11, 21, 16, 4, 500)){
@@ -235,10 +207,7 @@ for(a_number in c(11, 21, 16, 4, 500)){
 }
 ```
 
-In this case the code between the curly brackets has been run 5 times. The
-first time `a_number` was replaced with `11` - the first value in the vector,
-the next time `a_number` was replaced with `21` - the second value in the
-vector, and so on.
+In this case the code has been run 5 times...
 
 More commonly we would define the vector first:
 
@@ -249,7 +218,7 @@ for(a_number in some_data){
 }
 ```
 
-Very often we will use a sequence and extract the relevant value from the vector.
+often we will use a sequence
 
 ```{r message=TRUE}
 some_data <- c(11, 21, 16, 4, 500)
@@ -295,11 +264,6 @@ for(state in states){
 ```
 
 ### Emma's problem - A loop with plotting
-
-In the diabetes data set we have 100 patients. Lets say we want to plot a time line
-of glucose levels for each patients separately and output the plots in 4x4 grids to
-a pdf. We can generate a 4x4 grid of plots easily enough using `facet_wrap` in ggplot2,
-but we'll need to do this repeatedly on subsets of 16 patients.
 
 There are many ways to solve this problem; this is just one of them.
 
@@ -350,6 +314,7 @@ for(stt in start_index){
 dev.off()
 
 ```
+
 
 
 
