@@ -34,7 +34,7 @@ First, calculate the average blood pressure for each individual in the
 `diabetes` data frame.
 
 ```{r}
-diabetes <- diabetes  %>%  
+diabetes_av <- diabetes  %>%  
     group_by(ID) %>%  
     summarize(MeanBP=mean(BP))
 ```
@@ -45,7 +45,7 @@ the patient is a smoker.
 
 ```{r}
 patients <- read_tsv("data/patient-data-cleaned.txt") %>%  
-    left_join(diabetes)
+    left_join(diabetes_av)
 
 ```
 
@@ -65,7 +65,6 @@ read_tsv("data/diabetes.txt") %>%
     group_by(ID) %>%  
     summarize(MeanBP=mean(BP)) %>%  
     left_join(read_tsv("data/patient-data-cleaned.txt")) %>%  
-    left_join(diabetes) %>%  
     group_by(Smokes) %>%  
     summarize(MeanBP=mean(MeanBP))
 ```

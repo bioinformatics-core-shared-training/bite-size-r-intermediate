@@ -189,13 +189,11 @@ $(document).ready(function () {
 
 
 <h1 class="title toc-ignore">Session 6 exercises</h1>
-<h4 class="date">Last modified: 06 Jun 2019</h4>
+<h4 class="date">Last modified: 07 Jun 2019</h4>
 
 </div>
 
 
-<p>Some of these exercises require you to generate plots of various kinds. This document shows the plots that you should obtain.</p>
-<p>Not everything was necessarily covered during the teaching session, you may need to use R help pages, the Cheat Sheets, or search the web to figure out the answers.</p>
 <div id="combining-data-tables" class="section level1">
 <h1>1. Combining data tables</h1>
 <p>The exercise uses a more realistic dataset, building on the patients data frame we’ve already been working with.</p>
@@ -226,6 +224,11 @@ $(document).ready(function () {
 ## 1 Non-Smoker   82.0
 ## 2 Smoker       84.6</code></pre>
 <p>Can you write this whole operation as a single dplyr chain?</p>
+<pre><code>## # A tibble: 2 x 2
+##   Smokes     MeanBP
+##   &lt;chr&gt;       &lt;dbl&gt;
+## 1 Non-Smoker   82.0
+## 2 Smoker       84.6</code></pre>
 </div>
 <div id="customising-scales" class="section level1">
 <h1>2. Customising Scales</h1>

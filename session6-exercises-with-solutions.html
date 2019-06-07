@@ -189,7 +189,7 @@ $(document).ready(function () {
 
 
 <h1 class="title toc-ignore">Session 6 exercises - Solutions</h1>
-<h4 class="date">Last modified: 06 Jun 2019</h4>
+<h4 class="date">Last modified: 07 Jun 2019</h4>
 
 </div>
 
@@ -219,12 +219,12 @@ diabetes</code></pre>
 ## # … with 1,306 more rows</code></pre>
 <p>The goal is to compare the blood pressure of smokers and non-smokers.</p>
 <p>First, calculate the average blood pressure for each individual in the <code>diabetes</code> data frame.</p>
-<pre class="r"><code>diabetes &lt;- diabetes  %&gt;%  
+<pre class="r"><code>diabetes_av &lt;- diabetes  %&gt;%  
     group_by(ID) %&gt;%  
     summarize(MeanBP=mean(BP))</code></pre>
 <p>Now use one of the join functions to combine these average blood pressure measurements with the <code>patients</code> data frame containing information on whether the patient is a smoker.</p>
 <pre class="r"><code>patients &lt;- read_tsv(&quot;data/patient-data-cleaned.txt&quot;) %&gt;%  
-    left_join(diabetes)</code></pre>
+    left_join(diabetes_av)</code></pre>
 <p>Finally, calculate the average blood pressure for smokers and non-smokers on the resulting, combined data frame.</p>
 <pre class="r"><code>patients  %&gt;%  
     group_by(Smokes) %&gt;%  
@@ -239,7 +239,6 @@ diabetes</code></pre>
     group_by(ID) %&gt;%  
     summarize(MeanBP=mean(BP)) %&gt;%  
     left_join(read_tsv(&quot;data/patient-data-cleaned.txt&quot;)) %&gt;%  
-    left_join(diabetes) %&gt;%  
     group_by(Smokes) %&gt;%  
     summarize(MeanBP=mean(MeanBP))</code></pre>
 <pre><code>## # A tibble: 2 x 2
